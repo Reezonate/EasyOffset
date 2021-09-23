@@ -1,0 +1,7 @@
+ManifestFileVersion: 0
+CRC: 149436583
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: easy_offset
+      Dependencies: {}

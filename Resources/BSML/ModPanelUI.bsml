@@ -1,0 +1,38 @@
+<vertical child-expand-height='false' child-control-height='false'>
+    <dropdown-list-setting text="Adjustment Mode" value="gba-choice" choices="gba-choices" on-change="gba-on-change" apply-on-change="true"
+                           hover-hint="~gba-hint"/>
+    <dropdown-list-setting text="Display Controller" value="dc-choice" choices="dc-choices" on-change="dc-on-change" apply-on-change="true"
+                           hover-hint="Controller model to be displayed in-game"/>
+    <toggle-setting text="Enable Mid-play Adjustment" value="mpa-value" on-change="mpa-on-change" apply-on-change="true"
+                    hover-hint="Enable adjustment during songs"/>
+    <toggle-setting text="Use free hand" value="ufh-value" on-change="ufh-on-change" apply-on-change="true" 
+                    hover-hint="Use right grip button to adjust left hand and vice versa"/>
+    <horizontal preferred-height="1.0"/>
+    <horizontal>
+        <vertical preferred-width="50">
+            <text text="Left Hand" align="Center"/>
+
+            <horizontal>
+                <text text="Z Offset" align="Center" font-size="3.5" hover-hint="Move saber along its axis"/>
+                <slider-setting text="" preferred-width="35" min="~zo-min" max="~zo-max" increment="~zo-increment" value="lzo-value" on-change="lzo-on-change" bind-value="true" apply-on-change="true"/>
+            </horizontal>
+
+            <horizontal preferred-height="10.0"/>
+            <button text="Mirror to Right" on-click="l2r-mirror-click" hover-hint="Set same offsets to the Right hand"/>
+        </vertical>
+        
+        <vertical preferred-width="2.0"/>
+        
+        <vertical preferred-width="50">
+            <text text="Right Hand" align="Center"/>
+
+            <horizontal>
+                <text text="Z Offset" align="Center" font-size="3.5" hover-hint="Move saber along its axis"/>
+                <slider-setting text="" preferred-width="35" min="~zo-min" max="~zo-max" increment="~zo-increment" value="rzo-value" on-change="rzo-on-change" bind-value="true" apply-on-change="true"/>
+            </horizontal>
+
+            <horizontal preferred-height="10.0"/>
+            <button text="Mirror to Left" on-click="r2l-mirror-click" hover-hint="Set same offsets to the Left hand"/>
+        </vertical>
+    </horizontal>
+</vertical>
