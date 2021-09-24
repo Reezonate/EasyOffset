@@ -55,6 +55,7 @@ namespace EasyOffset {
 
             GetHandTransforms(hand, out var position, out var rotation);
             OnGrabFinished(hand, position, rotation);
+            PluginConfig.SaveConfigFile();
         }
 
         private void OnAdjustmentModeChanged(AdjustmentMode value) {

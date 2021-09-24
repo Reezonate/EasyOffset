@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace EasyOffset {
     public class RotationPlaneTracker {
-        private const int MaxNormalsCount = 60;
+        private const int MaxNormalsCount = 15;
         private const float MinimalAngularVelocity = 45.0f;
         private const float MaximalAngularVelocity = 360.0f;
         private const float AngularVelocityAmplitude = MaximalAngularVelocity - MinimalAngularVelocity;
@@ -24,11 +24,11 @@ namespace EasyOffset {
 
         #region Plane
 
-        private Plane _lastPlane = new Plane(Vector3.forward, 0);
-        private readonly List<WeightedNormal> _normalsList = new List<WeightedNormal>();
+        private Vector3 _normal = Vector3.forward;
+        private readonly List<WeightedNormal> _normalsList = new();
 
-        public Plane GetPlane() {
-            return _lastPlane;
+        public Vector3 GetNormal() {
+            return _normal;
         }
 
         private void AddNormal(
@@ -47,8 +47,7 @@ namespace EasyOffset {
             }
 
             if (divider <= 0) return;
-            var resultNormal = sum / divider;
-            _lastPlane = new Plane(resultNormal, 0);
+            _normal = sum / divider;
         }
 
         private readonly struct WeightedNormal {
@@ -72,7 +71,6 @@ namespace EasyOffset {
 
         public void Reset(Quaternion rotation) {
             _positiveDirection = rotation * Vector3.forward;
-            _lastPlane = new Plane(_positiveDirection, 0);
             _normalsList.Clear();
 
             AddNormal(_positiveDirection, 1.0f);
@@ -103,7 +101,7 @@ namespace EasyOffset {
                 _previousVelocities[i] = currentVelocity;
 
                 var weight = (angularVelocity - MinimalAngularVelocity) / AngularVelocityAmplitude;
-                if (currentPosition == previousPosition || angularVelocity <= weight) continue;
+                if (currentPosition == previousPosition || weight <= 0) continue;
 
                 var plane = new Plane(previousPosition, previousPosition + previousVelocity, currentPosition);
                 if (Vector3.Dot(plane.normal, _positiveDirection) < 0) plane.Flip();

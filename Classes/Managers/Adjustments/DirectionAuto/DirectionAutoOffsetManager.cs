@@ -26,7 +26,7 @@ namespace EasyOffset {
 
         #region Measurements and averaging
 
-        private const int MaxMeasurementsCount = 30;
+        private const int MaxMeasurementsCount = 50;
 
         private readonly List<Vector3> _measurements = new();
 
@@ -70,7 +70,7 @@ namespace EasyOffset {
 
             if (!_rotationPlaneTracker.Update(worldRotation)) return;
 
-            var worldNormal = _rotationPlaneTracker.GetPlane().normal;
+            var worldNormal = _rotationPlaneTracker.GetNormal();
             var localNormal = TransformUtils.WorldToLocalDirection(worldNormal, controllerRotation);
             RecordNewMeasurement(localNormal);
 

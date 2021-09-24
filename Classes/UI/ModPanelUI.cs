@@ -195,8 +195,7 @@ namespace EasyOffset.UI {
 
         [UIValue("lock-value")] [UsedImplicitly]
         private bool _lockValue = PluginConfig.UILock;
-
-
+        
         [UIAction("lock-on-change")]
         [UsedImplicitly]
         private void LockOnChange(bool value) {

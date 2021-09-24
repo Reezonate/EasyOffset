@@ -355,5 +355,13 @@ namespace EasyOffset.Configuration {
         }
 
         #endregion
+
+        #region Save
+
+        public static void SaveConfigFile() {
+            ConfigFileData.Instance.Changed();
+        }
+
+        #endregion
     }
 }

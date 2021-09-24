@@ -12,59 +12,59 @@ namespace EasyOffset.Configuration {
 
         #region ConfigVersion
 
-        public virtual string ConfigVersion { get; set; } = CurrentConfigVersion;
+        public string ConfigVersion = CurrentConfigVersion;
 
         #endregion
 
         #region UI Lock
-        
-        public virtual bool UILock { get; set; } = Defaults.UILock;
+
+        public bool UILock = Defaults.UILock;
 
         #endregion
 
         #region AssignedButton
-        
-        public virtual string AssignedButton { get; set; } = Defaults.AssignedButton;
+
+        public string AssignedButton = Defaults.AssignedButton;
 
         #endregion
 
         #region DisplayControllerType
 
-        public virtual string DisplayControllerType { get; set; } = Defaults.DisplayControllerType;
+        public string DisplayControllerType = Defaults.DisplayControllerType;
 
         #endregion
 
         #region UseFreeHand
 
-        public virtual bool UseFreeHand { get; set; } = Defaults.UseFreeHand;
+        public bool UseFreeHand = Defaults.UseFreeHand;
 
         #endregion
 
         #region RightHand
 
-        public virtual float RightHandPivotX { get; set; } = Defaults.PivotX;
-        public virtual float RightHandPivotY { get; set; } = Defaults.PivotY;
-        public virtual float RightHandPivotZ { get; set; } = Defaults.PivotZ;
+        public float RightHandPivotX = Defaults.PivotX;
+        public float RightHandPivotY = Defaults.PivotY;
+        public float RightHandPivotZ = Defaults.PivotZ;
 
-        public virtual float RightHandSaberDirectionX { get; set; } = Defaults.SaberDirectionX;
-        public virtual float RightHandSaberDirectionY { get; set; } = Defaults.SaberDirectionY;
-        public virtual float RightHandSaberDirectionZ { get; set; } = Defaults.SaberDirectionZ;
+        public float RightHandSaberDirectionX = Defaults.SaberDirectionX;
+        public float RightHandSaberDirectionY = Defaults.SaberDirectionY;
+        public float RightHandSaberDirectionZ = Defaults.SaberDirectionZ;
 
-        public virtual float RightHandZOffset { get; set; } = Defaults.ZOffset;
+        public float RightHandZOffset = Defaults.ZOffset;
 
         #endregion
 
         #region LeftHand
 
-        public virtual float LeftHandPivotX { get; set; } = Defaults.PivotX;
-        public virtual float LeftHandPivotY { get; set; } = Defaults.PivotY;
-        public virtual float LeftHandPivotZ { get; set; } = Defaults.PivotZ;
+        public float LeftHandPivotX = Defaults.PivotX;
+        public float LeftHandPivotY = Defaults.PivotY;
+        public float LeftHandPivotZ = Defaults.PivotZ;
 
-        public virtual float LeftHandSaberDirectionX { get; set; } = Defaults.SaberDirectionX;
-        public virtual float LeftHandSaberDirectionY { get; set; } = Defaults.SaberDirectionY;
-        public virtual float LeftHandSaberDirectionZ { get; set; } = Defaults.SaberDirectionZ;
+        public float LeftHandSaberDirectionX = Defaults.SaberDirectionX;
+        public float LeftHandSaberDirectionY = Defaults.SaberDirectionY;
+        public float LeftHandSaberDirectionZ = Defaults.SaberDirectionZ;
 
-        public virtual float LeftHandZOffset { get; set; } = Defaults.ZOffset;
+        public float LeftHandZOffset = Defaults.ZOffset;
 
         #endregion
 
