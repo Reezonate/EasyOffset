@@ -7,8 +7,9 @@ namespace EasyOffset.Installers {
         [Inject] [UsedImplicitly] private SaberManager _saberManager;
 
         public override void InstallBindings() {
+            Container.BindInterfacesAndSelfTo<MidPlayAdjustmentsManager>().AsSingle();
             if (!PluginConfig.EnableMidPlayAdjustment) return;
-            
+
             var vrControllers = new VRControllers(
                 _saberManager.rightSaber.GetComponentInParent<VRController>(),
                 _saberManager.leftSaber.GetComponentInParent<VRController>()
@@ -16,7 +17,6 @@ namespace EasyOffset.Installers {
 
             Container.BindInstance(vrControllers).AsSingle();
             Container.BindInterfacesAndSelfTo<AbominationTransformManager>().AsSingle();
-            Container.BindInterfacesAndSelfTo<MidPlayAdjustmentsManager>().AsSingle();
         }
     }
 }

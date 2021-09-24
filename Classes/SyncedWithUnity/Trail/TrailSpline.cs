@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace EasyOffset.SyncedWithUnity {
     public class TrailSpline {
-        private readonly CyclicBuffer<CubicBezierCurve> _splines;
+        private readonly CyclicBuffer<QuadraticBezierCurve> _splines;
         private readonly CyclicBuffer<Vector3> _handles;
 
         private Vector3 _linearFrom = Vector3.zero;
@@ -11,7 +11,7 @@ namespace EasyOffset.SyncedWithUnity {
         public TrailSpline(
             int capacity
         ) {
-            _splines = new CyclicBuffer<CubicBezierCurve>(capacity);
+            _splines = new CyclicBuffer<QuadraticBezierCurve>(capacity);
             _handles = new CyclicBuffer<Vector3>(3);
         }
 
@@ -21,7 +21,7 @@ namespace EasyOffset.SyncedWithUnity {
 
             if (!_handles.Add(point)) return false;
             var buffer = _handles.GetBuffer();
-            var spline = new CubicBezierCurve(
+            var spline = new QuadraticBezierCurve(
                 buffer[0],
                 buffer[1],
                 buffer[2]
@@ -54,7 +54,7 @@ namespace EasyOffset.SyncedWithUnity {
             return _linearFrom + (_linearTo - _linearFrom) * localT;
         }
 
-        private Vector3 GetPointSplines(CubicBezierCurve[] buffer, float localT) {
+        private Vector3 GetPointSplines(QuadraticBezierCurve[] buffer, float localT) {
             var tPerSpline = 1f / _splines.Size;
             var splineIndex = (int) (localT / tPerSpline);
             if (splineIndex >= _splines.Size) splineIndex = _splines.Size - 1;

@@ -41,6 +41,7 @@ namespace EasyOffset.Installers {
             Container.BindInterfacesAndSelfTo<BasicOffsetManager>().AsSingle();
             Container.BindInterfacesAndSelfTo<PivotOnlyOffsetManager>().AsSingle();
             Container.BindInterfacesAndSelfTo<DirectionOnlyOffsetManager>().AsSingle();
+            Container.BindInterfacesAndSelfTo<DirectionAutoOffsetManager>().AsSingle();
             Container.BindInterfacesAndSelfTo<RoomOffsetManager>().AsSingle();
         }
     }

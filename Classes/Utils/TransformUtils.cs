@@ -110,6 +110,14 @@ namespace EasyOffset {
             return Quaternion.Inverse(parentRotation) * (worldPosition - parentPosition);
         }
 
+        public static Vector3 LocalToWorldDirection(Vector3 localDirection, Quaternion parentRotation) {
+            return parentRotation * localDirection;
+        }
+        
+        public static Vector3 WorldToLocalDirection(Vector3 worldDirection, Quaternion parentRotation) {
+            return Quaternion.Inverse(parentRotation) *worldDirection;
+        }
+
         #endregion
     }
 }

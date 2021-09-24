@@ -5,6 +5,12 @@ namespace EasyOffset {
     public static class BundleLoader {
         private const string BundleName = "EasyOffset.Resources.AssetBundles.easy_offset";
 
+        #region Meshes
+
+        public static Mesh SphereMesh;
+
+        #endregion
+
         #region Gizmos
 
         public static GameObject PivotPrefab;
@@ -49,11 +55,20 @@ namespace EasyOffset {
                 throw new Exception("AssetBundle load error!");
             }
 
+            LoadMeshes(localAssetBundle);
             LoadGizmosPrefabs(localAssetBundle);
             LoadControllersPrefabs(localAssetBundle);
 
             localAssetBundle.Unload(false);
             _ready = true;
+        }
+
+        #endregion
+
+        #region LoadMeshes
+
+        private static void LoadMeshes(AssetBundle assetBundle) {
+            SphereMesh = assetBundle.LoadAsset<GameObject>("Sphere").GetComponent<MeshFilter>().mesh;
         }
 
         #endregion

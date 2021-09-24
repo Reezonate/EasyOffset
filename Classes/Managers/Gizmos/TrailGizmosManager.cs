@@ -89,6 +89,7 @@ namespace EasyOffset {
                 AdjustmentMode.Basic => false,
                 AdjustmentMode.PivotOnly => false,
                 AdjustmentMode.DirectionOnly => true,
+                AdjustmentMode.DirectionAuto => true,
                 AdjustmentMode.RoomOffset => false,
                 _ => throw new ArgumentOutOfRangeException()
             };

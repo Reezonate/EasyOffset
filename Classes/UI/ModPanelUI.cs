@@ -13,7 +13,8 @@ namespace EasyOffset.UI {
                                                                                    "\n" +
                                                                                    "\nBasic - Easy adjustment mode for beginners" +
                                                                                    "\nPivot Only - Precise origin placement" +
-                                                                                   "\nDirection only - Swing correction" +
+                                                                                   "\nDirection Only - Saber rotation only" +
+                                                                                   "\nDirection Auto - Automatic rotation (beta)" +
                                                                                    "\nRoom Offset - World Pulling locomotion";
 
         [UIValue("am-choices")] [UsedImplicitly]
