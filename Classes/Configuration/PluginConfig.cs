@@ -22,6 +22,24 @@ namespace EasyOffset.Configuration {
 
         #endregion
 
+        #region Enabled
+
+        private static readonly CachedVariable<bool> CachedEnabled = new(
+            () => ConfigFileData.Instance.Enabled
+        );
+
+        public static bool Enabled
+        {
+            get => CachedEnabled.Value;
+            set
+            {
+                CachedEnabled.Value = value;
+                ConfigFileData.Instance.Enabled = value;
+            }
+        }
+
+        #endregion
+
         #region UI Lock
 
         private static readonly CachedVariable<bool> CachedUILock = new(

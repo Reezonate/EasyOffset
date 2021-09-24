@@ -203,5 +203,33 @@ namespace EasyOffset.UI {
         }
 
         #endregion
+
+        #region Enabled
+
+        [UIValue("Enabled")]
+        [UsedImplicitly]
+        private bool Enabled
+        {
+            get => !PluginConfig.Enabled;
+            set
+            {
+                PluginConfig.Enabled = !value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        [UIValue("enabled-value")]
+        [UsedImplicitly]
+        private bool _enabledValue = PluginConfig.Enabled;
+
+
+        [UIAction("enabled-on-change")]
+        [UsedImplicitly]
+        private void EnabledOnChange(bool value)
+        {
+            Enabled = !value;
+        }
+
+        #endregion
     }
 }

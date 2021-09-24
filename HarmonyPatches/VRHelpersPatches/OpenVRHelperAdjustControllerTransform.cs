@@ -1,3 +1,4 @@
+using EasyOffset.Configuration;
 using HarmonyLib;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -14,6 +15,7 @@ namespace EasyOffset.HarmonyPatches {
             Vector3 position,
             Vector3 rotation
         ) {
+            if (!PluginConfig.Enabled) { return false; }
             TransformUtils.AdjustControllerTransform(node, transform);
             return false;
         }
