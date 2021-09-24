@@ -29,14 +29,16 @@ namespace EasyOffset.Installers {
 
         private void BindGizmosManagers() {
             Container.BindInterfacesAndSelfTo<PivotGizmosManager>().AsSingle();
+            Container.BindInterfacesAndSelfTo<TrailGizmosManager>().AsSingle();
             Container.BindInterfacesAndSelfTo<DirectionGridGizmosManager>().AsSingle();
 
             Container.BindExecutionOrder<PivotGizmosManager>(1);
+            Container.BindExecutionOrder<TrailGizmosManager>(1);
             Container.BindExecutionOrder<DirectionGridGizmosManager>(1);
         }
 
         private void BindOffsetManagers() {
-            Container.BindInterfacesAndSelfTo<FullGripOffsetManager>().AsSingle();
+            Container.BindInterfacesAndSelfTo<BasicOffsetManager>().AsSingle();
             Container.BindInterfacesAndSelfTo<PivotOnlyOffsetManager>().AsSingle();
             Container.BindInterfacesAndSelfTo<DirectionOnlyOffsetManager>().AsSingle();
             Container.BindInterfacesAndSelfTo<RoomOffsetManager>().AsSingle();

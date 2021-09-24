@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace EasyOffset {
     [UsedImplicitly]
-    public class DirectionOnlyOffsetManager : GrabTracker {
+    public class DirectionOnlyOffsetManager : AbstractOffsetManager {
         #region Constructor
 
         private readonly DirectionGridGizmosManager _gizmosManager;
@@ -15,7 +15,7 @@ namespace EasyOffset {
             MainSettingsModelSO mainSettingsModel
         ) : base(
             mainSettingsModel,
-            GripButtonAction.DirectionOnly,
+            AdjustmentMode.DirectionOnly,
             true
         ) {
             _gizmosManager = gizmosManager;

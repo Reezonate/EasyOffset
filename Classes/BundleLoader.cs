@@ -9,6 +9,7 @@ namespace EasyOffset {
 
         public static GameObject PivotPrefab;
         public static GameObject DirectionGridPrefab;
+        public static GameObject TrailPrefab;
 
         #endregion
 
@@ -62,6 +63,7 @@ namespace EasyOffset {
         private static void LoadGizmosPrefabs(AssetBundle assetBundle) {
             PivotPrefab = assetBundle.LoadAsset<GameObject>("Pivot");
             DirectionGridPrefab = assetBundle.LoadAsset<GameObject>("DirectionGrid");
+            TrailPrefab = assetBundle.LoadAsset<GameObject>("Trail");
         }
 
         #endregion

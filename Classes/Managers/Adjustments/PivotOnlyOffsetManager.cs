@@ -5,14 +5,14 @@ using UnityEngine;
 
 namespace EasyOffset {
     [UsedImplicitly]
-    public class PivotOnlyOffsetManager : GrabTracker {
+    public class PivotOnlyOffsetManager : AbstractOffsetManager {
         #region Constructor
 
         public PivotOnlyOffsetManager(
             MainSettingsModelSO mainSettingsModelSO
         ) : base(
             mainSettingsModelSO,
-            GripButtonAction.PivotOnly,
+            AdjustmentMode.PivotOnly,
             true
         ) { }
 

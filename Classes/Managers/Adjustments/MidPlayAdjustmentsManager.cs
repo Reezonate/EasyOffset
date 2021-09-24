@@ -6,18 +6,18 @@ using Zenject;
 namespace EasyOffset {
     [UsedImplicitly]
     public class MidPlayAdjustmentsManager : IInitializable, IDisposable {
-        private GripButtonAction _gripButtonAction;
+        private AdjustmentMode _adjustmentMode;
 
         public void Initialize() {
-            _gripButtonAction = PluginConfig.GripButtonAction;
+            _adjustmentMode = PluginConfig.AdjustmentMode;
             if (PluginConfig.EnableMidPlayAdjustment) return;
 
             PluginConfig.HideController();
-            PluginConfig.GripButtonAction = GripButtonAction.None;
+            PluginConfig.AdjustmentMode = AdjustmentMode.None;
         }
 
         public void Dispose() {
-            PluginConfig.GripButtonAction = _gripButtonAction;
+            PluginConfig.AdjustmentMode = _adjustmentMode;
             PluginConfig.ShowController();
         }
     }

@@ -7,25 +7,41 @@ using JetBrains.Annotations;
 
 namespace EasyOffset.UI {
     public class ModPanelUI : NotifiableSingleton<ModPanelUI> {
-        #region Grip Button Action
+        #region AdjustmentMode
 
-        [UIValue("gba-hint")] [UsedImplicitly] private string _gripButtonActionHint = "Usage: hold Grip button and move your hand" +
-                                                                                      "\n" +
-                                                                                      "\nFull grip - rough offset adjustment" +
-                                                                                      "\nPivot Only - change saber origin position" +
-                                                                                      "\nDirection only - change saber rotation" +
-                                                                                      "\nRoom Offset - move yourself in space";
+        [UIValue("am-hint")] [UsedImplicitly] private string _adjustmentModeHint = "Hold assigned button and move your hand" +
+                                                                                   "\n" +
+                                                                                   "\nBasic - Easy adjustment mode for beginners" +
+                                                                                   "\nPivot Only - Precise origin placement" +
+                                                                                   "\nDirection only - Swing correction" +
+                                                                                   "\nRoom Offset - World Pulling locomotion";
 
-        [UIValue("gba-choices")] [UsedImplicitly]
-        private List<object> _gripButtonActionOptions = GripButtonActionUtils.AllNamesObjects.ToList();
+        [UIValue("am-choices")] [UsedImplicitly]
+        private List<object> _adjustmentModeChoices = AdjustmentModeUtils.AllNamesObjects.ToList();
 
-        [UIValue("gba-choice")] [UsedImplicitly]
-        private string _gripButtonActionValue = GripButtonActionUtils.TypeToName(PluginConfig.GripButtonAction);
+        [UIValue("am-choice")] [UsedImplicitly]
+        private string _adjustmentModeChoice = AdjustmentModeUtils.TypeToName(PluginConfig.AdjustmentMode);
 
-        [UIAction("gba-on-change")]
+        [UIAction("am-on-change")]
         [UsedImplicitly]
-        private void OnGripButtonActionChange(string selectedValue) {
-            PluginConfig.GripButtonAction = GripButtonActionUtils.NameToType(selectedValue);
+        private void AdjustmentModeOnChange(string selectedValue) {
+            PluginConfig.AdjustmentMode = AdjustmentModeUtils.NameToType(selectedValue);
+        }
+
+        #endregion
+
+        #region AssignedButton
+
+        [UIValue("ab-choices")] [UsedImplicitly]
+        private List<object> _assignedButtonChoices = ControllerButtonUtils.AllNamesObjects.ToList();
+
+        [UIValue("ab-choice")] [UsedImplicitly]
+        private string _assignedButtonChoice = ControllerButtonUtils.TypeToName(PluginConfig.AssignedButton);
+
+        [UIAction("ab-on-change")]
+        [UsedImplicitly]
+        private void AssignedButtonOnChange(string selectedValue) {
+            PluginConfig.AssignedButton = ControllerButtonUtils.NameToType(selectedValue);
         }
 
         #endregion
@@ -72,16 +88,14 @@ namespace EasyOffset.UI {
 
         #endregion
 
-        #region Both Hands
+        #region Hands
 
         [UIValue("zo-min")] [UsedImplicitly] private float _zOffsetSliderMin = -0.2f;
 
         [UIValue("zo-max")] [UsedImplicitly] private float _zOffsetSliderMax = 0.2f;
 
         [UIValue("zo-increment")] [UsedImplicitly]
-        private float _zOffsetSliderIncrement = 0.005f;
-
-        #endregion
+        private float _zOffsetSliderIncrement = 0.01f;
 
         #region LeftHand
 
@@ -149,6 +163,8 @@ namespace EasyOffset.UI {
             PluginConfig.RightToLeftMirror();
             LeftZOffsetSliderValue = PluginConfig.LeftHandZOffset;
         }
+
+        #endregion
 
         #endregion
 

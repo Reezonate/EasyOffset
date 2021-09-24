@@ -7,12 +7,18 @@ using JetBrains.Annotations;
 namespace EasyOffset.Configuration {
     [UsedImplicitly]
     public class ConfigFileData {
-        private const string LatestVersion = "0.0";
+        private const string CurrentConfigVersion = "1.0";
         public static ConfigFileData Instance { get; set; }
 
         #region ConfigVersion
 
-        public virtual string ConfigVersion { get; set; } = LatestVersion;
+        public virtual string ConfigVersion { get; set; } = CurrentConfigVersion;
+
+        #endregion
+
+        #region AssignedButton
+        
+        public virtual string AssignedButton { get; set; } = Defaults.AssignedButton;
 
         #endregion
 

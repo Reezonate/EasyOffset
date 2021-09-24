@@ -1,4 +1,5 @@
 using System;
+using EasyOffset.Configuration;
 using JetBrains.Annotations;
 using Zenject;
 
@@ -13,36 +14,40 @@ namespace EasyOffset {
             _inputManager = inputManager;
         }
 
-        private static void OnLeftGripPressed() {
-            Abomination.OnGripButtonPressed(Hand.Left);
+        private static void OnLeftControllerButtonPressed(ControllerButton button) {
+            if (button != PluginConfig.AssignedButton) return;
+            Abomination.OnAssignedButtonPressed(Hand.Left);
         }
 
-        private static void OnLeftGripReleased() {
-            Abomination.OnGripButtonReleased(Hand.Left);
+        private static void OnLeftControllerButtonReleased(ControllerButton button) {
+            if (button != PluginConfig.AssignedButton) return;
+            Abomination.OnAssignedButtonReleased(Hand.Left);
         }
 
-        private static void OnRightGripPressed() {
-            Abomination.OnGripButtonPressed(Hand.Right);
+        private static void OnRightControllerButtonPressed(ControllerButton button) {
+            if (button != PluginConfig.AssignedButton) return;
+            Abomination.OnAssignedButtonPressed(Hand.Right);
         }
 
-        private static void OnRightGripReleased() {
-            Abomination.OnGripButtonReleased(Hand.Right);
+        private static void OnRightControllerButtonReleased(ControllerButton button) {
+            if (button != PluginConfig.AssignedButton) return;
+            Abomination.OnAssignedButtonReleased(Hand.Right);
         }
 
         public void Initialize() {
-            _inputManager.LeftHand.OnGripButtonPressed += OnLeftGripPressed;
-            _inputManager.LeftHand.OnGripButtonReleased += OnLeftGripReleased;
+            _inputManager.LeftReeInput.OnButtonPressed += OnLeftControllerButtonPressed;
+            _inputManager.LeftReeInput.OnButtonReleased += OnLeftControllerButtonReleased;
 
-            _inputManager.RightHand.OnGripButtonPressed += OnRightGripPressed;
-            _inputManager.RightHand.OnGripButtonReleased += OnRightGripReleased;
+            _inputManager.RightReeInput.OnButtonPressed += OnRightControllerButtonPressed;
+            _inputManager.RightReeInput.OnButtonReleased += OnRightControllerButtonReleased;
         }
 
         public void Dispose() {
-            _inputManager.LeftHand.OnGripButtonPressed -= OnLeftGripPressed;
-            _inputManager.LeftHand.OnGripButtonReleased -= OnLeftGripReleased;
+            _inputManager.LeftReeInput.OnButtonPressed -= OnLeftControllerButtonPressed;
+            _inputManager.LeftReeInput.OnButtonReleased -= OnLeftControllerButtonReleased;
 
-            _inputManager.RightHand.OnGripButtonPressed -= OnRightGripPressed;
-            _inputManager.RightHand.OnGripButtonReleased -= OnRightGripReleased;
+            _inputManager.RightReeInput.OnButtonPressed -= OnRightControllerButtonPressed;
+            _inputManager.RightReeInput.OnButtonReleased -= OnRightControllerButtonReleased;
         }
     }
 }

@@ -28,7 +28,7 @@ namespace EasyOffset {
 
         public void Initialize() {
             Abomination.TransformsUpdatedEvent += OnTransformsUpdated;
-            PluginConfig.GripButtonActionChangedEvent += OnGripButtonActionChanged;
+            PluginConfig.AdjustmentModeChangedEvent += OnAdjustmentModeChanged;
 
             _leftHandPivot = CreatePivot();
             _rightHandPivot = CreatePivot();
@@ -38,7 +38,7 @@ namespace EasyOffset {
 
         public void Dispose() {
             Abomination.TransformsUpdatedEvent -= OnTransformsUpdated;
-            PluginConfig.GripButtonActionChangedEvent -= OnGripButtonActionChanged;
+            PluginConfig.AdjustmentModeChangedEvent -= OnAdjustmentModeChanged;
 
             Object.Destroy(_leftHandPivot.gameObject);
             Object.Destroy(_rightHandPivot.gameObject);
@@ -51,24 +51,15 @@ namespace EasyOffset {
         private bool _drawGizmos;
 
         private void UpdateVisibility() {
-            switch (PluginConfig.GripButtonAction) {
-                case GripButtonAction.None:
-                    SetGizmosVisibility(false);
-                    break;
-                case GripButtonAction.FullGrip:
-                    SetGizmosVisibility(true);
-                    break;
-                case GripButtonAction.PivotOnly:
-                    SetGizmosVisibility(true);
-                    break;
-                case GripButtonAction.DirectionOnly:
-                    SetGizmosVisibility(true);
-                    break;
-                case GripButtonAction.RoomOffset:
-                    SetGizmosVisibility(false);
-                    break;
-                default: throw new ArgumentOutOfRangeException();
-            }
+            var visible = PluginConfig.AdjustmentMode switch {
+                AdjustmentMode.None => false,
+                AdjustmentMode.Basic => true,
+                AdjustmentMode.PivotOnly => true,
+                AdjustmentMode.DirectionOnly => true,
+                AdjustmentMode.RoomOffset => false,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+            SetGizmosVisibility(visible);
         }
 
         private void SetGizmosVisibility(bool value) {
@@ -81,7 +72,7 @@ namespace EasyOffset {
 
         #region Events
 
-        private void OnGripButtonActionChanged(GripButtonAction value) {
+        private void OnAdjustmentModeChanged(AdjustmentMode value) {
             UpdateVisibility();
         }
 

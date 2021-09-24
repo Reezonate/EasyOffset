@@ -22,17 +22,33 @@ namespace EasyOffset.Configuration {
 
         #endregion
 
-        #region GripButtonAction
+        #region AssignedButton
 
-        public static event Action<GripButtonAction> GripButtonActionChangedEvent;
+        private static readonly CachedVariable<ControllerButton> CachedAssignedButton = new(
+            () => ControllerButtonUtils.NameToTypeOrDefault(ConfigFileData.Instance.AssignedButton)
+        );
 
-        private static GripButtonAction _gripButtonAction = GripButtonAction.None;
-
-        public static GripButtonAction GripButtonAction {
-            get => _gripButtonAction;
+        public static ControllerButton AssignedButton {
+            get => CachedAssignedButton.Value;
             set {
-                _gripButtonAction = value;
-                GripButtonActionChangedEvent?.Invoke(value);
+                CachedAssignedButton.Value = value;
+                ConfigFileData.Instance.AssignedButton = ControllerButtonUtils.TypeToName(value);
+            }
+        }
+
+        #endregion
+
+        #region AdjustmentMode
+
+        public static event Action<AdjustmentMode> AdjustmentModeChangedEvent;
+
+        private static AdjustmentMode _adjustmentMode = AdjustmentMode.None;
+
+        public static AdjustmentMode AdjustmentMode {
+            get => _adjustmentMode;
+            set {
+                _adjustmentMode = value;
+                AdjustmentModeChangedEvent?.Invoke(value);
             }
         }
 
@@ -44,7 +60,7 @@ namespace EasyOffset.Configuration {
         private static bool _hideController;
 
         private static readonly CachedVariable<ControllerType> CachedDisplayControllerType = new(
-            () => ControllerTypeUtils.NameToTypeOrNone(ConfigFileData.Instance.DisplayControllerType)
+            () => ControllerTypeUtils.NameToTypeOrDefault(ConfigFileData.Instance.DisplayControllerType)
         );
 
         public static ControllerType DisplayControllerType {

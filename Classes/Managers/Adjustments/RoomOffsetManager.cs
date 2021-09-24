@@ -3,14 +3,14 @@ using UnityEngine;
 
 namespace EasyOffset {
     [UsedImplicitly]
-    public class RoomOffsetManager : GrabTracker {
+    public class RoomOffsetManager : AbstractOffsetManager {
         #region Constructor
 
         public RoomOffsetManager(
             MainSettingsModelSO mainSettingsModelSO
         ) : base(
             mainSettingsModelSO,
-            GripButtonAction.RoomOffset,
+            AdjustmentMode.RoomOffset,
             false
         ) { }
 

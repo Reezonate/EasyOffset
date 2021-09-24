@@ -31,17 +31,17 @@ namespace EasyOffset {
 
         #endregion
 
-        #region GripButtonEvents
+        #region AssignedButtonEvents
 
-        public static event Action<Hand> GripButtonPressedEvent;
-        public static event Action<Hand> GripButtonReleasedEvent;
+        public static event Action<Hand> AssignedButtonPressedEvent;
+        public static event Action<Hand> AssignedButtonReleasedEvent;
 
-        public static void OnGripButtonPressed(Hand hand) {
-            GripButtonPressedEvent?.Invoke(hand);
+        public static void OnAssignedButtonPressed(Hand hand) {
+            AssignedButtonPressedEvent?.Invoke(hand);
         }
 
-        public static void OnGripButtonReleased(Hand hand) {
-            GripButtonReleasedEvent?.Invoke(hand);
+        public static void OnAssignedButtonReleased(Hand hand) {
+            AssignedButtonReleasedEvent?.Invoke(hand);
         }
 
         #endregion

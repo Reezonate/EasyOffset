@@ -1,12 +1,18 @@
 namespace EasyOffset.Configuration {
     internal static class Defaults {
+        #region AssignedButton
+
+        public static readonly string AssignedButton = ControllerButtonUtils.TypeToName(ControllerButton.Grip);
+
+        #endregion
+        
         #region DisplayControllerType
 
         public static readonly string DisplayControllerType = ControllerTypeUtils.TypeToName(ControllerType.None);
 
         #endregion
 
-        #region DrawGizmos
+        #region UseFreeHand
 
         public const bool UseFreeHand = false;
 
@@ -22,7 +28,7 @@ namespace EasyOffset.Configuration {
         public const float SaberDirectionY = 0f;
         public const float SaberDirectionZ = 1f;
 
-        public const float ZOffset = 0.0f;
+        public const float ZOffset = 0.11f;
 
         #endregion
     }

@@ -127,29 +127,37 @@
     <Compile Include="Classes\Configuration\PluginConfig.cs" />
     <Compile Include="Classes\Configuration\ConfigFileData.cs" />
     <Compile Include="Classes\Managers\Abomination\Abomination.cs" />
-    <Compile Include="Classes\Managers\Abomination\AbominationHand.cs" />
     <Compile Include="Classes\Managers\Abomination\AbominationInputManager.cs" />
     <Compile Include="Classes\Managers\Abomination\AbominationTransformManager.cs" />
-    <Compile Include="Classes\Managers\Adjustments\FullGripOffsetManager.cs" />
-    <Compile Include="Classes\Managers\Adjustments\GrabTracker.cs" />
+    <Compile Include="Classes\Managers\Adjustments\BasicOffsetManager.cs" />
+    <Compile Include="Classes\Managers\Adjustments\AbstractOffsetManager.cs" />
     <Compile Include="Classes\Managers\Adjustments\MidPlayAdjustmentsManager.cs" />
     <Compile Include="Classes\Managers\Adjustments\PivotOnlyOffsetManager.cs" />
     <Compile Include="Classes\Managers\Adjustments\RoomOffsetManager.cs" />
     <Compile Include="Classes\Managers\Adjustments\DirectionOnlyOffsetManager.cs" />
     <Compile Include="Classes\Managers\Gizmos\DirectionGridGizmosManager.cs" />
     <Compile Include="Classes\Managers\Gizmos\PivotGizmosManager.cs" />
+    <Compile Include="Classes\Managers\Gizmos\TrailGizmosManager.cs" />
+    <Compile Include="Classes\Managers\Input\ReeInputDevice.cs" />
     <Compile Include="Classes\Managers\Input\ReeInputManager.cs" />
     <Compile Include="Classes\Managers\DisplayController\DisplayControllerManager.cs" />
+    <Compile Include="Classes\StructsAndEnums\ControllerButton.cs" />
     <Compile Include="Classes\StructsAndEnums\ControllerType.cs" />
-    <Compile Include="Classes\StructsAndEnums\GripButtonAction.cs" />
+    <Compile Include="Classes\StructsAndEnums\AdjustmentMode.cs" />
     <Compile Include="Classes\StructsAndEnums\Hand.cs" />
     <Compile Include="Classes\StructsAndEnums\VRControllers.cs" />
     <Compile Include="Classes\SyncedWithUnity\DirectionGrid.cs" />
     <Compile Include="Classes\SyncedWithUnity\Pivot.cs" />
     <Compile Include="Classes\SyncedWithUnity\PivotGrid.cs" />
+    <Compile Include="Classes\SyncedWithUnity\Trail\CubicBezierCurve.cs" />
+    <Compile Include="Classes\SyncedWithUnity\Trail\CyclicBuffer.cs" />
+    <Compile Include="Classes\SyncedWithUnity\Trail\Trail.cs" />
+    <Compile Include="Classes\SyncedWithUnity\Trail\TrailMesh.cs" />
+    <Compile Include="Classes\SyncedWithUnity\Trail\TrailSpline.cs" />
     <Compile Include="Classes\UI\ModPanelUI.cs" />
+    <Compile Include="Classes\Utils\ControllerButtonUtils.cs" />
     <Compile Include="Classes\Utils\ControllerTypeUtils.cs" />
-    <Compile Include="Classes\Utils\GripButtonActionUtils.cs" />
+    <Compile Include="Classes\Utils\AdjustmentModeUtils.cs" />
     <Compile Include="Classes\Utils\InstallerUtils.cs" />
     <Compile Include="Classes\Utils\ResourcesUtils.cs" />
     <Compile Include="Classes\Utils\TransformUtils.cs" />
@@ -183,10 +191,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\AssetBundles\easy_offset" />
     <EmbeddedResource Include="Resources\BSML\ModPanelUI.bsml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Resources\AssetBundles\AssetBundles.manifest" />
-    <Content Include="Resources\AssetBundles\easy_offset.manifest" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

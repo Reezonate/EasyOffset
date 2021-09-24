@@ -26,7 +26,7 @@ namespace EasyOffset {
 
         #region NameToType
 
-        public static ControllerType NameToTypeOrNone(string name) {
+        public static ControllerType NameToTypeOrDefault(string name) {
             return NameToTypeDictionary.ContainsKey(name) ? NameToTypeDictionary[name] : ControllerType.None;
         }
 
