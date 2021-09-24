@@ -20,8 +20,17 @@ namespace EasyOffset.UI {
         [UIValue("am-choices")] [UsedImplicitly]
         private List<object> _adjustmentModeChoices = AdjustmentModeUtils.AllNamesObjects.ToList();
 
-        [UIValue("am-choice")] [UsedImplicitly]
         private string _adjustmentModeChoice = AdjustmentModeUtils.TypeToName(PluginConfig.AdjustmentMode);
+
+        [UIValue("am-choice")]
+        [UsedImplicitly]
+        private string AdjustmentModeChoice {
+            get => _adjustmentModeChoice;
+            set {
+                _adjustmentModeChoice = value;
+                NotifyPropertyChanged();
+            }
+        }
 
         [UIAction("am-on-change")]
         [UsedImplicitly]
@@ -168,6 +177,31 @@ namespace EasyOffset.UI {
         #endregion
 
         #endregion
+
+        #endregion
+
+        #region UI Lock
+
+        [UIValue("interactable")]
+        [UsedImplicitly]
+        private bool Interactable {
+            get => !PluginConfig.UILock;
+            set {
+                PluginConfig.UILock = !value;
+                if (!value) AdjustmentModeChoice = AdjustmentModeUtils.TypeToName(AdjustmentMode.None);
+                NotifyPropertyChanged();
+            }
+        }
+
+        [UIValue("lock-value")] [UsedImplicitly]
+        private bool _lockValue = PluginConfig.UILock;
+
+
+        [UIAction("lock-on-change")]
+        [UsedImplicitly]
+        private void LockOnChange(bool value) {
+            Interactable = !value;
+        }
 
         #endregion
     }

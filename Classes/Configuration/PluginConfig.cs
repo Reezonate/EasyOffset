@@ -22,6 +22,22 @@ namespace EasyOffset.Configuration {
 
         #endregion
 
+        #region UI Lock
+
+        private static readonly CachedVariable<bool> CachedUILock = new(
+            () => ConfigFileData.Instance.UILock
+        );
+
+        public static bool UILock {
+            get => CachedUILock.Value;
+            set {
+                CachedUILock.Value = value;
+                ConfigFileData.Instance.UILock = value;
+            }
+        }
+
+        #endregion
+
         #region AssignedButton
 
         private static readonly CachedVariable<ControllerButton> CachedAssignedButton = new(

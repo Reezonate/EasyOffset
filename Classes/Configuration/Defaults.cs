@@ -1,5 +1,11 @@
 namespace EasyOffset.Configuration {
     internal static class Defaults {
+        #region UI Lock
+
+        public static readonly bool UILock = false;
+
+        #endregion
+        
         #region AssignedButton
 
         public static readonly string AssignedButton = ControllerButtonUtils.TypeToName(ControllerButton.Grip);

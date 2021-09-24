@@ -16,6 +16,12 @@ namespace EasyOffset.Configuration {
 
         #endregion
 
+        #region UI Lock
+        
+        public virtual bool UILock { get; set; } = Defaults.UILock;
+
+        #endregion
+
         #region AssignedButton
         
         public virtual string AssignedButton { get; set; } = Defaults.AssignedButton;
