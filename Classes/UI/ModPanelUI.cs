@@ -203,5 +203,19 @@ namespace EasyOffset.UI {
         }
 
         #endregion
+
+        #region ResetButton
+
+        [UIAction("reset-click")]
+        [UsedImplicitly]
+        private void OnResetClick()
+        {
+            PluginConfig.ResetOffsets();
+            RightZOffsetSliderValue = PluginConfig.RightHandZOffset;
+            LeftZOffsetSliderValue = PluginConfig.LeftHandZOffset;
+            NotifyPropertyChanged();
+        }
+
+        #endregion
     }
 }

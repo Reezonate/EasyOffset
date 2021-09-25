@@ -157,6 +157,7 @@
     <Compile Include="Classes\SyncedWithUnity\Trail\TrailMesh.cs" />
     <Compile Include="Classes\SyncedWithUnity\Trail\TrailSpline.cs" />
     <Compile Include="Classes\UI\ModPanelUI.cs" />
+    <Compile Include="Classes\UI\SettingsUI.cs" />
     <Compile Include="Classes\Utils\ControllerButtonUtils.cs" />
     <Compile Include="Classes\Utils\ControllerTypeUtils.cs" />
     <Compile Include="Classes\Utils\AdjustmentModeUtils.cs" />
@@ -181,6 +182,7 @@
   <ItemGroup>
     <None Include="Directory.Build.props" Condition="Exists('Directory.Build.props')" />
     <None Include="Directory.Build.targets" Condition="Exists('Directory.Build.targets')" />
+    <EmbeddedResource Include="Resources\BSML\SettingsUI.bsml" />
     <None Include="XYZ.csproj.user" Condition="Exists('XYZ.csproj.user')" />
   </ItemGroup>
   <ItemGroup>

@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace EasyOffset.Configuration {
     public static class PluginConfig {
+
         #region Smoothing
 
         public static bool SmoothingEnabled { get; private set; }
@@ -18,6 +19,29 @@ namespace EasyOffset.Configuration {
 
         public static void DisableSmoothing() {
             SmoothingEnabled = false;
+        }
+
+        #endregion
+
+        #region Enabled
+
+        public delegate void OnEnabledChangeDelegate(bool newChanged);
+        public static event OnEnabledChangeDelegate OnEnabledChange;
+
+        private static readonly CachedVariable<bool> CachedEnabled = new(
+            () => ConfigFileData.Instance.Enabled
+        );
+
+        public static bool Enabled
+        {
+            get => CachedEnabled.Value;
+            set
+            {
+                CachedEnabled.Value = value;
+                ConfigFileData.Instance.Enabled = value;
+                if (OnEnabledChange != null)
+                    OnEnabledChange(value);
+            }
         }
 
         #endregion
@@ -352,6 +376,21 @@ namespace EasyOffset.Configuration {
             );
 
             LeftHandZOffset = RightHandZOffset;
+        }
+
+        #endregion
+
+        #region Reset
+
+        public static void ResetOffsets()
+        {
+            RightHandPivotPosition = new Vector3(Defaults.PivotX, Defaults.PivotY, Defaults.PivotZ);
+            LeftHandPivotPosition = new Vector3(-Defaults.PivotX, Defaults.PivotY, Defaults.PivotZ);
+
+            RightHandSaberDirection = new Vector3(Defaults.SaberDirectionX, Defaults.SaberDirectionY, Defaults.SaberDirectionZ);
+            LeftHandSaberDirection = new Vector3(-Defaults.SaberDirectionX, Defaults.SaberDirectionY, Defaults.SaberDirectionZ);
+
+            LeftHandZOffset = RightHandZOffset = Defaults.ZOffset;
         }
 
         #endregion

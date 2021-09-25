@@ -1,5 +1,11 @@
 namespace EasyOffset.Configuration {
     internal static class Defaults {
+        #region Enabled
+
+        public static readonly bool Enabled = true;
+
+        #endregion
+
         #region UI Lock
 
         public static readonly bool UILock = false;
