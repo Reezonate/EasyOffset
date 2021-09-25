@@ -211,6 +211,8 @@ namespace EasyOffset.UI {
         private void OnResetClick()
         {
             PluginConfig.ResetOffsets();
+            RightZOffsetSliderValue = PluginConfig.RightHandZOffset;
+            LeftZOffsetSliderValue = PluginConfig.LeftHandZOffset;
             NotifyPropertyChanged();
         }
 

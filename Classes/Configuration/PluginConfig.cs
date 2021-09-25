@@ -384,9 +384,13 @@ namespace EasyOffset.Configuration {
 
         public static void ResetOffsets()
         {
-            LeftHandPivotPosition = RightHandPivotPosition = new Vector3();
-            LeftHandSaberDirection = RightHandSaberDirection = new Vector3();
-            LeftHandZOffset = RightHandZOffset = 0;
+            RightHandPivotPosition = new Vector3(Defaults.PivotX, Defaults.PivotY, Defaults.PivotZ);
+            LeftHandPivotPosition = new Vector3(-Defaults.PivotX, Defaults.PivotY, Defaults.PivotZ);
+
+            RightHandSaberDirection = new Vector3(Defaults.SaberDirectionX, Defaults.SaberDirectionY, Defaults.SaberDirectionZ);
+            LeftHandSaberDirection = new Vector3(-Defaults.SaberDirectionX, Defaults.SaberDirectionY, Defaults.SaberDirectionZ);
+
+            LeftHandZOffset = RightHandZOffset = Defaults.ZOffset;
         }
 
         #endregion
