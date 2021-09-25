@@ -12,10 +12,12 @@ namespace EasyOffset {
     [Plugin(RuntimeOptions.SingleStartInit)]
     public class Plugin {
         internal static IPALogger Log { get; private set; }
+        private static Harmony _harmony;
 
         [Init]
         public Plugin(IPALogger logger, Config config) {
             Log = logger;
+            _harmony = new Harmony("Reezonate.EasyOffset");
 
             InitializeConfig(config);
             InitializeAssets();
@@ -43,23 +45,19 @@ namespace EasyOffset {
 
         #region Harmony
 
-        private static void InitializeHarmony() {
-            var harmony = new Harmony("Reezonate.EasyOffset");
-            harmony.PatchAll(Assembly.GetExecutingAssembly());
+        private static void ApplyHarmonyPatches() {
+            _harmony.PatchAll(Assembly.GetExecutingAssembly());
         }
 
-        private static void UninitializeHarmony()
-        {
-            var harmony = new Harmony("Reezonate.EasyOffset");
-            harmony.UnpatchAll();
+        private static void RemoveHarmonyPatches() {
+            _harmony.UnpatchAll();
         }
 
         #endregion
 
         #region UI
 
-        private static void InitializeSettingsUI()
-        {
+        private static void InitializeSettingsUI() {
             PersistentSingleton<BeatSaberMarkupLanguage.Settings.BSMLSettings>.instance.AddSettingsMenu(
                 "Easy Offset",
                 "EasyOffset.Resources.BSML.SettingsUI.bsml",
@@ -67,7 +65,7 @@ namespace EasyOffset {
             );
         }
 
-        private static void InitializeUI() {
+        private static void AddModPanelTab() {
             PersistentSingleton<BeatSaberMarkupLanguage.GameplaySetup.GameplaySetup>.instance.AddTab(
                 "Easy Offset",
                 "EasyOffset.Resources.BSML.ModPanelUI.bsml",
@@ -75,8 +73,7 @@ namespace EasyOffset {
             );
         }
 
-        private static void UninitializeUI()
-        {
+        private static void RemoveModPanelTab() {
             PersistentSingleton<BeatSaberMarkupLanguage.GameplaySetup.GameplaySetup>.instance.RemoveTab("Easy Offset");
         }
 
@@ -84,22 +81,17 @@ namespace EasyOffset {
 
         #region Enabled observing
 
-        private static void SubscribeEnabled()
-        {
+        private static void SubscribeEnabled() {
             PluginConfig.OnEnabledChange += EnabledChangeHandler;
         }
 
-        private static void EnabledChangeHandler(bool enabled)
-        {
-            if (enabled)
-            {
-                InitializeHarmony();
-                InitializeUI();
-            }
-            else
-            {
-                UninitializeHarmony();
-                UninitializeUI();
+        private static void EnabledChangeHandler(bool enabled) {
+            if (enabled) {
+                ApplyHarmonyPatches();
+                AddModPanelTab();
+            } else {
+                RemoveHarmonyPatches();
+                RemoveModPanelTab();
             }
         }
 

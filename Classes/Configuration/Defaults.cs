@@ -2,22 +2,22 @@ namespace EasyOffset.Configuration {
     internal static class Defaults {
         #region Enabled
 
-        public static readonly bool Enabled = true;
+        public const bool Enabled = true;
 
         #endregion
 
         #region UI Lock
 
-        public static readonly bool UILock = false;
+        public const bool UILock = false;
 
         #endregion
-        
+
         #region AssignedButton
 
         public static readonly string AssignedButton = ControllerButtonUtils.TypeToName(ControllerButton.Grip);
 
         #endregion
-        
+
         #region DisplayControllerType
 
         public static readonly string DisplayControllerType = ControllerTypeUtils.TypeToName(ControllerType.None);

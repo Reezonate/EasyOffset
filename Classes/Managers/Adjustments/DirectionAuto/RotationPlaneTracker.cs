@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace EasyOffset {
     public class RotationPlaneTracker {
-        private const int MaxNormalsCount = 15;
+        private const int MaxNormalsCount = 6;
         private const float MinimalAngularVelocity = 45.0f;
         private const float MaximalAngularVelocity = 360.0f;
         private const float AngularVelocityAmplitude = MaximalAngularVelocity - MinimalAngularVelocity;

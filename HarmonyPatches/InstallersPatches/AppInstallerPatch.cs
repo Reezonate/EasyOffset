@@ -1,3 +1,4 @@
+using EasyOffset.Configuration;
 using EasyOffset.Installers;
 using HarmonyLib;
 using JetBrains.Annotations;

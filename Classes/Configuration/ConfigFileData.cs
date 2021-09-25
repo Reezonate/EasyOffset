@@ -18,7 +18,7 @@ namespace EasyOffset.Configuration {
 
         #region Enabled
 
-        public virtual bool Enabled { get; set; } = Defaults.Enabled;
+        public bool Enabled = Defaults.Enabled;
 
         #endregion
 

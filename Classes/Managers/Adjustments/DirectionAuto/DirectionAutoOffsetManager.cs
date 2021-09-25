@@ -26,7 +26,7 @@ namespace EasyOffset {
 
         #region Measurements and averaging
 
-        private const int MaxMeasurementsCount = 50;
+        private const int MaxMeasurementsCount = 60;
 
         private readonly List<Vector3> _measurements = new();
 

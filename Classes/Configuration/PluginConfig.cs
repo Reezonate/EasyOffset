@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace EasyOffset.Configuration {
     public static class PluginConfig {
-
         #region Smoothing
 
         public static bool SmoothingEnabled { get; private set; }
@@ -26,21 +25,19 @@ namespace EasyOffset.Configuration {
         #region Enabled
 
         public delegate void OnEnabledChangeDelegate(bool newChanged);
+
         public static event OnEnabledChangeDelegate OnEnabledChange;
 
         private static readonly CachedVariable<bool> CachedEnabled = new(
             () => ConfigFileData.Instance.Enabled
         );
 
-        public static bool Enabled
-        {
+        public static bool Enabled {
             get => CachedEnabled.Value;
-            set
-            {
+            set {
                 CachedEnabled.Value = value;
                 ConfigFileData.Instance.Enabled = value;
-                if (OnEnabledChange != null)
-                    OnEnabledChange(value);
+                OnEnabledChange?.Invoke(value);
             }
         }
 
@@ -382,8 +379,7 @@ namespace EasyOffset.Configuration {
 
         #region Reset
 
-        public static void ResetOffsets()
-        {
+        public static void ResetOffsets() {
             RightHandPivotPosition = new Vector3(Defaults.PivotX, Defaults.PivotY, Defaults.PivotZ);
             LeftHandPivotPosition = new Vector3(-Defaults.PivotX, Defaults.PivotY, Defaults.PivotZ);
 
