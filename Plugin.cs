@@ -19,8 +19,10 @@ namespace EasyOffset {
 
             InitializeConfig(config);
             InitializeAssets();
-            InitializeHarmony();
-            InitializeUI();
+            InitializeSettingsUI();
+
+            SubscribeEnabled();
+            EnabledChangeHandler(PluginConfig.Enabled);
         }
 
         #region InitializeConfig
@@ -39,16 +41,31 @@ namespace EasyOffset {
 
         #endregion
 
-        #region InitializeHarmony
+        #region Harmony
 
         private static void InitializeHarmony() {
             var harmony = new Harmony("Reezonate.EasyOffset");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
         }
 
+        private static void UninitializeHarmony()
+        {
+            var harmony = new Harmony("Reezonate.EasyOffset");
+            harmony.UnpatchAll();
+        }
+
         #endregion
 
-        #region InitializeUI
+        #region UI
+
+        private static void InitializeSettingsUI()
+        {
+            PersistentSingleton<BeatSaberMarkupLanguage.Settings.BSMLSettings>.instance.AddSettingsMenu(
+                "Easy Offset",
+                "EasyOffset.Resources.BSML.SettingsUI.bsml",
+                PersistentSingleton<SettingsUI>.instance
+            );
+        }
 
         private static void InitializeUI() {
             PersistentSingleton<BeatSaberMarkupLanguage.GameplaySetup.GameplaySetup>.instance.AddTab(
@@ -56,6 +73,34 @@ namespace EasyOffset {
                 "EasyOffset.Resources.BSML.ModPanelUI.bsml",
                 PersistentSingleton<ModPanelUI>.instance
             );
+        }
+
+        private static void UninitializeUI()
+        {
+            PersistentSingleton<BeatSaberMarkupLanguage.GameplaySetup.GameplaySetup>.instance.RemoveTab("Easy Offset");
+        }
+
+        #endregion
+
+        #region Enabled observing
+
+        private static void SubscribeEnabled()
+        {
+            PluginConfig.OnEnabledChange += EnabledChangeHandler;
+        }
+
+        private static void EnabledChangeHandler(bool enabled)
+        {
+            if (enabled)
+            {
+                InitializeHarmony();
+                InitializeUI();
+            }
+            else
+            {
+                UninitializeHarmony();
+                UninitializeUI();
+            }
         }
 
         #endregion

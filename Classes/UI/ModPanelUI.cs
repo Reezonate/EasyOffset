@@ -204,30 +204,14 @@ namespace EasyOffset.UI {
 
         #endregion
 
-        #region Enabled
+        #region ResetButton
 
-        [UIValue("Enabled")]
+        [UIAction("reset-click")]
         [UsedImplicitly]
-        private bool Enabled
+        private void OnResetClick()
         {
-            get => !PluginConfig.Enabled;
-            set
-            {
-                PluginConfig.Enabled = !value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        [UIValue("enabled-value")]
-        [UsedImplicitly]
-        private bool _enabledValue = PluginConfig.Enabled;
-
-
-        [UIAction("enabled-on-change")]
-        [UsedImplicitly]
-        private void EnabledOnChange(bool value)
-        {
-            Enabled = !value;
+            PluginConfig.ResetOffsets();
+            NotifyPropertyChanged();
         }
 
         #endregion

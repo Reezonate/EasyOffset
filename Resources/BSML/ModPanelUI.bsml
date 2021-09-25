@@ -36,8 +36,7 @@
     <horizontal preferred-height="6.0"/>
     <horizontal>
         <vertical preferred-width="33">
-          <toggle-setting text="Enabled" value="enabled-value" on-change="enabled-on-change" apply-on-change="true"
-                                  hover-hint="Disable this mode offset changes."/>
+          <button interactable="~interactable" text="Reset" on-click="reset-click" hover-hint="Reset all offsets."/>
         </vertical>
         <vertical preferred-width="33">
 <!--            <text text="Option 2" align="Center"/>-->
