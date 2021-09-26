@@ -13,7 +13,8 @@ namespace EasyOffset {
         ) : base(
             mainSettingsModelSO,
             AdjustmentMode.PivotOnly,
-            true
+            3f,
+            6f
         ) { }
 
         #endregion
@@ -22,31 +23,49 @@ namespace EasyOffset {
 
         private Vector3 _grabWorldPosition;
 
-        protected override void OnGrabStarted(Hand hand, Vector3 controllerPosition, Quaternion controllerRotation) {
-            var storedLocalPosition = hand switch {
+        protected override void OnGrabStarted(
+            Hand adjustmentHand,
+            Vector3 adjustmentHandPos,
+            Quaternion adjustmentHandRot,
+            Vector3 freeHandPos,
+            Quaternion freeHandRot
+        ) {
+            var storedLocalPosition = adjustmentHand switch {
                 Hand.Left => PluginConfig.LeftHandPivotPosition,
                 Hand.Right => PluginConfig.RightHandPivotPosition,
-                _ => throw new ArgumentOutOfRangeException(nameof(hand), hand, null)
+                _ => throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null)
             };
 
-            _grabWorldPosition = TransformUtils.LocalToWorldVector(storedLocalPosition, controllerPosition, controllerRotation);
+            _grabWorldPosition = TransformUtils.LocalToWorldVector(storedLocalPosition, adjustmentHandPos, adjustmentHandRot);
         }
 
-        protected override void OnGrabUpdated(Hand hand, Vector3 controllerPosition, Quaternion controllerRotation) {
-            var currentPivotLocalPosition = TransformUtils.WorldToLocalVector(_grabWorldPosition, controllerPosition, controllerRotation);
+        protected override void OnGrabUpdated(
+            Hand adjustmentHand,
+            Vector3 adjustmentHandPos,
+            Quaternion adjustmentHandRot,
+            Vector3 freeHandPos,
+            Quaternion freeHandRot
+        ) {
+            var currentPivotLocalPosition = TransformUtils.WorldToLocalVector(_grabWorldPosition, adjustmentHandPos, adjustmentHandRot);
 
-            switch (hand) {
+            switch (adjustmentHand) {
                 case Hand.Left:
                     PluginConfig.LeftHandPivotPosition = currentPivotLocalPosition;
                     break;
                 case Hand.Right:
                     PluginConfig.RightHandPivotPosition = currentPivotLocalPosition;
                     break;
-                default: throw new ArgumentOutOfRangeException(nameof(hand), hand, null);
+                default: throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null);
             }
         }
 
-        protected override void OnGrabFinished(Hand hand, Vector3 controllerPosition, Quaternion controllerRotation) { }
+        protected override void OnGrabFinished(
+            Hand adjustmentHand,
+            Vector3 adjustmentHandPos,
+            Quaternion adjustmentHandRot,
+            Vector3 freeHandPos,
+            Quaternion freeHandRot
+        ) { }
 
         #endregion
     }

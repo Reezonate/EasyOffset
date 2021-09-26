@@ -119,5 +119,24 @@ namespace EasyOffset {
         }
 
         #endregion
+
+        #region Spherical
+
+        public static Vector3 SphericalToOrthoDirection(Vector2 sphericalDirectionRadians) {
+            var xzScale = Mathf.Cos(sphericalDirectionRadians.x);
+            var x = Mathf.Sin(sphericalDirectionRadians.y) * xzScale;
+            var z = Mathf.Cos(sphericalDirectionRadians.y) * xzScale;
+            var y = -Mathf.Sin(sphericalDirectionRadians.x);
+            return new Vector3(x, y, z);
+        }
+
+        public static Vector2 OrthoToSphericalDirection(Vector3 orthoDirection) {
+            var yDir = new Vector2(orthoDirection.z, orthoDirection.x);
+            var yAngleRad = Mathf.Atan2(yDir.y, yDir.x);
+            var xAngleRad = -Mathf.Atan2(orthoDirection.y, yDir.magnitude);
+            return new Vector2(xAngleRad, yAngleRad);
+        }
+
+        #endregion
     }
 }

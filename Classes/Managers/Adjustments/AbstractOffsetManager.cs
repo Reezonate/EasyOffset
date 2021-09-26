@@ -9,16 +9,35 @@ namespace EasyOffset {
 
         protected readonly MainSettingsModelSO MainSettingsModel;
         private readonly AdjustmentMode _adjustmentMode;
-        private readonly bool _useSmoothing;
+        private readonly float _positionalSmoothing;
+        private readonly float _rotationalSmoothing;
 
         protected AbstractOffsetManager(
             MainSettingsModelSO mainSettingsModel,
             AdjustmentMode adjustmentMode,
-            bool useSmoothing
+            float positionalSmoothing,
+            float rotationalSmoothing
         ) {
             MainSettingsModel = mainSettingsModel;
             _adjustmentMode = adjustmentMode;
-            _useSmoothing = useSmoothing;
+            _positionalSmoothing = positionalSmoothing;
+            _rotationalSmoothing = rotationalSmoothing;
+        }
+
+        #endregion
+
+        #region Smoothing
+
+        private void StartSmoothing() {
+            PluginConfig.EnableSmoothing(MainSettingsModel);
+            PluginConfig.PositionalSmoothing = _positionalSmoothing;
+            PluginConfig.RotationalSmoothing = _rotationalSmoothing;
+        }
+
+        private static void StopSmoothing() {
+            PluginConfig.DisableSmoothing();
+            PluginConfig.PositionalSmoothing = 0f;
+            PluginConfig.RotationalSmoothing = 0f;
         }
 
         #endregion
@@ -26,35 +45,58 @@ namespace EasyOffset {
         #region Logic
 
         private bool _pressed;
-        private Hand _pressedHand;
+        private Hand _adjustmentHand;
 
         private void OnAssignedButtonPressed(Hand hand) {
             if (_pressed || PluginConfig.AdjustmentMode != _adjustmentMode) return;
-            if (_useSmoothing) PluginConfig.EnableSmoothing(MainSettingsModel);
-            MirrorHandIfNecessary(ref hand);
 
-            _pressedHand = hand;
+            StartSmoothing();
+            GetAdjustmentHand(hand, out var adjustmentHand);
+
+            _adjustmentHand = adjustmentHand;
             _pressed = true;
 
-            GetHandTransforms(hand, out var position, out var rotation);
-            OnGrabStarted(hand, position, rotation);
+            GetHandsTransforms(
+                adjustmentHand,
+                out var adjustmentHandPos,
+                out var adjustmentHandRot,
+                out var freeHandPos,
+                out var freeHandRot
+            );
+
+            OnGrabStarted(adjustmentHand, adjustmentHandPos, adjustmentHandRot, freeHandPos, freeHandRot);
         }
 
         private void OnTransformsUpdated(Vector3 leftPos, Quaternion leftRot, Vector3 rightPos, Quaternion rightRot) {
             if (!_pressed) return;
-            GetHandTransforms(_pressedHand, out var position, out var rotation);
-            OnGrabUpdated(_pressedHand, position, rotation);
+
+            GetHandsTransforms(
+                _adjustmentHand,
+                out var adjustmentHandPos,
+                out var adjustmentHandRot,
+                out var freeHandPos,
+                out var freeHandRot
+            );
+
+            OnGrabUpdated(_adjustmentHand, adjustmentHandPos, adjustmentHandRot, freeHandPos, freeHandRot);
         }
 
         private void OnAssignedButtonReleased(Hand hand) {
-            MirrorHandIfNecessary(ref hand);
+            GetAdjustmentHand(hand, out var adjustmentHand);
 
-            if (!_pressed || _pressedHand != hand) return;
-            if (_useSmoothing) PluginConfig.DisableSmoothing();
+            if (!_pressed || _adjustmentHand != adjustmentHand) return;
+            StopSmoothing();
             _pressed = false;
 
-            GetHandTransforms(hand, out var position, out var rotation);
-            OnGrabFinished(hand, position, rotation);
+            GetHandsTransforms(
+                _adjustmentHand,
+                out var adjustmentHandPos,
+                out var adjustmentHandRot,
+                out var freeHandPos,
+                out var freeHandRot
+            );
+
+            OnGrabFinished(_adjustmentHand, adjustmentHandPos, adjustmentHandRot, freeHandPos, freeHandRot);
             PluginConfig.SaveConfigFile();
         }
 
@@ -72,37 +114,63 @@ namespace EasyOffset {
 
         #region Abstract
 
-        protected abstract void OnGrabStarted(Hand hand, Vector3 controllerPosition, Quaternion controllerRotation);
+        protected abstract void OnGrabStarted(
+            Hand adjustmentHand,
+            Vector3 adjustmentHandPos,
+            Quaternion adjustmentHandRot,
+            Vector3 freeHandPos,
+            Quaternion freeHandRot
+        );
 
-        protected abstract void OnGrabUpdated(Hand hand, Vector3 controllerPosition, Quaternion controllerRotation);
+        protected abstract void OnGrabUpdated(
+            Hand adjustmentHand,
+            Vector3 adjustmentHandPos,
+            Quaternion adjustmentHandRot,
+            Vector3 freeHandPos,
+            Quaternion freeHandRot
+        );
 
-        protected abstract void OnGrabFinished(Hand hand, Vector3 controllerPosition, Quaternion controllerRotation);
+        protected abstract void OnGrabFinished(
+            Hand adjustmentHand,
+            Vector3 adjustmentHandPos,
+            Quaternion adjustmentHandRot,
+            Vector3 freeHandPos,
+            Quaternion freeHandRot
+        );
 
         #endregion
 
         #region Utils
 
-        private static void MirrorHandIfNecessary(ref Hand hand) {
-            if (!PluginConfig.UseFreeHand) return;
-
-            hand = hand switch {
-                Hand.Left => Hand.Right,
-                Hand.Right => Hand.Left,
-                _ => throw new ArgumentOutOfRangeException(nameof(hand), hand, null)
+        private static void GetAdjustmentHand(Hand buttonPressedHand, out Hand adjustmentHand) {
+            adjustmentHand = buttonPressedHand switch {
+                Hand.Left => PluginConfig.UseFreeHand ? Hand.Right : Hand.Left,
+                Hand.Right => PluginConfig.UseFreeHand ? Hand.Left : Hand.Right,
+                _ => throw new ArgumentOutOfRangeException(nameof(buttonPressedHand), buttonPressedHand, null)
             };
         }
 
-        private static void GetHandTransforms(Hand hand, out Vector3 position, out Quaternion rotation) {
-            switch (hand) {
+        private static void GetHandsTransforms(
+            Hand adjustmentHand,
+            out Vector3 adjustmentHandPos,
+            out Quaternion adjustmentHandRot,
+            out Vector3 freeHandPos,
+            out Quaternion freeHandRot
+        ) {
+            switch (adjustmentHand) {
                 case Hand.Left:
-                    position = Abomination.LeftPosition;
-                    rotation = Abomination.LeftRotation;
+                    adjustmentHandPos = Abomination.LeftPosition;
+                    adjustmentHandRot = Abomination.LeftRotation;
+                    freeHandPos = Abomination.RightPosition;
+                    freeHandRot = Abomination.RightRotation;
                     break;
                 case Hand.Right:
-                    position = Abomination.RightPosition;
-                    rotation = Abomination.RightRotation;
+                    adjustmentHandPos = Abomination.RightPosition;
+                    adjustmentHandRot = Abomination.RightRotation;
+                    freeHandPos = Abomination.LeftPosition;
+                    freeHandRot = Abomination.LeftRotation;
                     break;
-                default: throw new ArgumentOutOfRangeException(nameof(hand), hand, null);
+                default: throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null);
             }
         }
 

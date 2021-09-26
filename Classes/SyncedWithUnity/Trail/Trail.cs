@@ -7,6 +7,7 @@ namespace EasyOffset.SyncedWithUnity {
         [SerializeField] private Material material;
         [SerializeField] private MeshFilter meshFilter;
         [SerializeField] private MeshRenderer meshRenderer;
+        [SerializeField] private Transform trailRendererTransform;
         [SerializeField] private int lifetime;
         [SerializeField] private int resolution;
         [SerializeField] private float width;
@@ -19,10 +20,32 @@ namespace EasyOffset.SyncedWithUnity {
         private Material _materialInstance;
 
         private void Start() {
-            _trailMesh = new TrailMesh(lifetime, resolution, width);
-            meshFilter.mesh = _trailMesh.Mesh;
+            ResetMesh();
             _materialInstance = Instantiate(material);
             meshRenderer.material = _materialInstance;
+        }
+
+        #endregion
+
+        #region ResetMesh
+
+        public void ResetMesh() {
+            _trailMesh = new TrailMesh(lifetime, resolution, width);
+            meshFilter.mesh = _trailMesh.Mesh;
+        }
+
+        #endregion
+
+        #region Update
+
+        private void Update() {
+            trailRendererTransform.position = Vector3.zero;
+            trailRendererTransform.rotation = Quaternion.identity;
+
+            var tr = transform;
+            var worldPosition = tr.position;
+            var worldDirection = tr.forward;
+            SetValues(worldPosition, worldDirection);
         }
 
         #endregion
@@ -32,7 +55,7 @@ namespace EasyOffset.SyncedWithUnity {
         private Vector3 _previousPosition = Vector3.zero;
         private float _speed;
 
-        public void SetValues(
+        private void SetValues(
             Vector3 position,
             Vector3 normal
         ) {

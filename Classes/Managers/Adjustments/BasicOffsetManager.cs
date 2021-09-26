@@ -13,7 +13,8 @@ namespace EasyOffset {
         ) : base(
             mainSettingsModel,
             AdjustmentMode.Basic,
-            true
+            4f,
+            4f
         ) { }
 
         #endregion
@@ -24,10 +25,16 @@ namespace EasyOffset {
         private Vector3 _grabWorldDirection;
         private Vector3 _grabPosition;
 
-        protected override void OnGrabStarted(Hand hand, Vector3 controllerPosition, Quaternion controllerRotation) {
+        protected override void OnGrabStarted(
+            Hand adjustmentHand,
+            Vector3 adjustmentHandPos,
+            Quaternion adjustmentHandRot,
+            Vector3 freeHandPos,
+            Quaternion freeHandRot
+        ) {
             Vector3 grabPivotPosition;
 
-            switch (hand) {
+            switch (adjustmentHand) {
                 case Hand.Left:
                     grabPivotPosition = PluginConfig.LeftHandPivotPosition;
                     _storedLocalDirection = PluginConfig.LeftHandSaberDirection;
@@ -37,18 +44,24 @@ namespace EasyOffset {
                     _storedLocalDirection = PluginConfig.RightHandSaberDirection;
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(hand), hand, null);
+                    throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null);
             }
 
-            _grabWorldDirection = controllerRotation * _storedLocalDirection;
-            _grabPosition = controllerPosition + controllerRotation * grabPivotPosition;
+            _grabWorldDirection = adjustmentHandRot * _storedLocalDirection;
+            _grabPosition = adjustmentHandPos + adjustmentHandRot * grabPivotPosition;
         }
 
-        protected override void OnGrabUpdated(Hand hand, Vector3 controllerPosition, Quaternion controllerRotation) {
-            var finalLocalDirection = Quaternion.Inverse(controllerRotation) * _grabWorldDirection;
-            var newPivotPosition = Quaternion.Inverse(controllerRotation) * (_grabPosition - controllerPosition);
+        protected override void OnGrabUpdated(
+            Hand adjustmentHand,
+            Vector3 adjustmentHandPos,
+            Quaternion adjustmentHandRot,
+            Vector3 freeHandPos,
+            Quaternion freeHandRot
+        ) {
+            var finalLocalDirection = Quaternion.Inverse(adjustmentHandRot) * _grabWorldDirection;
+            var newPivotPosition = Quaternion.Inverse(adjustmentHandRot) * (_grabPosition - adjustmentHandPos);
 
-            switch (hand) {
+            switch (adjustmentHand) {
                 case Hand.Left:
                     PluginConfig.LeftHandSaberDirection = finalLocalDirection;
                     PluginConfig.LeftHandPivotPosition = newPivotPosition;
@@ -57,11 +70,17 @@ namespace EasyOffset {
                     PluginConfig.RightHandSaberDirection = finalLocalDirection;
                     PluginConfig.RightHandPivotPosition = newPivotPosition;
                     break;
-                default: throw new ArgumentOutOfRangeException(nameof(hand), hand, null);
+                default: throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null);
             }
         }
 
-        protected override void OnGrabFinished(Hand hand, Vector3 controllerPosition, Quaternion controllerRotation) { }
+        protected override void OnGrabFinished(
+            Hand adjustmentHand,
+            Vector3 adjustmentHandPos,
+            Quaternion adjustmentHandRot,
+            Vector3 freeHandPos,
+            Quaternion freeHandRot
+        ) { }
 
         #endregion
     }

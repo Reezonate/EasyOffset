@@ -17,7 +17,8 @@ namespace EasyOffset {
         ) : base(
             mainSettingsModel,
             AdjustmentMode.DirectionAuto,
-            true
+            4f,
+            10f
         ) {
             _rotationPlaneTracker = new RotationPlaneTracker(BundleLoader.SphereMesh);
         }
@@ -51,41 +52,59 @@ namespace EasyOffset {
         private Quaternion _grabLocalRotation;
 
 
-        protected override void OnGrabStarted(Hand hand, Vector3 controllerPosition, Quaternion controllerRotation) {
-            _grabLocalRotation = hand switch {
+        protected override void OnGrabStarted(
+            Hand adjustmentHand,
+            Vector3 adjustmentHandPos,
+            Quaternion adjustmentHandRot,
+            Vector3 freeHandPos,
+            Quaternion freeHandRot
+        ) {
+            _grabLocalRotation = adjustmentHand switch {
                 Hand.Left => PluginConfig.LeftHandRotation,
                 Hand.Right => PluginConfig.RightHandRotation,
-                _ => throw new ArgumentOutOfRangeException(nameof(hand), hand, null)
+                _ => throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null)
             };
 
             ResetMeasurements();
             RecordNewMeasurement(_grabLocalRotation * Vector3.forward);
 
-            var worldRotation = controllerRotation * _grabLocalRotation;
+            var worldRotation = adjustmentHandRot * _grabLocalRotation;
             _rotationPlaneTracker.Reset(worldRotation);
         }
 
-        protected override void OnGrabUpdated(Hand hand, Vector3 controllerPosition, Quaternion controllerRotation) {
-            var worldRotation = controllerRotation * _grabLocalRotation;
+        protected override void OnGrabUpdated(
+            Hand adjustmentHand,
+            Vector3 adjustmentHandPos,
+            Quaternion adjustmentHandRot,
+            Vector3 freeHandPos,
+            Quaternion freeHandRot
+        ) {
+            var worldRotation = adjustmentHandRot * _grabLocalRotation;
 
             if (!_rotationPlaneTracker.Update(worldRotation)) return;
 
             var worldNormal = _rotationPlaneTracker.GetNormal();
-            var localNormal = TransformUtils.WorldToLocalDirection(worldNormal, controllerRotation);
+            var localNormal = TransformUtils.WorldToLocalDirection(worldNormal, adjustmentHandRot);
             RecordNewMeasurement(localNormal);
 
-            switch (hand) {
+            switch (adjustmentHand) {
                 case Hand.Left:
                     PluginConfig.LeftHandSaberDirection = GetAverageMeasurement();
                     break;
                 case Hand.Right:
                     PluginConfig.RightHandSaberDirection = GetAverageMeasurement();
                     break;
-                default: throw new ArgumentOutOfRangeException(nameof(hand), hand, null);
+                default: throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null);
             }
         }
 
-        protected override void OnGrabFinished(Hand hand, Vector3 controllerPosition, Quaternion controllerRotation) { }
+        protected override void OnGrabFinished(
+            Hand adjustmentHand,
+            Vector3 adjustmentHandPos,
+            Quaternion adjustmentHandRot,
+            Vector3 freeHandPos,
+            Quaternion freeHandRot
+        ) { }
 
         #endregion
     }

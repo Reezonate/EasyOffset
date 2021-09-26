@@ -17,9 +17,8 @@ namespace EasyOffset.Installers {
 
         public override void InstallBindings() {
             BindInputManagers();
-            BindGizmosManagers();
+            BindGizmosManager();
             BindOffsetManagers();
-            Container.BindInterfacesAndSelfTo<DisplayControllerManager>().AsSingle();
         }
 
         private void BindInputManagers() {
@@ -27,14 +26,9 @@ namespace EasyOffset.Installers {
             Container.BindInterfacesAndSelfTo<AbominationInputManager>().AsSingle();
         }
 
-        private void BindGizmosManagers() {
-            Container.BindInterfacesAndSelfTo<PivotGizmosManager>().AsSingle();
-            Container.BindInterfacesAndSelfTo<TrailGizmosManager>().AsSingle();
-            Container.BindInterfacesAndSelfTo<DirectionGridGizmosManager>().AsSingle();
-
-            Container.BindExecutionOrder<PivotGizmosManager>(1);
-            Container.BindExecutionOrder<TrailGizmosManager>(1);
-            Container.BindExecutionOrder<DirectionGridGizmosManager>(1);
+        private void BindGizmosManager() {
+            Container.BindInterfacesAndSelfTo<GizmosManager>().AsSingle();
+            Container.BindExecutionOrder<GizmosManager>(1);
         }
 
         private void BindOffsetManagers() {

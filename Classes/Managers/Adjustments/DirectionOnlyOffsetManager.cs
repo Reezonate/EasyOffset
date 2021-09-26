@@ -8,15 +8,16 @@ namespace EasyOffset {
     public class DirectionOnlyOffsetManager : AbstractOffsetManager {
         #region Constructor
 
-        private readonly DirectionGridGizmosManager _gizmosManager;
+        private readonly GizmosManager _gizmosManager;
 
         public DirectionOnlyOffsetManager(
-            DirectionGridGizmosManager gizmosManager,
+            GizmosManager gizmosManager,
             MainSettingsModelSO mainSettingsModel
         ) : base(
             mainSettingsModel,
             AdjustmentMode.DirectionOnly,
-            true
+            6f,
+            3f
         ) {
             _gizmosManager = gizmosManager;
         }
@@ -28,37 +29,81 @@ namespace EasyOffset {
         private Vector3 _storedLocalDirection;
         private Vector3 _grabWorldDirection;
 
-        protected override void OnGrabStarted(Hand hand, Vector3 controllerPosition, Quaternion controllerRotation) {
-            _storedLocalDirection = hand switch {
-                Hand.Left => PluginConfig.LeftHandSaberDirection,
-                Hand.Right => PluginConfig.RightHandSaberDirection,
-                _ => throw new ArgumentOutOfRangeException(nameof(hand), hand, null)
-            };
+        private Range _heightRange = new Range(0f, 0.4f);
+        private Range _zoomRange = new Range(1f, 4f);
+        private float _grabFreeY;
 
-            _grabWorldDirection = controllerRotation * _storedLocalDirection;
-            _gizmosManager.SetState(hand, true);
+        protected override void OnGrabStarted(
+            Hand adjustmentHand,
+            Vector3 adjustmentHandPos,
+            Quaternion adjustmentHandRot,
+            Vector3 freeHandPos,
+            Quaternion freeHandRot
+        ) {
+            switch (adjustmentHand) {
+                case Hand.Left:
+                    _storedLocalDirection = PluginConfig.LeftHandSaberDirection;
+                    _gizmosManager.LeftHandGizmosController.SetSphericalBasisFocus(true);
+                    _gizmosManager.LeftHandGizmosController.SetPreviousDirection(_storedLocalDirection, true);
+                    break;
+                case Hand.Right:
+                    _storedLocalDirection = PluginConfig.RightHandSaberDirection;
+                    _gizmosManager.RightHandGizmosController.SetSphericalBasisFocus(true);
+                    _gizmosManager.RightHandGizmosController.SetPreviousDirection(_storedLocalDirection, true);
+                    break;
+                default: throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null);
+            }
+
+            _grabWorldDirection = adjustmentHandRot * _storedLocalDirection;
+            _grabFreeY = freeHandPos.y;
         }
 
-        protected override void OnGrabUpdated(Hand hand, Vector3 controllerPosition, Quaternion controllerRotation) {
-            var finalLocalDirection = Quaternion.Inverse(controllerRotation) * _grabWorldDirection;
+        protected override void OnGrabUpdated(
+            Hand adjustmentHand,
+            Vector3 adjustmentHandPos,
+            Quaternion adjustmentHandRot,
+            Vector3 freeHandPos,
+            Quaternion freeHandRot
+        ) {
+            var finalLocalDirection = Quaternion.Inverse(adjustmentHandRot) * _grabWorldDirection;
 
-            switch (hand) {
+            var heightDifference = freeHandPos.y - _grabFreeY;
+            var zoomRatio = _heightRange.GetRatioClamped(heightDifference);
+            var zoom = _zoomRange.SlideBy(zoomRatio);
+
+            switch (adjustmentHand) {
                 case Hand.Left:
                     PluginConfig.LeftHandSaberDirection = finalLocalDirection;
+                    _gizmosManager.LeftHandGizmosController.Zoom(zoom);
                     break;
                 case Hand.Right:
                     PluginConfig.RightHandSaberDirection = finalLocalDirection;
+                    _gizmosManager.RightHandGizmosController.Zoom(zoom);
                     break;
-                default: throw new ArgumentOutOfRangeException(nameof(hand), hand, null);
+                default: throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null);
             }
-
-            var gizmosDirection = controllerRotation * _storedLocalDirection;
-            TransformUtils.ApplyRoomOffsetToDirection(MainSettingsModel, ref gizmosDirection);
-            _gizmosManager.UpdateGizmos(hand, gizmosDirection);
         }
 
-        protected override void OnGrabFinished(Hand hand, Vector3 controllerPosition, Quaternion controllerRotation) {
-            _gizmosManager.SetState(hand, false);
+        protected override void OnGrabFinished(
+            Hand adjustmentHand,
+            Vector3 adjustmentHandPos,
+            Quaternion adjustmentHandRot,
+            Vector3 freeHandPos,
+            Quaternion freeHandRot
+        ) {
+            switch (adjustmentHand) {
+                case Hand.Left:
+                    _gizmosManager.LeftHandGizmosController.SetSphericalBasisFocus(false);
+                    _gizmosManager.LeftHandGizmosController.SetPreviousDirection(PluginConfig.LeftHandSaberDirection, false);
+                    _gizmosManager.LeftHandGizmosController.Zoom(1);
+                    break;
+                case Hand.Right:
+                    _gizmosManager.RightHandGizmosController.SetSphericalBasisFocus(false);
+                    _gizmosManager.RightHandGizmosController.SetPreviousDirection(PluginConfig.RightHandSaberDirection, false);
+                    _gizmosManager.RightHandGizmosController.Zoom(1);
+                    break;
+                default: throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null);
+            }
         }
 
         #endregion

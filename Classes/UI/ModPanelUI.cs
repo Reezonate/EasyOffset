@@ -188,7 +188,10 @@ namespace EasyOffset.UI {
             get => !PluginConfig.UILock;
             set {
                 PluginConfig.UILock = !value;
-                if (!value) AdjustmentModeChoice = AdjustmentModeUtils.TypeToName(AdjustmentMode.None);
+                if (!value) {
+                    PluginConfig.AdjustmentMode = AdjustmentMode.None;
+                    AdjustmentModeChoice = AdjustmentModeUtils.TypeToName(AdjustmentMode.None);
+                }
                 NotifyPropertyChanged();
             }
         }

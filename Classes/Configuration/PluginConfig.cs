@@ -6,7 +6,8 @@ namespace EasyOffset.Configuration {
         #region Smoothing
 
         public static bool SmoothingEnabled { get; private set; }
-        public static float SmoothingSpeed { get; private set; } = 6f;
+        public static float PositionalSmoothing { get; set; }
+        public static float RotationalSmoothing { get; set; }
         public static MainSettingsModelSO MainSettingsModel { get; private set; }
 
         public static void EnableSmoothing(

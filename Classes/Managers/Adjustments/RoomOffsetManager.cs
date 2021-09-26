@@ -11,7 +11,8 @@ namespace EasyOffset {
         ) : base(
             mainSettingsModelSO,
             AdjustmentMode.RoomOffset,
-            false
+            6f,
+            6f
         ) { }
 
         #endregion
@@ -24,16 +25,28 @@ namespace EasyOffset {
         private Vector3 _grabRoomCenter;
         // private float _grabRoomRotation;
 
-        protected override void OnGrabStarted(Hand hand, Vector3 controllerPosition, Quaternion controllerRotation) {
-            _grabPosition = controllerPosition;
+        protected override void OnGrabStarted(
+            Hand adjustmentHand,
+            Vector3 adjustmentHandPos,
+            Quaternion adjustmentHandRot,
+            Vector3 freeHandPos,
+            Quaternion freeHandRot
+        ) {
+            _grabPosition = adjustmentHandPos;
             // _grabInverseForwardVector = Quaternion.Inverse(grabRotation) * Vector3.forward;
 
             _grabRoomCenter = MainSettingsModel.roomCenter.value;
             // _grabRoomRotation = _mainSettingsModelSO.roomRotation.value;
         }
 
-        protected override void OnGrabUpdated(Hand hand, Vector3 controllerPosition, Quaternion controllerRotation) {
-            var positionChange = controllerPosition - _grabPosition;
+        protected override void OnGrabUpdated(
+            Hand adjustmentHand,
+            Vector3 adjustmentHandPos,
+            Quaternion adjustmentHandRot,
+            Vector3 freeHandPos,
+            Quaternion freeHandRot
+        ) {
+            var positionChange = adjustmentHandPos - _grabPosition;
 
             MainSettingsModel.roomCenter.value = _grabRoomCenter - positionChange;
 
@@ -42,7 +55,13 @@ namespace EasyOffset {
             // _mainSettingsModelSO.roomRotation.value = _grabRoomRotation + rotationChange;
         }
 
-        protected override void OnGrabFinished(Hand hand, Vector3 controllerPosition, Quaternion controllerRotation) { }
+        protected override void OnGrabFinished(
+            Hand adjustmentHand,
+            Vector3 adjustmentHandPos,
+            Quaternion adjustmentHandRot,
+            Vector3 freeHandPos,
+            Quaternion freeHandRot
+        ) { }
 
         #endregion
     }
