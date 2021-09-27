@@ -18,7 +18,10 @@ namespace EasyOffset.SyncedWithUnity {
 
         private void Start() {
             if (!isVrModeOculus) return;
-            controllerModel.SetModelOffset(Vector3.zero, Quaternion.Euler(-40f, 0f, 0f));
+            controllerModel.SetModelOffset(
+                new Vector3(0f, 0f, 0.055f),
+                Quaternion.Euler(-40f, 0f, 0f)
+            );
         }
 
         #endregion
