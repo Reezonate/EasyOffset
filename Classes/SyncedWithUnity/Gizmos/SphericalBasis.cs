@@ -16,10 +16,13 @@ namespace EasyOffset.SyncedWithUnity {
         #region ShaderProperties
 
         private static readonly int SphericalCoordinatesPropertyId = Shader.PropertyToID("_SphericalCoordinates");
-        private static readonly int PrevSphericalCoordinatesPropertyId = Shader.PropertyToID("_PrevSphericalCoordinates");
         private static readonly int OrthoDirectionPropertyId = Shader.PropertyToID("_OrthoDirection");
+        private static readonly int UpDownPlanePropertyId = Shader.PropertyToID("_UpDownPlane");
+        private static readonly int LeftRightPlanePropertyId = Shader.PropertyToID("_LeftRightPlane");
+        private static readonly int PlanesMultiplierPropertyId = Shader.PropertyToID("_PlanesMultiplier");
         private static readonly int ScalePropertyId = Shader.PropertyToID("_Scale");
         private static readonly int AlphaPropertyId = Shader.PropertyToID("_Alpha");
+        private static readonly int FadeRadiusPropertyId = Shader.PropertyToID("_FadeRadius");
 
         #endregion
 
@@ -27,6 +30,9 @@ namespace EasyOffset.SyncedWithUnity {
 
         private Material _materialInstance;
         private bool _isReady;
+
+        private float _currentFadeRadius;
+        private float _targetFadeRadius;
 
         private float _currentAlpha;
         private float _targetAlpha;
@@ -39,6 +45,7 @@ namespace EasyOffset.SyncedWithUnity {
             meshRenderer.material = _materialInstance;
             _currentScale = _targetScale = 1.0f;
             _currentAlpha = _targetAlpha = NoFocusAlpha;
+            _currentFadeRadius = _targetFadeRadius = NoFocusFadeRadius;
             _isReady = true;
         }
 
@@ -47,10 +54,16 @@ namespace EasyOffset.SyncedWithUnity {
         #region Update
 
         private void Update() {
-            _currentAlpha = Mathf.Lerp(_currentAlpha, _targetAlpha, Time.deltaTime * 10);
-            _currentScale = Mathf.Lerp(_currentScale, _targetScale, Time.deltaTime * 10);
+            var t = Time.deltaTime * 10;
+            
+            _currentAlpha = Mathf.Lerp(_currentAlpha, _targetAlpha, t);
             _materialInstance.SetFloat(AlphaPropertyId, _currentAlpha);
+            
+            _currentScale = Mathf.Lerp(_currentScale, _targetScale, t);
             _materialInstance.SetFloat(ScalePropertyId, _currentScale);
+            
+            _currentFadeRadius = Mathf.Lerp(_currentFadeRadius, _targetFadeRadius, t);
+            _materialInstance.SetFloat(FadeRadiusPropertyId, _currentFadeRadius);
         }
 
         #endregion
@@ -59,9 +72,13 @@ namespace EasyOffset.SyncedWithUnity {
 
         private const float NoFocusAlpha = 0.2f;
         private const float FocusAlpha = 1.0f;
+        
+        private const float NoFocusFadeRadius = 20 * Mathf.Deg2Rad;
+        private const float FocusFadeRadius = 50 * Mathf.Deg2Rad;
 
         public void SetFocus(bool value) {
             _targetAlpha = value ? FocusAlpha : NoFocusAlpha;
+            _targetFadeRadius = value ? FocusFadeRadius : NoFocusFadeRadius;
         }
 
         public void Zoom(
@@ -82,11 +99,23 @@ namespace EasyOffset.SyncedWithUnity {
             bool visible
         ) {
             if (!_isReady) return;
+
+            var localUp = transform.InverseTransformDirection(Vector3.up);
+            var lookFromCenter = Quaternion.LookRotation(orthoDirection, localUp);
+
+            var upDownPane = new Plane(lookFromCenter * Vector3.right, orthoDirection);
+            var upDownPlaneVector = (Vector4) upDownPane.normal;
+            upDownPlaneVector.w = upDownPane.distance;
+
+            var leftRightPlane = new Plane(lookFromCenter * Vector3.up, orthoDirection);
+            var leftRightPlaneVector = (Vector4) leftRightPlane.normal;
+            leftRightPlaneVector.w = leftRightPlane.distance;
             
-            var sphericalCoordinates = TransformUtils.OrthoToSphericalDirection(orthoDirection);
-            var v4 = (Vector4) sphericalCoordinates;
-            v4.z = visible ? 1 : 0;
-            _materialInstance.SetVector(PrevSphericalCoordinatesPropertyId, v4);
+            var planesMultiplier = visible ? 1f : 0f;
+
+            _materialInstance.SetVector(UpDownPlanePropertyId, upDownPlaneVector);
+            _materialInstance.SetVector(LeftRightPlanePropertyId, leftRightPlaneVector);
+            _materialInstance.SetFloat(PlanesMultiplierPropertyId, planesMultiplier);
         }
 
         public void SetDirection(

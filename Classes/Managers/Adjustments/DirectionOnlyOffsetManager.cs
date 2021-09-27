@@ -29,7 +29,7 @@ namespace EasyOffset {
         private Vector3 _storedLocalDirection;
         private Vector3 _grabWorldDirection;
 
-        private Range _heightRange = new Range(0f, 0.4f);
+        private Range _heightRange = new Range(0.05f, 0.4f);
         private Range _zoomRange = new Range(1f, 4f);
         private float _grabFreeY;
 

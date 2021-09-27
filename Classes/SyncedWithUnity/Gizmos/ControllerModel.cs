@@ -49,6 +49,15 @@ namespace EasyOffset.SyncedWithUnity {
 
         #region Interaction
 
+        public void SetModelOffset(
+            Vector3 positionalOffset,
+            Quaternion rotationalOffset
+        ) {
+            var tr = visuals.transform;
+            tr.localPosition = positionalOffset;
+            tr.localRotation = rotationalOffset;
+        }
+
         public void SetControllerType(
             ControllerType controllerType,
             Hand hand
