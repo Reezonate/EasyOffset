@@ -5,7 +5,49 @@ using UnityEngine.XR;
 
 namespace EasyOffset {
     public static class TransformUtils {
+        #region Oculus VR Mode Offsets
+
+        private static readonly Quaternion OculusModeRemoveRotation = Quaternion.Euler(-40f, 0f, 0f);
+        private static readonly Vector3 OculusModeRemoveTranslation = new Vector3(0f, 0f, 0.055f);
+
+        public static void RemoveOculusModeOffsets(ref Vector3 controllerPosition, ref Quaternion controllerRotation) {
+            controllerRotation *= OculusModeRemoveRotation;
+            controllerPosition += controllerRotation * OculusModeRemoveTranslation;
+        }
+
+        // ReSharper disable once Unity.InefficientPropertyAccess
+        private static void RemoveOculusModeOffsets(Transform transform) {
+            transform.rotation *= OculusModeRemoveRotation;
+            transform.position += transform.rotation * OculusModeRemoveTranslation;
+        }
+
+        #endregion
+
         #region AdjustControllerTransform
+
+        internal static void AdjustControllerTransformOculus(
+            XRNode node,
+            Transform transform
+        ) {
+            switch (node) {
+                case XRNode.LeftHand:
+                    RemoveOculusModeOffsets(transform);
+                    AdjustLeftControllerTransform(transform);
+                    break;
+                case XRNode.RightHand:
+                    RemoveOculusModeOffsets(transform);
+                    AdjustRightControllerTransform(transform);
+                    break;
+                case XRNode.LeftEye: return;
+                case XRNode.RightEye: return;
+                case XRNode.CenterEye: return;
+                case XRNode.Head: return;
+                case XRNode.GameController: return;
+                case XRNode.TrackingReference: return;
+                case XRNode.HardwareTracker: return;
+                default: throw new ArgumentOutOfRangeException(nameof(node), node, null);
+            }
+        }
 
         internal static void AdjustControllerTransform(
             XRNode node,

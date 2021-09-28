@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.Components;
 using EasyOffset.Configuration;
@@ -98,7 +100,7 @@ namespace EasyOffset.UI {
 
         #endregion
 
-        #region Hands
+        #region shared ZOffset slider values
 
         [UIValue("zo-min")] [UsedImplicitly] private float _zOffsetSliderMin = -0.2f;
 
@@ -106,6 +108,8 @@ namespace EasyOffset.UI {
 
         [UIValue("zo-increment")] [UsedImplicitly]
         private float _zOffsetSliderIncrement = 0.01f;
+
+        #endregion
 
         #region LeftHand
 
@@ -129,14 +133,36 @@ namespace EasyOffset.UI {
 
         #endregion
 
-        #region MirrorButton
+        #region ActionsMenu
 
-        [UIAction("l2r-mirror-click")]
+        [UIValue("lam-choices")] [UsedImplicitly]
+        private List<object> _leftActionMenuChoices = HandMenuActionUtils.LeftHandMenuChoicesObjects.ToList();
+
+        private string _leftActionMenuChoiceBackingField = HandMenuActionUtils.TypeToName(HandMenuAction.Default);
+
+        [UIValue("lam-choice")]
         [UsedImplicitly]
-        private void OnLeftToRightMirrorClick() {
-            PluginConfig.LeftToRightMirror();
-            RightZOffsetSliderValue = PluginConfig.RightHandZOffset;
-            NotifyPropertyChanged();
+        private string LeftActionMenuChoice {
+            get => _leftActionMenuChoiceBackingField;
+            set {
+                _leftActionMenuChoiceBackingField = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        [UIAction("lam-on-change")]
+        [UsedImplicitly]
+        private void LeftActionMenuOnChange(string value) {
+            OnHandAction(Hand.Left, HandMenuActionUtils.NameToType(value));
+            ResetLeftMenuAction();
+        }
+
+        //TODO: Works but stinks, find a better solution
+        private void ResetLeftMenuAction() {
+            new Thread(() => {
+                Thread.Sleep(10);
+                LeftActionMenuChoice = HandMenuActionUtils.TypeToName(HandMenuAction.Default);
+            }).Start();
         }
 
         #endregion
@@ -165,18 +191,76 @@ namespace EasyOffset.UI {
 
         #endregion
 
-        #region MirrorButton
+        #region ActionsMenu
 
-        [UIAction("r2l-mirror-click")]
+        [UIValue("ram-choices")] [UsedImplicitly]
+        private List<object> _rightActionMenuChoices = HandMenuActionUtils.RightHandMenuChoicesObjects.ToList();
+
+        private string _rightActionMenuChoiceBackingField = HandMenuActionUtils.TypeToName(HandMenuAction.Default);
+
+        [UIValue("ram-choice")]
         [UsedImplicitly]
-        private void OnRightToLeftMirrorClick() {
-            PluginConfig.RightToLeftMirror();
-            LeftZOffsetSliderValue = PluginConfig.LeftHandZOffset;
+        private string RightActionMenuChoice {
+            get => _rightActionMenuChoiceBackingField;
+            set {
+                _rightActionMenuChoiceBackingField = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        [UIAction("ram-on-change")]
+        [UsedImplicitly]
+        private void RightActionMenuOnChange(string value) {
+            OnHandAction(Hand.Right, HandMenuActionUtils.NameToType(value));
+            ResetRightActionMenu();
+        }
+
+        //TODO: Works but stinks, find a better solution
+        private void ResetRightActionMenu() {
+            new Thread(() => {
+                Thread.Sleep(10);
+                RightActionMenuChoice = HandMenuActionUtils.TypeToName(HandMenuAction.Default);
+            }).Start();
         }
 
         #endregion
 
         #endregion
+
+        #region OnHandMenuAction
+
+        private void OnHandAction(Hand hand, HandMenuAction action) {
+            switch (action) {
+                case HandMenuAction.Default: return;
+
+                case HandMenuAction.LeftMirrorAll:
+                    PluginConfig.MirrorPivot(hand);
+                    PluginConfig.MirrorSaberDirection(hand);
+                    PluginConfig.MirrorZOffset(hand);
+                    break;
+                case HandMenuAction.RightMirrorAll:
+                    PluginConfig.MirrorPivot(hand);
+                    PluginConfig.MirrorSaberDirection(hand);
+                    PluginConfig.MirrorZOffset(hand);
+                    break;
+                case HandMenuAction.MirrorPivot:
+                    PluginConfig.MirrorPivot(hand);
+                    break;
+                case HandMenuAction.MirrorDirection:
+                    PluginConfig.MirrorSaberDirection(hand);
+                    break;
+                case HandMenuAction.MirrorZOffset:
+                    PluginConfig.MirrorZOffset(hand);
+                    break;
+                case HandMenuAction.Reset:
+                    PluginConfig.ResetOffsets(hand);
+                    break;
+                default: throw new ArgumentOutOfRangeException();
+            }
+
+            LeftZOffsetSliderValue = PluginConfig.LeftHandZOffset;
+            RightZOffsetSliderValue = PluginConfig.RightHandZOffset;
+        }
 
         #endregion
 
@@ -192,6 +276,7 @@ namespace EasyOffset.UI {
                     PluginConfig.AdjustmentMode = AdjustmentMode.None;
                     AdjustmentModeChoice = AdjustmentModeUtils.TypeToName(AdjustmentMode.None);
                 }
+
                 NotifyPropertyChanged();
             }
         }
@@ -203,20 +288,6 @@ namespace EasyOffset.UI {
         [UsedImplicitly]
         private void LockOnChange(bool value) {
             Interactable = !value;
-        }
-
-        #endregion
-
-        #region ResetButton
-
-        [UIAction("reset-click")]
-        [UsedImplicitly]
-        private void OnResetClick()
-        {
-            PluginConfig.ResetOffsets();
-            RightZOffsetSliderValue = PluginConfig.RightHandZOffset;
-            LeftZOffsetSliderValue = PluginConfig.LeftHandZOffset;
-            NotifyPropertyChanged();
         }
 
         #endregion

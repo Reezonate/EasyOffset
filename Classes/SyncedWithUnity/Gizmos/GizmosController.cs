@@ -12,20 +12,6 @@ namespace EasyOffset.SyncedWithUnity {
 
         #endregion
 
-        #region Start
-
-        public bool isVrModeOculus;
-
-        private void Start() {
-            if (!isVrModeOculus) return;
-            controllerModel.SetModelOffset(
-                new Vector3(0f, 0f, 0.055f),
-                Quaternion.Euler(-40f, 0f, 0f)
-            );
-        }
-
-        #endregion
-
         #region Visibility
 
         public void SetVisibility(

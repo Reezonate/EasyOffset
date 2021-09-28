@@ -14,7 +14,7 @@ namespace EasyOffset.HarmonyPatches {
             Vector3 position,
             Vector3 rotation
         ) {
-            TransformUtils.AdjustControllerTransform(node, transform);
+            TransformUtils.AdjustControllerTransformOculus(node, transform);
             return false;
         }
     }

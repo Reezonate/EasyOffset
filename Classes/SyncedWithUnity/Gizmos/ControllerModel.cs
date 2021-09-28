@@ -22,7 +22,6 @@ namespace EasyOffset.SyncedWithUnity {
         [SerializeField] private GameObject vive;
 
         [SerializeField] private GameObject visuals;
-        [SerializeField] private GameObject modelRoot;
 
         #endregion
 
@@ -36,7 +35,7 @@ namespace EasyOffset.SyncedWithUnity {
             GameObject prefab
         ) {
             DestroyInstance();
-            _instance = Instantiate(prefab, modelRoot.transform, false);
+            _instance = Instantiate(prefab, visuals.transform, false);
             _spawned = true;
         }
 
@@ -49,14 +48,6 @@ namespace EasyOffset.SyncedWithUnity {
         #endregion
 
         #region Interaction
-
-        public void SetModelOffset(
-            Vector3 positionalOffset,
-            Quaternion rotationalOffset
-        ) {
-            modelRoot.transform.localPosition = positionalOffset;
-            visuals.transform.localRotation = rotationalOffset;
-        }
 
         public void SetControllerType(
             ControllerType controllerType,

@@ -340,54 +340,66 @@ namespace EasyOffset.Configuration {
 
         #region Mirror
 
-        public static void LeftToRightMirror() {
-            var leftPivot = LeftHandPivotPosition;
-            RightHandPivotPosition = new Vector3(
-                -leftPivot.x,
-                leftPivot.y,
-                leftPivot.z
-            );
-
-            var leftDirection = LeftHandSaberDirection;
-            RightHandSaberDirection = new Vector3(
-                -leftDirection.x,
-                leftDirection.y,
-                leftDirection.z
-            );
-
-            RightHandZOffset = LeftHandZOffset;
+        public static void MirrorPivot(Hand mirrorSource) {
+            Vector3 from;
+            switch (mirrorSource) {
+                case Hand.Left:
+                    from = LeftHandPivotPosition;
+                    RightHandPivotPosition = new Vector3(-from.x, from.y, from.z);
+                    break;
+                case Hand.Right:
+                    from = RightHandPivotPosition;
+                    LeftHandPivotPosition = new Vector3(-from.x, from.y, from.z);
+                    break;
+                default: throw new ArgumentOutOfRangeException(nameof(mirrorSource), mirrorSource, null);
+            }
         }
 
-        public static void RightToLeftMirror() {
-            var pivot = RightHandPivotPosition;
-            LeftHandPivotPosition = new Vector3(
-                -pivot.x,
-                pivot.y,
-                pivot.z
-            );
+        public static void MirrorSaberDirection(Hand mirrorSource) {
+            Vector3 from;
+            switch (mirrorSource) {
+                case Hand.Left:
+                    from = LeftHandSaberDirection;
+                    RightHandSaberDirection = new Vector3(-from.x, from.y, from.z);
+                    break;
+                case Hand.Right:
+                    from = RightHandSaberDirection;
+                    LeftHandSaberDirection = new Vector3(-from.x, from.y, from.z);
+                    break;
+                default: throw new ArgumentOutOfRangeException(nameof(mirrorSource), mirrorSource, null);
+            }
+        }
 
-            var direction = RightHandSaberDirection;
-            LeftHandSaberDirection = new Vector3(
-                -direction.x,
-                direction.y,
-                direction.z
-            );
-
-            LeftHandZOffset = RightHandZOffset;
+        public static void MirrorZOffset(Hand mirrorSource) {
+            switch (mirrorSource) {
+                case Hand.Left:
+                    RightHandZOffset = LeftHandZOffset;
+                    break;
+                case Hand.Right:
+                    LeftHandZOffset = RightHandZOffset;
+                    break;
+                default: throw new ArgumentOutOfRangeException(nameof(mirrorSource), mirrorSource, null);
+            }
         }
 
         #endregion
 
         #region Reset
 
-        public static void ResetOffsets() {
-            RightHandPivotPosition = new Vector3(Defaults.PivotX, Defaults.PivotY, Defaults.PivotZ);
-            LeftHandPivotPosition = new Vector3(-Defaults.PivotX, Defaults.PivotY, Defaults.PivotZ);
-
-            RightHandSaberDirection = new Vector3(Defaults.SaberDirectionX, Defaults.SaberDirectionY, Defaults.SaberDirectionZ);
-            LeftHandSaberDirection = new Vector3(-Defaults.SaberDirectionX, Defaults.SaberDirectionY, Defaults.SaberDirectionZ);
-
-            LeftHandZOffset = RightHandZOffset = Defaults.ZOffset;
+        public static void ResetOffsets(Hand hand) {
+            switch (hand) {
+                case Hand.Left:
+                    LeftHandPivotPosition = new Vector3(-Defaults.PivotX, Defaults.PivotY, Defaults.PivotZ);
+                    LeftHandSaberDirection = new Vector3(-Defaults.SaberDirectionX, Defaults.SaberDirectionY, Defaults.SaberDirectionZ);
+                    LeftHandZOffset = Defaults.ZOffset;
+                    break;
+                case Hand.Right:
+                    RightHandPivotPosition = new Vector3(Defaults.PivotX, Defaults.PivotY, Defaults.PivotZ);
+                    RightHandSaberDirection = new Vector3(Defaults.SaberDirectionX, Defaults.SaberDirectionY, Defaults.SaberDirectionZ);
+                    RightHandZOffset = Defaults.ZOffset;
+                    break;
+                default: throw new ArgumentOutOfRangeException(nameof(hand), hand, null);
+            }
         }
 
         #endregion

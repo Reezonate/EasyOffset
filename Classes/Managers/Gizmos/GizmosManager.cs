@@ -11,15 +11,12 @@ namespace EasyOffset {
     public class GizmosManager : IInitializable, IDisposable, ITickable {
         #region Inject
 
-        private MainSettingsModelSO _mainSettingsModel;
-        private IVRPlatformHelper _vrPlatformHelper;
+        private readonly MainSettingsModelSO _mainSettingsModel;
 
         public GizmosManager(
-            MainSettingsModelSO mainSettingsModel,
-            IVRPlatformHelper vrPlatformHelper
+            MainSettingsModelSO mainSettingsModel
         ) {
             _mainSettingsModel = mainSettingsModel;
-            _vrPlatformHelper = vrPlatformHelper;
         }
 
         #endregion
@@ -178,16 +175,10 @@ namespace EasyOffset {
 
         #region Utils
 
-        private GizmosController InstantiateGizmosController() {
+        private static GizmosController InstantiateGizmosController() {
             var gameObject = Object.Instantiate(BundleLoader.GizmosController);
             Object.DontDestroyOnLoad(gameObject);
-            var controller = gameObject.GetComponent<GizmosController>();
-
-            if (_vrPlatformHelper.vrPlatformSDK == VRPlatformSDK.Oculus) {
-                controller.isVrModeOculus = true;
-            }
-
-            return controller;
+            return gameObject.GetComponent<GizmosController>();
         }
 
         #endregion

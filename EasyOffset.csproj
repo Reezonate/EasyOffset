@@ -144,6 +144,7 @@
     <Compile Include="Classes\StructsAndEnums\ControllerType.cs" />
     <Compile Include="Classes\StructsAndEnums\AdjustmentMode.cs" />
     <Compile Include="Classes\StructsAndEnums\Hand.cs" />
+    <Compile Include="Classes\StructsAndEnums\HandMenuAction.cs" />
     <Compile Include="Classes\StructsAndEnums\VRControllers.cs" />
     <Compile Include="Classes\SyncedWithUnity\Gizmos\ControllerModel.cs" />
     <Compile Include="Classes\SyncedWithUnity\Gizmos\GizmosController.cs" />
@@ -160,9 +161,10 @@
     <Compile Include="Classes\SyncedWithUnity\Trail\TrailSpline.cs" />
     <Compile Include="Classes\UI\ModPanelUI.cs" />
     <Compile Include="Classes\UI\SettingsUI.cs" />
-    <Compile Include="Classes\Utils\ControllerButtonUtils.cs" />
-    <Compile Include="Classes\Utils\ControllerTypeUtils.cs" />
-    <Compile Include="Classes\Utils\AdjustmentModeUtils.cs" />
+    <Compile Include="Classes\Utils\EnumUtils\AdjustmentModeUtils.cs" />
+    <Compile Include="Classes\Utils\EnumUtils\ControllerButtonUtils.cs" />
+    <Compile Include="Classes\Utils\EnumUtils\ControllerTypeUtils.cs" />
+    <Compile Include="Classes\Utils\EnumUtils\HandMenuActionUtils.cs" />
     <Compile Include="Classes\Utils\InstallerUtils.cs" />
     <Compile Include="Classes\Utils\Range.cs" />
     <Compile Include="Classes\Utils\ResourcesUtils.cs" />
