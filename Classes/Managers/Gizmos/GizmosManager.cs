@@ -83,6 +83,7 @@ namespace EasyOffset {
         private void OnControllerTypeChanged(ControllerType controllerType) {
             LeftHandGizmosController.SetControllerType(controllerType, Hand.Left);
             RightHandGizmosController.SetControllerType(controllerType, Hand.Right);
+            UpdateVisibility();
         }
 
         #endregion
@@ -92,9 +93,11 @@ namespace EasyOffset {
         private void UpdateVisibility() {
             GetVisibilityValues(
                 PluginConfig.AdjustmentMode,
+                PluginConfig.DisplayControllerType,
                 out var isPivotVisible,
                 out var isSphericalBasisVisible,
                 out var isOrthonormalBasisVisible,
+                out var isOrthonormalBasisPointerVisible,
                 out var isControllerModelVisible,
                 out var isSwingPreviewVisible
             );
@@ -103,6 +106,7 @@ namespace EasyOffset {
                 isPivotVisible,
                 isSphericalBasisVisible,
                 isOrthonormalBasisVisible,
+                isOrthonormalBasisPointerVisible,
                 isControllerModelVisible,
                 isSwingPreviewVisible
             );
@@ -111,6 +115,7 @@ namespace EasyOffset {
                 isPivotVisible,
                 isSphericalBasisVisible,
                 isOrthonormalBasisVisible,
+                isOrthonormalBasisPointerVisible,
                 isControllerModelVisible,
                 isSwingPreviewVisible
             );
@@ -118,9 +123,11 @@ namespace EasyOffset {
 
         private static void GetVisibilityValues(
             AdjustmentMode adjustmentMode,
+            ControllerType controllerType,
             out bool isPivotVisible,
             out bool isSphericalBasisVisible,
             out bool isOrthonormalBasisVisible,
+            out bool isOrthonormalBasisPointerVisible,
             out bool isControllerModelVisible,
             out bool isSwingPreviewVisible
         ) {
@@ -128,13 +135,15 @@ namespace EasyOffset {
                 case AdjustmentMode.None:
                     isPivotVisible = false;
                     isOrthonormalBasisVisible = false;
+                    isOrthonormalBasisPointerVisible = false;
                     isSphericalBasisVisible = false;
                     isControllerModelVisible = true;
                     isSwingPreviewVisible = false;
                     break;
                 case AdjustmentMode.Basic:
                     isPivotVisible = true;
-                    isOrthonormalBasisVisible = false;
+                    isOrthonormalBasisVisible = controllerType == ControllerType.None;
+                    isOrthonormalBasisPointerVisible = false;
                     isSphericalBasisVisible = false;
                     isControllerModelVisible = true;
                     isSwingPreviewVisible = true;
@@ -142,6 +151,7 @@ namespace EasyOffset {
                 case AdjustmentMode.PivotOnly:
                     isPivotVisible = true;
                     isOrthonormalBasisVisible = true;
+                    isOrthonormalBasisPointerVisible = true;
                     isSphericalBasisVisible = false;
                     isControllerModelVisible = true;
                     isSwingPreviewVisible = false;
@@ -149,6 +159,7 @@ namespace EasyOffset {
                 case AdjustmentMode.DirectionOnly:
                     isPivotVisible = true;
                     isOrthonormalBasisVisible = false;
+                    isOrthonormalBasisPointerVisible = false;
                     isSphericalBasisVisible = true;
                     isControllerModelVisible = true;
                     isSwingPreviewVisible = true;
@@ -156,6 +167,7 @@ namespace EasyOffset {
                 case AdjustmentMode.DirectionAuto:
                     isPivotVisible = true;
                     isOrthonormalBasisVisible = false;
+                    isOrthonormalBasisPointerVisible = false;
                     isSphericalBasisVisible = true;
                     isControllerModelVisible = true;
                     isSwingPreviewVisible = true;
@@ -163,6 +175,7 @@ namespace EasyOffset {
                 case AdjustmentMode.RoomOffset:
                     isPivotVisible = false;
                     isOrthonormalBasisVisible = false;
+                    isOrthonormalBasisPointerVisible = false;
                     isSphericalBasisVisible = false;
                     isControllerModelVisible = true;
                     isSwingPreviewVisible = false;

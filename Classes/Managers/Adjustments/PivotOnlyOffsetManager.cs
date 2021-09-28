@@ -8,14 +8,19 @@ namespace EasyOffset {
     public class PivotOnlyOffsetManager : AbstractOffsetManager {
         #region Constructor
 
+        private readonly GizmosManager _gizmosManager;
+
         public PivotOnlyOffsetManager(
-            MainSettingsModelSO mainSettingsModelSO
+            MainSettingsModelSO mainSettingsModelSO,
+            GizmosManager gizmosManager
         ) : base(
             mainSettingsModelSO,
             AdjustmentMode.PivotOnly,
             3f,
             6f
-        ) { }
+        ) {
+            _gizmosManager = gizmosManager;
+        }
 
         #endregion
 
@@ -30,11 +35,20 @@ namespace EasyOffset {
             Vector3 freeHandPos,
             Quaternion freeHandRot
         ) {
-            var storedLocalPosition = adjustmentHand switch {
-                Hand.Left => PluginConfig.LeftHandPivotPosition,
-                Hand.Right => PluginConfig.RightHandPivotPosition,
-                _ => throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null)
-            };
+            Vector3 storedLocalPosition;
+
+            switch (adjustmentHand) {
+                case Hand.Left:
+                    storedLocalPosition = PluginConfig.LeftHandPivotPosition;
+                    _gizmosManager.LeftHandGizmosController.SetOrthonormalBasisFocus(true);
+                    break;
+                case Hand.Right:
+                    storedLocalPosition = PluginConfig.RightHandPivotPosition;
+                    _gizmosManager.RightHandGizmosController.SetOrthonormalBasisFocus(true);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null);
+            }
 
             _grabWorldPosition = TransformUtils.LocalToWorldVector(storedLocalPosition, adjustmentHandPos, adjustmentHandRot);
         }
@@ -65,7 +79,17 @@ namespace EasyOffset {
             Quaternion adjustmentHandRot,
             Vector3 freeHandPos,
             Quaternion freeHandRot
-        ) { }
+        ) {
+            switch (adjustmentHand) {
+                case Hand.Left:
+                    _gizmosManager.LeftHandGizmosController.SetOrthonormalBasisFocus(false);
+                    break;
+                case Hand.Right:
+                    _gizmosManager.RightHandGizmosController.SetOrthonormalBasisFocus(false);
+                    break;
+                default: throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null);
+            }
+        }
 
         #endregion
     }

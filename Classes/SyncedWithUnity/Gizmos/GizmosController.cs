@@ -18,12 +18,13 @@ namespace EasyOffset.SyncedWithUnity {
             bool isPivotVisible,
             bool isSphericalBasisVisible,
             bool isOrthonormalBasisVisible,
+            bool isOrthonormalBasisPointerVisible,
             bool isControllerModelVisible,
             bool isSwingPreviewVisible
         ) {
             pivot.SetVisible(isPivotVisible);
             sphericalBasis.SetVisible(isSphericalBasisVisible);
-            orthonormalBasis.SetVisible(isOrthonormalBasisVisible);
+            orthonormalBasis.SetVisible(isOrthonormalBasisVisible, isOrthonormalBasisPointerVisible);
             controllerModel.SetVisible(isControllerModelVisible);
             swingPreview.SetVisible(isSwingPreviewVisible);
         }
@@ -31,6 +32,10 @@ namespace EasyOffset.SyncedWithUnity {
         #endregion
 
         #region Interaction
+
+        public void SetOrthonormalBasisFocus(bool value) {
+            orthonormalBasis.SetFocus(value);
+        }
 
         public void SetSphericalBasisFocus(bool value) {
             sphericalBasis.SetFocus(value);

@@ -50,7 +50,7 @@
     <Reference Include="0Harmony, Version=2.5.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>D:\Games\Steam\steamapps\common\Beat Saber\Libs\0Harmony.dll</HintPath>
     </Reference>
-    <Reference Include="BSML, Version=1.5.4.0, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="BSML, Version=1.5.9.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>D:\Games\Steam\steamapps\common\Beat Saber\Plugins\BSML.dll</HintPath>
     </Reference>
     <Reference Include="System" />

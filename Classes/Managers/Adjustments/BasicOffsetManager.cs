@@ -8,14 +8,19 @@ namespace EasyOffset {
     public class BasicOffsetManager : AbstractOffsetManager {
         #region Constructor
 
+        private readonly GizmosManager _gizmosManager;
+
         public BasicOffsetManager(
-            MainSettingsModelSO mainSettingsModel
+            MainSettingsModelSO mainSettingsModel,
+            GizmosManager gizmosManager
         ) : base(
             mainSettingsModel,
             AdjustmentMode.Basic,
             4f,
             4f
-        ) { }
+        ) {
+            _gizmosManager = gizmosManager;
+        }
 
         #endregion
 
@@ -38,10 +43,12 @@ namespace EasyOffset {
                 case Hand.Left:
                     grabPivotPosition = PluginConfig.LeftHandPivotPosition;
                     _storedLocalDirection = PluginConfig.LeftHandSaberDirection;
+                    _gizmosManager.LeftHandGizmosController.SetOrthonormalBasisFocus(true);
                     break;
                 case Hand.Right:
                     grabPivotPosition = PluginConfig.RightHandPivotPosition;
                     _storedLocalDirection = PluginConfig.RightHandSaberDirection;
+                    _gizmosManager.RightHandGizmosController.SetOrthonormalBasisFocus(true);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null);
@@ -80,7 +87,17 @@ namespace EasyOffset {
             Quaternion adjustmentHandRot,
             Vector3 freeHandPos,
             Quaternion freeHandRot
-        ) { }
+        ) {
+            switch (adjustmentHand) {
+                case Hand.Left:
+                    _gizmosManager.LeftHandGizmosController.SetOrthonormalBasisFocus(false);
+                    break;
+                case Hand.Right:
+                    _gizmosManager.RightHandGizmosController.SetOrthonormalBasisFocus(false);
+                    break;
+                default: throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null);
+            }
+        }
 
         #endregion
     }
