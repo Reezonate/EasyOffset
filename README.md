@@ -24,12 +24,12 @@ In this mod offset is defined by three config values for each hand:
 and put it in `/plugins` directory inside your game folder
 
 # User guide
-###First steps:
+First steps:
 - Select your controller model in `DisplayController` list
 - Select button you can press without affecting your grip
 - If there is no such button, check `Use Free Hand` toggle to use button on the other hand
 
-###In order to get comfortable config, you have to achieve two goals:
+In order to get comfortable config, you have to achieve two goals:
 - `Pivot point` should be stable relative to its surrounding grid while you rotate your wrist. In other words - it should be aligned with your actual wrist pivot point as much as possible
 - Saber trail shouldn't move in a huge circle while you pointing forward and rolling your wrist comfortably. The smaller the radius, the better
 
