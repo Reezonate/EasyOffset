@@ -41,7 +41,9 @@ Simple adjustment mode made for beginners and casual players
 - While holding the selected button, move your hand and pick up the saber in a new position by releasing the button
 
 ## **Pivot Only** adjustment mode:
- - Allows you to change the `Pivot point` without changing the `Direction vector`
+Precise position adjustment mode. Allows you to change the `Pivot point` without changing the `Direction vector`
+
+ - Select `Pivot Only` in `Adjustment Mode` list
  - World aligned 3D grid serves as a stationary reference to notice `Pivot point` offset relative to your wrist pivot point. 
    Keeping it in one cell regardless of wrist rotation is good enough
  - Displays `Pivot point` coordinates in centimeters
@@ -49,7 +51,8 @@ Simple adjustment mode made for beginners and casual players
 ## **Direction Only** adjustment mode:
 Precise swing adjustment mode for advanced players. Best used with `Use Free Hand` enabled
 
- - Allows you to change the `Direction vector` without changing the `Pivot point`
+Allows you to change the `Direction vector` without changing the `Pivot point`
+
  - Select `Direction Only` in `Adjustment Mode` list
  - Move saber left or right for curved swing correction
  - Move saber up or down for underswing correction
