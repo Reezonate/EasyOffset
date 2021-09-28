@@ -7,7 +7,7 @@ While it is intuitive for beginners, it has a lot of tools for advanced players
 
 Adjustment process is extremely simple: push the button, move your hand, release the button
 
-![About image](media\About.png)
+![About image](media/About.png)
 
 In this mod offset is defined by three config values for each hand:
 
@@ -55,7 +55,7 @@ Precise swing adjustment mode for advanced players. Best used with `Use Free Han
  - Move saber up or down for underswing correction
  - Displays `Direction Vector` in spherical coordinates familiar to most players
 
-![Game Screenshot](media\DirectionMode.png)
+![Game Screenshot](media/DirectionMode.png)
 
 ## **Direction Auto** adjustment mode:
 Automatic calculation of the `Direction vector` based on your movement. Great for getting initial values for a new grip, requires manual tweaking in `Direction Only` mode afterwards. 
