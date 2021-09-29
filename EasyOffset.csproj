@@ -201,8 +201,5 @@
     <EmbeddedResource Include="Resources\AssetBundles\easy_offset" />
     <EmbeddedResource Include="Resources\BSML\ModPanelUI.bsml" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="media\DirectionMode.png" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

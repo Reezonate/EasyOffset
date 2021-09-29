@@ -8,6 +8,7 @@ namespace EasyOffset.SyncedWithUnity {
         [SerializeField] private Material material;
         [SerializeField] private MeshRenderer meshRenderer;
         [SerializeField] private GameObject visuals;
+        [SerializeField] private Transform sphereTransform;
         [SerializeField] private TextMeshPro textMesh;
         [SerializeField] private Transform textRoot;
 
@@ -64,6 +65,9 @@ namespace EasyOffset.SyncedWithUnity {
             
             _currentFadeRadius = Mathf.Lerp(_currentFadeRadius, _targetFadeRadius, t);
             _materialInstance.SetFloat(FadeRadiusPropertyId, _currentFadeRadius);
+
+            sphereTransform.localPosition = -_orthoDirection * (_currentScale - 1.0f);
+            sphereTransform.localScale = new Vector3(_currentScale, _currentScale, _currentScale);
         }
 
         #endregion
@@ -75,6 +79,8 @@ namespace EasyOffset.SyncedWithUnity {
         
         private const float NoFocusFadeRadius = 20 * Mathf.Deg2Rad;
         private const float FocusFadeRadius = 50 * Mathf.Deg2Rad;
+        
+        private Vector3 _orthoDirection = Vector3.forward;
 
         public void SetFocus(bool value) {
             _targetAlpha = value ? FocusAlpha : NoFocusAlpha;
@@ -85,7 +91,7 @@ namespace EasyOffset.SyncedWithUnity {
             float magnitude
         ) {
             if (!_isReady) return;
-            _targetScale = 1 / magnitude;
+            _targetScale = magnitude;
         }
 
         public void SetTextLookAt(
@@ -122,6 +128,8 @@ namespace EasyOffset.SyncedWithUnity {
             Vector3 orthoDirection
         ) {
             if (!_isReady) return;
+            
+            _orthoDirection = orthoDirection;
 
             var sphericalCoordinates = TransformUtils.OrthoToSphericalDirection(orthoDirection);
             _materialInstance.SetVector(SphericalCoordinatesPropertyId, sphericalCoordinates);
