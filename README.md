@@ -68,13 +68,13 @@ Allows you to change the `Pivot point` without changing the `Direction vector`
 ![Pivot Only mode preview](media/PivotOnly.png)
 
 ## `Direction Only` adjustment mode:
-Precise swing adjustment mode for advanced players, displays `Direction Vector` in spherical coordinates form. Best used with `Use Free Hand` enabled
+Precise swing adjustment mode for advanced players, displays `Direction Vector` in spherical coordinates. Best used with `Use Free Hand` enabled
 
 Allows you to change the `Direction vector` without changing the `Pivot point`
 
  - Select `Direction Only` in the `Adjustment Mode` list
- - Move saber left or right for the curved swing correction
- - Move saber up or down for the underswing correction
+ - Point saber left or right for the curved swing correction
+ - Point saber up or down for the underswing correction
  - Raise your free hand to zoom in for greater precision
 
 ![Direction Only mode preview](media/DirectionOnly.png)
