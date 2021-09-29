@@ -3,13 +3,10 @@
 
 This mod is **PC ONLY**! Quest version is planned, but not guaranteed
 
-##Coming soon™
+## Coming soon™
 - Config import and export in .Json format
 
-##Known issues
- - This mod is **PC ONLY**! Quest version is planned, but not guaranteed
-
-#Description
+# Description
 
 Beat Saber mod for quick and easy controller offset adjustment. 
 It allows you to see your controller in-game and use it as a reference. 
@@ -45,19 +42,19 @@ In order to get decent config, you have to achieve two goals:
 - `Pivot point` should be stable as the wrist rotates. In other words - it should be aligned with your actual wrist pivot point as much as possible
 - Saber trail shouldn't move in a huge circle while you pointing forward and rolling your wrist comfortably. The smaller the radius, the better
 
-To help you achieve these goals, there are four adjustment modes:
+To help you achieve these goals, there are three adjustment modes:
 - `Basic`
 - `Pivot Only`
 - `Direction Only`
-- `Direction Auto`
 
 ## `Basic` adjustment mode:
 Simple adjustment mode made for beginners and casual players
 - Select `Basic` in `Adjustment Mode` list
 - While holding the selected button, move your hand and pick up the saber in a new position by releasing the button
+- You can move saber along its axis using `ZOffset` slider
 
 ## `Pivot Only` adjustment mode:
-Precise position adjustment mode
+Precise position adjustment mode, displays `Pivot point` coordinates in centimeters
 
 Allows you to change the `Pivot point` without changing the `Direction vector`
 
@@ -65,21 +62,23 @@ Allows you to change the `Pivot point` without changing the `Direction vector`
  - Align the `Pivot point` with your wrist pivot point. You can see where it is relative to the controller IRL
  - World aligned 3D grid serves as a stationary reference to track `Pivot point` movement. 
    Keeping it in one cell regardless of wrist rotation is good enough
- - Displays `Pivot point` coordinates in centimeters
+ - You can move saber along its axis using `ZOffset` slider
 
 ![Pivot Only mode preview](media/PivotOnly.png)
 
 ## `Direction Only` adjustment mode:
-Precise swing adjustment mode for advanced players. Best used with `Use Free Hand` enabled
+Precise swing adjustment mode for advanced players, displays `Direction Vector` in spherical coordinates form. Best used with `Use Free Hand` enabled
 
 Allows you to change the `Direction vector` without changing the `Pivot point`
 
  - Select `Direction Only` in `Adjustment Mode` list
  - Move saber left or right for curved swing correction
  - Move saber up or down for underswing correction
- - Displays `Direction Vector` in spherical coordinates familiar to most players
+ - Raise your free hand to zoom in for greater precision
 
 ![Direction Only mode preview](media/DirectionOnly.png)
+
+# Extra features
 
 ## `Direction Auto` adjustment mode:
 Automatic calculation of the `Direction vector` based on your movement. Great for getting initial values for a new grip, requires manual tweaking in `Direction Only` mode afterwards. 
@@ -95,7 +94,7 @@ Sadly, it won't make your car hit 115s with perfect swing
 - Hold button until trail movement is minimized. 2-3 seconds usually enough
 
 ## `Room Offset` adjustment mode:
-World pulling locomotion in Beat Saber! This mode uses in-game room offset settings to move you around
+World pulling locomotion in Beat Saber! This mode uses base game room offset settings to move you around
 
 - Select `Room offset` in `Adjustment Mode` list
 - Hold button and move your hand
