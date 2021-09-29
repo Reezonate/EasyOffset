@@ -102,12 +102,12 @@ namespace EasyOffset.UI {
 
         #region shared ZOffset slider values
 
-        [UIValue("zo-min")] [UsedImplicitly] private float _zOffsetSliderMin = -0.2f;
+        [UIValue("zo-min")] [UsedImplicitly] private float _zOffsetSliderMin = -15f;
 
-        [UIValue("zo-max")] [UsedImplicitly] private float _zOffsetSliderMax = 0.2f;
+        [UIValue("zo-max")] [UsedImplicitly] private float _zOffsetSliderMax = 25f;
 
         [UIValue("zo-increment")] [UsedImplicitly]
-        private float _zOffsetSliderIncrement = 0.01f;
+        private float _zOffsetSliderIncrement = 1f;
 
         #endregion
 
@@ -118,9 +118,9 @@ namespace EasyOffset.UI {
         [UIValue("lzo-value")]
         [UsedImplicitly]
         private float LeftZOffsetSliderValue {
-            get => PluginConfig.LeftHandZOffset;
+            get => PluginConfig.LeftHandZOffset * 100f;
             set {
-                PluginConfig.LeftHandZOffset = value;
+                PluginConfig.LeftHandZOffset = value / 100f;
                 NotifyPropertyChanged();
             }
         }
@@ -128,7 +128,7 @@ namespace EasyOffset.UI {
         [UIAction("lzo-on-change")]
         [UsedImplicitly]
         private void OnLeftZOffsetValueChange(float value) {
-            PluginConfig.LeftHandZOffset = value;
+            PluginConfig.LeftHandZOffset = value / 100f;
         }
 
         #endregion
@@ -176,9 +176,9 @@ namespace EasyOffset.UI {
         [UIValue("rzo-value")]
         [UsedImplicitly]
         private float RightZOffsetSliderValue {
-            get => PluginConfig.RightHandZOffset;
+            get => PluginConfig.RightHandZOffset * 100f;
             set {
-                PluginConfig.RightHandZOffset = value;
+                PluginConfig.RightHandZOffset = value / 100f;
                 NotifyPropertyChanged();
             }
         }
@@ -186,7 +186,7 @@ namespace EasyOffset.UI {
         [UIAction("rzo-on-change")]
         [UsedImplicitly]
         private void OnRightZOffsetValueChange(float value) {
-            PluginConfig.RightHandZOffset = value;
+            PluginConfig.RightHandZOffset = value / 100f;
         }
 
         #endregion
@@ -258,8 +258,8 @@ namespace EasyOffset.UI {
                 default: throw new ArgumentOutOfRangeException();
             }
 
-            LeftZOffsetSliderValue = PluginConfig.LeftHandZOffset;
-            RightZOffsetSliderValue = PluginConfig.RightHandZOffset;
+            LeftZOffsetSliderValue = PluginConfig.LeftHandZOffset * 100f;
+            RightZOffsetSliderValue = PluginConfig.RightHandZOffset * 100f;
         }
 
         #endregion
