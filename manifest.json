@@ -4,10 +4,13 @@
   "name": "EasyOffset",
   "author": "Reezonate",
   "version": "1.0.0",
-  "description": "Easy controller/room offset modification tool",
-  "gameVersion": "1.16.4",
+  "description": "Easy controller offset adjustment tool",
+  "gameVersion": "1.18.0",
   "dependsOn": {
-    "BSIPA": "^4.0.5"
+    "BSIPA": "^4.0.5",
+    "BeatSaberMarkupLanguage": "^1.5.4"
   },
-  "features": []
+  "links": {
+    "project-home": "https://github.com/Reezonate/EasyOffset"
+  }
 }

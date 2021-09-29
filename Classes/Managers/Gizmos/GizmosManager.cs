@@ -39,8 +39,12 @@ namespace EasyOffset {
         }
 
         public void Dispose() {
-            Object.Destroy(LeftHandGizmosController.gameObject);
-            Object.Destroy(RightHandGizmosController.gameObject);
+            if (LeftHandGizmosController != null && LeftHandGizmosController.gameObject != null) {
+                Object.Destroy(LeftHandGizmosController.gameObject);
+            }
+            if (RightHandGizmosController != null && RightHandGizmosController.gameObject != null) {
+                Object.Destroy(RightHandGizmosController.gameObject);
+            }
 
             PluginConfig.AdjustmentModeChangedEvent -= OnAdjustmentModeChanged;
             PluginConfig.ControllerTypeChangedEvent -= OnControllerTypeChanged;
