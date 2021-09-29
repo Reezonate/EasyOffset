@@ -11,6 +11,7 @@ namespace EasyOffset.SyncedWithUnity {
         [SerializeField] private int lifetime;
         [SerializeField] private int resolution;
         [SerializeField] private float width;
+        [SerializeField] private float speedFactor = 3.0f;
 
         #endregion
 
@@ -42,10 +43,9 @@ namespace EasyOffset.SyncedWithUnity {
             trailRendererTransform.position = Vector3.zero;
             trailRendererTransform.rotation = Quaternion.identity;
 
-            var tr = transform;
-            var worldPosition = tr.position;
-            var worldDirection = tr.forward;
-            SetValues(worldPosition, worldDirection);
+            var worldPosition = transform.position;
+            var normal = (_lookAt - worldPosition).normalized;
+            SetValues(worldPosition, normal);
         }
 
         #endregion
@@ -53,7 +53,12 @@ namespace EasyOffset.SyncedWithUnity {
         #region SetValues
 
         private Vector3 _previousPosition = Vector3.zero;
+        private Vector3 _lookAt = Vector3.zero;
         private float _speed;
+
+        public void SetLookAt(Vector3 lookAt) {
+            _lookAt = lookAt;
+        }
 
         private void SetValues(
             Vector3 position,
@@ -69,7 +74,7 @@ namespace EasyOffset.SyncedWithUnity {
             var immediateSpeed = travelDistance / deltaTime - 0.2f;
             _speed = Mathf.Lerp(_speed, immediateSpeed, deltaTime * 2f);
 
-            var alpha = Mathf.Clamp(_speed / 3f, 0f, 1f);
+            var alpha = Mathf.Clamp(_speed / speedFactor, 0f, 1f);
             _materialInstance.color = new Color(1f, 1f, 1f, alpha);
         }
 

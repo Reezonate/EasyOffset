@@ -43,6 +43,7 @@ namespace EasyOffset.SyncedWithUnity {
 
         public void SetCameraPosition(Vector3 cameraWorldPosition) {
             orthonormalBasis.SetTextLookAt(cameraWorldPosition);
+            swingPreview.SetLookAt(cameraWorldPosition);
         }
 
         public void SetControllerTransform(

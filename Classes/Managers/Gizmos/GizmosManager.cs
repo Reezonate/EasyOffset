@@ -154,7 +154,7 @@ namespace EasyOffset {
                     isOrthonormalBasisPointerVisible = true;
                     isSphericalBasisVisible = false;
                     isControllerModelVisible = true;
-                    isSwingPreviewVisible = false;
+                    isSwingPreviewVisible = true;
                     break;
                 case AdjustmentMode.DirectionOnly:
                     isPivotVisible = true;
