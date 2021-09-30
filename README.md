@@ -10,7 +10,7 @@ Read [user guide](https://github.com/Reezonate/EasyOffset#how-to-use) for more i
 
 In this mod offset is defined by three config values for each hand:
 
-- `Pivot point` - saber origin position relative to the controller
+- `Pivot point` - saber origin position relative to the controller (white dot surrounded by a grid)
 - `Direction vector` - saber tip position relative to `Pivot point`
 - `ZOffset` - saber position offset along `Direction vector`
 
