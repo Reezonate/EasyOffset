@@ -48,13 +48,19 @@ To help you achieve these goals, there are three adjustment modes:
 - `Pivot Only`
 - `Direction Only`
 
-## `Basic` adjustment mode:
+## `Basic` adjustment mode: 
+``` diff
++ Easy, suitable for any skill level
+```
 Simple adjustment mode made for beginners and casual players
 - Select `Basic` in the `Adjustment Mode` list
 - While holding the selected button, move your hand and pick up the saber in a new position by releasing the button
 - You can move the saber along its axis using the `ZOffset` slider
 
-## `Pivot Only` adjustment mode:
+## `Pivot Only` adjustment mode: 
+``` diff
++ Easy - suitable for any skill level
+```
 Precise position adjustment mode, displays `Pivot point` coordinates in centimeters
 
 Allows you to change the `Pivot point` without changing the `Direction vector`
@@ -68,6 +74,9 @@ Allows you to change the `Pivot point` without changing the `Direction vector`
 ![Pivot Only mode preview](media/PivotOnly.png)
 
 ## `Direction Only` adjustment mode:
+``` diff
+- Advanced: requires understanding of your own swinging technique
+```
 Precise swing adjustment mode for advanced players, displays `Direction Vector` in spherical coordinates. Best used with `Use Free Hand` enabled
 
 Allows you to change the `Direction vector` without changing the `Pivot point`
@@ -82,6 +91,9 @@ Allows you to change the `Direction vector` without changing the `Pivot point`
 # Extra features
 
 ## `Direction Auto` adjustment mode:
+``` diff
+- Expert: requires deep understanding of what good config looks like
+```
 Automatic calculation of the `Direction vector` based on your movement. Great for getting initial values for a new grip, requires manual tweaking in `Direction Only` mode afterward. 
 Affects **ONLY** `Direction vector`
 
@@ -95,6 +107,9 @@ Sadly, it won't make your car hit 115s with a perfect swing
 - Hold the button until trail movement is minimized. 2-3 seconds usually enough
 
 ## `Room Offset` adjustment mode:
+``` diff
++ Easy: suitable for any skill level
+```
 World pulling locomotion in Beat Saber! This mode uses base game room offset settings to move you around
 
 - Select `Room offset` in the `Adjustment Mode` list
