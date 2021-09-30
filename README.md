@@ -84,8 +84,9 @@ Precise swing adjustment mode for advanced players, displays `Direction Vector` 
 Allows you to change the `Direction vector` without changing the `Pivot point`
 
  - Select `Direction Only` in the `Adjustment Mode` list
- - Point saber left or right for the curved swing correction
- - Point saber up or down for the underswing correction
+ - Point forward with your palm facing down and press the button
+ - Rotate controller left or right for the curved swing correction (use the horizontal yellow line as a guide)
+ - Rotate controller up or down for the underswing correction (use the vertical yellow line as a guide)
  - Raise your free hand to zoom in for greater precision
 
 ![Direction Only mode preview](media/DirectionOnly.png)
