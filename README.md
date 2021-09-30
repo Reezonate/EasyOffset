@@ -52,7 +52,7 @@ To help you achieve these goals, there are three adjustment modes:
 
 ## `Basic` adjustment mode: 
 ``` diff
-+ Easy, suitable for any skill level
++ Easy: suitable for any skill level
 ```
 Simple adjustment mode made for beginners and casual players
 - Select `Basic` in the `Adjustment Mode` list
@@ -61,7 +61,7 @@ Simple adjustment mode made for beginners and casual players
 
 ## `Pivot Only` adjustment mode: 
 ``` diff
-+ Easy - suitable for any skill level
++ Easy: suitable for any skill level
 ```
 Precise position adjustment mode, displays `Pivot point` coordinates in centimeters
 
