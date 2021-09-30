@@ -18,6 +18,8 @@ In this mod offset is defined by three config values for each hand:
 
 Not compatible with other offset adjustment mods (e.g. SaberTailor, ControllerTweaks)
 
+Config values are different from base game settings, SaberTailor, etc.
+
 **PC ONLY**! Quest version is planned, but not guaranteed
 
 # Coming soon™
