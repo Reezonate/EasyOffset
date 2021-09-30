@@ -104,9 +104,9 @@ If you'd tape your controller to a car wheel, this mode will simply align the sa
 Sadly, it won't make your car hit 115s with a perfect swing
 
 - Select `Direction Auto` in the `Adjustment Mode` list
-- Push the button and start rolling your wrist left and right. 
-  Not like you're cutting the block, but as if you are trying to drill a hole in it
+- Point forward, press the button and start rotating your wrist as you do when turning a doorknob
 - Hold the button until trail movement is minimized. 2-3 seconds usually enough
+- Fine-tune using the `Direction Only` mode
 
 ## `Room Offset` adjustment mode:
 ``` diff
