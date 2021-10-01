@@ -9,6 +9,24 @@ using JetBrains.Annotations;
 
 namespace EasyOffset.UI {
     public class ModPanelUI : NotifiableSingleton<ModPanelUI> {
+        #region Options panel
+
+        #region Active
+
+        private bool _optionsPanelActive = true;
+
+        [UIValue("options-panel-active")]
+        [UsedImplicitly]
+        private bool OptionsPanelActive {
+            get => _optionsPanelActive;
+            set {
+                _optionsPanelActive = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        #endregion
+
         #region AdjustmentMode
 
         [UIValue("am-hint")] [UsedImplicitly] private string _adjustmentModeHint = "Hold assigned button and move your hand" +
@@ -74,19 +92,6 @@ namespace EasyOffset.UI {
 
         #endregion
 
-        #region EnableMidPlayAdjustment
-
-        [UIValue("mpa-value")] [UsedImplicitly]
-        private bool _enableMidPlayAdjustmentValue = PluginConfig.EnableMidPlayAdjustment;
-
-        [UIAction("mpa-on-change")]
-        [UsedImplicitly]
-        private void EnableMidPlayAdjustmentOnChange(bool value) {
-            PluginConfig.EnableMidPlayAdjustment = value;
-        }
-
-        #endregion
-
         #region UseFreeHand
 
         [UIValue("ufh-value")] [UsedImplicitly]
@@ -100,7 +105,27 @@ namespace EasyOffset.UI {
 
         #endregion
 
-        #region shared ZOffset slider values
+        #endregion
+
+        #region Hands panel
+
+        #region Active
+
+        private bool _handsPanelActive = true;
+
+        [UIValue("hands-panel-active")]
+        [UsedImplicitly]
+        private bool HandsPanelActive {
+            get => _handsPanelActive;
+            set {
+                _handsPanelActive = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region ZOffset sliders values
 
         [UIValue("zo-min")] [UsedImplicitly] private float _zOffsetSliderMin = -15f;
 
@@ -111,9 +136,7 @@ namespace EasyOffset.UI {
 
         #endregion
 
-        #region LeftHand
-
-        #region Z Offset Slider
+        #region LeftHand Z Offset Slider
 
         [UIValue("lzo-value")]
         [UsedImplicitly]
@@ -133,7 +156,7 @@ namespace EasyOffset.UI {
 
         #endregion
 
-        #region ActionsMenu
+        #region LeftHand actions menu
 
         [UIValue("lam-choices")] [UsedImplicitly]
         private List<object> _leftActionMenuChoices = HandMenuActionUtils.LeftHandMenuChoicesObjects.ToList();
@@ -167,11 +190,7 @@ namespace EasyOffset.UI {
 
         #endregion
 
-        #endregion
-
-        #region RightHand
-
-        #region Z Offset Slider
+        #region RightHand Z Offset Slider
 
         [UIValue("rzo-value")]
         [UsedImplicitly]
@@ -191,7 +210,7 @@ namespace EasyOffset.UI {
 
         #endregion
 
-        #region ActionsMenu
+        #region RightHand actions menu
 
         [UIValue("ram-choices")] [UsedImplicitly]
         private List<object> _rightActionMenuChoices = HandMenuActionUtils.RightHandMenuChoicesObjects.ToList();
@@ -222,8 +241,6 @@ namespace EasyOffset.UI {
                 RightActionMenuChoice = HandMenuActionUtils.TypeToName(HandMenuAction.Default);
             }).Start();
         }
-
-        #endregion
 
         #endregion
 
@@ -264,6 +281,93 @@ namespace EasyOffset.UI {
 
         #endregion
 
+        #endregion
+
+        #region Save panel
+
+        #region Active
+
+        private bool _savePanelActive = false;
+
+        [UIValue("save-panel-active")]
+        [UsedImplicitly]
+        private bool SavePanelActive {
+            get => _savePanelActive;
+            set {
+                _savePanelActive = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region Cancel button
+
+        [UIAction("sp-cancel-on-click")]
+        [UsedImplicitly]
+        private void SavePanelCancelOnClick() {
+            SavePanelActive = false;
+            OptionsPanelActive = true;
+            HandsPanelActive = true;
+            BottomPanelActive = true;
+        }
+
+        #endregion
+
+        #region Save button
+
+        [UIAction("sp-save-on-click")]
+        [UsedImplicitly]
+        private void SavePanelSaveOnClick() {
+            SavePanelActive = false;
+            OptionsPanelActive = true;
+            HandsPanelActive = true;
+            BottomPanelActive = true;
+        }
+
+        #endregion
+
+        #endregion
+
+        #region BottomPanel
+
+        #region Active
+
+        private bool _bottomPanelActive = true;
+
+        [UIValue("bottom-panel-active")]
+        [UsedImplicitly]
+        private bool BottomPanelActive {
+            get => _bottomPanelActive;
+            set {
+                _bottomPanelActive = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region Save button
+
+        [UIAction("bp-save-on-click")]
+        [UsedImplicitly]
+        private void BottomPanelSaveOnClick() {
+            OptionsPanelActive = false;
+            HandsPanelActive = false;
+            BottomPanelActive = false;
+            SavePanelActive = true;
+        }
+
+        #endregion
+
+        #region Load button
+
+        [UIAction("bp-load-on-click")]
+        [UsedImplicitly]
+        private void BottomPanelLoadOnClick() { }
+
+        #endregion
+
         #region UI Lock
 
         [UIValue("interactable")]
@@ -289,6 +393,8 @@ namespace EasyOffset.UI {
         private void LockOnChange(bool value) {
             Interactable = !value;
         }
+
+        #endregion
 
         #endregion
     }
