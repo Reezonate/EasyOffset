@@ -411,5 +411,31 @@ namespace EasyOffset.Configuration {
         }
 
         #endregion
+
+        #region Preset
+
+        public static void ApplyPreset(IConfigPreset preset) {
+            RightHandPivotPosition = preset.RightHandPivotPosition;
+            RightHandSaberDirection = preset.RightHandSaberDirection;
+            RightHandZOffset = preset.RightHandZOffset;
+            LeftHandPivotPosition = preset.LeftHandPivotPosition;
+            LeftHandSaberDirection = preset.LeftHandSaberDirection;
+            LeftHandZOffset = preset.LeftHandZOffset;
+        }
+
+        public static IConfigPreset GeneratePreset() {
+            return new ConfigPresetV1(
+                DateTimeOffset.Now.ToUnixTimeSeconds(),
+                DisplayControllerType,
+                RightHandPivotPosition,
+                RightHandSaberDirection,
+                RightHandZOffset,
+                LeftHandPivotPosition,
+                LeftHandSaberDirection,
+                LeftHandZOffset
+            );
+        }
+
+        #endregion
     }
 }

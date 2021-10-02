@@ -53,6 +53,9 @@
     <Reference Include="BSML, Version=1.5.9.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>D:\Games\Steam\steamapps\common\Beat Saber\Plugins\BSML.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
+      <HintPath>D:\Games\Steam\steamapps\common\Beat Saber\Libs\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -122,7 +125,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\BundleLoader.cs" />
+    <Compile Include="Classes\Configuration\ConfigPresetsStorage\ConfigPresetsStorage.cs" />
+    <Compile Include="Classes\Configuration\ConfigPresetsStorage\PresetUtils.cs" />
+    <Compile Include="Classes\Configuration\ConfigPresetsStorage\StoredConfigPreset.cs" />
+    <Compile Include="Classes\Configuration\ConfigPresets\ConfigPresetV1.cs" />
     <Compile Include="Classes\Configuration\CachedVariable.cs" />
+    <Compile Include="Classes\Configuration\ConfigPresets\IConfigPreset.cs" />
     <Compile Include="Classes\Configuration\Defaults.cs" />
     <Compile Include="Classes\Configuration\PluginConfig.cs" />
     <Compile Include="Classes\Configuration\ConfigFileData.cs" />
@@ -159,6 +167,7 @@
     <Compile Include="Classes\SyncedWithUnity\Trail\Trail.cs" />
     <Compile Include="Classes\SyncedWithUnity\Trail\TrailMesh.cs" />
     <Compile Include="Classes\SyncedWithUnity\Trail\TrailSpline.cs" />
+    <Compile Include="Classes\UI\ModPanelStateMachine.cs" />
     <Compile Include="Classes\UI\ModPanelUI.cs" />
     <Compile Include="Classes\UI\SettingsUI.cs" />
     <Compile Include="Classes\Utils\EnumUtils\AdjustmentModeUtils.cs" />
