@@ -167,6 +167,7 @@
     <Compile Include="Classes\SyncedWithUnity\Trail\Trail.cs" />
     <Compile Include="Classes\SyncedWithUnity\Trail\TrailMesh.cs" />
     <Compile Include="Classes\SyncedWithUnity\Trail\TrailSpline.cs" />
+    <Compile Include="Classes\UI\ModPanelStateMachine.cs" />
     <Compile Include="Classes\UI\ModPanelUI.cs" />
     <Compile Include="Classes\UI\SettingsUI.cs" />
     <Compile Include="Classes\Utils\EnumUtils\AdjustmentModeUtils.cs" />

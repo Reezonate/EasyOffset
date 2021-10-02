@@ -5,27 +5,30 @@ using System.Threading;
 using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.Components;
 using EasyOffset.Configuration;
+using HMUI;
 using JetBrains.Annotations;
 
 namespace EasyOffset.UI {
     public class ModPanelUI : NotifiableSingleton<ModPanelUI> {
-        #region Options panel
+        #region Main page
 
         #region Active
 
-        private bool _optionsPanelActive = true;
+        private bool _mainPageActive = true;
 
-        [UIValue("options-panel-active")]
+        [UIValue("main-page-active")]
         [UsedImplicitly]
-        private bool OptionsPanelActive {
-            get => _optionsPanelActive;
+        private bool MainPageActive {
+            get => _mainPageActive;
             set {
-                _optionsPanelActive = value;
+                _mainPageActive = value;
                 NotifyPropertyChanged();
             }
         }
 
         #endregion
+
+        #region Options panel
 
         #region AdjustmentMode
 
@@ -108,22 +111,6 @@ namespace EasyOffset.UI {
         #endregion
 
         #region Hands panel
-
-        #region Active
-
-        private bool _handsPanelActive = true;
-
-        [UIValue("hands-panel-active")]
-        [UsedImplicitly]
-        private bool HandsPanelActive {
-            get => _handsPanelActive;
-            set {
-                _handsPanelActive = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        #endregion
 
         #region ZOffset sliders values
 
@@ -283,79 +270,17 @@ namespace EasyOffset.UI {
 
         #endregion
 
-        #region Save panel
-
-        #region Active
-
-        private bool _savePanelActive = false;
-
-        [UIValue("save-panel-active")]
-        [UsedImplicitly]
-        private bool SavePanelActive {
-            get => _savePanelActive;
-            set {
-                _savePanelActive = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        #endregion
-
-        #region Cancel button
-
-        [UIAction("sp-cancel-on-click")]
-        [UsedImplicitly]
-        private void SavePanelCancelOnClick() {
-            SavePanelActive = false;
-            OptionsPanelActive = true;
-            HandsPanelActive = true;
-            BottomPanelActive = true;
-        }
-
-        #endregion
-
-        #region Save button
-
-        [UIAction("sp-save-on-click")]
-        [UsedImplicitly]
-        private void SavePanelSaveOnClick() {
-            SavePanelActive = false;
-            OptionsPanelActive = true;
-            HandsPanelActive = true;
-            BottomPanelActive = true;
-        }
-
-        #endregion
-
-        #endregion
-
         #region BottomPanel
-
-        #region Active
-
-        private bool _bottomPanelActive = true;
-
-        [UIValue("bottom-panel-active")]
-        [UsedImplicitly]
-        private bool BottomPanelActive {
-            get => _bottomPanelActive;
-            set {
-                _bottomPanelActive = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        #endregion
 
         #region Save button
 
         [UIAction("bp-save-on-click")]
         [UsedImplicitly]
         private void BottomPanelSaveOnClick() {
-            OptionsPanelActive = false;
-            HandsPanelActive = false;
-            BottomPanelActive = false;
-            SavePanelActive = true;
+            MainPageActive = false;
+            PresetsBrowserActive = true;
+            PresetsBrowserSaveActive = true;
+            PresetsBrowserLoadActive = false;
         }
 
         #endregion
@@ -364,7 +289,12 @@ namespace EasyOffset.UI {
 
         [UIAction("bp-load-on-click")]
         [UsedImplicitly]
-        private void BottomPanelLoadOnClick() { }
+        private void BottomPanelLoadOnClick() {
+            MainPageActive = false;
+            PresetsBrowserActive = true;
+            PresetsBrowserSaveActive = false;
+            PresetsBrowserLoadActive = true;
+        }
 
         #endregion
 
@@ -393,6 +323,132 @@ namespace EasyOffset.UI {
         private void LockOnChange(bool value) {
             Interactable = !value;
         }
+
+        #endregion
+
+        #endregion
+
+        #endregion
+
+        #region PresetsBrowser
+
+        #region Active
+
+        private bool _presetsBrowserActive;
+
+        [UIValue("pb-active")]
+        [UsedImplicitly]
+        private bool PresetsBrowserActive {
+            get => _presetsBrowserActive;
+            set {
+                _presetsBrowserActive = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region Preset file name
+
+        private string _presetFileName = "NewPreset";
+
+        [UIValue("pb-name-value")]
+        [UsedImplicitly]
+        private string PresetFileName {
+            get => _presetFileName;
+            set {
+                _presetFileName = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region List
+
+        private List<StoredConfigPreset> _storedConfigPresets = new();
+
+        [UIComponent("pb-list")] [UsedImplicitly]
+        private CustomListTableData _presetsBrowserList;
+
+        [UIAction("pb-list-select-cell")]
+        [UsedImplicitly]
+        private void PresetsBrowserListSelectCell(TableView tableView, int row) {
+            if (row >= _storedConfigPresets.Count) return;
+            var selectedConfig = _storedConfigPresets[row];
+            PresetFileName = selectedConfig.Name;
+        }
+
+        [UIAction("pb-refresh-on-click")]
+        [UsedImplicitly]
+        private void PresetsBrowserRefreshOnClick() {
+            UpdatePresetsBrowserList();
+        }
+
+        private void UpdatePresetsBrowserList() {
+            _presetsBrowserList.data.Clear();
+            _storedConfigPresets = ConfigPresetsStorage.GetAllStoredPresets();
+
+            foreach (var storedConfigPreset in _storedConfigPresets) {
+                _presetsBrowserList.data.Add(new CustomListTableData.CustomCellInfo(
+                    $"<color=red>{storedConfigPreset.Name}</color>"
+                ));
+            }
+
+            _presetsBrowserList.tableView.ReloadData();
+            _presetsBrowserList.tableView.ClearSelection();
+        }
+
+        #endregion
+
+        #region Cancel button
+
+        [UIAction("pb-cancel-on-click")]
+        [UsedImplicitly]
+        private void PresetsBrowserCancelOnClick() {
+            MainPageActive = true;
+            PresetsBrowserActive = false;
+        }
+
+        #endregion
+
+        #region Save button
+
+        private bool _presetsBrowserSaveActive;
+
+        [UIValue("pb-save-active")]
+        [UsedImplicitly]
+        private bool PresetsBrowserSaveActive {
+            get => _presetsBrowserSaveActive;
+            set {
+                _presetsBrowserSaveActive = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        [UIAction("pb-save-on-click")]
+        [UsedImplicitly]
+        private void PresetsBrowserSaveOnClick() { }
+
+        #endregion
+
+        #region Load button
+
+        private bool _presetsBrowserLoadActive;
+
+        [UIValue("pb-load-active")]
+        [UsedImplicitly]
+        private bool PresetsBrowserLoadActive {
+            get => _presetsBrowserLoadActive;
+            set {
+                _presetsBrowserLoadActive = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        [UIAction("pb-load-on-click")]
+        [UsedImplicitly]
+        private void PresetsBrowserLoadOnClick() { }
 
         #endregion
 

@@ -7,7 +7,7 @@ namespace EasyOffset.Configuration {
         public readonly bool LoadFailed;
         public readonly IConfigPreset ConfigPreset;
 
-        public string Name => Path.GetFileName(AbsoluteFilePath);
+        public string Name => Path.GetFileName(AbsoluteFilePath).Replace(".json", "");
 
         public StoredConfigPreset(
             string absoluteFilePath,
