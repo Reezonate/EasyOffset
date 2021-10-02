@@ -262,6 +262,10 @@ namespace EasyOffset.UI {
                 default: throw new ArgumentOutOfRangeException();
             }
 
+            UpdateZOffsetSliders();
+        }
+
+        private void UpdateZOffsetSliders() {
             LeftZOffsetSliderValue = PluginConfig.LeftHandZOffset * 100f;
             RightZOffsetSliderValue = PluginConfig.RightHandZOffset * 100f;
         }
@@ -277,6 +281,8 @@ namespace EasyOffset.UI {
         [UIAction("bp-save-on-click")]
         [UsedImplicitly]
         private void BottomPanelSaveOnClick() {
+            UpdatePresetsBrowserList();
+
             MainPageActive = false;
             PresetsBrowserActive = true;
             PresetsBrowserSaveActive = true;
@@ -290,6 +296,8 @@ namespace EasyOffset.UI {
         [UIAction("bp-load-on-click")]
         [UsedImplicitly]
         private void BottomPanelLoadOnClick() {
+            UpdatePresetsBrowserList();
+
             MainPageActive = false;
             PresetsBrowserActive = true;
             PresetsBrowserSaveActive = false;
@@ -362,6 +370,18 @@ namespace EasyOffset.UI {
             }
         }
 
+        [UIAction("pb-name-on-change")]
+        [UsedImplicitly]
+        private void PresetFilenameOnChange(string value) {
+            for (var i = 0; i < _storedConfigPresets.Count; i++) {
+                if (_storedConfigPresets[i].Name != value) continue;
+                _presetsBrowserList.tableView.SelectCellWithIdx(i);
+                return;
+            }
+
+            _presetsBrowserList.tableView.ClearSelection();
+        }
+
         #endregion
 
         #region List
@@ -391,7 +411,7 @@ namespace EasyOffset.UI {
 
             foreach (var storedConfigPreset in _storedConfigPresets) {
                 _presetsBrowserList.data.Add(new CustomListTableData.CustomCellInfo(
-                    $"<color=red>{storedConfigPreset.Name}</color>"
+                    PresetUtils.GetPresetCellString(storedConfigPreset)
                 ));
             }
 
@@ -414,6 +434,11 @@ namespace EasyOffset.UI {
 
         #region Save button
 
+        [UIValue("pb-save-hint")] [UsedImplicitly]
+        private string _presetsBrowserSaveHint = "Save current preset to file" +
+                                                 "\n" +
+                                                 "\n<color=red>This action will overwrite existing files</color>";
+
         private bool _presetsBrowserSaveActive;
 
         [UIValue("pb-save-active")]
@@ -428,13 +453,22 @@ namespace EasyOffset.UI {
 
         [UIAction("pb-save-on-click")]
         [UsedImplicitly]
-        private void PresetsBrowserSaveOnClick() { }
+        private void PresetsBrowserSaveOnClick() {
+            if (!ConfigPresetsStorage.SaveCurrentPreset(PresetFileName)) return;
+            MainPageActive = true;
+            PresetsBrowserActive = false;
+        }
 
         #endregion
 
         #region Load button
 
         private bool _presetsBrowserLoadActive;
+
+        [UIValue("pb-load-hint")] [UsedImplicitly]
+        private string _presetsBrowserLoadHint = "Load preset from file" +
+                                                 "\n" +
+                                                 "\n<color=red>Any unsaved changes will be lost</color>";
 
         [UIValue("pb-load-active")]
         [UsedImplicitly]
@@ -448,7 +482,12 @@ namespace EasyOffset.UI {
 
         [UIAction("pb-load-on-click")]
         [UsedImplicitly]
-        private void PresetsBrowserLoadOnClick() { }
+        private void PresetsBrowserLoadOnClick() {
+            if (!ConfigPresetsStorage.LoadPreset(PresetFileName)) return;
+            MainPageActive = true;
+            PresetsBrowserActive = false;
+            UpdateZOffsetSliders();
+        }
 
         #endregion
 

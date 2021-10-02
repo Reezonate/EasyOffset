@@ -6,6 +6,26 @@ namespace EasyOffset.Configuration {
     public static class ConfigPresetsStorage {
         private static readonly string PresetsFolderPath = Path.Combine(UnityGame.UserDataPath, "EasyOffset\\Presets\\");
 
+        #region SaveCurrentPreset
+
+        public static bool SaveCurrentPreset(string fileName) {
+            var absolutePath = Path.Combine(PresetsFolderPath, $"{fileName}.json");
+            return PresetUtils.WritePresetToFile(absolutePath, PluginConfig.GeneratePreset());
+        }
+
+        #endregion
+
+        #region LoadPreset
+
+        public static bool LoadPreset(string fileName) {
+            var absolutePath = Path.Combine(PresetsFolderPath, $"{fileName}.json");
+            if (!PresetUtils.ReadPresetFromFile(absolutePath, out var preset)) return false;
+            PluginConfig.ApplyPreset(preset);
+            return true;
+        }
+
+        #endregion
+
         #region GetAllStoredPresets
 
         public static List<StoredConfigPreset> GetAllStoredPresets() {
@@ -24,6 +44,7 @@ namespace EasyOffset.Configuration {
             }
 
             allPresets.Sort();
+            allPresets.Reverse();
             return allPresets;
         }
 
