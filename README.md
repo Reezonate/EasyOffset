@@ -23,7 +23,8 @@ Config values are different from base game settings, SaberTailor, etc.
 **PC ONLY**! Quest version is planned, but not guaranteed
 
 # Coming soon™
-- Config import and export in .json format
+- SaberTailor config import
+- Base game config import
 
 # How to install
 - Install **BSIPA** and **BeatSaberMarkupLanguage** dependencies using
