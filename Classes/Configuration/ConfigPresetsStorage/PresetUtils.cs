@@ -20,9 +20,10 @@ namespace EasyOffset.Configuration {
         }
 
         private static IConfigPreset ParsePresetFromJson(JObject jObject) {
-            var presetVersion = jObject["version"]?.Value<string>();
+            var presetVersion = jObject.GetValue("version", StringComparison.OrdinalIgnoreCase)?.Value<string>();
             return presetVersion switch {
                 "1.0" => ConfigPresetV1.Deserialize(jObject),
+                "SaberTailor" => SaberTailorConfigPreset.Deserialize(jObject),
                 null => throw new Exception("Preset version is not specified"),
                 _ => throw new Exception($"Unknown preset version: {presetVersion}")
             };
@@ -58,8 +59,14 @@ namespace EasyOffset.Configuration {
             if (preset.LoadFailed) {
                 stringBuilder.Append("<color=red>");
                 stringBuilder.AppendFixed("load error", TimeColumnCharCount);
-            } else {
-                stringBuilder.AppendTimeString(preset.ConfigPreset.UnixTimestamp, TimeColumnCharCount);
+            } else switch(preset.ConfigPreset.ConfigVersion) {
+                case "SaberTailor":
+                    stringBuilder.Append("<color=#CC9378>");
+                    stringBuilder.AppendFixed("ST", TimeColumnCharCount);
+                    break;
+                default:
+                    stringBuilder.AppendTimeString(preset.ConfigPreset.UnixTimestamp, TimeColumnCharCount);
+                    break;
             }
 
             stringBuilder.Append("</mspace>");

@@ -70,32 +70,17 @@ namespace EasyOffset.Configuration {
         }
 
         public static ConfigPresetV1 Deserialize(JObject jObject) {
-            var unixTimestamp = jObject["unixTimestamp"]!.Value<long>();
-            var controllerType = ControllerTypeUtils.NameToTypeOrDefault(jObject["controllerType"]!.Value<string>());
+            var unixTimestamp = jObject.GetValue("unixTimestamp", StringComparison.OrdinalIgnoreCase)!.Value<long>();
+            var controllerName = jObject.GetValue("controllerType", StringComparison.OrdinalIgnoreCase)!.Value<string>();
+            var controllerType = ControllerTypeUtils.NameToTypeOrDefault(controllerName);
 
-            var rightHandPivotPosition = new Vector3(
-                jObject["rightHandPivotPositionX"]!.Value<float>(),
-                jObject["rightHandPivotPositionY"]!.Value<float>(),
-                jObject["rightHandPivotPositionZ"]!.Value<float>()
-            );
-            var rightHandSaberDirection = new Vector3(
-                jObject["rightHandSaberDirectionX"]!.Value<float>(),
-                jObject["rightHandSaberDirectionY"]!.Value<float>(),
-                jObject["rightHandSaberDirectionZ"]!.Value<float>()
-            );
-            var rightHandZOffset = jObject["rightHandZOffset"]!.Value<float>();
+            var rightHandPivotPosition = ParseVector(jObject, "rightHandPivotPosition");
+            var rightHandSaberDirection = ParseVector(jObject, "rightHandSaberDirection");
+            var rightHandZOffset = jObject.GetValue("rightHandZOffset", StringComparison.OrdinalIgnoreCase)!.Value<float>();
 
-            var leftHandPivotPosition = new Vector3(
-                jObject["leftHandPivotPositionX"]!.Value<float>(),
-                jObject["leftHandPivotPositionY"]!.Value<float>(),
-                jObject["leftHandPivotPositionZ"]!.Value<float>()
-            );
-            var leftHandSaberDirection = new Vector3(
-                jObject["leftHandSaberDirectionX"]!.Value<float>(),
-                jObject["leftHandSaberDirectionY"]!.Value<float>(),
-                jObject["leftHandSaberDirectionZ"]!.Value<float>()
-            );
-            var leftHandZOffset = jObject["leftHandZOffset"]!.Value<float>();
+            var leftHandPivotPosition = ParseVector(jObject, "leftHandPivotPosition");
+            var leftHandSaberDirection = ParseVector(jObject, "leftHandSaberDirection");
+            var leftHandZOffset = jObject.GetValue("leftHandZOffset", StringComparison.OrdinalIgnoreCase)!.Value<float>();
 
             return new ConfigPresetV1(
                 unixTimestamp,
@@ -106,6 +91,14 @@ namespace EasyOffset.Configuration {
                 leftHandPivotPosition,
                 leftHandSaberDirection,
                 leftHandZOffset
+            );
+        }
+
+        private static Vector3 ParseVector(JObject jObject, string key) {
+            return new(
+                jObject.GetValue($"{key}X", StringComparison.OrdinalIgnoreCase)!.Value<float>(),
+                jObject.GetValue($"{key}Y", StringComparison.OrdinalIgnoreCase)!.Value<float>(),
+                jObject.GetValue($"{key}Z", StringComparison.OrdinalIgnoreCase)!.Value<float>()
             );
         }
 

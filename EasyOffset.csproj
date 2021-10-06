@@ -130,7 +130,9 @@
     <Compile Include="Classes\Configuration\ConfigPresetsStorage\StoredConfigPreset.cs" />
     <Compile Include="Classes\Configuration\ConfigPresets\ConfigPresetV1.cs" />
     <Compile Include="Classes\Configuration\CachedVariable.cs" />
+    <Compile Include="Classes\Configuration\ConfigPresets\ConfigConversions.cs" />
     <Compile Include="Classes\Configuration\ConfigPresets\IConfigPreset.cs" />
+    <Compile Include="Classes\Configuration\ConfigPresets\SaberTailorConfigPreset.cs" />
     <Compile Include="Classes\Configuration\Defaults.cs" />
     <Compile Include="Classes\Configuration\PluginConfig.cs" />
     <Compile Include="Classes\Configuration\ConfigFileData.cs" />
