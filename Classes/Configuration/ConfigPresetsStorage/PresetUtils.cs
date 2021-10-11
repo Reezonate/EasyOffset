@@ -22,8 +22,9 @@ namespace EasyOffset.Configuration {
         private static IConfigPreset ParsePresetFromJson(JObject jObject) {
             var presetVersion = jObject.GetValue("version", StringComparison.OrdinalIgnoreCase)?.Value<string>();
             return presetVersion switch {
-                "1.0" => ConfigPresetV1.Deserialize(jObject),
-                "SaberTailor" => SaberTailorConfigPreset.Deserialize(jObject),
+                ConfigPresetV1.Version => ConfigPresetV1.Deserialize(jObject),
+                SaberTailorConfigPreset.Version => SaberTailorConfigPreset.Deserialize(jObject),
+                BaseGameConfigPreset.Version => BaseGameConfigPreset.Deserialize(jObject),
                 null => throw new Exception("Preset version is not specified"),
                 _ => throw new Exception($"Unknown preset version: {presetVersion}")
             };
@@ -60,9 +61,13 @@ namespace EasyOffset.Configuration {
                 stringBuilder.Append("<color=red>");
                 stringBuilder.AppendFixed("load error", TimeColumnCharCount);
             } else switch(preset.ConfigPreset.ConfigVersion) {
-                case "SaberTailor":
+                case SaberTailorConfigPreset.Version:
                     stringBuilder.Append("<color=#CC9378>");
                     stringBuilder.AppendFixed("ST", TimeColumnCharCount);
+                    break;
+                case BaseGameConfigPreset.Version:
+                    stringBuilder.Append("<color=#79C456>");
+                    stringBuilder.AppendFixed("BG", TimeColumnCharCount);
                     break;
                 default:
                     stringBuilder.AppendTimeString(preset.ConfigPreset.UnixTimestamp, TimeColumnCharCount);

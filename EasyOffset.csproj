@@ -128,6 +128,7 @@
     <Compile Include="Classes\Configuration\ConfigPresetsStorage\ConfigPresetsStorage.cs" />
     <Compile Include="Classes\Configuration\ConfigPresetsStorage\PresetUtils.cs" />
     <Compile Include="Classes\Configuration\ConfigPresetsStorage\StoredConfigPreset.cs" />
+    <Compile Include="Classes\Configuration\ConfigPresets\BaseGameConfigPreset.cs" />
     <Compile Include="Classes\Configuration\ConfigPresets\ConfigPresetV1.cs" />
     <Compile Include="Classes\Configuration\CachedVariable.cs" />
     <Compile Include="Classes\Configuration\ConfigPresets\ConfigConversions.cs" />

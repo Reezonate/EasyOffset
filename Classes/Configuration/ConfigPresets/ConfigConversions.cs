@@ -70,6 +70,45 @@ namespace EasyOffset.Configuration {
 
         #endregion
 
+        #region FromBaseGame
+
+        public static void FromBaseGame(
+            bool isValveController,
+            bool isVRModeOculus,
+            float zOffset,
+            Vector3 position,
+            Vector3 rotation,
+            out Vector3 leftPivotPosition,
+            out Vector3 rightPivotPosition,
+            out Vector3 leftSaberDirection,
+            out Vector3 rightSaberDirection
+        ) {
+            OneHandConversion(
+                true,
+                isValveController,
+                isVRModeOculus,
+                zOffset,
+                position,
+                rotation,
+                out rightPivotPosition,
+                out rightSaberDirection
+            );
+
+            leftPivotPosition = new Vector3(
+                -rightPivotPosition.x,
+                rightPivotPosition.y,
+                rightPivotPosition.z
+            );
+
+            leftSaberDirection = new Vector3(
+                -rightSaberDirection.x,
+                rightSaberDirection.y,
+                rightSaberDirection.z
+            );
+        }
+
+        #endregion
+
         #region OneHandConversion
 
         private static void OneHandConversion(

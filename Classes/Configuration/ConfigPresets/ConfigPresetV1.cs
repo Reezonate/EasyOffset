@@ -4,7 +4,13 @@ using UnityEngine;
 
 namespace EasyOffset.Configuration {
     public class ConfigPresetV1 : IConfigPreset {
-        public string ConfigVersion => "1.0";
+        #region Constants
+
+        public const string Version = "1.0";
+
+        public string ConfigVersion => Version;
+
+        #endregion
 
         #region Properties
 
