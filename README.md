@@ -23,6 +23,7 @@ Config values are different from base game settings, SaberTailor, etc.
 **PC ONLY**! Quest version is planned, but not guaranteed
 
 # Coming soon™
+- Swing benchmark
 - SaberTailor config import
 - Base game config import
 
