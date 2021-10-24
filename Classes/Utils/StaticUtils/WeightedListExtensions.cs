@@ -76,10 +76,11 @@ namespace EasyOffset {
             out float maxAngle
         ) {
             var inverseRotation = Quaternion.Inverse(rotation);
-            
+
             var swingData = list.Entries
                 .Select(entry => inverseRotation * (entry.Value - origin))
-                .Select(localPosition => Mathf.Atan2(localPosition.y, localPosition.x));
+                .Select(localPosition => Mathf.Atan2(localPosition.y, localPosition.x))
+                .ToArray();
 
             AnalyzeSwingData(
                 swingData,
@@ -114,7 +115,7 @@ namespace EasyOffset {
         }
 
         private static void AnalyzeSwingData(
-            IEnumerable<float> swingData,
+            float[] swingData,
             out float minimalSwingAngle,
             out float maximalSwingAngle,
             out List<float> localMinimums,
@@ -146,9 +147,9 @@ namespace EasyOffset {
 
                     if (hasPreviousDirection && isDirectionPositive != isPreviousDirectionPositive) {
                         if (isPreviousDirectionPositive) {
-                            localMaximums.Add(angle);
+                            localMaximums.Add(previousAngle);
                         } else {
-                            localMinimums.Add(angle);
+                            localMinimums.Add(previousAngle);
                         }
                     }
 
@@ -160,6 +161,18 @@ namespace EasyOffset {
 
             if (localMaximums.Count > 1) localMaximums.RemoveAt(0);
             if (localMinimums.Count > 1) localMinimums.RemoveAt(0);
+
+            var lastAngle = swingData.Last();
+
+            if (lastAngle >= maximalSwingAngle) {
+                maximalSwingAngle = lastAngle;
+                localMaximums.Add(lastAngle);
+            }
+
+            if (lastAngle <= minimalSwingAngle) {
+                minimalSwingAngle = lastAngle;
+                localMinimums.Add(lastAngle);
+            }
         }
 
         #endregion

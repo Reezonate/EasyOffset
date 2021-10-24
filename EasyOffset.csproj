@@ -125,6 +125,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\AssetBundleScripts\BundleLoader.cs" />
+    <Compile Include="Classes\AssetBundleScripts\Indicators\AngleIndicator.cs" />
     <Compile Include="Classes\AssetBundleScripts\Indicators\DistanceIndicator.cs" />
     <Compile Include="Classes\AssetBundleScripts\Indicators\IndicatorText.cs" />
     <Compile Include="Classes\AssetBundleScripts\SwingBenchmark\BenchmarkResults.cs" />
