@@ -13,17 +13,21 @@ namespace EasyOffset {
         public static event Action<Vector3, Quaternion, Vector3, Quaternion> TransformsUpdatedEvent;
 
         public static void UpdateTransforms(Vector3 leftPosition, Quaternion leftRotation, Vector3 rightPosition, Quaternion rightRotation) {
-            if (PluginConfig.SmoothingEnabled) {
+            if (PluginConfig.PositionalSmoothing > 0f) {
                 var tPos = Time.deltaTime * PluginConfig.PositionalSmoothing;
-                var tRot = Time.deltaTime * PluginConfig.RotationalSmoothing;
                 LeftPosition = Vector3.Lerp(LeftPosition, leftPosition, tPos);
-                LeftRotation = Quaternion.Lerp(LeftRotation, leftRotation, tRot);
                 RightPosition = Vector3.Lerp(RightPosition, rightPosition, tPos);
-                RightRotation = Quaternion.Lerp(RightRotation, rightRotation, tRot);
             } else {
                 LeftPosition = leftPosition;
-                LeftRotation = leftRotation;
                 RightPosition = rightPosition;
+            }
+
+            if (PluginConfig.RotationalSmoothing > 0f) {
+                var tRot = Time.deltaTime * PluginConfig.RotationalSmoothing;
+                LeftRotation = Quaternion.Lerp(LeftRotation, leftRotation, tRot);
+                RightRotation = Quaternion.Lerp(RightRotation, rightRotation, tRot);
+            } else {
+                LeftRotation = leftRotation;
                 RightRotation = rightRotation;
             }
 

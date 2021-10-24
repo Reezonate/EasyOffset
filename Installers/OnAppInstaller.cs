@@ -17,7 +17,7 @@ namespace EasyOffset.Installers {
 
         public override void InstallBindings() {
             BindInputManagers();
-            BindGizmosManager();
+            BindVisualManagers();
             BindOffsetManagers();
         }
 
@@ -26,17 +26,21 @@ namespace EasyOffset.Installers {
             Container.BindInterfacesAndSelfTo<AbominationInputManager>().AsSingle();
         }
 
-        private void BindGizmosManager() {
+        private void BindVisualManagers() {
             Container.BindInterfacesAndSelfTo<GizmosManager>().AsSingle();
             Container.BindExecutionOrder<GizmosManager>(1);
+            
+            Container.BindInterfacesAndSelfTo<SwingBenchmarkManager>().AsSingle();
+            Container.BindExecutionOrder<SwingBenchmarkManager>(1);
         }
 
         private void BindOffsetManagers() {
-            Container.BindInterfacesAndSelfTo<BasicOffsetManager>().AsSingle();
-            Container.BindInterfacesAndSelfTo<PivotOnlyOffsetManager>().AsSingle();
-            Container.BindInterfacesAndSelfTo<DirectionOnlyOffsetManager>().AsSingle();
-            Container.BindInterfacesAndSelfTo<DirectionAutoOffsetManager>().AsSingle();
-            Container.BindInterfacesAndSelfTo<RoomOffsetManager>().AsSingle();
+            Container.BindInterfacesAndSelfTo<BasicAdjustmentModeManager>().AsSingle();
+            Container.BindInterfacesAndSelfTo<PivotOnlyAdjustmentModeManager>().AsSingle();
+            Container.BindInterfacesAndSelfTo<DirectionOnlyAdjustmentModeManager>().AsSingle();
+            Container.BindInterfacesAndSelfTo<SwingBenchmarkAdjustmentModeManager>().AsSingle();
+            Container.BindInterfacesAndSelfTo<DirectionAutoAdjustmentModeManager>().AsSingle();
+            Container.BindInterfacesAndSelfTo<RoomOffsetAdjustmentModeManager>().AsSingle();
         }
     }
 }

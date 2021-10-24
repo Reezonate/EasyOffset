@@ -4,6 +4,7 @@ namespace EasyOffset {
         Basic,
         PivotOnly,
         DirectionOnly,
+        SwingBenchmark,
         DirectionAuto,
         RoomOffset
     }

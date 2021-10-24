@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using EasyOffset.AssetBundleScripts;
 using EasyOffset.Configuration;
 using EasyOffset.UI;
 using HarmonyLib;
