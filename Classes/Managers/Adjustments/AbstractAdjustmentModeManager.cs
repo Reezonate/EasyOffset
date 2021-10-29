@@ -1,6 +1,5 @@
 using System;
 using EasyOffset.Configuration;
-using UnityEngine;
 using Zenject;
 
 namespace EasyOffset {
@@ -58,27 +57,23 @@ namespace EasyOffset {
 
             GetHandsTransforms(
                 adjustmentHand,
-                out var adjustmentHandPos,
-                out var adjustmentHandRot,
-                out var freeHandPos,
-                out var freeHandRot
+                out var adjustmentHandTransform,
+                out var freeHandTransform
             );
 
-            OnGrabStarted(adjustmentHand, adjustmentHandPos, adjustmentHandRot, freeHandPos, freeHandRot);
+            OnGrabStarted(adjustmentHand, adjustmentHandTransform, freeHandTransform);
         }
 
-        private void OnTransformsUpdated(Vector3 leftPos, Quaternion leftRot, Vector3 rightPos, Quaternion rightRot) {
+        private void OnTransformsUpdated(ReeTransform leftTransform, ReeTransform rightTransform) {
             if (!_pressed) return;
 
             GetHandsTransforms(
                 _adjustmentHand,
-                out var adjustmentHandPos,
-                out var adjustmentHandRot,
-                out var freeHandPos,
-                out var freeHandRot
+                out var adjustmentHandTransform,
+                out var freeHandTransform
             );
 
-            OnGrabUpdated(_adjustmentHand, adjustmentHandPos, adjustmentHandRot, freeHandPos, freeHandRot);
+            OnGrabUpdated(_adjustmentHand, adjustmentHandTransform, freeHandTransform);
         }
 
         private void OnAssignedButtonReleased(Hand hand) {
@@ -90,13 +85,11 @@ namespace EasyOffset {
 
             GetHandsTransforms(
                 _adjustmentHand,
-                out var adjustmentHandPos,
-                out var adjustmentHandRot,
-                out var freeHandPos,
-                out var freeHandRot
+                out var adjustmentHandTransform,
+                out var freeHandTransform
             );
 
-            OnGrabFinished(_adjustmentHand, adjustmentHandPos, adjustmentHandRot, freeHandPos, freeHandRot);
+            OnGrabFinished(_adjustmentHand, adjustmentHandTransform, freeHandTransform);
             PluginConfig.SaveConfigFile();
         }
 
@@ -116,26 +109,20 @@ namespace EasyOffset {
 
         protected abstract void OnGrabStarted(
             Hand adjustmentHand,
-            Vector3 adjustmentHandPos,
-            Quaternion adjustmentHandRot,
-            Vector3 freeHandPos,
-            Quaternion freeHandRot
+            ReeTransform adjustmentHandTransform,
+            ReeTransform freeHandTransform
         );
 
         protected abstract void OnGrabUpdated(
             Hand adjustmentHand,
-            Vector3 adjustmentHandPos,
-            Quaternion adjustmentHandRot,
-            Vector3 freeHandPos,
-            Quaternion freeHandRot
+            ReeTransform adjustmentHandTransform,
+            ReeTransform freeHandTransform
         );
 
         protected abstract void OnGrabFinished(
             Hand adjustmentHand,
-            Vector3 adjustmentHandPos,
-            Quaternion adjustmentHandRot,
-            Vector3 freeHandPos,
-            Quaternion freeHandRot
+            ReeTransform adjustmentHandTransform,
+            ReeTransform freeHandTransform
         );
 
         #endregion
@@ -152,23 +139,17 @@ namespace EasyOffset {
 
         private static void GetHandsTransforms(
             Hand adjustmentHand,
-            out Vector3 adjustmentHandPos,
-            out Quaternion adjustmentHandRot,
-            out Vector3 freeHandPos,
-            out Quaternion freeHandRot
+            out ReeTransform adjustmentHandTransform,
+            out ReeTransform freeHandTransform
         ) {
             switch (adjustmentHand) {
                 case Hand.Left:
-                    adjustmentHandPos = Abomination.LeftPosition;
-                    adjustmentHandRot = Abomination.LeftRotation;
-                    freeHandPos = Abomination.RightPosition;
-                    freeHandRot = Abomination.RightRotation;
+                    adjustmentHandTransform = Abomination.LeftControllerTransform;
+                    freeHandTransform = Abomination.RightControllerTransform;
                     break;
                 case Hand.Right:
-                    adjustmentHandPos = Abomination.RightPosition;
-                    adjustmentHandRot = Abomination.RightRotation;
-                    freeHandPos = Abomination.LeftPosition;
-                    freeHandRot = Abomination.LeftRotation;
+                    adjustmentHandTransform = Abomination.RightControllerTransform;
+                    freeHandTransform = Abomination.LeftControllerTransform;
                     break;
                 default: throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null);
             }

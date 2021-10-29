@@ -128,8 +128,11 @@
     <Compile Include="Classes\AssetBundleScripts\Indicators\AngleIndicator.cs" />
     <Compile Include="Classes\AssetBundleScripts\Indicators\DistanceIndicator.cs" />
     <Compile Include="Classes\AssetBundleScripts\Indicators\IndicatorText.cs" />
-    <Compile Include="Classes\AssetBundleScripts\SwingBenchmark\BenchmarkResults.cs" />
-    <Compile Include="Classes\AssetBundleScripts\SwingBenchmark\SwingPlane.cs" />
+    <Compile Include="Classes\AssetBundleScripts\Indicators\VelocityIndicator.cs" />
+    <Compile Include="Classes\AssetBundleScripts\SwingBenchmark\BenchmarkTrails.cs" />
+    <Compile Include="Classes\AssetBundleScripts\SwingBenchmark\HandVisuals.cs" />
+    <Compile Include="Classes\AssetBundleScripts\SwingBenchmark\SwingBenchmarkController.cs" />
+    <Compile Include="Classes\AssetBundleScripts\SwingBenchmark\SwingIndicators.cs" />
     <Compile Include="Classes\Configuration\ConfigPresetsStorage\ConfigPresetsStorage.cs" />
     <Compile Include="Classes\Configuration\ConfigPresetsStorage\PresetUtils.cs" />
     <Compile Include="Classes\Configuration\ConfigPresetsStorage\StoredConfigPreset.cs" />
@@ -153,8 +156,9 @@
     <Compile Include="Classes\Managers\Adjustments\Manual\PivotOnlyAdjustmentModeManager.cs" />
     <Compile Include="Classes\Managers\Adjustments\Manual\RoomOffsetAdjustmentModeManager.cs" />
     <Compile Include="Classes\Managers\Adjustments\MidPlayAdjustmentsManager.cs" />
-    <Compile Include="Classes\Managers\Visuals\SwingBenchmarkManager.cs" />
-    <Compile Include="Classes\Managers\Visuals\GizmosManager.cs" />
+    <Compile Include="Classes\Managers\Benchmark\SwingAnalyzer.cs" />
+    <Compile Include="Classes\Managers\Benchmark\SwingBenchmarkManager.cs" />
+    <Compile Include="Classes\Managers\Gizmos\GizmosManager.cs" />
     <Compile Include="Classes\Managers\Input\ReeInputDevice.cs" />
     <Compile Include="Classes\Managers\Input\ReeInputManager.cs" />
     <Compile Include="Classes\StructsAndEnums\ControllerButton.cs" />
@@ -171,8 +175,6 @@
     <Compile Include="Classes\AssetBundleScripts\Gizmos\SphericalBasis.cs" />
     <Compile Include="Classes\AssetBundleScripts\Gizmos\SwingPreview.cs" />
     <Compile Include="Classes\AssetBundleScripts\Gizmos\TextTransformFixer.cs" />
-    <Compile Include="Classes\AssetBundleScripts\SwingBenchmark\BenchmarkTrails.cs" />
-    <Compile Include="Classes\AssetBundleScripts\SwingBenchmark\SwingBenchmarkController.cs" />
     <Compile Include="Classes\AssetBundleScripts\Trails\QuadraticBezierCurve.cs" />
     <Compile Include="Classes\AssetBundleScripts\Trails\StaticTrail.cs" />
     <Compile Include="Classes\AssetBundleScripts\Trails\Trail.cs" />
@@ -181,10 +183,13 @@
     <Compile Include="Classes\UI\ModPanelStateMachine.cs" />
     <Compile Include="Classes\UI\ModPanelUI.cs" />
     <Compile Include="Classes\UI\SettingsUI.cs" />
+    <Compile Include="Classes\Utils\StaticUtils\BsmlUtils.cs" />
     <Compile Include="Classes\Utils\StaticUtils\MathUtils.cs" />
     <Compile Include="Classes\Utils\StaticUtils\WeightedListExtensions.cs" />
     <Compile Include="Classes\Utils\UtilityClasses\CyclicBuffer.cs" />
     <Compile Include="Classes\Utils\UtilityClasses\Range.cs" />
+    <Compile Include="Classes\Utils\UtilityClasses\ReeTransform.cs" />
+    <Compile Include="Classes\Utils\UtilityClasses\RelativeRotationTracker.cs" />
     <Compile Include="Classes\Utils\UtilityClasses\RotationPlaneTracker.cs" />
     <Compile Include="Classes\Utils\StaticUtils\EnumUtils\AdjustmentModeUtils.cs" />
     <Compile Include="Classes\Utils\StaticUtils\EnumUtils\ControllerButtonUtils.cs" />
@@ -197,6 +202,7 @@
     <Compile Include="HarmonyPatches\InstallersPatches\GameInstallerPatch.cs" />
     <Compile Include="HarmonyPatches\InstallersPatches\MenuInstallerPatch.cs" />
     <Compile Include="HarmonyPatches\InstallersPatches\AppInstallerPatch.cs" />
+    <Compile Include="HarmonyPatches\ModMenuOrderPatch.cs" />
     <Compile Include="HarmonyPatches\VRHelpersPatches\DevicelessVRHelperAdjustControllerTransform.cs" />
     <Compile Include="HarmonyPatches\VRHelpersPatches\OculusVRHelperAdjustControllerTransform.cs" />
     <Compile Include="HarmonyPatches\VRHelpersPatches\OpenVRHelperAdjustControllerTransform.cs" />

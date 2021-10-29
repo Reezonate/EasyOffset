@@ -75,8 +75,8 @@ namespace EasyOffset {
             Transform transform
         ) {
             if (PluginConfig.SmoothingEnabled) {
-                var position = Abomination.LeftPosition;
-                var rotation = Abomination.LeftRotation;
+                var position = Abomination.LeftControllerTransform.Position;
+                var rotation = Abomination.LeftControllerTransform.Rotation;
                 ApplyRoomOffset(PluginConfig.MainSettingsModel, ref position, ref rotation);
                 transform.position = position;
                 transform.rotation = rotation;
@@ -90,8 +90,8 @@ namespace EasyOffset {
             Transform transform
         ) {
             if (PluginConfig.SmoothingEnabled) {
-                var position = Abomination.RightPosition;
-                var rotation = Abomination.RightRotation;
+                var position = Abomination.RightControllerTransform.Position;
+                var rotation = Abomination.RightControllerTransform.Rotation;
                 ApplyRoomOffset(PluginConfig.MainSettingsModel, ref position, ref rotation);
                 transform.position = position;
                 transform.rotation = rotation;
@@ -138,26 +138,6 @@ namespace EasyOffset {
         public static void ApplyRoomOffsetToDirection(MainSettingsModelSO mainSettingsModel, ref Vector3 direction) {
             var roomRotation = Quaternion.Euler(0, mainSettingsModel.roomRotation, 0);
             direction = roomRotation * direction;
-        }
-
-        #endregion
-
-        #region TransformFuntions
-
-        public static Vector3 LocalToWorldVector(Vector3 localPosition, Vector3 parentPosition, Quaternion parentRotation) {
-            return parentPosition + parentRotation * localPosition;
-        }
-
-        public static Vector3 WorldToLocalVector(Vector3 worldPosition, Vector3 parentPosition, Quaternion parentRotation) {
-            return Quaternion.Inverse(parentRotation) * (worldPosition - parentPosition);
-        }
-
-        public static Vector3 LocalToWorldDirection(Vector3 localDirection, Quaternion parentRotation) {
-            return parentRotation * localDirection;
-        }
-
-        public static Vector3 WorldToLocalDirection(Vector3 worldDirection, Quaternion parentRotation) {
-            return Quaternion.Inverse(parentRotation) * worldDirection;
         }
 
         #endregion

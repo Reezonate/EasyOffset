@@ -17,7 +17,8 @@ namespace EasyOffset.Installers {
 
         public override void InstallBindings() {
             BindInputManagers();
-            BindVisualManagers();
+            BindGizmosManager();
+            BindBenchmarkManager();
             BindOffsetManagers();
         }
 
@@ -26,10 +27,12 @@ namespace EasyOffset.Installers {
             Container.BindInterfacesAndSelfTo<AbominationInputManager>().AsSingle();
         }
 
-        private void BindVisualManagers() {
+        private void BindGizmosManager() {
             Container.BindInterfacesAndSelfTo<GizmosManager>().AsSingle();
             Container.BindExecutionOrder<GizmosManager>(1);
-            
+        }
+
+        private void BindBenchmarkManager() {
             Container.BindInterfacesAndSelfTo<SwingBenchmarkManager>().AsSingle();
             Container.BindExecutionOrder<SwingBenchmarkManager>(1);
         }

@@ -12,7 +12,6 @@ namespace EasyOffset.AssetBundleScripts {
         [SerializeField] private float planeWidth = 1;
         [SerializeField] private float lineMargin;
 
-        [SerializeField] private Vector2 textOffset;
         [SerializeField] private bool flipTextPosition;
 
         #endregion
@@ -49,15 +48,7 @@ namespace EasyOffset.AssetBundleScripts {
         }
 
         private void UpdateTextPosition() {
-            if (flipTextPosition) {
-                var offset = new Vector2(-textOffset.x, textOffset.y);
-
-                indicatorText.SetPosition(_toPosition);
-                indicatorText.SetOffset(offset);
-            } else {
-                indicatorText.SetPosition(_fromPosition);
-                indicatorText.SetOffset(textOffset);
-            }
+            indicatorText.SetPosition(flipTextPosition ? _toPosition : _fromPosition);
         }
 
         #endregion
@@ -93,6 +84,15 @@ namespace EasyOffset.AssetBundleScripts {
 
             UpdateTextPosition();
             indicatorText.SetText(text);
+        }
+
+        public void SetTextOffset(
+            Vector2 value,
+            bool flipPosition
+        ) {
+            indicatorText.SetOffset(value);
+            flipTextPosition = flipPosition;
+            UpdateTextPosition();
         }
 
         public void SetLookAt(

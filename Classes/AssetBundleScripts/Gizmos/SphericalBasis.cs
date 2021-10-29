@@ -18,9 +18,14 @@ namespace EasyOffset.AssetBundleScripts {
 
         private static readonly int SphericalCoordinatesPropertyId = Shader.PropertyToID("_SphericalCoordinates");
         private static readonly int OrthoDirectionPropertyId = Shader.PropertyToID("_OrthoDirection");
+
         private static readonly int UpDownPlanePropertyId = Shader.PropertyToID("_UpDownPlane");
         private static readonly int LeftRightPlanePropertyId = Shader.PropertyToID("_LeftRightPlane");
         private static readonly int PlanesMultiplierPropertyId = Shader.PropertyToID("_PlanesMultiplier");
+
+        private static readonly int StraightSwingPlanePropertyId = Shader.PropertyToID("_StraightSwingPlane");
+        private static readonly int StraightSwingPlaneMultiplierPropertyId = Shader.PropertyToID("_StraightSwingPlaneMultiplier");
+
         private static readonly int ScalePropertyId = Shader.PropertyToID("_Scale");
         private static readonly int AlphaPropertyId = Shader.PropertyToID("_Alpha");
         private static readonly int FadeRadiusPropertyId = Shader.PropertyToID("_FadeRadius");
@@ -56,13 +61,13 @@ namespace EasyOffset.AssetBundleScripts {
 
         private void Update() {
             var t = Time.deltaTime * 10;
-            
+
             _currentAlpha = Mathf.Lerp(_currentAlpha, _targetAlpha, t);
             _materialInstance.SetFloat(AlphaPropertyId, _currentAlpha);
-            
+
             _currentScale = Mathf.Lerp(_currentScale, _targetScale, t);
             _materialInstance.SetFloat(ScalePropertyId, _currentScale);
-            
+
             _currentFadeRadius = Mathf.Lerp(_currentFadeRadius, _targetFadeRadius, t);
             _materialInstance.SetFloat(FadeRadiusPropertyId, _currentFadeRadius);
 
@@ -76,34 +81,32 @@ namespace EasyOffset.AssetBundleScripts {
 
         private const float NoFocusAlpha = 0.2f;
         private const float FocusAlpha = 1.0f;
-        
+
         private const float NoFocusFadeRadius = 20 * Mathf.Deg2Rad;
         private const float FocusFadeRadius = 50 * Mathf.Deg2Rad;
-        
+
         private Vector3 _orthoDirection = Vector3.forward;
+
+        public void SetWristValues(Vector3 rotationAxis, bool visible) {
+            if (!_isReady) return;
+            _materialInstance.SetVector(StraightSwingPlanePropertyId, rotationAxis);
+            _materialInstance.SetFloat(StraightSwingPlaneMultiplierPropertyId, visible ? 1f : 0f);
+        }
 
         public void SetFocus(bool value) {
             _targetAlpha = value ? FocusAlpha : NoFocusAlpha;
             _targetFadeRadius = value ? FocusFadeRadius : NoFocusFadeRadius;
         }
 
-        public void Zoom(
-            float magnitude
-        ) {
-            if (!_isReady) return;
+        public void Zoom(float magnitude) {
             _targetScale = magnitude;
         }
 
-        public void SetTextLookAt(
-            Vector3 lookAt
-        ) {
+        public void SetTextLookAt(Vector3 lookAt) {
             UpdateTextRotation(lookAt);
         }
 
-        public void SetPreviousDirection(
-            Vector3 orthoDirection,
-            bool visible
-        ) {
+        public void SetPreviousDirection(Vector3 orthoDirection, bool visible) {
             if (!_isReady) return;
 
             var localUp = transform.InverseTransformDirection(Vector3.up);
@@ -116,7 +119,7 @@ namespace EasyOffset.AssetBundleScripts {
             var leftRightPlane = new Plane(lookFromCenter * Vector3.up, orthoDirection);
             var leftRightPlaneVector = (Vector4) leftRightPlane.normal;
             leftRightPlaneVector.w = leftRightPlane.distance;
-            
+
             var planesMultiplier = visible ? 1f : 0f;
 
             _materialInstance.SetVector(UpDownPlanePropertyId, upDownPlaneVector);
@@ -124,11 +127,9 @@ namespace EasyOffset.AssetBundleScripts {
             _materialInstance.SetFloat(PlanesMultiplierPropertyId, planesMultiplier);
         }
 
-        public void SetDirection(
-            Vector3 orthoDirection
-        ) {
+        public void SetDirection(Vector3 orthoDirection) {
             if (!_isReady) return;
-            
+
             _orthoDirection = orthoDirection;
 
             var sphericalCoordinates = TransformUtils.OrthoToSphericalDirection(orthoDirection);

@@ -27,41 +27,43 @@ namespace EasyOffset {
 
         protected override void OnGrabStarted(
             Hand adjustmentHand,
-            Vector3 adjustmentHandPos,
-            Quaternion adjustmentHandRot,
-            Vector3 freeHandPos,
-            Quaternion freeHandRot
+            ReeTransform adjustmentHandTransform,
+            ReeTransform freeHandTransform
         ) {
-            _swingBenchmarkManager.StartTracking();
+            _swingBenchmarkManager.Reset(adjustmentHand);
         }
 
         protected override void OnGrabUpdated(
             Hand adjustmentHand,
-            Vector3 adjustmentHandPos,
-            Quaternion adjustmentHandRot,
-            Vector3 freeHandPos,
-            Quaternion freeHandRot
+            ReeTransform adjustmentHandTransform,
+            ReeTransform freeHandTransform
         ) {
             GetAdjustmentHandWorldValues(
                 adjustmentHand,
-                adjustmentHandPos,
-                adjustmentHandRot,
-                out var tipPosition,
-                out var pivotPosition,
-                out var saberRotation
+                adjustmentHandTransform,
+                out var pivotWorldPosition,
+                out var saberWorldRotation
             );
 
-            _swingBenchmarkManager.UpdateTracking(tipPosition, pivotPosition, saberRotation);
+            _swingBenchmarkManager.Update(
+                adjustmentHandTransform,
+                pivotWorldPosition,
+                saberWorldRotation
+            );
         }
 
         protected override void OnGrabFinished(
             Hand adjustmentHand,
-            Vector3 adjustmentHandPos,
-            Quaternion adjustmentHandRot,
-            Vector3 freeHandPos,
-            Quaternion freeHandRot
+            ReeTransform adjustmentHandTransform,
+            ReeTransform freeHandTransform
         ) {
-            _swingBenchmarkManager.StopTracking();
+            var saberLocalDirection = adjustmentHand switch {
+                Hand.Left => PluginConfig.LeftHandSaberDirection,
+                Hand.Right => PluginConfig.RightHandSaberDirection,
+                _ => throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null)
+            };
+
+            _swingBenchmarkManager.Finalize(saberLocalDirection);
         }
 
         #endregion
@@ -70,26 +72,23 @@ namespace EasyOffset {
 
         private void GetAdjustmentHandWorldValues(
             Hand adjustmentHand,
-            Vector3 adjustmentHandPos,
-            Quaternion adjustmentHandRot,
-            out Vector3 tipWorldPosition,
+            ReeTransform adjustmentHandTransform,
             out Vector3 pivotWorldPosition,
             out Quaternion saberWorldRotation
         ) {
             switch (adjustmentHand) {
                 case Hand.Left:
-                    pivotWorldPosition = TransformUtils.LocalToWorldVector(PluginConfig.LeftHandPivotPosition, adjustmentHandPos, adjustmentHandRot);
-                    saberWorldRotation = adjustmentHandRot * PluginConfig.LeftHandRotation;
+                    pivotWorldPosition = adjustmentHandTransform.LocalToWorldPosition(PluginConfig.LeftHandPivotPosition);
+                    saberWorldRotation = adjustmentHandTransform.LocalToWorldRotation(PluginConfig.LeftHandRotation);
                     break;
                 case Hand.Right:
-                    pivotWorldPosition = TransformUtils.LocalToWorldVector(PluginConfig.RightHandPivotPosition, adjustmentHandPos, adjustmentHandRot);
-                    saberWorldRotation = adjustmentHandRot * PluginConfig.RightHandRotation;
+                    pivotWorldPosition = adjustmentHandTransform.LocalToWorldPosition(PluginConfig.RightHandPivotPosition);
+                    saberWorldRotation = adjustmentHandTransform.LocalToWorldRotation(PluginConfig.RightHandRotation);
                     break;
                 default: throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null);
             }
 
             TransformUtils.ApplyRoomOffset(MainSettingsModel, ref pivotWorldPosition, ref saberWorldRotation);
-            tipWorldPosition = pivotWorldPosition + saberWorldRotation * Vector3.forward;
         }
 
         #endregion

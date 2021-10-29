@@ -6,6 +6,7 @@ namespace EasyOffset.AssetBundleScripts {
 
         [SerializeField] private Transform pointTransform;
         [SerializeField] private GameObject visuals;
+        [SerializeField] private VelocityIndicator velocityIndicator;
 
         #endregion
 
@@ -19,6 +20,10 @@ namespace EasyOffset.AssetBundleScripts {
 
         public void SetVisible(bool value) {
             visuals.SetActive(value);
+        }
+
+        public void SetLookAt(Vector3 lookAt) {
+            velocityIndicator.SetLookAt(lookAt);
         }
 
         #endregion

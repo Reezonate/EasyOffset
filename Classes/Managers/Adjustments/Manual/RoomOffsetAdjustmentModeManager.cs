@@ -20,47 +20,30 @@ namespace EasyOffset {
         #region Logic
 
         private Vector3 _grabPosition;
-        // private Vector3 _grabInverseForwardVector;
-
         private Vector3 _grabRoomCenter;
-        // private float _grabRoomRotation;
 
         protected override void OnGrabStarted(
             Hand adjustmentHand,
-            Vector3 adjustmentHandPos,
-            Quaternion adjustmentHandRot,
-            Vector3 freeHandPos,
-            Quaternion freeHandRot
+            ReeTransform adjustmentHandTransform,
+            ReeTransform freeHandTransform
         ) {
-            _grabPosition = adjustmentHandPos;
-            // _grabInverseForwardVector = Quaternion.Inverse(grabRotation) * Vector3.forward;
-
+            _grabPosition = adjustmentHandTransform.Position;
             _grabRoomCenter = MainSettingsModel.roomCenter.value;
-            // _grabRoomRotation = _mainSettingsModelSO.roomRotation.value;
         }
 
         protected override void OnGrabUpdated(
             Hand adjustmentHand,
-            Vector3 adjustmentHandPos,
-            Quaternion adjustmentHandRot,
-            Vector3 freeHandPos,
-            Quaternion freeHandRot
+            ReeTransform adjustmentHandTransform,
+            ReeTransform freeHandTransform
         ) {
-            var positionChange = adjustmentHandPos - _grabPosition;
-
+            var positionChange = adjustmentHandTransform.Position - _grabPosition;
             MainSettingsModel.roomCenter.value = _grabRoomCenter - positionChange;
-
-            // var modifiedForwardVector = currentRotation * _grabInverseForwardVector;
-            // var rotationChange = Mathf.Atan2(-modifiedForwardVector.x, modifiedForwardVector.z) * Mathf.Rad2Deg;
-            // _mainSettingsModelSO.roomRotation.value = _grabRoomRotation + rotationChange;
         }
 
         protected override void OnGrabFinished(
             Hand adjustmentHand,
-            Vector3 adjustmentHandPos,
-            Quaternion adjustmentHandRot,
-            Vector3 freeHandPos,
-            Quaternion freeHandRot
+            ReeTransform adjustmentHandTransform,
+            ReeTransform freeHandTransform
         ) { }
 
         #endregion

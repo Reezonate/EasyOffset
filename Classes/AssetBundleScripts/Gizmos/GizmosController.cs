@@ -44,35 +44,30 @@ namespace EasyOffset.AssetBundleScripts {
         public void SetCameraPosition(Vector3 cameraWorldPosition) {
             orthonormalBasis.SetTextLookAt(cameraWorldPosition);
             swingPreview.SetLookAt(cameraWorldPosition);
+            pivot.SetLookAt(cameraWorldPosition);
         }
 
-        public void SetControllerTransform(
-            Vector3 position,
-            Quaternion rotation
-        ) {
+        public void SetWristValues(Vector3 rotationAxis, bool visible) {
+            sphericalBasis.SetWristValues(rotationAxis, visible);
+        }
+
+        public void SetControllerTransform(Vector3 position, Quaternion rotation) {
             var tr = transform;
             tr.position = position;
             tr.rotation = rotation;
             sphericalBasis.SetTextLookAt(position);
         }
 
-        public void SetPivotPosition(
-            Vector3 position
-        ) {
+        public void SetPivotPosition(Vector3 position) {
             pivot.SetPosition(position);
             orthonormalBasis.SetCoordinates(position);
         }
 
-        public void SetPreviousDirection(
-            Vector3 orthoDirection,
-            bool visible
-        ) {
+        public void SetPreviousDirection(Vector3 orthoDirection, bool visible) {
             sphericalBasis.SetPreviousDirection(orthoDirection, visible);
         }
 
-        public void SetSaberDirection(
-            Vector3 orthoDirection
-        ) {
+        public void SetSaberDirection(Vector3 orthoDirection) {
             sphericalBasis.SetDirection(orthoDirection);
 
             var saberRotation = TransformUtils.GetSaberLocalRotation(orthoDirection);
@@ -83,10 +78,7 @@ namespace EasyOffset.AssetBundleScripts {
             sphericalBasis.Zoom(magnitude);
         }
 
-        public void SetControllerType(
-            ControllerType controllerType,
-            Hand hand
-        ) {
+        public void SetControllerType(ControllerType controllerType, Hand hand) {
             controllerModel.SetControllerType(controllerType, hand);
         }
 

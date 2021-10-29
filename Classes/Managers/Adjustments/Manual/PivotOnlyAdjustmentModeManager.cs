@@ -30,10 +30,8 @@ namespace EasyOffset {
 
         protected override void OnGrabStarted(
             Hand adjustmentHand,
-            Vector3 adjustmentHandPos,
-            Quaternion adjustmentHandRot,
-            Vector3 freeHandPos,
-            Quaternion freeHandRot
+            ReeTransform adjustmentHandTransform,
+            ReeTransform freeHandTransform
         ) {
             Vector3 storedLocalPosition;
 
@@ -46,28 +44,25 @@ namespace EasyOffset {
                     storedLocalPosition = PluginConfig.RightHandPivotPosition;
                     _gizmosManager.RightHandGizmosController.SetOrthonormalBasisFocus(true);
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null);
+                default: throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null);
             }
 
-            _grabWorldPosition = TransformUtils.LocalToWorldVector(storedLocalPosition, adjustmentHandPos, adjustmentHandRot);
+            _grabWorldPosition = adjustmentHandTransform.LocalToWorldPosition(storedLocalPosition);
         }
 
         protected override void OnGrabUpdated(
             Hand adjustmentHand,
-            Vector3 adjustmentHandPos,
-            Quaternion adjustmentHandRot,
-            Vector3 freeHandPos,
-            Quaternion freeHandRot
+            ReeTransform adjustmentHandTransform,
+            ReeTransform freeHandTransform
         ) {
-            var currentPivotLocalPosition = TransformUtils.WorldToLocalVector(_grabWorldPosition, adjustmentHandPos, adjustmentHandRot);
+            var pivotLocalPosition = adjustmentHandTransform.WorldToLocalPosition(_grabWorldPosition);
 
             switch (adjustmentHand) {
                 case Hand.Left:
-                    PluginConfig.LeftHandPivotPosition = currentPivotLocalPosition;
+                    PluginConfig.LeftHandPivotPosition = pivotLocalPosition;
                     break;
                 case Hand.Right:
-                    PluginConfig.RightHandPivotPosition = currentPivotLocalPosition;
+                    PluginConfig.RightHandPivotPosition = pivotLocalPosition;
                     break;
                 default: throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null);
             }
@@ -75,10 +70,8 @@ namespace EasyOffset {
 
         protected override void OnGrabFinished(
             Hand adjustmentHand,
-            Vector3 adjustmentHandPos,
-            Quaternion adjustmentHandRot,
-            Vector3 freeHandPos,
-            Quaternion freeHandRot
+            ReeTransform adjustmentHandTransform,
+            ReeTransform freeHandTransform
         ) {
             switch (adjustmentHand) {
                 case Hand.Left:

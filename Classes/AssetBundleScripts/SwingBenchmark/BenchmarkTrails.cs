@@ -8,7 +8,6 @@ namespace EasyOffset.AssetBundleScripts {
         [SerializeField] private Transform saberTransform;
         [SerializeField] private StaticTrail pivotTrail;
         [SerializeField] private StaticTrail tipTrail;
-        [SerializeField] private GameObject visuals;
 
         #endregion
 
@@ -31,10 +30,6 @@ namespace EasyOffset.AssetBundleScripts {
         public void StopTracking() {
             pivotTrail.StopTracking();
             tipTrail.StopTracking();
-        }
-
-        public void SetVisible(bool value) {
-            visuals.SetActive(value);
         }
 
         #endregion

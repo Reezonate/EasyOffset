@@ -4,8 +4,7 @@ using UnityEngine;
 using UnityEngine.XR;
 
 namespace EasyOffset.HarmonyPatches {
-    [HarmonyPatch(typeof(OpenVRHelper))]
-    [HarmonyPatch("AdjustControllerTransform")]
+    [HarmonyPatch(typeof(OpenVRHelper), "AdjustControllerTransform")]
     internal class OpenVRHelperAdjustControllerTransform {
         [UsedImplicitly]
         private static bool Prefix(

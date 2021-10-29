@@ -5,7 +5,6 @@ namespace EasyOffset.AssetBundleScripts {
         #region Serialized
 
         [SerializeField] private GameObject visuals;
-        [SerializeField] private Trail pivotTrail;
         [SerializeField] private Trail closeTrail;
         [SerializeField] private Trail farTrail;
 
@@ -14,7 +13,6 @@ namespace EasyOffset.AssetBundleScripts {
         #region Interaction
 
         public void SetLookAt(Vector3 lookAt) {
-            pivotTrail.SetLookAt(lookAt);
             closeTrail.SetLookAt(lookAt);
             farTrail.SetLookAt(lookAt);
         }
@@ -24,12 +22,6 @@ namespace EasyOffset.AssetBundleScripts {
         }
 
         public void SetVisible(bool value) {
-            if (value) {
-                pivotTrail.ResetMesh();
-                closeTrail.ResetMesh();
-                farTrail.ResetMesh();
-            }
-
             visuals.gameObject.SetActive(value);
         }
 

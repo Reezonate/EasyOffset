@@ -47,12 +47,7 @@ namespace EasyOffset.AssetBundleScripts {
 
         #region Interaction
 
-        private Vector3 _lookAt = Vector3.zero;
         private bool _updating;
-
-        public void SetLookAt(Vector3 lookAt) {
-            _lookAt = lookAt;
-        }
 
         public void StartTracking() {
             _updating = true;

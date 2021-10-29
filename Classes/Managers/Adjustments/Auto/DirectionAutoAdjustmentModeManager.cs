@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using EasyOffset.AssetBundleScripts;
 using EasyOffset.Configuration;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -9,104 +6,82 @@ using UnityEngine;
 namespace EasyOffset {
     [UsedImplicitly]
     public class DirectionAutoAdjustmentModeManager : AbstractAdjustmentModeManager {
-        #region Constants
-
-        private const int MaxMeasurementsCount = 60;
-        private const int PlaneTrackerMeasurements = 6;
-        private const float MinimalAngularVelocity = 45.0f;
-        private const float MaximalAngularVelocity = 360.0f;
-
-        #endregion
-
         #region Constructor
-
-        private readonly RotationPlaneTracker _rotationPlaneTracker;
 
         public DirectionAutoAdjustmentModeManager(
             MainSettingsModelSO mainSettingsModel
         ) : base(
             mainSettingsModel,
             AdjustmentMode.DirectionAuto,
-            4f,
-            10f
-        ) {
-            _rotationPlaneTracker = new RotationPlaneTracker(
-                BundleLoader.SphereMesh,
-                PlaneTrackerMeasurements,
-                MinimalAngularVelocity,
-                MaximalAngularVelocity
-            );
-        }
+            0f,
+            0f
+        ) { }
 
         #endregion
 
-        #region Measurements and averaging
+        #region Measurement logic
 
-        private readonly List<Vector3> _measurements = new();
+        private const int MaxMeasurementsCount = 60;
+        private const float MinimalAngularVelocity = 45.0f;
+        private const float MaximalAngularVelocity = 360.0f;
 
-        private void ResetMeasurements() {
+        private readonly RelativeRotationTracker _rotationTracker = new();
+        private readonly Range _angularVelocityRange = new(MinimalAngularVelocity, MaximalAngularVelocity);
+        private readonly WeightedList<Vector3> _measurements = new(MaxMeasurementsCount);
+
+        private void Reset(ReeTransform controllerTransform) {
+            _rotationTracker.Initialize(controllerTransform.Rotation);
             _measurements.Clear();
         }
 
-        private void RecordNewMeasurement(Vector3 direction) {
-            _measurements.Add(direction);
-            if (_measurements.Count > MaxMeasurementsCount) _measurements.RemoveAt(0);
+        private bool Update(ReeTransform controllerTransform) {
+            var mainCamera = Camera.main;
+            var positiveDirection = mainCamera == null ? Vector3.forward : mainCamera.transform.forward;
+
+            var updated = _rotationTracker.Update(controllerTransform.Rotation, positiveDirection, out var angle, out var axis);
+            if (!updated) return false;
+
+            var angularVelocity = angle / Time.deltaTime;
+            if (angularVelocity <= MinimalAngularVelocity) return false;
+
+            var axisLocal = controllerTransform.WorldToLocalDirection(axis);
+            var weight = _angularVelocityRange.GetRatio(angularVelocity);
+
+            _measurements.Add(axisLocal, weight);
+            return true;
         }
 
-        private Vector3 GetAverageMeasurement() {
-            var result = _measurements.Aggregate(Vector3.zero, (current, measurement) => current + measurement);
-            return result / _measurements.Count;
+        private Vector3 GetLocalAxis() {
+            return _measurements.GetAverage();
         }
 
         #endregion
 
-        #region AdjustmentLogic
-
-        private Quaternion _grabLocalRotation;
-
+        #region Adjustment logic
 
         protected override void OnGrabStarted(
             Hand adjustmentHand,
-            Vector3 adjustmentHandPos,
-            Quaternion adjustmentHandRot,
-            Vector3 freeHandPos,
-            Quaternion freeHandRot
+            ReeTransform adjustmentHandTransform,
+            ReeTransform freeHandTransform
         ) {
-            _grabLocalRotation = adjustmentHand switch {
-                Hand.Left => PluginConfig.LeftHandRotation,
-                Hand.Right => PluginConfig.RightHandRotation,
-                _ => throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null)
-            };
-
-            ResetMeasurements();
-            RecordNewMeasurement(_grabLocalRotation * Vector3.forward);
-
-            var worldRotation = adjustmentHandRot * _grabLocalRotation;
-            var positiveDirection = worldRotation * Vector3.forward;
-            _rotationPlaneTracker.Reset(worldRotation, positiveDirection);
+            Reset(adjustmentHandTransform);
         }
 
         protected override void OnGrabUpdated(
             Hand adjustmentHand,
-            Vector3 adjustmentHandPos,
-            Quaternion adjustmentHandRot,
-            Vector3 freeHandPos,
-            Quaternion freeHandRot
+            ReeTransform adjustmentHandTransform,
+            ReeTransform freeHandTransform
         ) {
-            var worldRotation = adjustmentHandRot * _grabLocalRotation;
+            if (!Update(adjustmentHandTransform)) return;
 
-            if (!_rotationPlaneTracker.Update(worldRotation)) return;
-
-            var worldNormal = _rotationPlaneTracker.GetNormal();
-            var localNormal = TransformUtils.WorldToLocalDirection(worldNormal, adjustmentHandRot);
-            RecordNewMeasurement(localNormal);
+            var localSaberDirection = GetLocalAxis().normalized;
 
             switch (adjustmentHand) {
                 case Hand.Left:
-                    PluginConfig.LeftHandSaberDirection = GetAverageMeasurement();
+                    PluginConfig.LeftHandSaberDirection = localSaberDirection;
                     break;
                 case Hand.Right:
-                    PluginConfig.RightHandSaberDirection = GetAverageMeasurement();
+                    PluginConfig.RightHandSaberDirection = localSaberDirection;
                     break;
                 default: throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null);
             }
@@ -114,10 +89,8 @@ namespace EasyOffset {
 
         protected override void OnGrabFinished(
             Hand adjustmentHand,
-            Vector3 adjustmentHandPos,
-            Quaternion adjustmentHandRot,
-            Vector3 freeHandPos,
-            Quaternion freeHandRot
+            ReeTransform adjustmentHandTransform,
+            ReeTransform freeHandTransform
         ) { }
 
         #endregion

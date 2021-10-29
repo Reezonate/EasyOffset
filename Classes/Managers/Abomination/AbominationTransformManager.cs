@@ -26,8 +26,8 @@ namespace EasyOffset {
             );
 
             if (!leftUpdateResult) {
-                leftHandPos = Abomination.LeftPosition;
-                leftHandRot = Abomination.LeftRotation;
+                leftHandPos = Abomination.LeftControllerTransform.Position;
+                leftHandRot = Abomination.LeftControllerTransform.Rotation;
             }
 
             var rightUpdateResult = _vrPlatformHelper.GetNodePose(
@@ -38,8 +38,8 @@ namespace EasyOffset {
             );
 
             if (!rightUpdateResult) {
-                rightHandPos = Abomination.RightPosition;
-                rightHandRot = Abomination.RightRotation;
+                rightHandPos = Abomination.RightControllerTransform.Position;
+                rightHandRot = Abomination.RightControllerTransform.Rotation;
             }
 
             if (_vrPlatformHelper.vrPlatformSDK == VRPlatformSDK.Oculus) {

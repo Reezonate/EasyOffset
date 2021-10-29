@@ -35,10 +35,8 @@ namespace EasyOffset {
 
         protected override void OnGrabStarted(
             Hand adjustmentHand,
-            Vector3 adjustmentHandPos,
-            Quaternion adjustmentHandRot,
-            Vector3 freeHandPos,
-            Quaternion freeHandRot
+            ReeTransform adjustmentHandTransform,
+            ReeTransform freeHandTransform
         ) {
             switch (adjustmentHand) {
                 case Hand.Left:
@@ -54,20 +52,18 @@ namespace EasyOffset {
                 default: throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null);
             }
 
-            _grabWorldDirection = adjustmentHandRot * _storedLocalDirection;
-            _grabFreeY = freeHandPos.y;
+            _grabWorldDirection = adjustmentHandTransform.LocalToWorldDirection(_storedLocalDirection);
+            _grabFreeY = freeHandTransform.Position.y;
         }
 
         protected override void OnGrabUpdated(
             Hand adjustmentHand,
-            Vector3 adjustmentHandPos,
-            Quaternion adjustmentHandRot,
-            Vector3 freeHandPos,
-            Quaternion freeHandRot
+            ReeTransform adjustmentHandTransform,
+            ReeTransform freeHandTransform
         ) {
-            var finalLocalDirection = Quaternion.Inverse(adjustmentHandRot) * _grabWorldDirection;
+            var finalLocalDirection = adjustmentHandTransform.WorldToLocalDirection(_grabWorldDirection);
 
-            var heightDifference = freeHandPos.y - _grabFreeY;
+            var heightDifference = freeHandTransform.Position.y - _grabFreeY;
             var zoomRatio = _heightRange.GetRatioClamped(heightDifference);
             var zoom = _zoomRange.SlideBy(zoomRatio);
 
@@ -86,10 +82,8 @@ namespace EasyOffset {
 
         protected override void OnGrabFinished(
             Hand adjustmentHand,
-            Vector3 adjustmentHandPos,
-            Quaternion adjustmentHandRot,
-            Vector3 freeHandPos,
-            Quaternion freeHandRot
+            ReeTransform adjustmentHandTransform,
+            ReeTransform freeHandTransform
         ) {
             switch (adjustmentHand) {
                 case Hand.Left:

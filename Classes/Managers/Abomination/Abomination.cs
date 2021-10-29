@@ -6,32 +6,30 @@ namespace EasyOffset {
     public static class Abomination {
         #region Transforms
 
-        public static Vector3 LeftPosition = Vector3.zero;
-        public static Quaternion LeftRotation = Quaternion.identity;
-        public static Vector3 RightPosition = Vector3.zero;
-        public static Quaternion RightRotation = Quaternion.identity;
-        public static event Action<Vector3, Quaternion, Vector3, Quaternion> TransformsUpdatedEvent;
+        public static readonly ReeTransform LeftControllerTransform = new(Vector3.zero, Quaternion.identity);
+        public static readonly ReeTransform RightControllerTransform = new(Vector3.zero, Quaternion.identity);
+        public static event Action<ReeTransform, ReeTransform> TransformsUpdatedEvent;
 
         public static void UpdateTransforms(Vector3 leftPosition, Quaternion leftRotation, Vector3 rightPosition, Quaternion rightRotation) {
             if (PluginConfig.PositionalSmoothing > 0f) {
                 var tPos = Time.deltaTime * PluginConfig.PositionalSmoothing;
-                LeftPosition = Vector3.Lerp(LeftPosition, leftPosition, tPos);
-                RightPosition = Vector3.Lerp(RightPosition, rightPosition, tPos);
+                LeftControllerTransform.Position = Vector3.Lerp(LeftControllerTransform.Position, leftPosition, tPos);
+                RightControllerTransform.Position = Vector3.Lerp(RightControllerTransform.Position, rightPosition, tPos);
             } else {
-                LeftPosition = leftPosition;
-                RightPosition = rightPosition;
+                LeftControllerTransform.Position = leftPosition;
+                RightControllerTransform.Position = rightPosition;
             }
 
             if (PluginConfig.RotationalSmoothing > 0f) {
                 var tRot = Time.deltaTime * PluginConfig.RotationalSmoothing;
-                LeftRotation = Quaternion.Lerp(LeftRotation, leftRotation, tRot);
-                RightRotation = Quaternion.Lerp(RightRotation, rightRotation, tRot);
+                LeftControllerTransform.Rotation = Quaternion.Lerp(LeftControllerTransform.Rotation, leftRotation, tRot);
+                RightControllerTransform.Rotation = Quaternion.Lerp(RightControllerTransform.Rotation, rightRotation, tRot);
             } else {
-                LeftRotation = leftRotation;
-                RightRotation = rightRotation;
+                LeftControllerTransform.Rotation = leftRotation;
+                RightControllerTransform.Rotation = rightRotation;
             }
 
-            TransformsUpdatedEvent?.Invoke(LeftPosition, LeftRotation, RightPosition, RightRotation);
+            TransformsUpdatedEvent?.Invoke(LeftControllerTransform, RightControllerTransform);
         }
 
         #endregion

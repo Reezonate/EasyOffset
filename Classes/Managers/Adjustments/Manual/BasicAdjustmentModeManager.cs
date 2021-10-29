@@ -32,10 +32,8 @@ namespace EasyOffset {
 
         protected override void OnGrabStarted(
             Hand adjustmentHand,
-            Vector3 adjustmentHandPos,
-            Quaternion adjustmentHandRot,
-            Vector3 freeHandPos,
-            Quaternion freeHandRot
+            ReeTransform adjustmentHandTransform,
+            ReeTransform freeHandTransform
         ) {
             Vector3 grabPivotPosition;
 
@@ -54,19 +52,17 @@ namespace EasyOffset {
                     throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null);
             }
 
-            _grabWorldDirection = adjustmentHandRot * _storedLocalDirection;
-            _grabPosition = adjustmentHandPos + adjustmentHandRot * grabPivotPosition;
+            _grabWorldDirection = adjustmentHandTransform.LocalToWorldDirection(_storedLocalDirection);
+            _grabPosition = adjustmentHandTransform.LocalToWorldPosition(grabPivotPosition);
         }
 
         protected override void OnGrabUpdated(
             Hand adjustmentHand,
-            Vector3 adjustmentHandPos,
-            Quaternion adjustmentHandRot,
-            Vector3 freeHandPos,
-            Quaternion freeHandRot
+            ReeTransform adjustmentHandTransform,
+            ReeTransform freeHandTransform
         ) {
-            var finalLocalDirection = Quaternion.Inverse(adjustmentHandRot) * _grabWorldDirection;
-            var newPivotPosition = Quaternion.Inverse(adjustmentHandRot) * (_grabPosition - adjustmentHandPos);
+            var finalLocalDirection = adjustmentHandTransform.WorldToLocalDirection(_grabWorldDirection);
+            var newPivotPosition = adjustmentHandTransform.WorldToLocalPosition(_grabPosition);
 
             switch (adjustmentHand) {
                 case Hand.Left:
@@ -83,10 +79,8 @@ namespace EasyOffset {
 
         protected override void OnGrabFinished(
             Hand adjustmentHand,
-            Vector3 adjustmentHandPos,
-            Quaternion adjustmentHandRot,
-            Vector3 freeHandPos,
-            Quaternion freeHandRot
+            ReeTransform adjustmentHandTransform,
+            ReeTransform freeHandTransform
         ) {
             switch (adjustmentHand) {
                 case Hand.Left:

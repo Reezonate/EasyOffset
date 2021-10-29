@@ -12,6 +12,7 @@ using IPALogger = IPA.Logging.Logger;
 namespace EasyOffset {
     [Plugin(RuntimeOptions.SingleStartInit)]
     public class Plugin {
+        internal const string ModPanelTabName = "Easy Offset";
         internal static IPALogger Log { get; private set; }
         private static Harmony _harmony;
 
@@ -60,7 +61,7 @@ namespace EasyOffset {
 
         private static void InitializeSettingsUI() {
             PersistentSingleton<BeatSaberMarkupLanguage.Settings.BSMLSettings>.instance.AddSettingsMenu(
-                "Easy Offset",
+                ModPanelTabName,
                 "EasyOffset.Resources.BSML.SettingsUI.bsml",
                 PersistentSingleton<SettingsUI>.instance
             );
@@ -68,7 +69,7 @@ namespace EasyOffset {
 
         private static void AddModPanelTab() {
             PersistentSingleton<BeatSaberMarkupLanguage.GameplaySetup.GameplaySetup>.instance.AddTab(
-                "Easy Offset",
+                ModPanelTabName,
                 "EasyOffset.Resources.BSML.ModPanelUI.bsml",
                 PersistentSingleton<ModPanelUI>.instance
             );
