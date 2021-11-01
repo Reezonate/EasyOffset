@@ -10,6 +10,63 @@ using JetBrains.Annotations;
 
 namespace EasyOffset.UI {
     public class ModPanelUI : NotifiableSingleton<ModPanelUI> {
+        #region Constructor
+
+        public ModPanelUI() {
+            SubscribeToBenchmarkEvents();
+        }
+
+        #endregion
+
+        #region Flow
+
+        private void UpdateBenchmarkPanel(bool hasResults) {
+            if (hasResults) {
+                BenchmarkGuideActive = false;
+                BenchmarkResultsActive = true;
+            } else {
+                BenchmarkGuideActive = true;
+                BenchmarkResultsActive = false;
+            }
+        }
+
+        private void GoToMainPage() {
+            MainPageActive = true;
+            PresetsBrowserActive = false;
+
+            switch (PluginConfig.AdjustmentMode) {
+                case AdjustmentMode.None:
+                case AdjustmentMode.Basic:
+                case AdjustmentMode.PivotOnly:
+                case AdjustmentMode.DirectionOnly:
+                case AdjustmentMode.DirectionAuto:
+                    HandsPanelActive = true;
+                    BenchmarkPanelActive = false;
+                    RoomOffsetPanelActive = false;
+                    break;
+                case AdjustmentMode.SwingBenchmark:
+                    HandsPanelActive = false;
+                    BenchmarkPanelActive = true;
+                    RoomOffsetPanelActive = false;
+                    break;
+                case AdjustmentMode.RoomOffset:
+                    HandsPanelActive = false;
+                    BenchmarkPanelActive = false;
+                    RoomOffsetPanelActive = true;
+                    break;
+                default: throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private void GoToBrowserPage(bool allowSave, bool allowLoad) {
+            MainPageActive = false;
+            PresetsBrowserActive = true;
+            PresetsBrowserSaveActive = allowSave;
+            PresetsBrowserLoadActive = allowLoad;
+        }
+
+        #endregion
+
         #region Main page
 
         #region Active
@@ -37,8 +94,9 @@ namespace EasyOffset.UI {
                                                                                    "\nBasic - Easy adjustment mode for beginners" +
                                                                                    "\nPivot Only - Precise origin placement" +
                                                                                    "\nDirection Only - Saber rotation only" +
-                                                                                   "\nDirection Auto - Automatic rotation (beta)" +
-                                                                                   "\nRoom Offset - World Pulling locomotion";
+                                                                                   "\nSwing Benchmark - Swing analysis" +
+                                                                                   "\nDirection Auto - Automatic rotation" +
+                                                                                   "\nRoom Offset - World pulling locomotion";
 
         [UIValue("am-choices")] [UsedImplicitly]
         private List<object> _adjustmentModeChoices = AdjustmentModeUtils.AllNamesObjects.ToList();
@@ -59,6 +117,7 @@ namespace EasyOffset.UI {
         [UsedImplicitly]
         private void AdjustmentModeOnChange(string selectedValue) {
             PluginConfig.AdjustmentMode = AdjustmentModeUtils.NameToType(selectedValue);
+            GoToMainPage();
         }
 
         #endregion
@@ -111,6 +170,22 @@ namespace EasyOffset.UI {
         #endregion
 
         #region Hands panel
+
+        #region Active
+
+        private bool _handsPanelActive = true;
+
+        [UIValue("hands-panel-active")]
+        [UsedImplicitly]
+        private bool HandsPanelActive {
+            get => _handsPanelActive;
+            set {
+                _handsPanelActive = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        #endregion
 
         #region ZOffset sliders values
 
@@ -274,6 +349,206 @@ namespace EasyOffset.UI {
 
         #endregion
 
+        #region BenchmarkPanel
+
+        #region Events
+
+        private void SubscribeToBenchmarkEvents() {
+            SwingBenchmarkHelper.OnResetEvent += OnBenchmarkReset;
+            SwingBenchmarkHelper.OnStartEvent += OnBenchmarkStart;
+            SwingBenchmarkHelper.OnUpdateEvent += OnBenchmarkUpdate;
+            SwingBenchmarkHelper.OnFailEvent += OnBenchmarkFail;
+            SwingBenchmarkHelper.OnSuccessEvent += OnBenchmarkSuccess;
+        }
+
+        private void OnBenchmarkReset() {
+            UpdateBenchmarkPanel(false);
+        }
+
+        private void OnBenchmarkStart() {
+            UpdateBenchmarkPanel(false);
+        }
+
+        private void OnBenchmarkUpdate(
+            float curveAngle,
+            float coneHeight,
+            float tipWobble,
+            float armUsage
+        ) {
+            BenchmarkCurveValue = $"{curveAngle:F2}° {(curveAngle > 0 ? "(Inward)" : "(Outward)")}";
+            BenchmarkConeHeightValue = $"{coneHeight:F2} cm";
+            BenchmarkTipWobbleValue = $"{tipWobble:F2} cm";
+            BenchmarkArmUsageValue = $"{armUsage:F2} cm";
+        }
+
+        private void OnBenchmarkFail() {
+            UpdateBenchmarkPanel(false);
+        }
+
+        private void OnBenchmarkSuccess() {
+            UpdateBenchmarkPanel(true);
+        }
+
+        #endregion
+
+        #region Active
+
+        private bool _benchmarkPanelActive;
+
+        [UIValue("benchmark-panel-active")]
+        [UsedImplicitly]
+        private bool BenchmarkPanelActive {
+            get => _benchmarkPanelActive;
+            set {
+                _benchmarkPanelActive = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region Guide
+
+        #region Active
+
+        private bool _benchmarkGuideActive = true;
+
+        [UIValue("benchmark-guide-active")]
+        [UsedImplicitly]
+        private bool BenchmarkGuideActive {
+            get => _benchmarkGuideActive;
+            set {
+                _benchmarkGuideActive = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Results
+
+        #region Active
+
+        private bool _benchmarkResultsActive;
+
+        [UIValue("benchmark-results-active")]
+        [UsedImplicitly]
+        private bool BenchmarkResultsActive {
+            get => _benchmarkResultsActive;
+            set {
+                _benchmarkResultsActive = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region Curve
+
+        private string _benchmarkCurveValue = "-2,3° (Inward)";
+
+        [UIValue("benchmark-curve-value")]
+        [UsedImplicitly]
+        private string BenchmarkCurveValue {
+            get => _benchmarkCurveValue;
+            set {
+                _benchmarkCurveValue = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        [UIAction("benchmark-auto-fix-on-click")]
+        [UsedImplicitly]
+        private void BenchmarkAutoFixOnClick() {
+            SwingBenchmarkHelper.InvokeAutoFix();
+        }
+
+        #endregion
+
+        #region ConeHeight
+
+        private string _benchmarkConeHeightValue = "21,3 cm";
+
+        [UIValue("benchmark-cone-height-value")]
+        [UsedImplicitly]
+        private string BenchmarkConeHeightValue {
+            get => _benchmarkConeHeightValue;
+            set {
+                _benchmarkConeHeightValue = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region TipWobble
+
+        private string _benchmarkTipWobbleValue = "21,3 cm";
+
+        [UIValue("benchmark-tip-wobble-value")]
+        [UsedImplicitly]
+        private string BenchmarkTipWobbleValue {
+            get => _benchmarkTipWobbleValue;
+            set {
+                _benchmarkTipWobbleValue = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region ArmUsage
+
+        private string _benchmarkArmUsageValue = "12,4 cm";
+
+        [UIValue("benchmark-arm-usage-value")]
+        [UsedImplicitly]
+        private string BenchmarkArmUsageValue {
+            get => _benchmarkArmUsageValue;
+            set {
+                _benchmarkArmUsageValue = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+        #region ResetButton
+
+        [UIAction("benchmark-reset-on-click")]
+        [UsedImplicitly]
+        private void BenchmarkResetOnClick() {
+            SwingBenchmarkHelper.InvokeReset();
+        }
+
+        #endregion
+
+        #endregion
+
+        #region RoomOffsetPanel
+
+        #region Active
+
+        private bool _roomOffsetPanelActive;
+
+        [UIValue("room-offset-panel-active")]
+        [UsedImplicitly]
+        private bool RoomOffsetPanelActive {
+            get => _roomOffsetPanelActive;
+            set {
+                _roomOffsetPanelActive = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #endregion
+
         #region BottomPanel
 
         #region Save button
@@ -282,11 +557,7 @@ namespace EasyOffset.UI {
         [UsedImplicitly]
         private void BottomPanelSaveOnClick() {
             UpdatePresetsBrowserList();
-
-            MainPageActive = false;
-            PresetsBrowserActive = true;
-            PresetsBrowserSaveActive = true;
-            PresetsBrowserLoadActive = false;
+            GoToBrowserPage(true, false);
         }
 
         #endregion
@@ -297,11 +568,7 @@ namespace EasyOffset.UI {
         [UsedImplicitly]
         private void BottomPanelLoadOnClick() {
             UpdatePresetsBrowserList();
-
-            MainPageActive = false;
-            PresetsBrowserActive = true;
-            PresetsBrowserSaveActive = false;
-            PresetsBrowserLoadActive = true;
+            GoToBrowserPage(false, true);
         }
 
         #endregion
@@ -314,9 +581,11 @@ namespace EasyOffset.UI {
             get => !PluginConfig.UILock;
             set {
                 PluginConfig.UILock = !value;
+
                 if (!value) {
                     PluginConfig.AdjustmentMode = AdjustmentMode.None;
                     AdjustmentModeChoice = AdjustmentModeUtils.TypeToName(AdjustmentMode.None);
+                    GoToMainPage();
                 }
 
                 NotifyPropertyChanged();
@@ -426,8 +695,7 @@ namespace EasyOffset.UI {
         [UIAction("pb-cancel-on-click")]
         [UsedImplicitly]
         private void PresetsBrowserCancelOnClick() {
-            MainPageActive = true;
-            PresetsBrowserActive = false;
+            GoToMainPage();
         }
 
         #endregion
@@ -455,8 +723,7 @@ namespace EasyOffset.UI {
         [UsedImplicitly]
         private void PresetsBrowserSaveOnClick() {
             if (!ConfigPresetsStorage.SaveCurrentPreset(PresetFileName)) return;
-            MainPageActive = true;
-            PresetsBrowserActive = false;
+            GoToMainPage();
         }
 
         #endregion
@@ -484,9 +751,8 @@ namespace EasyOffset.UI {
         [UsedImplicitly]
         private void PresetsBrowserLoadOnClick() {
             if (!ConfigPresetsStorage.LoadPreset(PresetFileName)) return;
-            MainPageActive = true;
-            PresetsBrowserActive = false;
             UpdateZOffsetSliders();
+            GoToMainPage();
         }
 
         #endregion

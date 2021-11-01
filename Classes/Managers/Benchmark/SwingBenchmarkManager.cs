@@ -16,13 +16,24 @@ namespace EasyOffset {
 
         #endregion
 
-        #region Constructor
+        #region Variables
 
         private readonly GizmosManager _gizmosManager;
         private readonly MainSettingsModelSO _mainSettingsModel;
 
         private readonly SwingAnalyzer _swingAnalyzer;
         private readonly SwingBenchmarkController _swingBenchmarkController;
+
+        private bool _isSwingGood;
+        private Hand _selectedHand = Hand.Left;
+
+        private bool _hasAnyResults;
+        private bool _leftHandVisible;
+        private bool _rightHandVisible;
+
+        #endregion
+
+        #region Constructor
 
         public SwingBenchmarkManager(
             GizmosManager gizmosManager,
@@ -39,14 +50,13 @@ namespace EasyOffset {
 
         #endregion
 
-        #region Logic
+        #region Start
 
-        private bool _isSwingGood;
-        private Hand _selectedHand = Hand.Left;
-
-        public void Reset(Hand hand) {
-            _swingAnalyzer.Reset();
+        public void Start(Hand hand) {
             _selectedHand = hand;
+            _hasAnyResults = true;
+
+            _swingAnalyzer.Reset();
             _swingBenchmarkController.StartTracking();
 
             switch (hand) {
@@ -60,7 +70,12 @@ namespace EasyOffset {
             }
 
             UpdateVisibility();
+            SwingBenchmarkHelper.InvokeStart();
         }
+
+        #endregion
+
+        #region Update
 
         public void Update(
             ReeTransform controllerTransform,
@@ -85,10 +100,12 @@ namespace EasyOffset {
                 out var maximalSwingAngle
             );
 
-            _isSwingGood = (maximalSwingAngle - minimalSwingAngle) > FullSwingAngleRequirement;
+            var fullSwingAngle = maximalSwingAngle - minimalSwingAngle;
+            _isSwingGood = fullSwingAngle > FullSwingAngleRequirement;
+            var isLeft = _selectedHand == Hand.Left;
 
             _swingBenchmarkController.SetValues(
-                _selectedHand == Hand.Left,
+                isLeft,
                 planePosition,
                 planeRotation,
                 tipDeviation,
@@ -98,24 +115,68 @@ namespace EasyOffset {
                 maximalSwingAngle,
                 FullSwingAngleRequirement
             );
+
+            var curveAngle = Mathf.Asin(pivotHeight);
+
+            SwingBenchmarkHelper.InvokeUpdate(
+                curveAngle,
+                pivotHeight,
+                tipDeviation,
+                pivotDeviation
+            );
         }
 
-        public void Finalize(Vector3 saberLocalDirection) {
+        #endregion
+
+        #region Finish
+
+        public void Finish() {
             switch (_selectedHand) {
                 case Hand.Left:
                     _leftHandVisible = _isSwingGood;
                     _leftWristRotationAxis = _swingAnalyzer.GetWristRotationAxis();
-                    _leftHandLocalRotation = Quaternion.LookRotation(_leftWristRotationAxis, saberLocalDirection);
+                    _leftHandLocalRotation = Quaternion.LookRotation(_leftWristRotationAxis, Vector3.up);
                     break;
                 case Hand.Right:
                     _rightHandVisible = _isSwingGood;
                     _rightWristRotationAxis = _swingAnalyzer.GetWristRotationAxis();
-                    _rightHandLocalRotation = Quaternion.LookRotation(_rightWristRotationAxis, saberLocalDirection);
+                    _rightHandLocalRotation = Quaternion.LookRotation(_rightWristRotationAxis, Vector3.up);
                     break;
                 default: throw new ArgumentOutOfRangeException();
             }
 
             UpdateVisibility();
+
+            if (_isSwingGood) {
+                SwingBenchmarkHelper.InvokeSuccess();
+            } else {
+                SwingBenchmarkHelper.InvokeFail();
+            }
+        }
+
+        #endregion
+
+        #region AutoFix
+
+        private void ApplyAutoFix() {
+            if (!_hasAnyResults || !_isSwingGood) return;
+
+            Vector3 saberLocalDirection;
+            Plane localPlane;
+
+            switch (_selectedHand) {
+                case Hand.Left:
+                    saberLocalDirection = PluginConfig.LeftHandSaberDirection;
+                    localPlane = new Plane(_leftWristRotationAxis, 0f);
+                    PluginConfig.LeftHandSaberDirection = localPlane.ClosestPointOnPlane(saberLocalDirection);
+                    break;
+                case Hand.Right:
+                    saberLocalDirection = PluginConfig.RightHandSaberDirection;
+                    localPlane = new Plane(_rightWristRotationAxis, 0f);
+                    PluginConfig.RightHandSaberDirection = localPlane.ClosestPointOnPlane(saberLocalDirection);
+                    break;
+                default: throw new ArgumentOutOfRangeException(nameof(_selectedHand), _selectedHand, null);
+            }
         }
 
         #endregion
@@ -148,9 +209,6 @@ namespace EasyOffset {
 
         #region Visibility
 
-        private bool _leftHandVisible;
-        private bool _rightHandVisible;
-
         private void UpdateVisibility() {
             bool swingVisible, handsVisible;
 
@@ -160,10 +218,10 @@ namespace EasyOffset {
                     handsVisible = true;
                     break;
                 case AdjustmentMode.DirectionOnly:
-                case AdjustmentMode.DirectionAuto:
                     swingVisible = false;
                     handsVisible = true;
                     break;
+                case AdjustmentMode.DirectionAuto:
                 case AdjustmentMode.None:
                 case AdjustmentMode.Basic:
                 case AdjustmentMode.PivotOnly:
@@ -178,7 +236,7 @@ namespace EasyOffset {
             _gizmosManager.RightHandGizmosController.SetWristValues(_rightWristRotationAxis, _rightHandVisible);
 
             _swingBenchmarkController.UpdateVisibility(
-                swingVisible,
+                swingVisible && _hasAnyResults,
                 handsVisible && _leftHandVisible,
                 handsVisible && _rightHandVisible
             );
@@ -223,6 +281,13 @@ namespace EasyOffset {
 
         #region Events
 
+        private void OnReset() {
+            _hasAnyResults = false;
+            _leftHandVisible = false;
+            _rightHandVisible = false;
+            UpdateVisibility();
+        }
+
         private void OnAdjustmentModeChanged(AdjustmentMode value) {
             UpdateVisibility();
         }
@@ -230,11 +295,15 @@ namespace EasyOffset {
         private void Subscribe() {
             PluginConfig.AdjustmentModeChangedEvent += OnAdjustmentModeChanged;
             Abomination.TransformsUpdatedEvent += OnControllerTransformsUpdated;
+            SwingBenchmarkHelper.OnResetEvent += OnReset;
+            SwingBenchmarkHelper.OnAutoFixEvent += ApplyAutoFix;
         }
 
         private void UnSubscribe() {
             PluginConfig.AdjustmentModeChangedEvent -= OnAdjustmentModeChanged;
             Abomination.TransformsUpdatedEvent -= OnControllerTransformsUpdated;
+            SwingBenchmarkHelper.OnResetEvent -= OnReset;
+            SwingBenchmarkHelper.OnAutoFixEvent -= ApplyAutoFix;
         }
 
         #endregion

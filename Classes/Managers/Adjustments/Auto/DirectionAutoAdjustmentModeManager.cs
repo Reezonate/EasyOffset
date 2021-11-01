@@ -8,14 +8,19 @@ namespace EasyOffset {
     public class DirectionAutoAdjustmentModeManager : AbstractAdjustmentModeManager {
         #region Constructor
 
+        private readonly GizmosManager _gizmosManager;
+
         public DirectionAutoAdjustmentModeManager(
+            GizmosManager gizmosManager,
             MainSettingsModelSO mainSettingsModel
         ) : base(
             mainSettingsModel,
             AdjustmentMode.DirectionAuto,
             0f,
             0f
-        ) { }
+        ) {
+            _gizmosManager = gizmosManager;
+        }
 
         #endregion
 
@@ -64,6 +69,18 @@ namespace EasyOffset {
             ReeTransform adjustmentHandTransform,
             ReeTransform freeHandTransform
         ) {
+            switch (adjustmentHand) {
+                case Hand.Left:
+                    _gizmosManager.LeftHandGizmosController.SetSphericalBasisFocus(true);
+                    _gizmosManager.LeftHandGizmosController.SetPreviousDirection(PluginConfig.LeftHandSaberDirection, true);
+                    break;
+                case Hand.Right:
+                    _gizmosManager.RightHandGizmosController.SetSphericalBasisFocus(true);
+                    _gizmosManager.RightHandGizmosController.SetPreviousDirection(PluginConfig.RightHandSaberDirection, true);
+                    break;
+                default: throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null);
+            }
+
             Reset(adjustmentHandTransform);
         }
 
@@ -91,7 +108,19 @@ namespace EasyOffset {
             Hand adjustmentHand,
             ReeTransform adjustmentHandTransform,
             ReeTransform freeHandTransform
-        ) { }
+        ) {
+            switch (adjustmentHand) {
+                case Hand.Left:
+                    _gizmosManager.LeftHandGizmosController.SetSphericalBasisFocus(false);
+                    _gizmosManager.LeftHandGizmosController.SetPreviousDirection(PluginConfig.LeftHandSaberDirection, false);
+                    break;
+                case Hand.Right:
+                    _gizmosManager.RightHandGizmosController.SetSphericalBasisFocus(false);
+                    _gizmosManager.RightHandGizmosController.SetPreviousDirection(PluginConfig.RightHandSaberDirection, false);
+                    break;
+                default: throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null);
+            }
+        }
 
         #endregion
     }

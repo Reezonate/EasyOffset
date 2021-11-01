@@ -29,9 +29,6 @@ namespace EasyOffset {
 
         #region Update
 
-        private Vector3 _previousTipPosition = Vector3.zero;
-        private bool _hasPreviousTipPosition;
-
         public void Update(
             ReeTransform controllerTransform,
             Vector3 tipWorldPosition,
@@ -69,7 +66,10 @@ namespace EasyOffset {
 
         #endregion
 
-        #region HandLocalRotation
+        #region WristRotationAxis
+
+        private Vector3 _previousTipPosition = Vector3.zero;
+        private bool _hasPreviousTipPosition;
 
         private void UpdateLocalNormals(
             ReeTransform controllerTransform,
@@ -79,7 +79,7 @@ namespace EasyOffset {
             if (_hasPreviousTipPosition) {
                 var localNormal = controllerTransform.WorldToLocalDirection(planeNormal);
                 var tipVelocity = (tipWorldPosition - _previousTipPosition).magnitude / Time.deltaTime;
-                _localNormals.Add(localNormal, tipVelocity);
+                _localNormals.Add(localNormal, Mathf.Pow(tipVelocity, 2.0f));
             }
 
             _previousTipPosition = tipWorldPosition;

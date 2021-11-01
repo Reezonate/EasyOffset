@@ -157,6 +157,7 @@
     <Compile Include="Classes\Managers\Adjustments\Manual\RoomOffsetAdjustmentModeManager.cs" />
     <Compile Include="Classes\Managers\Adjustments\MidPlayAdjustmentsManager.cs" />
     <Compile Include="Classes\Managers\Benchmark\SwingAnalyzer.cs" />
+    <Compile Include="Classes\Managers\Benchmark\SwingBenchmarkHelper.cs" />
     <Compile Include="Classes\Managers\Benchmark\SwingBenchmarkManager.cs" />
     <Compile Include="Classes\Managers\Gizmos\GizmosManager.cs" />
     <Compile Include="Classes\Managers\Input\ReeInputDevice.cs" />

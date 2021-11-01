@@ -76,7 +76,7 @@ namespace EasyOffset {
         }
 
         private static void RemoveModPanelTab() {
-            PersistentSingleton<BeatSaberMarkupLanguage.GameplaySetup.GameplaySetup>.instance.RemoveTab("Easy Offset");
+            PersistentSingleton<BeatSaberMarkupLanguage.GameplaySetup.GameplaySetup>.instance.RemoveTab(ModPanelTabName);
         }
 
         #endregion

@@ -30,7 +30,7 @@ namespace EasyOffset {
             ReeTransform adjustmentHandTransform,
             ReeTransform freeHandTransform
         ) {
-            _swingBenchmarkManager.Reset(adjustmentHand);
+            _swingBenchmarkManager.Start(adjustmentHand);
         }
 
         protected override void OnGrabUpdated(
@@ -38,7 +38,7 @@ namespace EasyOffset {
             ReeTransform adjustmentHandTransform,
             ReeTransform freeHandTransform
         ) {
-            GetAdjustmentHandWorldValues(
+            GetHandWorldValues(
                 adjustmentHand,
                 adjustmentHandTransform,
                 out var pivotWorldPosition,
@@ -57,35 +57,29 @@ namespace EasyOffset {
             ReeTransform adjustmentHandTransform,
             ReeTransform freeHandTransform
         ) {
-            var saberLocalDirection = adjustmentHand switch {
-                Hand.Left => PluginConfig.LeftHandSaberDirection,
-                Hand.Right => PluginConfig.RightHandSaberDirection,
-                _ => throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null)
-            };
-
-            _swingBenchmarkManager.Finalize(saberLocalDirection);
+            _swingBenchmarkManager.Finish();
         }
 
         #endregion
 
         #region Utils
 
-        private void GetAdjustmentHandWorldValues(
-            Hand adjustmentHand,
-            ReeTransform adjustmentHandTransform,
+        private void GetHandWorldValues(
+            Hand hand,
+            ReeTransform controllerTransform,
             out Vector3 pivotWorldPosition,
             out Quaternion saberWorldRotation
         ) {
-            switch (adjustmentHand) {
+            switch (hand) {
                 case Hand.Left:
-                    pivotWorldPosition = adjustmentHandTransform.LocalToWorldPosition(PluginConfig.LeftHandPivotPosition);
-                    saberWorldRotation = adjustmentHandTransform.LocalToWorldRotation(PluginConfig.LeftHandRotation);
+                    pivotWorldPosition = controllerTransform.LocalToWorldPosition(PluginConfig.LeftHandPivotPosition);
+                    saberWorldRotation = controllerTransform.LocalToWorldRotation(PluginConfig.LeftHandRotation);
                     break;
                 case Hand.Right:
-                    pivotWorldPosition = adjustmentHandTransform.LocalToWorldPosition(PluginConfig.RightHandPivotPosition);
-                    saberWorldRotation = adjustmentHandTransform.LocalToWorldRotation(PluginConfig.RightHandRotation);
+                    pivotWorldPosition = controllerTransform.LocalToWorldPosition(PluginConfig.RightHandPivotPosition);
+                    saberWorldRotation = controllerTransform.LocalToWorldRotation(PluginConfig.RightHandRotation);
                     break;
-                default: throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null);
+                default: throw new ArgumentOutOfRangeException(nameof(hand), hand, null);
             }
 
             TransformUtils.ApplyRoomOffset(MainSettingsModel, ref pivotWorldPosition, ref saberWorldRotation);
