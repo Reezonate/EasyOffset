@@ -23,8 +23,7 @@ Config values are different from base game settings, SaberTailor, etc.
 **PC ONLY**! Quest version is planned, but not guaranteed
 
 # Coming soon™
-- SaberTailor config import
-- Base game config import
+- cool new features
 
 # How to install
 - Install **BSIPA** and **BeatSaberMarkupLanguage** dependencies using
@@ -121,3 +120,71 @@ World pulling locomotion in Beat Saber! This mode uses base game room offset set
 - you can reset offset in base game settings
 
 Useful for quick floor level alignment. Just put one controller on the floor and use its model as a reference
+
+# Base game config migration
+
+- Create AnyName.json file in `<YourGameDirectory>/UserData/EasyOffset/Presets/` directory and open it with any text editor (e.g. Notepad)
+- Paste the following template:
+``` json
+{
+  "version": "BaseGame",
+  "IsValveController": false,
+  "IsVRModeOculus": false,
+  "ZOffset": 110,
+  "PositionX": 0,
+  "PositionY": 0,
+  "PositionZ": 0,
+  "RotationX": 0,
+  "RotationY": 0,
+  "RotationZ": 0
+}
+```
+- **if you were using Valve Index controllers**: change `false` to `true` in the `IsValveController` field
+- **if you were using oculus VR mode**: change `false` to `true` in the `IsVRModeOculus` field
+- Type the desired `ZOffset` value for your config. Leave it as it is if you're not sure
+- Type `Position` and `Rotation` values from your base game config into the corresponding fields
+- Save file
+- Now you should be able to load your config in-game
+
+# Saber Tailor config migration
+
+- Create AnyName.json file in `<YourGameDirectory>/UserData/EasyOffset/Presets/` directory and open it with any text editor (e.g. Notepad)
+- Paste the following template:
+``` json 
+{
+  "version": "SaberTailor",
+  "UseBaseGameAdjustmentMode": false,
+  "IsValveController": false,
+  "IsVRModeOculus": false,
+  "rightHandZOffset": 110,
+  "leftHandZOffset": 110,
+  "GripLeftPosition": {
+    "x": -32,
+    "y": -16,
+    "z": 60
+  },
+  "GripRightPosition": {
+    "x": 32,
+    "y": -16,
+    "z": 60
+  },
+  "GripLeftRotation": {
+    "x": -59,
+    "y": -113,
+    "z": 0
+  },
+  "GripRightRotation": {
+    "x": -59,
+    "y": 113,
+    "z": 0
+  }
+}
+```
+
+- **If you were using "base game adjustment mode"**: change `false` to `true` in the `UseBaseGameAdjustmentMode` field
+- **If you were using Valve Index controllers**: change `false` to `true` in the `IsValveController` field
+- **If you were using oculus VR mode**: change `false` to `true` in the `IsVRModeOculus` field
+- Type the desired `ZOffset` value for each hand. Leave it as it is if you're not sure
+- Type `Position` and `Rotation` values from your saber tailor config into the corresponding fields. You can directly copy those values from your SaberTailor.json file
+- Save file
+- Now you should be able to load your config in-game
