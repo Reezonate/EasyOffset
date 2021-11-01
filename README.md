@@ -141,12 +141,16 @@ Useful for quick floor level alignment. Just put one controller on the floor and
 ```
 - **if you were using Valve Index controllers**: change `false` to `true` in the `IsValveController` field
 - **if you were using oculus VR mode**: change `false` to `true` in the `IsVRModeOculus` field
-- Type the desired `ZOffset` value for your config. Leave it as it is if you're not sure
-- Type `Position` and `Rotation` values from your base game config into the corresponding fields
+- Type the desired `ZOffset (mm)` value. Leave it as it is if you're not sure
+- Type `Position (mm)` and `Rotation (deg)` values from your base game config into the corresponding fields
 - Save file
 - Now you should be able to load your config in-game
 
 # Saber Tailor config migration
+
+``` diff
+ - Note: "World Offset" feature is not supported
+```
 
 - Create AnyName.json file in `<YourGameDirectory>/UserData/EasyOffset/Presets/` directory and open it with any text editor (e.g. Notepad)
 - Paste the following template:
@@ -159,23 +163,23 @@ Useful for quick floor level alignment. Just put one controller on the floor and
   "rightHandZOffset": 110,
   "leftHandZOffset": 110,
   "GripLeftPosition": {
-    "x": -32,
-    "y": -16,
-    "z": 60
+    "x": 0,
+    "y": 0,
+    "z": 0
   },
   "GripRightPosition": {
-    "x": 32,
-    "y": -16,
-    "z": 60
+    "x": 0,
+    "y": 0,
+    "z": 0
   },
   "GripLeftRotation": {
-    "x": -59,
-    "y": -113,
+    "x": 0,
+    "y": 0,
     "z": 0
   },
   "GripRightRotation": {
-    "x": -59,
-    "y": 113,
+    "x": 0,
+    "y": 0,
     "z": 0
   }
 }
@@ -184,7 +188,7 @@ Useful for quick floor level alignment. Just put one controller on the floor and
 - **If you were using "base game adjustment mode"**: change `false` to `true` in the `UseBaseGameAdjustmentMode` field
 - **If you were using Valve Index controllers**: change `false` to `true` in the `IsValveController` field
 - **If you were using oculus VR mode**: change `false` to `true` in the `IsVRModeOculus` field
-- Type the desired `ZOffset` value for each hand. Leave it as it is if you're not sure
-- Type `Position` and `Rotation` values from your saber tailor config into the corresponding fields. You can directly copy those values from your SaberTailor.json file
+- Type the desired `ZOffset (mm)` value for each hand. Leave it as it is if you're not sure
+- Type `Position (mm)` and `Rotation (deg)` values from your saber tailor config into the corresponding fields. You can directly copy those values from your SaberTailor.json file
 - Save file
 - Now you should be able to load your config in-game
