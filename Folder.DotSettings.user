@@ -6,4 +6,5 @@
   &lt;Assembly Path="D:\Games\Steam\steamapps\common\Beat Saber\Beat Saber_Data\Managed\Main.dll" /&gt;&#xD;
   &lt;Assembly Path="D:\Games\Steam\steamapps\common\Beat Saber\Libs\Newtonsoft.Json.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=hilting/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Supa/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>

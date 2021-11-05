@@ -181,8 +181,9 @@
     <Compile Include="Classes\AssetBundleScripts\Trails\Trail.cs" />
     <Compile Include="Classes\AssetBundleScripts\Trails\TrailMesh.cs" />
     <Compile Include="Classes\AssetBundleScripts\Trails\TrailSpline.cs" />
-    <Compile Include="Classes\UI\ModPanelStateMachine.cs" />
     <Compile Include="Classes\UI\ModPanelUI.cs" />
+    <Compile Include="Classes\UI\ModPanelUIHelper.cs" />
+    <Compile Include="Classes\UI\SettingsUIHelper.cs" />
     <Compile Include="Classes\UI\SettingsUI.cs" />
     <Compile Include="Classes\Utils\StaticUtils\BsmlUtils.cs" />
     <Compile Include="Classes\Utils\StaticUtils\MathUtils.cs" />
@@ -200,6 +201,7 @@
     <Compile Include="Classes\Utils\StaticUtils\ResourcesUtils.cs" />
     <Compile Include="Classes\Utils\StaticUtils\TransformUtils.cs" />
     <Compile Include="Classes\Utils\UtilityClasses\WeightedList.cs" />
+    <Compile Include="HarmonyPatches\HarmonyHelper.cs" />
     <Compile Include="HarmonyPatches\InstallersPatches\GameInstallerPatch.cs" />
     <Compile Include="HarmonyPatches\InstallersPatches\MenuInstallerPatch.cs" />
     <Compile Include="HarmonyPatches\InstallersPatches\AppInstallerPatch.cs" />

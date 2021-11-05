@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using BeatSaberMarkupLanguage.GameplaySetup;
+using EasyOffset.UI;
 using HarmonyLib;
 using JetBrains.Annotations;
 
@@ -43,13 +44,13 @@ namespace EasyOffset.HarmonyPatches {
             }
 
             try {
-                var menusList = (List<object>) MenusFieldInfo.GetValue(__instance);
+                var menusList = (List<object>)MenusFieldInfo.GetValue(__instance);
 
                 for (var i = menusList.Count - 1; i >= 0; i--) {
                     var menu = menusList[i];
 
                     var name = NameFieldInfo!.GetValue(menu).ToString();
-                    if (name != Plugin.ModPanelTabName) continue;
+                    if (name != ModPanelUIHelper.TabName) continue;
 
                     menusList.RemoveAt(i);
                     menusList.Add(menu);

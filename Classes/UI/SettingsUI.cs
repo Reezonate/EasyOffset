@@ -5,9 +5,9 @@ using JetBrains.Annotations;
 
 namespace EasyOffset.UI {
     public class SettingsUI : NotifiableSingleton<SettingsUI> {
-        [UIValue("enabled-bool")]
+        [UIValue("enabled-value")]
         [UsedImplicitly]
-        internal bool EnabledValue {
+        private bool EnabledValue {
             get => PluginConfig.Enabled;
             set => PluginConfig.Enabled = value;
         }
