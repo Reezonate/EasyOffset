@@ -25,25 +25,25 @@ namespace EasyOffset {
         #region OnUpdate
 
         public delegate void OnUpdateDelegate(
-            float curveAngle,
+            float coneAngle,
             float coneHeight,
-            float tipWobble,
-            float armUsage
+            float tipDeviation,
+            float pivotDeviation
         );
 
         public static event OnUpdateDelegate OnUpdateEvent;
 
         public static void InvokeUpdate(
-            float curveAngle,
+            float coneAngle,
             float coneHeight,
-            float tipWobble,
-            float armUsage
+            float tipDeviation,
+            float pivotDeviation
         ) {
             OnUpdateEvent?.Invoke(
-                curveAngle,
+                coneAngle,
                 coneHeight,
-                tipWobble,
-                armUsage
+                tipDeviation,
+                pivotDeviation
             );
         }
 

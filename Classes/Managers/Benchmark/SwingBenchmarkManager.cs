@@ -116,10 +116,10 @@ namespace EasyOffset {
                 FullSwingAngleRequirement
             );
 
-            var curveAngle = Mathf.Asin(pivotHeight);
+            var coneAngle = Mathf.Asin(pivotHeight) * Mathf.Rad2Deg;
 
             SwingBenchmarkHelper.InvokeUpdate(
-                curveAngle,
+                coneAngle,
                 pivotHeight,
                 tipDeviation,
                 pivotDeviation
