@@ -1,4 +1,5 @@
 using System.Reflection;
+using EasyOffset.Configuration;
 using JetBrains.Annotations;
 using Zenject;
 
@@ -11,8 +12,9 @@ namespace EasyOffset.Installers {
         );
 
         public static void PreInstall(PCAppInit appInstaller, DiContainer container) {
-            var mainSettingsModel = (MainSettingsModelSO) MainSettingsFieldInfo.GetValue(appInstaller);
+            var mainSettingsModel = (MainSettingsModelSO)MainSettingsFieldInfo.GetValue(appInstaller);
             container.BindInstance(mainSettingsModel).AsSingle();
+            PluginConfig.MainSettingsModel = mainSettingsModel;
         }
 
         public override void InstallBindings() {

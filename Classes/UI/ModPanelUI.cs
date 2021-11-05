@@ -7,6 +7,7 @@ using BeatSaberMarkupLanguage.Components;
 using EasyOffset.Configuration;
 using HMUI;
 using JetBrains.Annotations;
+using UnityEngine;
 
 namespace EasyOffset.UI {
     public class ModPanelUI : NotifiableSingleton<ModPanelUI> {
@@ -14,6 +15,7 @@ namespace EasyOffset.UI {
 
         public ModPanelUI() {
             SubscribeToBenchmarkEvents();
+            SubscribeToRoomOffsetEvents();
         }
 
         #endregion
@@ -370,15 +372,15 @@ namespace EasyOffset.UI {
         }
 
         private void OnBenchmarkUpdate(
-            float curveAngle,
+            float coneAngle,
             float coneHeight,
-            float tipWobble,
-            float armUsage
+            float tipDeviation,
+            float pivotDeviation
         ) {
-            BenchmarkCurveValue = $"{curveAngle:F2}° {(curveAngle > 0 ? "(Inward)" : "(Outward)")}";
-            BenchmarkConeHeightValue = $"{coneHeight:F2} cm";
-            BenchmarkTipWobbleValue = $"{tipWobble:F2} cm";
-            BenchmarkArmUsageValue = $"{armUsage:F2} cm";
+            BenchmarkCurveValue = $"{coneAngle:F2}° {(coneAngle < 0 ? "Inward" : "Outward")}";
+            BenchmarkConeHeightValue = $"{(coneHeight * 100):F2} cm";
+            BenchmarkTipWobbleValue = $"{(tipDeviation * 200):F2} cm";
+            BenchmarkArmUsageValue = $"{(pivotDeviation * 200):F2} cm";
         }
 
         private void OnBenchmarkFail() {
@@ -425,6 +427,16 @@ namespace EasyOffset.UI {
 
         #endregion
 
+        #region Instructions
+
+        [UIValue("benchmark-guide")] [UsedImplicitly]
+        private string _benchmarkGuide = "Repeat one exact swing several times" +
+                                         "\nwhile holding the button" +
+                                         "\n" +
+                                         "\nAt least 140° swing angle required";
+
+        #endregion
+
         #endregion
 
         #region Results
@@ -447,7 +459,14 @@ namespace EasyOffset.UI {
 
         #region Curve
 
-        private string _benchmarkCurveValue = "-2,3° (Inward)";
+        [UIValue("benchmark-curve-hint")] [UsedImplicitly]
+        private string _benchmarkCurveHint = "How straight your swing is" +
+                                             "\n" +
+                                             "\n<color=green>This value depends only on your config</color>" +
+                                             "\nYou can remove it manually in DirectionOnly mode" +
+                                             "\nor just by pressing \"Apply rotation fix\"";
+
+        private string _benchmarkCurveValue = "0,0° Inward";
 
         [UIValue("benchmark-curve-value")]
         [UsedImplicitly]
@@ -469,7 +488,15 @@ namespace EasyOffset.UI {
 
         #region ConeHeight
 
-        private string _benchmarkConeHeightValue = "21,3 cm";
+        [UIValue("benchmark-cone-height-hint")] [UsedImplicitly]
+        private string _benchmarkConeHint = "Same thing as Swing Curve" +
+                                            "\nShows difference between hilting and tipping" +
+                                            "\n" +
+                                            "\n<color=green>This value depends only on your config</color>" +
+                                            "\nYou can remove it manually in DirectionOnly mode" +
+                                            "\nor just by pressing \"Apply rotation fix\"";
+
+        private string _benchmarkConeHeightValue = "0,0 cm";
 
         [UIValue("benchmark-cone-height-value")]
         [UsedImplicitly]
@@ -485,7 +512,16 @@ namespace EasyOffset.UI {
 
         #region TipWobble
 
-        private string _benchmarkTipWobbleValue = "21,3 cm";
+        [UIValue("benchmark-tip-wobble-hint")] [UsedImplicitly]
+        private string _benchmarkTipWobbleHint = "Inconsistency of your swing" +
+                                                 "\nThe greater the wobble, the lower your accuracy limit" +
+                                                 "\n" +
+                                                 "\n<color=red>This value depends only on your grip" +
+                                                 "\nYou can NOT fix it by changing your config</color>" +
+                                                 "\nYou can fix it by choosing more weight-balanced grip" +
+                                                 "\nYou can reduce it by using more arm at the stamina cost";
+
+        private string _benchmarkTipWobbleValue = "0,0 cm";
 
         [UIValue("benchmark-tip-wobble-value")]
         [UsedImplicitly]
@@ -501,7 +537,11 @@ namespace EasyOffset.UI {
 
         #region ArmUsage
 
-        private string _benchmarkArmUsageValue = "12,4 cm";
+        [UIValue("benchmark-arm-usage-hint")] [UsedImplicitly]
+        private string _benchmarkArmUsageHint = "Arm movement amplitude" +
+                                                "\nPersonal preference. Optimize to your needs";
+
+        private string _benchmarkArmUsageValue = "0,0 cm";
 
         [UIValue("benchmark-arm-usage-value")]
         [UsedImplicitly]
@@ -531,6 +571,33 @@ namespace EasyOffset.UI {
 
         #region RoomOffsetPanel
 
+        #region Events
+
+        private Vector3SO _roomCenterSO;
+
+        private void SubscribeToRoomOffsetEvents() {
+            PluginConfig.MainSettingsModelChangedEvent += OnMainSettingsModelChanged;
+        }
+
+        private void OnMainSettingsModelChanged(MainSettingsModelSO mainSettingsModel) {
+            if (_roomCenterSO != null) {
+                _roomCenterSO.didChangeEvent -= OnRoomCenterChanged;
+            }
+
+            _roomCenterSO = mainSettingsModel.roomCenter;
+            _roomCenterSO.didChangeEvent += OnRoomCenterChanged;
+            OnRoomCenterChanged();
+        }
+
+        private void OnRoomCenterChanged() {
+            var tmp = _roomCenterSO.value;
+            RoomXText = $"X:\t{(tmp.x * 100):F2} cm";
+            RoomYText = $"Y:\t{(tmp.y * 100):F2} cm";
+            RoomZText = $"Z:\t{(tmp.z * 100):F2} cm";
+        }
+
+        #endregion
+
         #region Active
 
         private bool _roomOffsetPanelActive;
@@ -543,6 +610,102 @@ namespace EasyOffset.UI {
                 _roomOffsetPanelActive = value;
                 NotifyPropertyChanged();
             }
+        }
+
+        #endregion
+
+        #region X
+
+        private string _roomXText = "";
+
+        [UIValue("room-x-text")]
+        [UsedImplicitly]
+        private string RoomXText {
+            get => _roomXText;
+            set {
+                _roomXText = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        [UIValue("room-x-toggle-value")] [UsedImplicitly]
+        private bool _roomXToggleValue = PluginConfig.AllowRoomXChange;
+
+        [UIAction("room-x-toggle-on-change")]
+        [UsedImplicitly]
+        private void RoomXToggleOnChange(bool value) {
+            PluginConfig.AllowRoomXChange = value;
+        }
+
+        [UIAction("room-x-reset-on-click")]
+        [UsedImplicitly]
+        private void RoomXResetOnClick() {
+            var tmp = PluginConfig.MainSettingsModel.roomCenter.value;
+            PluginConfig.MainSettingsModel.roomCenter.value = new Vector3(0, tmp.y, tmp.z);
+        }
+
+        #endregion
+
+        #region Y
+
+        private string _roomYText = "";
+
+        [UIValue("room-y-text")]
+        [UsedImplicitly]
+        private string RoomYText {
+            get => _roomYText;
+            set {
+                _roomYText = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        [UIValue("room-y-toggle-value")] [UsedImplicitly]
+        private bool _roomYToggleValue = PluginConfig.AllowRoomYChange;
+
+        [UIAction("room-y-toggle-on-change")]
+        [UsedImplicitly]
+        private void RoomYToggleOnChange(bool value) {
+            PluginConfig.AllowRoomYChange = value;
+        }
+
+        [UIAction("room-y-reset-on-click")]
+        [UsedImplicitly]
+        private void RoomYResetOnClick() {
+            var tmp = PluginConfig.MainSettingsModel.roomCenter.value;
+            PluginConfig.MainSettingsModel.roomCenter.value = new Vector3(tmp.x, 0, tmp.z);
+        }
+
+        #endregion
+
+        #region Z
+
+        private string _roomZText = "";
+
+        [UIValue("room-z-text")]
+        [UsedImplicitly]
+        private string RoomZText {
+            get => _roomZText;
+            set {
+                _roomZText = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        [UIValue("room-z-toggle-value")] [UsedImplicitly]
+        private bool _roomZToggleValue = PluginConfig.AllowRoomZChange;
+
+        [UIAction("room-z-toggle-on-change")]
+        [UsedImplicitly]
+        private void RoomZToggleOnChange(bool value) {
+            PluginConfig.AllowRoomZChange = value;
+        }
+
+        [UIAction("room-z-reset-on-click")]
+        [UsedImplicitly]
+        private void RoomZResetOnClick() {
+            var tmp = PluginConfig.MainSettingsModel.roomCenter.value;
+            PluginConfig.MainSettingsModel.roomCenter.value = new Vector3(tmp.x, tmp.y, 0);
         }
 
         #endregion

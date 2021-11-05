@@ -1,3 +1,4 @@
+using EasyOffset.Configuration;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -37,7 +38,13 @@ namespace EasyOffset {
             ReeTransform freeHandTransform
         ) {
             var positionChange = adjustmentHandTransform.Position - _grabPosition;
-            MainSettingsModel.roomCenter.value = _grabRoomCenter - positionChange;
+            var result = _grabRoomCenter - positionChange;
+            
+            MainSettingsModel.roomCenter.value = new Vector3(
+                PluginConfig.AllowRoomXChange ? result.x : _grabRoomCenter.x,
+                PluginConfig.AllowRoomYChange ? result.y : _grabRoomCenter.y,
+                PluginConfig.AllowRoomZChange ? result.z : _grabRoomCenter.z
+            );
         }
 
         protected override void OnGrabFinished(

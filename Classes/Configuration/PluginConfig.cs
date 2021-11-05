@@ -3,23 +3,27 @@ using UnityEngine;
 
 namespace EasyOffset.Configuration {
     public static class PluginConfig {
+        #region MainSettingsModel
+
+        public static event Action<MainSettingsModelSO> MainSettingsModelChangedEvent;
+
+        private static MainSettingsModelSO _mainSettingsModel;
+
+        public static MainSettingsModelSO MainSettingsModel {
+            get => _mainSettingsModel;
+            set {
+                _mainSettingsModel = value;
+                MainSettingsModelChangedEvent?.Invoke(_mainSettingsModel);
+            }
+        }
+
+        #endregion
+
         #region Smoothing
 
-        public static bool SmoothingEnabled { get; private set; }
+        public static bool SmoothingEnabled { get; set; }
         public static float PositionalSmoothing { get; set; }
         public static float RotationalSmoothing { get; set; }
-        public static MainSettingsModelSO MainSettingsModel { get; private set; }
-
-        public static void EnableSmoothing(
-            MainSettingsModelSO mainSettingsModel
-        ) {
-            SmoothingEnabled = true;
-            MainSettingsModel = mainSettingsModel;
-        }
-
-        public static void DisableSmoothing() {
-            SmoothingEnabled = false;
-        }
 
         #endregion
 
@@ -56,6 +60,25 @@ namespace EasyOffset.Configuration {
                 CachedUILock.Value = value;
                 ConfigFileData.Instance.UILock = value;
             }
+        }
+
+        #endregion
+
+        #region RoomOffset
+
+        public static bool AllowRoomXChange {
+            get => ConfigFileData.Instance.AllowRoomXChange;
+            set => ConfigFileData.Instance.AllowRoomXChange = value;
+        }
+
+        public static bool AllowRoomYChange {
+            get => ConfigFileData.Instance.AllowRoomYChange;
+            set => ConfigFileData.Instance.AllowRoomYChange = value;
+        }
+
+        public static bool AllowRoomZChange {
+            get => ConfigFileData.Instance.AllowRoomZChange;
+            set => ConfigFileData.Instance.AllowRoomZChange = value;
         }
 
         #endregion

@@ -28,13 +28,13 @@ namespace EasyOffset {
         #region Smoothing
 
         private void StartSmoothing() {
-            PluginConfig.EnableSmoothing(MainSettingsModel);
+            PluginConfig.SmoothingEnabled = true;
             PluginConfig.PositionalSmoothing = _positionalSmoothing;
             PluginConfig.RotationalSmoothing = _rotationalSmoothing;
         }
 
         private static void StopSmoothing() {
-            PluginConfig.DisableSmoothing();
+            PluginConfig.SmoothingEnabled = false;
             PluginConfig.PositionalSmoothing = 0f;
             PluginConfig.RotationalSmoothing = 0f;
         }
