@@ -16,7 +16,7 @@ In this mod offset is defined by three config values for each hand:
 
 # Compatibility
 
-Not compatible with other offset adjustment mods (e.g. SaberTailor, ControllerTweaks)
+Not compatible with other offset adjustment mods (e.g. SaberTailor, ControllerSettingsHelper, etc.)
 
 Config values are different from base game settings, SaberTailor, etc.
 
@@ -32,6 +32,23 @@ Config values are different from base game settings, SaberTailor, etc.
 - Download the latest .dll for your game version from the 
 [Releases page](https://github.com/Reezonate/EasyOffset/releases)
 and put it in `/plugins` directory inside your game folder
+
+# Base game config migration
+
+- Go to `Settings` > `Mod Settings` > `Easy Offset`
+- Change Z Offset value to correctly place the `Pivot Point` (0 - top of the hilt, 22 - bottom of the hilt)
+- Press the `Import from settings` button
+
+# SaberTailor config migration
+
+```diff
+- SaberTailor.json file required in the UserData directory
+- World offset is not supported!
+```
+
+- Go to `Settings` > `Mod Settings` > `Easy Offset`
+- Change Z Offset value to correctly place the `Pivot Point` (0 - top of the hilt, 22 - bottom of the hilt)
+- Press the `Import from SaberTailor` button
 
 # How to use
 Before trying to find your best config, spend some time in different modes and experiment with the tools at your disposal
@@ -170,75 +187,3 @@ World pulling locomotion in Beat Saber! This mode uses base game room offset set
 - To move only vertically, disable X and Z axles
 
 Useful for quick floor level alignment. Just put one controller on the floor and use its model as a reference
-
-# Base game config migration
-
-- Create AnyName.json file in `<YourGameDirectory>/UserData/EasyOffset/Presets/` directory and open it with any text editor (e.g. Notepad)
-- Paste the following template:
-``` json
-{
-  "version": "BaseGame",
-  "IsValveController": false,
-  "IsVRModeOculus": false,
-  "ZOffset": 110,
-  "PositionX": 0,
-  "PositionY": 0,
-  "PositionZ": 0,
-  "RotationX": 0,
-  "RotationY": 0,
-  "RotationZ": 0
-}
-```
-- **if you were using Valve Index controllers**: change `false` to `true` in the `IsValveController` field
-- **if you were using oculus VR mode**: change `false` to `true` in the `IsVRModeOculus` field
-- Type the desired `ZOffset (mm)` value. Leave it as it is if you're not sure
-- Type `Position (mm)` and `Rotation (deg)` values from your base game config into the corresponding fields
-- Save file
-- Now you should be able to load your config in-game
-
-# Saber Tailor config migration
-
-``` diff
-- "World Offset" feature is not supported
-```
-
-- Create AnyName.json file in `<YourGameDirectory>/UserData/EasyOffset/Presets/` directory and open it with any text editor (e.g. Notepad)
-- Paste the following template:
-``` json 
-{
-  "version": "SaberTailor",
-  "UseBaseGameAdjustmentMode": false,
-  "IsValveController": false,
-  "IsVRModeOculus": false,
-  "rightHandZOffset": 110,
-  "leftHandZOffset": 110,
-  "GripLeftPosition": {
-    "x": 0,
-    "y": 0,
-    "z": 0
-  },
-  "GripRightPosition": {
-    "x": 0,
-    "y": 0,
-    "z": 0
-  },
-  "GripLeftRotation": {
-    "x": 0,
-    "y": 0,
-    "z": 0
-  },
-  "GripRightRotation": {
-    "x": 0,
-    "y": 0,
-    "z": 0
-  }
-}
-```
-
-- **If you were using "base game adjustment mode"**: change `false` to `true` in the `UseBaseGameAdjustmentMode` field
-- **If you were using Valve Index controllers**: change `false` to `true` in the `IsValveController` field
-- **If you were using oculus VR mode**: change `false` to `true` in the `IsVRModeOculus` field
-- Type the desired `ZOffset (mm)` value for each hand. Leave it as it is if you're not sure
-- Type `Position (mm)` and `Rotation (deg)` values from your saber tailor config into the corresponding fields. You can directly copy those values from your SaberTailor.json file
-- Save file
-- Now you should be able to load your config in-game
