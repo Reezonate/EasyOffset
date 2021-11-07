@@ -1,7 +1,7 @@
 namespace EasyOffset.UI {
     internal static class SettingsUIHelper {
         private const string ResourcePath = "EasyOffset.Resources.BSML.SettingsUI.bsml";
-        private const string TabName = "Easy Offsetq";
+        private const string TabName = "Easy Offset";
 
         private static bool _tabActive;
 

@@ -11,7 +11,7 @@ namespace EasyOffset {
         );
 
         public static DiContainer GetContainer(this MonoInstallerBase monoInstallerBase) {
-            return (DiContainer) ContainerPropertyInfo.GetValue(monoInstallerBase);
+            return (DiContainer)ContainerPropertyInfo.GetValue(monoInstallerBase);
         }
 
         #endregion

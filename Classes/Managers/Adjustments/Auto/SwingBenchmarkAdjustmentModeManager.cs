@@ -11,9 +11,8 @@ namespace EasyOffset {
         private readonly SwingBenchmarkManager _swingBenchmarkManager;
 
         public SwingBenchmarkAdjustmentModeManager(
-            MainSettingsModelSO mainSettingsModel,
             SwingBenchmarkManager swingBenchmarkManager
-        ) : base(mainSettingsModel,
+        ) : base(
             AdjustmentMode.SwingBenchmark,
             0f,
             0f
@@ -64,7 +63,7 @@ namespace EasyOffset {
 
         #region Utils
 
-        private void GetHandWorldValues(
+        private static void GetHandWorldValues(
             Hand hand,
             ReeTransform controllerTransform,
             out Vector3 pivotWorldPosition,
@@ -82,7 +81,7 @@ namespace EasyOffset {
                 default: throw new ArgumentOutOfRangeException(nameof(hand), hand, null);
             }
 
-            TransformUtils.ApplyRoomOffset(MainSettingsModel, ref pivotWorldPosition, ref saberWorldRotation);
+            TransformUtils.ApplyRoomOffset(ref pivotWorldPosition, ref saberWorldRotation);
         }
 
         #endregion

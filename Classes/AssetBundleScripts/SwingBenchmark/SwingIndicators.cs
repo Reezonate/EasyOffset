@@ -10,7 +10,7 @@ namespace EasyOffset.AssetBundleScripts {
 
         [SerializeField] private DistanceIndicator tipDeviationIndicator;
         [SerializeField] private DistanceIndicator pivotDeviationIndicator;
-        [SerializeField] private DistanceIndicator pivotHeightIndicator;
+        [SerializeField] private AngleIndicator swingCurveAngleIndicator;
         [SerializeField] private AngleIndicator minimalSwingAngleIndicator;
         [SerializeField] private AngleIndicator maximalSwingAngleIndicator;
         [SerializeField] private AngleIndicator fullSwingAngleIndicator;
@@ -70,7 +70,7 @@ namespace EasyOffset.AssetBundleScripts {
             _materialInstance.SetFloat(MaximalAnglePropertyId, _currentMaximalSwingAngle);
             _materialInstance.SetFloat(AverageAnglePropertyId, averageSwingAngle);
 
-            UpdateAngleIndicatorsData();
+            UpdateAngleIndicatorsSmooth();
         }
 
         #endregion
@@ -80,7 +80,7 @@ namespace EasyOffset.AssetBundleScripts {
         private void UpdateVisibility(bool isDataGood) {
             tipDeviationIndicator.gameObject.SetActive(isDataGood);
             pivotDeviationIndicator.gameObject.SetActive(isDataGood);
-            pivotHeightIndicator.gameObject.SetActive(isDataGood);
+            swingCurveAngleIndicator.gameObject.SetActive(isDataGood);
             minimalSwingAngleIndicator.gameObject.SetActive(isDataGood);
             maximalSwingAngleIndicator.gameObject.SetActive(isDataGood);
             fullSwingAngleIndicator.gameObject.SetActive(!isDataGood);
@@ -100,7 +100,7 @@ namespace EasyOffset.AssetBundleScripts {
             Quaternion planeRotation,
             float tipDeviation,
             float pivotDeviation,
-            float pivotHeight,
+            float swingCurveAngle,
             float minimalSwingAngle,
             float maximalSwingAngle,
             float fullSwingAngleRequirement
@@ -112,14 +112,14 @@ namespace EasyOffset.AssetBundleScripts {
 
             UpdateAngles(minimalSwingAngle, maximalSwingAngle, fullSwingAngleRequirement);
             UpdateSwingPlane(planePosition, planeRotation, pivotDeviation);
-            UpdateAngleIndicatorsTransforms(planePosition, planeRotation);
-            UpdateDistanceIndicators(planePosition, planeRotation, tipDeviation, pivotDeviation, pivotHeight);
+            UpdateAngleIndicatorsImmediate(planePosition, planeRotation, swingCurveAngle);
+            UpdateDistanceIndicators(planePosition, planeRotation, tipDeviation, pivotDeviation);
         }
 
         public void SetLookAt(Vector3 lookAt) {
             tipDeviationIndicator.SetLookAt(lookAt);
             pivotDeviationIndicator.SetLookAt(lookAt);
-            pivotHeightIndicator.SetLookAt(lookAt);
+            swingCurveAngleIndicator.SetLookAt(lookAt);
             minimalSwingAngleIndicator.SetLookAt(lookAt);
             maximalSwingAngleIndicator.SetLookAt(lookAt);
             fullSwingAngleIndicator.SetLookAt(lookAt);
@@ -140,6 +140,7 @@ namespace EasyOffset.AssetBundleScripts {
             minimalSwingAngleIndicator.SetTextOffset(offsetA);
             maximalSwingAngleIndicator.SetTextOffset(offsetA);
             fullSwingAngleIndicator.SetTextOffset(offsetA);
+            swingCurveAngleIndicator.SetTextOffset(offsetA);
         }
 
         #endregion
@@ -176,13 +177,25 @@ namespace EasyOffset.AssetBundleScripts {
 
         #region UpdateAngleIndicators
 
-        private void UpdateAngleIndicatorsTransforms(Vector3 planePosition, Quaternion planeRotation) {
+        private void UpdateAngleIndicatorsImmediate(
+            Vector3 planePosition,
+            Quaternion planeRotation,
+            float swingCurveAngle
+        ) {
             minimalSwingAngleIndicator.SetTransform(planePosition, planeRotation);
             maximalSwingAngleIndicator.SetTransform(planePosition, planeRotation);
             fullSwingAngleIndicator.SetTransform(planePosition, planeRotation);
+
+            var forward = planeRotation * Vector3.right;
+            swingCurveAngleIndicator.SetTransform(planePosition + forward, planeRotation * Quaternion.Euler(-90, 180, 0));
+            swingCurveAngleIndicator.SetValues(
+                swingCurveAngle,
+                0f,
+                $"{swingCurveAngle * Mathf.Rad2Deg:F1}°"
+            );
         }
 
-        private void UpdateAngleIndicatorsData() {
+        private void UpdateAngleIndicatorsSmooth() {
             minimalSwingAngleIndicator.SetValues(
                 _currentMinimalSwingAngle,
                 0f,
@@ -209,13 +222,12 @@ namespace EasyOffset.AssetBundleScripts {
 
         #region UpdateDistanceIndicators
 
-        private void UpdateDistanceIndicators(Vector3 planePosition, Quaternion planeRotation, float tipDeviation, float pivotDeviation, float pivotHeight) {
+        private void UpdateDistanceIndicators(Vector3 planePosition, Quaternion planeRotation, float tipDeviation, float pivotDeviation) {
             var forward = planeRotation * Vector3.right;
             var right = planeRotation * Vector3.back;
 
             UpdateTipDeviationIndicator(planePosition, tipDeviation, forward, right);
             UpdatePivotDeviationIndicator(planePosition, pivotDeviation, forward);
-            UpdatePivotHeightIndicator(planePosition, pivotHeight, right);
         }
 
         private void UpdateTipDeviationIndicator(Vector3 planePosition, float tipDeviation, Vector3 forward, Vector3 right) {
@@ -231,17 +243,6 @@ namespace EasyOffset.AssetBundleScripts {
                 planePosition - forward * pivotDeviation,
                 planePosition + forward * pivotDeviation,
                 $"{pivotDeviation * 200:F2} cm"
-            );
-        }
-
-        private void UpdatePivotHeightIndicator(Vector3 planePosition, float pivotHeight, Vector3 right) {
-            var offset = (pivotHeight > 0) ? normalTextOffset : flippedTextOffset;
-            pivotHeightIndicator.SetTextOffset(offset, false);
-
-            pivotHeightIndicator.SetValues(
-                planePosition - right * pivotHeight,
-                planePosition,
-                $"{(_isLeft ? pivotHeight : -pivotHeight) * 100:F2} cm"
             );
         }
 

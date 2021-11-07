@@ -6,18 +6,15 @@ namespace EasyOffset {
     public abstract class AbstractAdjustmentModeManager : IInitializable, IDisposable {
         #region Constructor
 
-        protected readonly MainSettingsModelSO MainSettingsModel;
         private readonly AdjustmentMode _adjustmentMode;
         private readonly float _positionalSmoothing;
         private readonly float _rotationalSmoothing;
 
         protected AbstractAdjustmentModeManager(
-            MainSettingsModelSO mainSettingsModel,
             AdjustmentMode adjustmentMode,
             float positionalSmoothing,
             float rotationalSmoothing
         ) {
-            MainSettingsModel = mainSettingsModel;
             _adjustmentMode = adjustmentMode;
             _positionalSmoothing = positionalSmoothing;
             _rotationalSmoothing = rotationalSmoothing;

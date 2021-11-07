@@ -35,7 +35,7 @@ namespace EasyOffset.AssetBundleScripts {
             Quaternion planeRotation,
             float tipDeviation,
             float pivotDeviation,
-            float pivotHeight,
+            float swingCurveAngle,
             float minimalSwingAngle,
             float maximalSwingAngle,
             float fullSwingAngleRequirement
@@ -46,7 +46,7 @@ namespace EasyOffset.AssetBundleScripts {
                 planeRotation,
                 tipDeviation,
                 pivotDeviation,
-                pivotHeight,
+                swingCurveAngle,
                 minimalSwingAngle,
                 maximalSwingAngle,
                 fullSwingAngleRequirement

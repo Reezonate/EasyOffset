@@ -11,10 +11,8 @@ namespace EasyOffset {
         private readonly GizmosManager _gizmosManager;
 
         public DirectionOnlyAdjustmentModeManager(
-            GizmosManager gizmosManager,
-            MainSettingsModelSO mainSettingsModel
+            GizmosManager gizmosManager
         ) : base(
-            mainSettingsModel,
             AdjustmentMode.DirectionOnly,
             6f,
             3f

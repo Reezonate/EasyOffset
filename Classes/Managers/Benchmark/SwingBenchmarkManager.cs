@@ -19,7 +19,6 @@ namespace EasyOffset {
         #region Variables
 
         private readonly GizmosManager _gizmosManager;
-        private readonly MainSettingsModelSO _mainSettingsModel;
 
         private readonly SwingAnalyzer _swingAnalyzer;
         private readonly SwingBenchmarkController _swingBenchmarkController;
@@ -36,11 +35,9 @@ namespace EasyOffset {
         #region Constructor
 
         public SwingBenchmarkManager(
-            GizmosManager gizmosManager,
-            MainSettingsModelSO mainSettingsModel
+            GizmosManager gizmosManager
         ) {
             _gizmosManager = gizmosManager;
-            _mainSettingsModel = mainSettingsModel;
             _swingAnalyzer = new SwingAnalyzer(MaximalCapacity);
 
             var gameObject = Object.Instantiate(BundleLoader.SwingBenchmarkController);
@@ -104,25 +101,26 @@ namespace EasyOffset {
             _isSwingGood = fullSwingAngle > FullSwingAngleRequirement;
             var isLeft = _selectedHand == Hand.Left;
 
+            var swingCurveAngle = Mathf.Asin(pivotHeight);
+
             _swingBenchmarkController.SetValues(
                 isLeft,
                 planePosition,
                 planeRotation,
                 tipDeviation,
                 pivotDeviation,
-                pivotHeight,
+                swingCurveAngle,
                 minimalSwingAngle,
                 maximalSwingAngle,
                 FullSwingAngleRequirement
             );
 
-            var coneAngle = Mathf.Asin(pivotHeight) * Mathf.Rad2Deg;
-
             SwingBenchmarkHelper.InvokeUpdate(
-                coneAngle,
-                pivotHeight,
+                swingCurveAngle,
                 tipDeviation,
-                pivotDeviation
+                pivotDeviation,
+                minimalSwingAngle,
+                maximalSwingAngle
             );
         }
 
@@ -194,8 +192,8 @@ namespace EasyOffset {
             var rightHandWorldPosition = rightControllerTransform.LocalToWorldPosition(PluginConfig.RightHandPivotPosition);
             var rightHandWorldRotation = rightControllerTransform.LocalToWorldRotation(_rightHandLocalRotation);
 
-            TransformUtils.ApplyRoomOffset(_mainSettingsModel, ref leftHandWorldPosition, ref leftHandWorldRotation);
-            TransformUtils.ApplyRoomOffset(_mainSettingsModel, ref rightHandWorldPosition, ref rightHandWorldRotation);
+            TransformUtils.ApplyRoomOffset(ref leftHandWorldPosition, ref leftHandWorldRotation);
+            TransformUtils.ApplyRoomOffset(ref rightHandWorldPosition, ref rightHandWorldRotation);
 
             _swingBenchmarkController.UpdateHandTransforms(
                 leftHandWorldPosition,

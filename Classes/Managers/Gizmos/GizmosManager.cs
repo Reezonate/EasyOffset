@@ -9,18 +9,6 @@ using Object = UnityEngine.Object;
 namespace EasyOffset {
     [UsedImplicitly]
     public class GizmosManager : IInitializable, IDisposable, ITickable {
-        #region Inject
-
-        private readonly MainSettingsModelSO _mainSettingsModel;
-
-        public GizmosManager(
-            MainSettingsModelSO mainSettingsModel
-        ) {
-            _mainSettingsModel = mainSettingsModel;
-        }
-
-        #endregion
-
         #region Init/Dispose
 
         public GizmosController LeftHandGizmosController;
@@ -79,8 +67,8 @@ namespace EasyOffset {
             var leftRot = leftHandTransform.Rotation;
             var rightPos = rightHandTransform.Position;
             var rightRot = rightHandTransform.Rotation;
-            TransformUtils.ApplyRoomOffset(_mainSettingsModel, ref leftPos, ref leftRot);
-            TransformUtils.ApplyRoomOffset(_mainSettingsModel, ref rightPos, ref rightRot);
+            TransformUtils.ApplyRoomOffset(ref leftPos, ref leftRot);
+            TransformUtils.ApplyRoomOffset(ref rightPos, ref rightRot);
             LeftHandGizmosController.SetControllerTransform(leftPos, leftRot);
             RightHandGizmosController.SetControllerTransform(rightPos, rightRot);
         }

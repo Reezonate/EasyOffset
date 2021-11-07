@@ -7,10 +7,7 @@ namespace EasyOffset {
     public class RoomOffsetAdjustmentModeManager : AbstractAdjustmentModeManager {
         #region Constructor
 
-        public RoomOffsetAdjustmentModeManager(
-            MainSettingsModelSO mainSettingsModelSO
-        ) : base(
-            mainSettingsModelSO,
+        public RoomOffsetAdjustmentModeManager() : base(
             AdjustmentMode.RoomOffset,
             6f,
             6f
@@ -29,7 +26,7 @@ namespace EasyOffset {
             ReeTransform freeHandTransform
         ) {
             _grabPosition = adjustmentHandTransform.Position;
-            _grabRoomCenter = MainSettingsModel.roomCenter.value;
+            _grabRoomCenter = PluginConfig.MainSettingsModel.roomCenter.value;
         }
 
         protected override void OnGrabUpdated(
@@ -39,8 +36,8 @@ namespace EasyOffset {
         ) {
             var positionChange = adjustmentHandTransform.Position - _grabPosition;
             var result = _grabRoomCenter - positionChange;
-            
-            MainSettingsModel.roomCenter.value = new Vector3(
+
+            PluginConfig.MainSettingsModel.roomCenter.value = new Vector3(
                 PluginConfig.AllowRoomXChange ? result.x : _grabRoomCenter.x,
                 PluginConfig.AllowRoomYChange ? result.y : _grabRoomCenter.y,
                 PluginConfig.AllowRoomZChange ? result.z : _grabRoomCenter.z

@@ -133,15 +133,15 @@
     <Compile Include="Classes\AssetBundleScripts\SwingBenchmark\HandVisuals.cs" />
     <Compile Include="Classes\AssetBundleScripts\SwingBenchmark\SwingBenchmarkController.cs" />
     <Compile Include="Classes\AssetBundleScripts\SwingBenchmark\SwingIndicators.cs" />
+    <Compile Include="Classes\Configuration\ConfigMigration\ConfigConversions.cs" />
+    <Compile Include="Classes\Configuration\ConfigMigration\ConfigMigration.cs" />
+    <Compile Include="Classes\Configuration\ConfigMigration\MigrationResult.cs" />
     <Compile Include="Classes\Configuration\ConfigPresetsStorage\ConfigPresetsStorage.cs" />
     <Compile Include="Classes\Configuration\ConfigPresetsStorage\PresetUtils.cs" />
     <Compile Include="Classes\Configuration\ConfigPresetsStorage\StoredConfigPreset.cs" />
-    <Compile Include="Classes\Configuration\ConfigPresets\BaseGameConfigPreset.cs" />
     <Compile Include="Classes\Configuration\ConfigPresets\ConfigPresetV1.cs" />
     <Compile Include="Classes\Configuration\CachedVariable.cs" />
-    <Compile Include="Classes\Configuration\ConfigPresets\ConfigConversions.cs" />
     <Compile Include="Classes\Configuration\ConfigPresets\IConfigPreset.cs" />
-    <Compile Include="Classes\Configuration\ConfigPresets\SaberTailorConfigPreset.cs" />
     <Compile Include="Classes\Configuration\Defaults.cs" />
     <Compile Include="Classes\Configuration\PluginConfig.cs" />
     <Compile Include="Classes\Configuration\ConfigFileData.cs" />
@@ -189,6 +189,7 @@
     <Compile Include="Classes\Utils\StaticUtils\MathUtils.cs" />
     <Compile Include="Classes\Utils\StaticUtils\WeightedListExtensions.cs" />
     <Compile Include="Classes\Utils\UtilityClasses\CyclicBuffer.cs" />
+    <Compile Include="Classes\Utils\UtilityClasses\DelayedAction.cs" />
     <Compile Include="Classes\Utils\UtilityClasses\Range.cs" />
     <Compile Include="Classes\Utils\UtilityClasses\ReeTransform.cs" />
     <Compile Include="Classes\Utils\UtilityClasses\RelativeRotationTracker.cs" />

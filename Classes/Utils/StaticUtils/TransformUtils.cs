@@ -77,7 +77,7 @@ namespace EasyOffset {
             if (PluginConfig.SmoothingEnabled) {
                 var position = Abomination.LeftControllerTransform.Position;
                 var rotation = Abomination.LeftControllerTransform.Rotation;
-                ApplyRoomOffset(PluginConfig.MainSettingsModel, ref position, ref rotation);
+                ApplyRoomOffset(ref position, ref rotation);
                 transform.position = position;
                 transform.rotation = rotation;
             }
@@ -92,7 +92,7 @@ namespace EasyOffset {
             if (PluginConfig.SmoothingEnabled) {
                 var position = Abomination.RightControllerTransform.Position;
                 var rotation = Abomination.RightControllerTransform.Rotation;
-                ApplyRoomOffset(PluginConfig.MainSettingsModel, ref position, ref rotation);
+                ApplyRoomOffset(ref position, ref rotation);
                 transform.position = position;
                 transform.rotation = rotation;
             }
@@ -124,19 +124,19 @@ namespace EasyOffset {
 
         #region ApplyRoomOffsets
 
-        public static void ApplyRoomOffset(MainSettingsModelSO mainSettingsModel, ref Vector3 position, ref Quaternion rotation) {
-            var roomRotation = Quaternion.Euler(0, mainSettingsModel.roomRotation, 0);
-            position = mainSettingsModel.roomCenter + roomRotation * position;
+        public static void ApplyRoomOffset(ref Vector3 position, ref Quaternion rotation) {
+            var roomRotation = Quaternion.Euler(0, PluginConfig.MainSettingsModel.roomRotation, 0);
+            position = PluginConfig.MainSettingsModel.roomCenter + roomRotation * position;
             rotation = roomRotation * rotation;
         }
 
-        public static void ApplyRoomOffsetToVector(MainSettingsModelSO mainSettingsModel, ref Vector3 position) {
-            var roomRotation = Quaternion.Euler(0, mainSettingsModel.roomRotation, 0);
-            position = mainSettingsModel.roomCenter + roomRotation * position;
+        public static void ApplyRoomOffsetToVector(ref Vector3 position) {
+            var roomRotation = Quaternion.Euler(0, PluginConfig.MainSettingsModel.roomRotation, 0);
+            position = PluginConfig.MainSettingsModel.roomCenter + roomRotation * position;
         }
 
-        public static void ApplyRoomOffsetToDirection(MainSettingsModelSO mainSettingsModel, ref Vector3 direction) {
-            var roomRotation = Quaternion.Euler(0, mainSettingsModel.roomRotation, 0);
+        public static void ApplyRoomOffsetToDirection(ref Vector3 direction) {
+            var roomRotation = Quaternion.Euler(0, PluginConfig.MainSettingsModel.roomRotation, 0);
             direction = roomRotation * direction;
         }
 

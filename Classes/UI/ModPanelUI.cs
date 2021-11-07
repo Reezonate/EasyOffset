@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.Components;
 using EasyOffset.Configuration;
@@ -241,15 +240,13 @@ namespace EasyOffset.UI {
         [UsedImplicitly]
         private void LeftActionMenuOnChange(string value) {
             OnHandAction(Hand.Left, HandMenuActionUtils.NameToType(value));
-            ResetLeftMenuAction();
+            _leftHandMenuResetAction.InvokeLater(10, ResetLeftHandMenu);
         }
 
-        //TODO: Works but stinks, find a better solution
-        private void ResetLeftMenuAction() {
-            new Thread(() => {
-                Thread.Sleep(10);
-                LeftActionMenuChoice = HandMenuActionUtils.TypeToName(HandMenuAction.Default);
-            }).Start();
+        private readonly DelayedAction _leftHandMenuResetAction = new();
+
+        private void ResetLeftHandMenu() {
+            LeftActionMenuChoice = HandMenuActionUtils.TypeToName(HandMenuAction.Default);
         }
 
         #endregion
@@ -295,15 +292,13 @@ namespace EasyOffset.UI {
         [UsedImplicitly]
         private void RightActionMenuOnChange(string value) {
             OnHandAction(Hand.Right, HandMenuActionUtils.NameToType(value));
-            ResetRightActionMenu();
+            _rightHandMenuResetAction.InvokeLater(10, ResetRightHandMenu);
         }
 
-        //TODO: Works but stinks, find a better solution
-        private void ResetRightActionMenu() {
-            new Thread(() => {
-                Thread.Sleep(10);
-                RightActionMenuChoice = HandMenuActionUtils.TypeToName(HandMenuAction.Default);
-            }).Start();
+        private readonly DelayedAction _rightHandMenuResetAction = new();
+
+        private void ResetRightHandMenu() {
+            RightActionMenuChoice = HandMenuActionUtils.TypeToName(HandMenuAction.Default);
         }
 
         #endregion
@@ -372,15 +367,20 @@ namespace EasyOffset.UI {
         }
 
         private void OnBenchmarkUpdate(
-            float coneAngle,
-            float coneHeight,
+            float swingCurveAngle,
             float tipDeviation,
-            float pivotDeviation
+            float pivotDeviation,
+            float minimalSwingAngle,
+            float maximalSwingAngle
         ) {
-            BenchmarkCurveValue = $"{coneAngle:F2}° {(coneAngle < 0 ? "Inward" : "Outward")}";
-            BenchmarkConeHeightValue = $"{(coneHeight * 100):F2} cm";
-            BenchmarkTipWobbleValue = $"{(tipDeviation * 200):F2} cm";
-            BenchmarkArmUsageValue = $"{(pivotDeviation * 200):F2} cm";
+            BenchmarkCurveText = $"{swingCurveAngle * Mathf.Rad2Deg:F1}° {(swingCurveAngle < 0 ? "Inward" : "Outward")}";
+            BenchmarkTipWobbleText = $"{(tipDeviation * 200):F1} cm";
+            BenchmarkArmUsageText = $"{(pivotDeviation * 200):F1} cm";
+
+            var min = minimalSwingAngle * Mathf.Rad2Deg;
+            var max = maximalSwingAngle * Mathf.Rad2Deg;
+            var full = max - min;
+            BenchmarkAngleText = $"{full:F1}° ({-min:F1}°/{max:F1}°)";
         }
 
         private void OnBenchmarkFail() {
@@ -460,50 +460,18 @@ namespace EasyOffset.UI {
         #region Curve
 
         [UIValue("benchmark-curve-hint")] [UsedImplicitly]
-        private string _benchmarkCurveHint = "How straight your swing is" +
+        private string _benchmarkCurveHint = "Deviation from the straight swing" +
                                              "\n" +
-                                             "\n<color=green>This value depends only on your config</color>" +
-                                             "\nYou can remove it manually in DirectionOnly mode" +
-                                             "\nor just by pressing \"Apply rotation fix\"";
+                                             "\nDepends only on your config";
 
-        private string _benchmarkCurveValue = "0,0° Inward";
+        private string _benchmarkCurveText = "0,0° Inward";
 
-        [UIValue("benchmark-curve-value")]
+        [UIValue("benchmark-curve-text")]
         [UsedImplicitly]
-        private string BenchmarkCurveValue {
-            get => _benchmarkCurveValue;
+        private string BenchmarkCurveText {
+            get => _benchmarkCurveText;
             set {
-                _benchmarkCurveValue = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-        [UIAction("benchmark-auto-fix-on-click")]
-        [UsedImplicitly]
-        private void BenchmarkAutoFixOnClick() {
-            SwingBenchmarkHelper.InvokeAutoFix();
-        }
-
-        #endregion
-
-        #region ConeHeight
-
-        [UIValue("benchmark-cone-height-hint")] [UsedImplicitly]
-        private string _benchmarkConeHint = "Same thing as Swing Curve" +
-                                            "\nShows difference between hilting and tipping" +
-                                            "\n" +
-                                            "\n<color=green>This value depends only on your config</color>" +
-                                            "\nYou can remove it manually in DirectionOnly mode" +
-                                            "\nor just by pressing \"Apply rotation fix\"";
-
-        private string _benchmarkConeHeightValue = "0,0 cm";
-
-        [UIValue("benchmark-cone-height-value")]
-        [UsedImplicitly]
-        private string BenchmarkConeHeightValue {
-            get => _benchmarkConeHeightValue;
-            set {
-                _benchmarkConeHeightValue = value;
+                _benchmarkCurveText = value;
                 NotifyPropertyChanged();
             }
         }
@@ -513,22 +481,18 @@ namespace EasyOffset.UI {
         #region TipWobble
 
         [UIValue("benchmark-tip-wobble-hint")] [UsedImplicitly]
-        private string _benchmarkTipWobbleHint = "Inconsistency of your swing" +
-                                                 "\nThe greater the wobble, the lower your accuracy limit" +
+        private string _benchmarkTipWobbleHint = "Aim deviation" +
                                                  "\n" +
-                                                 "\n<color=red>This value depends only on your grip" +
-                                                 "\nYou can NOT fix it by changing your config</color>" +
-                                                 "\nYou can fix it by choosing more weight-balanced grip" +
-                                                 "\nYou can reduce it by using more arm at the stamina cost";
+                                                 "\nDepends on your grip and skill";
 
-        private string _benchmarkTipWobbleValue = "0,0 cm";
+        private string _benchmarkTipWobbleText = "0,0 cm";
 
-        [UIValue("benchmark-tip-wobble-value")]
+        [UIValue("benchmark-tip-wobble-text")]
         [UsedImplicitly]
-        private string BenchmarkTipWobbleValue {
-            get => _benchmarkTipWobbleValue;
+        private string BenchmarkTipWobbleText {
+            get => _benchmarkTipWobbleText;
             set {
-                _benchmarkTipWobbleValue = value;
+                _benchmarkTipWobbleText = value;
                 NotifyPropertyChanged();
             }
         }
@@ -538,22 +502,53 @@ namespace EasyOffset.UI {
         #region ArmUsage
 
         [UIValue("benchmark-arm-usage-hint")] [UsedImplicitly]
-        private string _benchmarkArmUsageHint = "Arm movement amplitude" +
+        private string _benchmarkArmUsageHint = "Arm movement amount" +
+                                                "\n" +
                                                 "\nPersonal preference. Optimize to your needs";
 
-        private string _benchmarkArmUsageValue = "0,0 cm";
+        private string _benchmarkArmUsageText = "0,0 cm";
 
-        [UIValue("benchmark-arm-usage-value")]
+        [UIValue("benchmark-arm-usage-text")]
         [UsedImplicitly]
-        private string BenchmarkArmUsageValue {
-            get => _benchmarkArmUsageValue;
+        private string BenchmarkArmUsageText {
+            get => _benchmarkArmUsageText;
             set {
-                _benchmarkArmUsageValue = value;
+                _benchmarkArmUsageText = value;
                 NotifyPropertyChanged();
             }
         }
 
         #endregion
+
+        #region Angle
+
+        [UIValue("benchmark-angle-hint")] [UsedImplicitly]
+        private string _benchmarkAmplitudeHint = "Full swing angle (Forehand/Backhand)";
+
+        private string _benchmarkAngleText = "150° (70°/80°)";
+
+        [UIValue("benchmark-angle-text")]
+        [UsedImplicitly]
+        private string BenchmarkAngleText {
+            get => _benchmarkAngleText;
+            set {
+                _benchmarkAngleText = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+        #region AutoFixButton
+
+        [UIAction("benchmark-auto-fix-on-click")]
+        [UsedImplicitly]
+        private void BenchmarkAutoFixOnClick() {
+            SwingBenchmarkHelper.InvokeAutoFix();
+            SetBenchmarkStatusText("Done!");
+        }
 
         #endregion
 
@@ -563,6 +558,33 @@ namespace EasyOffset.UI {
         [UsedImplicitly]
         private void BenchmarkResetOnClick() {
             SwingBenchmarkHelper.InvokeReset();
+        }
+
+        #endregion
+
+        #region StatusText
+
+        private string _benchmarkStatusText = "";
+
+        [UIValue("benchmark-status-text")]
+        [UsedImplicitly]
+        private string BenchmarkStatusText {
+            get => _benchmarkStatusText;
+            set {
+                _benchmarkStatusText = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private readonly DelayedAction _benchmarkStatusTextResetAction = new();
+
+        private void SetBenchmarkStatusText(string value) {
+            BenchmarkStatusText = value;
+            _benchmarkStatusTextResetAction.InvokeLater(2000, ResetBenchmarkStatusText);
+        }
+
+        private void ResetBenchmarkStatusText() {
+            BenchmarkStatusText = "";
         }
 
         #endregion

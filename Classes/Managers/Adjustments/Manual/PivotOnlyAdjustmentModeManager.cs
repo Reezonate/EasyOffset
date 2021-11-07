@@ -11,10 +11,8 @@ namespace EasyOffset {
         private readonly GizmosManager _gizmosManager;
 
         public PivotOnlyAdjustmentModeManager(
-            MainSettingsModelSO mainSettingsModelSO,
             GizmosManager gizmosManager
         ) : base(
-            mainSettingsModelSO,
             AdjustmentMode.PivotOnly,
             3f,
             6f

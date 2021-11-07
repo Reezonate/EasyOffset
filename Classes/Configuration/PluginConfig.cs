@@ -3,6 +3,22 @@ using UnityEngine;
 
 namespace EasyOffset.Configuration {
     public static class PluginConfig {
+        #region VRPlatformHelper
+
+        public static event Action<IVRPlatformHelper> VRPlatformHelperChangedEvent;
+
+        private static IVRPlatformHelper _vrPlatformHelper;
+
+        public static IVRPlatformHelper VRPlatformHelper {
+            get => _vrPlatformHelper;
+            set {
+                _vrPlatformHelper = value;
+                VRPlatformHelperChangedEvent?.Invoke(value);
+            }
+        }
+
+        #endregion
+
         #region MainSettingsModel
 
         public static event Action<MainSettingsModelSO> MainSettingsModelChangedEvent;
@@ -13,7 +29,7 @@ namespace EasyOffset.Configuration {
             get => _mainSettingsModel;
             set {
                 _mainSettingsModel = value;
-                MainSettingsModelChangedEvent?.Invoke(_mainSettingsModel);
+                MainSettingsModelChangedEvent?.Invoke(value);
             }
         }
 
@@ -40,6 +56,7 @@ namespace EasyOffset.Configuration {
         public static bool Enabled {
             get => CachedEnabled.Value;
             set {
+                if (CachedEnabled.Value == value) return;
                 CachedEnabled.Value = value;
                 ConfigFileData.Instance.Enabled = value;
                 OnEnabledChange?.Invoke(value);

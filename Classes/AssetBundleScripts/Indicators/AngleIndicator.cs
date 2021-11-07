@@ -8,6 +8,7 @@ namespace EasyOffset.AssetBundleScripts {
         [SerializeField] private MeshRenderer meshRenderer;
         [SerializeField] private Transform planeTransform;
         [SerializeField] private IndicatorText indicatorText;
+        [SerializeField] private float armThickness = 0.001f;
         [SerializeField] private float radius = 1.0f;
 
         #endregion
@@ -17,6 +18,7 @@ namespace EasyOffset.AssetBundleScripts {
         private static readonly int ScalePropertyId = Shader.PropertyToID("_Scale");
         private static readonly int AnglePropertyId = Shader.PropertyToID("_AngleRadians");
         private static readonly int AngleOffsetPropertyId = Shader.PropertyToID("_AngleOffset");
+        private static readonly int ArmThicknessPropertyId = Shader.PropertyToID("_ArmThickness");
 
         #endregion
 
@@ -31,6 +33,7 @@ namespace EasyOffset.AssetBundleScripts {
 
             planeTransform.localScale = new Vector3(radius, radius, radius);
             _materialInstance.SetFloat(ScalePropertyId, radius);
+            _materialInstance.SetFloat(ArmThicknessPropertyId, armThickness);
             _isReady = true;
         }
 

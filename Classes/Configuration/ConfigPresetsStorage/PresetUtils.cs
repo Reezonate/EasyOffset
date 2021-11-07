@@ -23,8 +23,6 @@ namespace EasyOffset.Configuration {
             var presetVersion = jObject.GetValue("version", StringComparison.OrdinalIgnoreCase)?.Value<string>();
             return presetVersion switch {
                 ConfigPresetV1.Version => ConfigPresetV1.Deserialize(jObject),
-                SaberTailorConfigPreset.Version => SaberTailorConfigPreset.Deserialize(jObject),
-                BaseGameConfigPreset.Version => BaseGameConfigPreset.Deserialize(jObject),
                 null => throw new Exception("Preset version is not specified"),
                 _ => throw new Exception($"Unknown preset version: {presetVersion}")
             };
@@ -53,30 +51,23 @@ namespace EasyOffset.Configuration {
 
         public static string GetPresetCellString(StoredConfigPreset preset) {
             var stringBuilder = new StringBuilder();
-            
+
             stringBuilder.Append("<align=\"left\">");
             stringBuilder.Append("<mspace=0.4em>");
-            
+
             if (preset.LoadFailed) {
                 stringBuilder.Append("<color=red>");
                 stringBuilder.AppendFixed("load error", TimeColumnCharCount);
-            } else switch(preset.ConfigPreset.ConfigVersion) {
-                case SaberTailorConfigPreset.Version:
-                    stringBuilder.Append("<color=#CC9378>");
-                    stringBuilder.AppendFixed("ST", TimeColumnCharCount);
-                    break;
-                case BaseGameConfigPreset.Version:
-                    stringBuilder.Append("<color=#79C456>");
-                    stringBuilder.AppendFixed("BG", TimeColumnCharCount);
-                    break;
-                default:
-                    stringBuilder.AppendTimeString(preset.ConfigPreset.UnixTimestamp, TimeColumnCharCount);
-                    break;
-            }
+            } else
+                switch (preset.ConfigPreset.ConfigVersion) {
+                    default:
+                        stringBuilder.AppendTimeString(preset.ConfigPreset.UnixTimestamp, TimeColumnCharCount);
+                        break;
+                }
 
             stringBuilder.Append("</mspace>");
             stringBuilder.AppendFixed(preset.Name, NameColumnCharCount);
-            
+
             return stringBuilder.ToString();
         }
 
