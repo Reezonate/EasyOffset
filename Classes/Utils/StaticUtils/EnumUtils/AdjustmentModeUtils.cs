@@ -41,10 +41,10 @@ namespace EasyOffset {
             return type switch {
                 AdjustmentMode.None => "None",
                 AdjustmentMode.Basic => "Basic",
-                AdjustmentMode.PivotOnly => "Pivot Only",
-                AdjustmentMode.DirectionOnly => "Direction Only",
+                AdjustmentMode.Position => "Position",
+                AdjustmentMode.Rotation => "Rotation",
                 AdjustmentMode.SwingBenchmark => "Swing Benchmark",
-                AdjustmentMode.DirectionAuto => "Direction Auto",
+                AdjustmentMode.RotationAuto => "Rotation Auto",
                 AdjustmentMode.RoomOffset => "Room offset",
                 _ => throw new ArgumentOutOfRangeException()
             };

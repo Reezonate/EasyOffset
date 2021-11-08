@@ -10,6 +10,7 @@ namespace EasyOffset.AssetBundleScripts {
         [SerializeField] private IndicatorText indicatorText;
         [SerializeField] private float armThickness = 0.001f;
         [SerializeField] private float radius = 1.0f;
+        [SerializeField] private float lineRadius = 0.9f;
 
         #endregion
 
@@ -19,6 +20,7 @@ namespace EasyOffset.AssetBundleScripts {
         private static readonly int AnglePropertyId = Shader.PropertyToID("_AngleRadians");
         private static readonly int AngleOffsetPropertyId = Shader.PropertyToID("_AngleOffset");
         private static readonly int ArmThicknessPropertyId = Shader.PropertyToID("_ArmThickness");
+        private static readonly int LineOffsetPropertyId = Shader.PropertyToID("_LineOffset");
 
         #endregion
 
@@ -34,6 +36,7 @@ namespace EasyOffset.AssetBundleScripts {
             planeTransform.localScale = new Vector3(radius, radius, radius);
             _materialInstance.SetFloat(ScalePropertyId, radius);
             _materialInstance.SetFloat(ArmThicknessPropertyId, armThickness);
+            _materialInstance.SetFloat(LineOffsetPropertyId, lineRadius);
             _isReady = true;
         }
 
@@ -49,6 +52,13 @@ namespace EasyOffset.AssetBundleScripts {
             planeTransform.rotation = rotation;
         }
 
+        public void SetRadius(
+            float value
+        ) {
+            lineRadius = value;
+            _materialInstance.SetFloat(LineOffsetPropertyId, lineRadius);
+        }
+
         public void SetValues(
             float angleRadians,
             float angleOffset,
@@ -61,8 +71,8 @@ namespace EasyOffset.AssetBundleScripts {
 
             var textPointerAngle = angleRadians / 2 + angleOffset;
             var textLocalPosition = new Vector3(
-                Mathf.Cos(textPointerAngle) * radius,
-                Mathf.Sin(textPointerAngle) * radius,
+                Mathf.Cos(textPointerAngle) * lineRadius,
+                Mathf.Sin(textPointerAngle) * lineRadius,
                 0f
             );
 

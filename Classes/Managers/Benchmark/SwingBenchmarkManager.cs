@@ -11,7 +11,7 @@ namespace EasyOffset {
     public class SwingBenchmarkManager : IInitializable, IDisposable, ITickable {
         #region Constants
 
-        private const int MaximalCapacity = 120;
+        private const int MaximalCapacity = 200;
         private const float FullSwingAngleRequirement = 140 * Mathf.Deg2Rad;
 
         #endregion
@@ -97,12 +97,12 @@ namespace EasyOffset {
                 out var maximalSwingAngle
             );
 
-            var fullSwingAngle = maximalSwingAngle - minimalSwingAngle;
-            _isSwingGood = fullSwingAngle > FullSwingAngleRequirement;
             var isLeft = _selectedHand == Hand.Left;
-
             var swingCurveAngle = Mathf.Asin(pivotHeight);
-
+            var fullSwingAngle = maximalSwingAngle - minimalSwingAngle;
+            
+            _isSwingGood = fullSwingAngle > FullSwingAngleRequirement;
+            
             _swingBenchmarkController.SetValues(
                 isLeft,
                 planePosition,
@@ -116,7 +116,7 @@ namespace EasyOffset {
             );
 
             SwingBenchmarkHelper.InvokeUpdate(
-                swingCurveAngle,
+                isLeft ? -swingCurveAngle : swingCurveAngle,
                 tipDeviation,
                 pivotDeviation,
                 minimalSwingAngle,
@@ -215,14 +215,14 @@ namespace EasyOffset {
                     swingVisible = true;
                     handsVisible = true;
                     break;
-                case AdjustmentMode.DirectionOnly:
+                case AdjustmentMode.Rotation:
                     swingVisible = false;
                     handsVisible = true;
                     break;
-                case AdjustmentMode.DirectionAuto:
+                case AdjustmentMode.RotationAuto:
                 case AdjustmentMode.None:
                 case AdjustmentMode.Basic:
-                case AdjustmentMode.PivotOnly:
+                case AdjustmentMode.Position:
                 case AdjustmentMode.RoomOffset:
                     swingVisible = false;
                     handsVisible = false;

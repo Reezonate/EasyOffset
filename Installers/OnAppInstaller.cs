@@ -48,10 +48,10 @@ namespace EasyOffset.Installers {
 
         private void BindOffsetManagers() {
             Container.BindInterfacesAndSelfTo<BasicAdjustmentModeManager>().AsSingle();
-            Container.BindInterfacesAndSelfTo<PivotOnlyAdjustmentModeManager>().AsSingle();
-            Container.BindInterfacesAndSelfTo<DirectionOnlyAdjustmentModeManager>().AsSingle();
+            Container.BindInterfacesAndSelfTo<PositionAdjustmentModeManager>().AsSingle();
+            Container.BindInterfacesAndSelfTo<RotationAdjustmentModeManager>().AsSingle();
             Container.BindInterfacesAndSelfTo<SwingBenchmarkAdjustmentModeManager>().AsSingle();
-            Container.BindInterfacesAndSelfTo<DirectionAutoAdjustmentModeManager>().AsSingle();
+            Container.BindInterfacesAndSelfTo<RotationAutoAdjustmentModeManager>().AsSingle();
             Container.BindInterfacesAndSelfTo<RoomOffsetAdjustmentModeManager>().AsSingle();
         }
 

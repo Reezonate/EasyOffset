@@ -186,12 +186,15 @@ namespace EasyOffset.AssetBundleScripts {
             maximalSwingAngleIndicator.SetTransform(planePosition, planeRotation);
             fullSwingAngleIndicator.SetTransform(planePosition, planeRotation);
 
-            var forward = planeRotation * Vector3.right;
-            swingCurveAngleIndicator.SetTransform(planePosition + forward, planeRotation * Quaternion.Euler(-90, 180, 0));
+            var tipTrailLength = Mathf.Cos(swingCurveAngle);
+            var offset = planeRotation * Vector3.right * tipTrailLength;
+            
+            swingCurveAngleIndicator.SetTransform(planePosition + offset, planeRotation * Quaternion.Euler(-90, 180, 0));
+            swingCurveAngleIndicator.SetRadius(tipTrailLength);
             swingCurveAngleIndicator.SetValues(
                 swingCurveAngle,
                 0f,
-                $"{swingCurveAngle * Mathf.Rad2Deg:F1}°"
+                $"{(_isLeft ? -swingCurveAngle : swingCurveAngle) * Mathf.Rad2Deg:F1}°"
             );
         }
 
@@ -225,9 +228,10 @@ namespace EasyOffset.AssetBundleScripts {
         private void UpdateDistanceIndicators(Vector3 planePosition, Quaternion planeRotation, float tipDeviation, float pivotDeviation) {
             var forward = planeRotation * Vector3.right;
             var right = planeRotation * Vector3.back;
+            var up = planeRotation * Vector3.up;
 
             UpdateTipDeviationIndicator(planePosition, tipDeviation, forward, right);
-            UpdatePivotDeviationIndicator(planePosition, pivotDeviation, forward);
+            UpdatePivotDeviationIndicator(planePosition, pivotDeviation, up);
         }
 
         private void UpdateTipDeviationIndicator(Vector3 planePosition, float tipDeviation, Vector3 forward, Vector3 right) {
@@ -238,10 +242,10 @@ namespace EasyOffset.AssetBundleScripts {
             );
         }
 
-        private void UpdatePivotDeviationIndicator(Vector3 planePosition, float pivotDeviation, Vector3 forward) {
+        private void UpdatePivotDeviationIndicator(Vector3 planePosition, float pivotDeviation, Vector3 up) {
             pivotDeviationIndicator.SetValues(
-                planePosition - forward * pivotDeviation,
-                planePosition + forward * pivotDeviation,
+                planePosition + up * pivotDeviation,
+                planePosition - up * pivotDeviation,
                 $"{pivotDeviation * 200:F2} cm"
             );
         }

@@ -149,11 +149,11 @@
     <Compile Include="Classes\Managers\Abomination\AbominationInputManager.cs" />
     <Compile Include="Classes\Managers\Abomination\AbominationTransformManager.cs" />
     <Compile Include="Classes\Managers\Adjustments\AbstractAdjustmentModeManager.cs" />
-    <Compile Include="Classes\Managers\Adjustments\Auto\DirectionAutoAdjustmentModeManager.cs" />
+    <Compile Include="Classes\Managers\Adjustments\Auto\RotationAutoAdjustmentModeManager.cs" />
     <Compile Include="Classes\Managers\Adjustments\Auto\SwingBenchmarkAdjustmentModeManager.cs" />
     <Compile Include="Classes\Managers\Adjustments\Manual\BasicAdjustmentModeManager.cs" />
-    <Compile Include="Classes\Managers\Adjustments\Manual\DirectionOnlyAdjustmentModeManager.cs" />
-    <Compile Include="Classes\Managers\Adjustments\Manual\PivotOnlyAdjustmentModeManager.cs" />
+    <Compile Include="Classes\Managers\Adjustments\Manual\RotationAdjustmentModeManager.cs" />
+    <Compile Include="Classes\Managers\Adjustments\Manual\PositionAdjustmentModeManager.cs" />
     <Compile Include="Classes\Managers\Adjustments\Manual\RoomOffsetAdjustmentModeManager.cs" />
     <Compile Include="Classes\Managers\Adjustments\MidPlayAdjustmentsManager.cs" />
     <Compile Include="Classes\Managers\Benchmark\SwingAnalyzer.cs" />

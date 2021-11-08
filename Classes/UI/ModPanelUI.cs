@@ -38,9 +38,9 @@ namespace EasyOffset.UI {
             switch (PluginConfig.AdjustmentMode) {
                 case AdjustmentMode.None:
                 case AdjustmentMode.Basic:
-                case AdjustmentMode.PivotOnly:
-                case AdjustmentMode.DirectionOnly:
-                case AdjustmentMode.DirectionAuto:
+                case AdjustmentMode.Position:
+                case AdjustmentMode.Rotation:
+                case AdjustmentMode.RotationAuto:
                     HandsPanelActive = true;
                     BenchmarkPanelActive = false;
                     RoomOffsetPanelActive = false;
@@ -92,11 +92,11 @@ namespace EasyOffset.UI {
 
         [UIValue("am-hint")] [UsedImplicitly] private string _adjustmentModeHint = "Hold assigned button and move your hand" +
                                                                                    "\n" +
-                                                                                   "\nBasic - Easy adjustment mode for beginners" +
-                                                                                   "\nPivot Only - Precise origin placement" +
-                                                                                   "\nDirection Only - Saber rotation only" +
+                                                                                   "\nBasic - Drag and drop adjustment mode" +
+                                                                                   "\nPosition - Pivot position only" +
+                                                                                   "\nRotation - Saber rotation only" +
                                                                                    "\nSwing Benchmark - Swing analysis" +
-                                                                                   "\nDirection Auto - Automatic rotation" +
+                                                                                   "\nRotation Auto - Automatic rotation" +
                                                                                    "\nRoom Offset - World pulling locomotion";
 
         [UIValue("am-choices")] [UsedImplicitly]

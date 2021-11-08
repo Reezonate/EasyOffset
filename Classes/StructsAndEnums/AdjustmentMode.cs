@@ -2,10 +2,10 @@ namespace EasyOffset {
     public enum AdjustmentMode {
         None,
         Basic,
-        PivotOnly,
-        DirectionOnly,
+        Position,
+        Rotation,
         SwingBenchmark,
-        DirectionAuto,
+        RotationAuto,
         RoomOffset
     }
 }
