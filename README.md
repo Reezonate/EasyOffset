@@ -4,7 +4,7 @@ Beat Saber mod for intuitive controller offset adjustments.
 
 Tired from a pile of magic config numbers? Find the best offset for your grip just by moving your hand!
 
-Read [user guide](https://github.com/Reezonate/EasyOffset#how-to-use) for more info
+Read [user guide](https://github.com/Reezonate/EasyOffset/tree/experimental#how-to-use) for more info
 
 # Compatibility
 
