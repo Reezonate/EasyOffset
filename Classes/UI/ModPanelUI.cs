@@ -92,6 +92,7 @@ namespace EasyOffset.UI {
 
         [UIValue("am-hint")] [UsedImplicitly] private string _adjustmentModeHint = "Hold assigned button and move your hand" +
                                                                                    "\n" +
+                                                                                   
                                                                                    "\nBasic - Drag and drop adjustment mode" +
                                                                                    "\nPosition - Pivot position only" +
                                                                                    "\nRotation - Saber rotation only" +
@@ -504,7 +505,7 @@ namespace EasyOffset.UI {
         [UIValue("benchmark-arm-usage-hint")] [UsedImplicitly]
         private string _benchmarkArmUsageHint = "Arm movement amount" +
                                                 "\n" +
-                                                "\nPersonal preference. Optimize to your needs";
+                                                "\nPersonal preference";
 
         private string _benchmarkArmUsageText = "0,0 cm";
 

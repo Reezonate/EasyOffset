@@ -2,7 +2,7 @@
     <!--    GLOBAL SETTINGS    -->
     <horizontal preferred-height="10">
         <vertical>
-            <toggle-setting text="Enabled" value="enabled-value" apply-on-change="true"/>
+            <toggle-setting text="Enabled" value="enabled-value"/>
         </vertical>
     </horizontal>
 

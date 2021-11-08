@@ -38,13 +38,14 @@ namespace EasyOffset.Configuration {
                     UseOpenVRHelper(openVRHelper);
                     break;
                 case OculusVRHelper oculusVRHelper:
-                    UseOculusVRHelper(oculusVRHelper);
+                    UseOculusVRHelper();
                     break;
                 case DevicelessVRHelper devicelessVRHelper:
-                    UseDevicelessVRHelper(devicelessVRHelper);
+                    UseDevicelessVRHelper();
                     break;
                 default:
                     Plugin.Log.Debug($"Unknown VRPlatformHelper type: {nameof(vrPlatformHelper)}");
+                    UseDevicelessVRHelper();
                     return;
             }
         }
@@ -62,13 +63,13 @@ namespace EasyOffset.Configuration {
             }
         }
 
-        private static void UseOculusVRHelper(OculusVRHelper vrPlatformHelper) {
+        private static void UseOculusVRHelper() {
             _isMigrationPossible = true;
             _isValveController = false;
             _isVRModeOculus = true;
         }
 
-        private static void UseDevicelessVRHelper(DevicelessVRHelper vrPlatformHelper) {
+        private static void UseDevicelessVRHelper() {
             _isMigrationPossible = false;
             _isValveController = false;
             _isVRModeOculus = false;

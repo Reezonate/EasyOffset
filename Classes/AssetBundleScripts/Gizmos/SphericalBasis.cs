@@ -57,9 +57,9 @@ namespace EasyOffset.AssetBundleScripts {
 
         #endregion
 
-        #region Update
+        #region LateUpdate
 
-        private void Update() {
+        private void LateUpdate() {
             var t = Time.deltaTime * 10;
 
             _currentAlpha = Mathf.Lerp(_currentAlpha, _targetAlpha, t);

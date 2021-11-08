@@ -81,9 +81,9 @@ namespace EasyOffset.AssetBundleScripts {
 
         #endregion
 
-        #region Update
+        #region LateUpdate
 
-        private void Update() {
+        private void LateUpdate() {
             var targetPosition = target.position;
 
             transform.rotation = Quaternion.identity;

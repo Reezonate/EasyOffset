@@ -22,7 +22,6 @@ namespace EasyOffset.Installers {
         #region InstallBindings
 
         public override void InstallBindings() {
-            Plugin.Log.Info($"APP INSTALLER {this.GetHashCode()}");
             PluginConfig.VRPlatformHelper = Container.TryResolve<IVRPlatformHelper>();
 
             BindInputManagers();

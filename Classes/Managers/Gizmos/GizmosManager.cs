@@ -8,7 +8,7 @@ using Object = UnityEngine.Object;
 
 namespace EasyOffset {
     [UsedImplicitly]
-    public class GizmosManager : IInitializable, IDisposable, ITickable {
+    public class GizmosManager : IInitializable, IDisposable, ILateTickable {
         #region Init/Dispose
 
         public GizmosController LeftHandGizmosController;
@@ -42,9 +42,9 @@ namespace EasyOffset {
 
         #endregion
 
-        #region Tick
+        #region LateTick
 
-        public void Tick() {
+        public void LateTick() {
             LeftHandGizmosController.SetPivotPosition(PluginConfig.LeftHandPivotPosition);
             LeftHandGizmosController.SetSaberDirection(PluginConfig.LeftHandSaberDirection);
 

@@ -37,9 +37,9 @@ namespace EasyOffset.AssetBundleScripts {
 
         #endregion
 
-        #region Update
+        #region LateUpdate
 
-        private void Update() {
+        private void LateUpdate() {
             trailRendererTransform.position = Vector3.zero;
             trailRendererTransform.rotation = Quaternion.identity;
 
