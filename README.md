@@ -4,8 +4,8 @@ Beat Saber mod for intuitive controller offset adjustments.
 
 Tired from a pile of magic config numbers? Find the best offset for your grip just by moving your hand!
 
-- [How to use](https://github.com/Reezonate/EasyOffset/#how-to-use)
-- [Config migration](https://github.com/Reezonate/EasyOffset/#config-migration)
+- [How to use](https://github.com/Reezonate/EasyOffset#how-to-use)
+- [Config migration](https://github.com/Reezonate/EasyOffset#config-migration)
 - [Support the project](https://ko-fi.com/reezonate)
 
 # Compatibility
@@ -64,10 +64,10 @@ Before trying to find your best config, spend some time in different modes and e
 
 To help you achieve these goals, there are four adjustment modes:
 
-- [Basic](https://github.com/Reezonate/EasyOffset/#basic-adjustment-mode)
-- [Position](https://github.com/Reezonate/EasyOffset/#position-adjustment-mode)
-- [Rotation](https://github.com/Reezonate/EasyOffset/#rotation-adjustment-mode)
-- [Swing Benchmark](https://github.com/Reezonate/EasyOffset/#swing-benchmark-adjustment-mode)
+- [Basic](https://github.com/Reezonate/EasyOffset#basic-adjustment-mode)
+- [Position](https://github.com/Reezonate/EasyOffset#position-adjustment-mode)
+- [Rotation](https://github.com/Reezonate/EasyOffset#rotation-adjustment-mode)
+- [Swing Benchmark](https://github.com/Reezonate/EasyOffset#swing-benchmark-adjustment-mode)
 
 ## `Basic` adjustment mode:
 ``` diff
