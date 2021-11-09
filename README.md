@@ -185,7 +185,7 @@ How to improve:
 - Config-breaking: Drastically changes your config. Save the preset to have a backup
 ```
 
-Automatic calculation of the `Direction vector` based on your movement. Great for getting initial values for a new grip, requires manual tweaking in `Direction Only` mode afterward.
+Automatic calculation of the `Direction vector` based on your movement. Great for getting initial values for a new grip, requires manual tweaking in `Rotation` mode afterward.
 Affects only rotation, doesn't change the position values
 
 - Select `Rotation Auto` in the `Adjustment Mode` list
