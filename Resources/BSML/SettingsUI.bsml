@@ -1,5 +1,26 @@
-﻿<bg xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
-  <settings-container>
-	  <bool-setting text='Enabled' value='enabled-bool'/>
-  </settings-container>
-</bg>
+﻿<vertical preferred-width="100">
+    <!--    GLOBAL SETTINGS    -->
+    <horizontal preferred-height="10">
+        <vertical>
+            <toggle-setting text="Enabled" value="enabled-value"/>
+        </vertical>
+    </horizontal>
+
+    <!--    MIGRATION    -->
+    <horizontal preferred-height="30">
+        <vertical>
+            <text text="Config Migration" align="Center"/>
+            <slider-setting text="Z Offset" min="~zo-min" max="~zo-max" increment="~zo-increment" value="zo-value"
+                            apply-on-change="true" hover-hint="Pivot point offset along saber axis (cm)"/>
+            <horizontal>
+                <vertical preferred-width="40">
+                    <button text="Import from settings" on-click="import-from-settings-on-click" hover-hint="Copy offsets from base game controller settings"/>
+                    <button text="Import from SaberTailor" on-click="import-from-tailor-on-click" hover-hint="Copy offsets from UserData/SaberTailor.json"/>
+                </vertical>
+                <vertical preferred-width="60">
+                    <text text="~migration-result-text" align="Center"/>
+                </vertical>
+            </horizontal>
+        </vertical>
+    </horizontal>
+</vertical>

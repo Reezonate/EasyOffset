@@ -20,9 +20,9 @@ namespace EasyOffset.Configuration {
         }
 
         private static IConfigPreset ParsePresetFromJson(JObject jObject) {
-            var presetVersion = jObject["version"]?.Value<string>();
+            var presetVersion = jObject.GetValue("version", StringComparison.OrdinalIgnoreCase)?.Value<string>();
             return presetVersion switch {
-                "1.0" => ConfigPresetV1.Deserialize(jObject),
+                ConfigPresetV1.Version => ConfigPresetV1.Deserialize(jObject),
                 null => throw new Exception("Preset version is not specified"),
                 _ => throw new Exception($"Unknown preset version: {presetVersion}")
             };
@@ -51,20 +51,23 @@ namespace EasyOffset.Configuration {
 
         public static string GetPresetCellString(StoredConfigPreset preset) {
             var stringBuilder = new StringBuilder();
-            
+
             stringBuilder.Append("<align=\"left\">");
             stringBuilder.Append("<mspace=0.4em>");
-            
+
             if (preset.LoadFailed) {
                 stringBuilder.Append("<color=red>");
                 stringBuilder.AppendFixed("load error", TimeColumnCharCount);
-            } else {
-                stringBuilder.AppendTimeString(preset.ConfigPreset.UnixTimestamp, TimeColumnCharCount);
-            }
+            } else
+                switch (preset.ConfigPreset.ConfigVersion) {
+                    default:
+                        stringBuilder.AppendTimeString(preset.ConfigPreset.UnixTimestamp, TimeColumnCharCount);
+                        break;
+                }
 
             stringBuilder.Append("</mspace>");
             stringBuilder.AppendFixed(preset.Name, NameColumnCharCount);
-            
+
             return stringBuilder.ToString();
         }
 

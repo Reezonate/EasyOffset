@@ -22,6 +22,14 @@ namespace EasyOffset.Configuration {
 
         #endregion
 
+        #region RoomOffset
+        
+        public bool AllowRoomXChange = Defaults.AllowRoomXChange;
+        public bool AllowRoomYChange = Defaults.AllowRoomYChange;
+        public bool AllowRoomZChange = Defaults.AllowRoomZChange;
+
+        #endregion
+
         #region UI Lock
 
         public bool UILock = Defaults.UILock;

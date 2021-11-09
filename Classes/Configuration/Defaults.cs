@@ -6,6 +6,14 @@ namespace EasyOffset.Configuration {
 
         #endregion
 
+        #region RoomOffset
+        
+        public const bool AllowRoomXChange = true;
+        public const bool AllowRoomYChange = true;
+        public const bool AllowRoomZChange = true;
+
+        #endregion
+
         #region UI Lock
 
         public const bool UILock = false;

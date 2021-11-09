@@ -3,23 +3,43 @@ using UnityEngine;
 
 namespace EasyOffset.Configuration {
     public static class PluginConfig {
+        #region VRPlatformHelper
+
+        public static event Action<IVRPlatformHelper> VRPlatformHelperChangedEvent;
+
+        private static IVRPlatformHelper _vrPlatformHelper;
+
+        public static IVRPlatformHelper VRPlatformHelper {
+            get => _vrPlatformHelper;
+            set {
+                _vrPlatformHelper = value;
+                VRPlatformHelperChangedEvent?.Invoke(value);
+            }
+        }
+
+        #endregion
+
+        #region MainSettingsModel
+
+        public static event Action<MainSettingsModelSO> MainSettingsModelChangedEvent;
+
+        private static MainSettingsModelSO _mainSettingsModel;
+
+        public static MainSettingsModelSO MainSettingsModel {
+            get => _mainSettingsModel;
+            set {
+                _mainSettingsModel = value;
+                MainSettingsModelChangedEvent?.Invoke(value);
+            }
+        }
+
+        #endregion
+
         #region Smoothing
 
-        public static bool SmoothingEnabled { get; private set; }
+        public static bool SmoothingEnabled { get; set; }
         public static float PositionalSmoothing { get; set; }
         public static float RotationalSmoothing { get; set; }
-        public static MainSettingsModelSO MainSettingsModel { get; private set; }
-
-        public static void EnableSmoothing(
-            MainSettingsModelSO mainSettingsModel
-        ) {
-            SmoothingEnabled = true;
-            MainSettingsModel = mainSettingsModel;
-        }
-
-        public static void DisableSmoothing() {
-            SmoothingEnabled = false;
-        }
 
         #endregion
 
@@ -36,6 +56,7 @@ namespace EasyOffset.Configuration {
         public static bool Enabled {
             get => CachedEnabled.Value;
             set {
+                if (CachedEnabled.Value == value) return;
                 CachedEnabled.Value = value;
                 ConfigFileData.Instance.Enabled = value;
                 OnEnabledChange?.Invoke(value);
@@ -56,6 +77,25 @@ namespace EasyOffset.Configuration {
                 CachedUILock.Value = value;
                 ConfigFileData.Instance.UILock = value;
             }
+        }
+
+        #endregion
+
+        #region RoomOffset
+
+        public static bool AllowRoomXChange {
+            get => ConfigFileData.Instance.AllowRoomXChange;
+            set => ConfigFileData.Instance.AllowRoomXChange = value;
+        }
+
+        public static bool AllowRoomYChange {
+            get => ConfigFileData.Instance.AllowRoomYChange;
+            set => ConfigFileData.Instance.AllowRoomYChange = value;
+        }
+
+        public static bool AllowRoomZChange {
+            get => ConfigFileData.Instance.AllowRoomZChange;
+            set => ConfigFileData.Instance.AllowRoomZChange = value;
         }
 
         #endregion

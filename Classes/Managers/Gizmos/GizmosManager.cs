@@ -1,6 +1,6 @@
 using System;
+using EasyOffset.AssetBundleScripts;
 using EasyOffset.Configuration;
-using EasyOffset.SyncedWithUnity;
 using JetBrains.Annotations;
 using UnityEngine;
 using Zenject;
@@ -8,19 +8,7 @@ using Object = UnityEngine.Object;
 
 namespace EasyOffset {
     [UsedImplicitly]
-    public class GizmosManager : IInitializable, IDisposable, ITickable {
-        #region Inject
-
-        private readonly MainSettingsModelSO _mainSettingsModel;
-
-        public GizmosManager(
-            MainSettingsModelSO mainSettingsModel
-        ) {
-            _mainSettingsModel = mainSettingsModel;
-        }
-
-        #endregion
-
+    public class GizmosManager : IInitializable, IDisposable, ILateTickable {
         #region Init/Dispose
 
         public GizmosController LeftHandGizmosController;
@@ -42,6 +30,7 @@ namespace EasyOffset {
             if (LeftHandGizmosController != null && LeftHandGizmosController.gameObject != null) {
                 Object.Destroy(LeftHandGizmosController.gameObject);
             }
+
             if (RightHandGizmosController != null && RightHandGizmosController.gameObject != null) {
                 Object.Destroy(RightHandGizmosController.gameObject);
             }
@@ -53,9 +42,9 @@ namespace EasyOffset {
 
         #endregion
 
-        #region Tick
+        #region LateTick
 
-        public void Tick() {
+        public void LateTick() {
             LeftHandGizmosController.SetPivotPosition(PluginConfig.LeftHandPivotPosition);
             LeftHandGizmosController.SetSaberDirection(PluginConfig.LeftHandSaberDirection);
 
@@ -73,9 +62,13 @@ namespace EasyOffset {
 
         #region Events
 
-        private void OnControllerTransformsChanged(Vector3 leftPos, Quaternion leftRot, Vector3 rightPos, Quaternion rightRot) {
-            TransformUtils.ApplyRoomOffset(_mainSettingsModel, ref leftPos, ref leftRot);
-            TransformUtils.ApplyRoomOffset(_mainSettingsModel, ref rightPos, ref rightRot);
+        private void OnControllerTransformsChanged(ReeTransform leftHandTransform, ReeTransform rightHandTransform) {
+            var leftPos = leftHandTransform.Position;
+            var leftRot = leftHandTransform.Rotation;
+            var rightPos = rightHandTransform.Position;
+            var rightRot = rightHandTransform.Rotation;
+            TransformUtils.ApplyRoomOffset(ref leftPos, ref leftRot);
+            TransformUtils.ApplyRoomOffset(ref rightPos, ref rightRot);
             LeftHandGizmosController.SetControllerTransform(leftPos, leftRot);
             RightHandGizmosController.SetControllerTransform(rightPos, rightRot);
         }
@@ -152,7 +145,7 @@ namespace EasyOffset {
                     isControllerModelVisible = true;
                     isSwingPreviewVisible = true;
                     break;
-                case AdjustmentMode.PivotOnly:
+                case AdjustmentMode.Position:
                     isPivotVisible = true;
                     isOrthonormalBasisVisible = true;
                     isOrthonormalBasisPointerVisible = true;
@@ -160,7 +153,7 @@ namespace EasyOffset {
                     isControllerModelVisible = true;
                     isSwingPreviewVisible = true;
                     break;
-                case AdjustmentMode.DirectionOnly:
+                case AdjustmentMode.Rotation:
                     isPivotVisible = true;
                     isOrthonormalBasisVisible = false;
                     isOrthonormalBasisPointerVisible = false;
@@ -168,7 +161,15 @@ namespace EasyOffset {
                     isControllerModelVisible = true;
                     isSwingPreviewVisible = true;
                     break;
-                case AdjustmentMode.DirectionAuto:
+                case AdjustmentMode.SwingBenchmark:
+                    isPivotVisible = true;
+                    isOrthonormalBasisVisible = false;
+                    isOrthonormalBasisPointerVisible = false;
+                    isSphericalBasisVisible = false;
+                    isControllerModelVisible = true;
+                    isSwingPreviewVisible = false;
+                    break;
+                case AdjustmentMode.RotationAuto:
                     isPivotVisible = true;
                     isOrthonormalBasisVisible = false;
                     isOrthonormalBasisPointerVisible = false;

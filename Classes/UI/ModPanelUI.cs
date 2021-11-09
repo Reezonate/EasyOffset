@@ -1,15 +1,73 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.Components;
 using EasyOffset.Configuration;
 using HMUI;
 using JetBrains.Annotations;
+using UnityEngine;
 
 namespace EasyOffset.UI {
     public class ModPanelUI : NotifiableSingleton<ModPanelUI> {
+        #region Constructor
+
+        public ModPanelUI() {
+            SubscribeToBenchmarkEvents();
+            SubscribeToRoomOffsetEvents();
+        }
+
+        #endregion
+
+        #region Flow
+
+        private void UpdateBenchmarkPanel(bool hasResults) {
+            if (hasResults) {
+                BenchmarkGuideActive = false;
+                BenchmarkResultsActive = true;
+            } else {
+                BenchmarkGuideActive = true;
+                BenchmarkResultsActive = false;
+            }
+        }
+
+        private void GoToMainPage() {
+            MainPageActive = true;
+            PresetsBrowserActive = false;
+
+            switch (PluginConfig.AdjustmentMode) {
+                case AdjustmentMode.None:
+                case AdjustmentMode.Basic:
+                case AdjustmentMode.Position:
+                case AdjustmentMode.Rotation:
+                case AdjustmentMode.RotationAuto:
+                    HandsPanelActive = true;
+                    BenchmarkPanelActive = false;
+                    RoomOffsetPanelActive = false;
+                    break;
+                case AdjustmentMode.SwingBenchmark:
+                    HandsPanelActive = false;
+                    BenchmarkPanelActive = true;
+                    RoomOffsetPanelActive = false;
+                    break;
+                case AdjustmentMode.RoomOffset:
+                    HandsPanelActive = false;
+                    BenchmarkPanelActive = false;
+                    RoomOffsetPanelActive = true;
+                    break;
+                default: throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private void GoToBrowserPage(bool allowSave, bool allowLoad) {
+            MainPageActive = false;
+            PresetsBrowserActive = true;
+            PresetsBrowserSaveActive = allowSave;
+            PresetsBrowserLoadActive = allowLoad;
+        }
+
+        #endregion
+
         #region Main page
 
         #region Active
@@ -34,11 +92,13 @@ namespace EasyOffset.UI {
 
         [UIValue("am-hint")] [UsedImplicitly] private string _adjustmentModeHint = "Hold assigned button and move your hand" +
                                                                                    "\n" +
-                                                                                   "\nBasic - Easy adjustment mode for beginners" +
-                                                                                   "\nPivot Only - Precise origin placement" +
-                                                                                   "\nDirection Only - Saber rotation only" +
-                                                                                   "\nDirection Auto - Automatic rotation (beta)" +
-                                                                                   "\nRoom Offset - World Pulling locomotion";
+                                                                                   
+                                                                                   "\nBasic - Drag and drop adjustment mode" +
+                                                                                   "\nPosition - Pivot position only" +
+                                                                                   "\nRotation - Saber rotation only" +
+                                                                                   "\nSwing Benchmark - Swing analysis" +
+                                                                                   "\nRotation Auto - Automatic rotation" +
+                                                                                   "\nRoom Offset - World pulling locomotion";
 
         [UIValue("am-choices")] [UsedImplicitly]
         private List<object> _adjustmentModeChoices = AdjustmentModeUtils.AllNamesObjects.ToList();
@@ -59,6 +119,7 @@ namespace EasyOffset.UI {
         [UsedImplicitly]
         private void AdjustmentModeOnChange(string selectedValue) {
             PluginConfig.AdjustmentMode = AdjustmentModeUtils.NameToType(selectedValue);
+            GoToMainPage();
         }
 
         #endregion
@@ -112,6 +173,22 @@ namespace EasyOffset.UI {
 
         #region Hands panel
 
+        #region Active
+
+        private bool _handsPanelActive = true;
+
+        [UIValue("hands-panel-active")]
+        [UsedImplicitly]
+        private bool HandsPanelActive {
+            get => _handsPanelActive;
+            set {
+                _handsPanelActive = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        #endregion
+
         #region ZOffset sliders values
 
         [UIValue("zo-min")] [UsedImplicitly] private float _zOffsetSliderMin = -15f;
@@ -164,15 +241,13 @@ namespace EasyOffset.UI {
         [UsedImplicitly]
         private void LeftActionMenuOnChange(string value) {
             OnHandAction(Hand.Left, HandMenuActionUtils.NameToType(value));
-            ResetLeftMenuAction();
+            _leftHandMenuResetAction.InvokeLater(10, ResetLeftHandMenu);
         }
 
-        //TODO: Works but stinks, find a better solution
-        private void ResetLeftMenuAction() {
-            new Thread(() => {
-                Thread.Sleep(10);
-                LeftActionMenuChoice = HandMenuActionUtils.TypeToName(HandMenuAction.Default);
-            }).Start();
+        private readonly DelayedAction _leftHandMenuResetAction = new();
+
+        private void ResetLeftHandMenu() {
+            LeftActionMenuChoice = HandMenuActionUtils.TypeToName(HandMenuAction.Default);
         }
 
         #endregion
@@ -218,15 +293,13 @@ namespace EasyOffset.UI {
         [UsedImplicitly]
         private void RightActionMenuOnChange(string value) {
             OnHandAction(Hand.Right, HandMenuActionUtils.NameToType(value));
-            ResetRightActionMenu();
+            _rightHandMenuResetAction.InvokeLater(10, ResetRightHandMenu);
         }
 
-        //TODO: Works but stinks, find a better solution
-        private void ResetRightActionMenu() {
-            new Thread(() => {
-                Thread.Sleep(10);
-                RightActionMenuChoice = HandMenuActionUtils.TypeToName(HandMenuAction.Default);
-            }).Start();
+        private readonly DelayedAction _rightHandMenuResetAction = new();
+
+        private void ResetRightHandMenu() {
+            RightActionMenuChoice = HandMenuActionUtils.TypeToName(HandMenuAction.Default);
         }
 
         #endregion
@@ -274,6 +347,394 @@ namespace EasyOffset.UI {
 
         #endregion
 
+        #region BenchmarkPanel
+
+        #region Events
+
+        private void SubscribeToBenchmarkEvents() {
+            SwingBenchmarkHelper.OnResetEvent += OnBenchmarkReset;
+            SwingBenchmarkHelper.OnStartEvent += OnBenchmarkStart;
+            SwingBenchmarkHelper.OnUpdateEvent += OnBenchmarkUpdate;
+            SwingBenchmarkHelper.OnFailEvent += OnBenchmarkFail;
+            SwingBenchmarkHelper.OnSuccessEvent += OnBenchmarkSuccess;
+        }
+
+        private void OnBenchmarkReset() {
+            UpdateBenchmarkPanel(false);
+        }
+
+        private void OnBenchmarkStart() {
+            UpdateBenchmarkPanel(false);
+        }
+
+        private void OnBenchmarkUpdate(
+            float swingCurveAngle,
+            float tipDeviation,
+            float pivotDeviation,
+            float minimalSwingAngle,
+            float maximalSwingAngle
+        ) {
+            BenchmarkCurveText = $"{swingCurveAngle * Mathf.Rad2Deg:F1}° {(swingCurveAngle < 0 ? "Inward" : "Outward")}";
+            BenchmarkTipWobbleText = $"{(tipDeviation * 200):F1} cm";
+            BenchmarkArmUsageText = $"{(pivotDeviation * 200):F1} cm";
+
+            var min = minimalSwingAngle * Mathf.Rad2Deg;
+            var max = maximalSwingAngle * Mathf.Rad2Deg;
+            var full = max - min;
+            BenchmarkAngleText = $"{full:F1}° ({max:F1}°/{-min:F1}°)";
+        }
+
+        private void OnBenchmarkFail() {
+            UpdateBenchmarkPanel(false);
+        }
+
+        private void OnBenchmarkSuccess() {
+            UpdateBenchmarkPanel(true);
+        }
+
+        #endregion
+
+        #region Active
+
+        private bool _benchmarkPanelActive;
+
+        [UIValue("benchmark-panel-active")]
+        [UsedImplicitly]
+        private bool BenchmarkPanelActive {
+            get => _benchmarkPanelActive;
+            set {
+                _benchmarkPanelActive = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region Guide
+
+        #region Active
+
+        private bool _benchmarkGuideActive = true;
+
+        [UIValue("benchmark-guide-active")]
+        [UsedImplicitly]
+        private bool BenchmarkGuideActive {
+            get => _benchmarkGuideActive;
+            set {
+                _benchmarkGuideActive = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region Instructions
+
+        [UIValue("benchmark-guide")] [UsedImplicitly]
+        private string _benchmarkGuide = "Repeat one exact swing several times" +
+                                         "\nwhile holding the button" +
+                                         "\n" +
+                                         "\nAt least 140° swing angle required";
+
+        #endregion
+
+        #endregion
+
+        #region Results
+
+        #region Active
+
+        private bool _benchmarkResultsActive;
+
+        [UIValue("benchmark-results-active")]
+        [UsedImplicitly]
+        private bool BenchmarkResultsActive {
+            get => _benchmarkResultsActive;
+            set {
+                _benchmarkResultsActive = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region Curve
+
+        [UIValue("benchmark-curve-hint")] [UsedImplicitly]
+        private string _benchmarkCurveHint = "Deviation from the straight swing" +
+                                             "\n" +
+                                             "\nDepends only on your config";
+
+        private string _benchmarkCurveText = "0,0° Inward";
+
+        [UIValue("benchmark-curve-text")]
+        [UsedImplicitly]
+        private string BenchmarkCurveText {
+            get => _benchmarkCurveText;
+            set {
+                _benchmarkCurveText = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region TipWobble
+
+        [UIValue("benchmark-tip-wobble-hint")] [UsedImplicitly]
+        private string _benchmarkTipWobbleHint = "Aim deviation" +
+                                                 "\n" +
+                                                 "\nDepends on your grip and skill";
+
+        private string _benchmarkTipWobbleText = "0,0 cm";
+
+        [UIValue("benchmark-tip-wobble-text")]
+        [UsedImplicitly]
+        private string BenchmarkTipWobbleText {
+            get => _benchmarkTipWobbleText;
+            set {
+                _benchmarkTipWobbleText = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region ArmUsage
+
+        [UIValue("benchmark-arm-usage-hint")] [UsedImplicitly]
+        private string _benchmarkArmUsageHint = "Arm movement amount" +
+                                                "\n" +
+                                                "\nPersonal preference";
+
+        private string _benchmarkArmUsageText = "0,0 cm";
+
+        [UIValue("benchmark-arm-usage-text")]
+        [UsedImplicitly]
+        private string BenchmarkArmUsageText {
+            get => _benchmarkArmUsageText;
+            set {
+                _benchmarkArmUsageText = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region Angle
+
+        [UIValue("benchmark-angle-hint")] [UsedImplicitly]
+        private string _benchmarkAmplitudeHint = "Full swing angle (Backhand/Forehand)";
+
+        private string _benchmarkAngleText = "150° (70°/80°)";
+
+        [UIValue("benchmark-angle-text")]
+        [UsedImplicitly]
+        private string BenchmarkAngleText {
+            get => _benchmarkAngleText;
+            set {
+                _benchmarkAngleText = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+        #region AutoFixButton
+
+        [UIAction("benchmark-auto-fix-on-click")]
+        [UsedImplicitly]
+        private void BenchmarkAutoFixOnClick() {
+            SwingBenchmarkHelper.InvokeAutoFix();
+            SetBenchmarkStatusText("Done!");
+        }
+
+        #endregion
+
+        #region ResetButton
+
+        [UIAction("benchmark-reset-on-click")]
+        [UsedImplicitly]
+        private void BenchmarkResetOnClick() {
+            SwingBenchmarkHelper.InvokeReset();
+        }
+
+        #endregion
+
+        #region StatusText
+
+        private string _benchmarkStatusText = "";
+
+        [UIValue("benchmark-status-text")]
+        [UsedImplicitly]
+        private string BenchmarkStatusText {
+            get => _benchmarkStatusText;
+            set {
+                _benchmarkStatusText = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private readonly DelayedAction _benchmarkStatusTextResetAction = new();
+
+        private void SetBenchmarkStatusText(string value) {
+            BenchmarkStatusText = value;
+            _benchmarkStatusTextResetAction.InvokeLater(2000, ResetBenchmarkStatusText);
+        }
+
+        private void ResetBenchmarkStatusText() {
+            BenchmarkStatusText = "";
+        }
+
+        #endregion
+
+        #endregion
+
+        #region RoomOffsetPanel
+
+        #region Events
+
+        private Vector3SO _roomCenterSO;
+
+        private void SubscribeToRoomOffsetEvents() {
+            PluginConfig.MainSettingsModelChangedEvent += OnMainSettingsModelChanged;
+        }
+
+        private void OnMainSettingsModelChanged(MainSettingsModelSO mainSettingsModel) {
+            if (_roomCenterSO != null) {
+                _roomCenterSO.didChangeEvent -= OnRoomCenterChanged;
+            }
+
+            _roomCenterSO = mainSettingsModel.roomCenter;
+            _roomCenterSO.didChangeEvent += OnRoomCenterChanged;
+            OnRoomCenterChanged();
+        }
+
+        private void OnRoomCenterChanged() {
+            var tmp = _roomCenterSO.value;
+            RoomXText = $"X:\t{(tmp.x * 100):F2} cm";
+            RoomYText = $"Y:\t{(tmp.y * 100):F2} cm";
+            RoomZText = $"Z:\t{(tmp.z * 100):F2} cm";
+        }
+
+        #endregion
+
+        #region Active
+
+        private bool _roomOffsetPanelActive;
+
+        [UIValue("room-offset-panel-active")]
+        [UsedImplicitly]
+        private bool RoomOffsetPanelActive {
+            get => _roomOffsetPanelActive;
+            set {
+                _roomOffsetPanelActive = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region X
+
+        private string _roomXText = "";
+
+        [UIValue("room-x-text")]
+        [UsedImplicitly]
+        private string RoomXText {
+            get => _roomXText;
+            set {
+                _roomXText = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        [UIValue("room-x-toggle-value")] [UsedImplicitly]
+        private bool _roomXToggleValue = PluginConfig.AllowRoomXChange;
+
+        [UIAction("room-x-toggle-on-change")]
+        [UsedImplicitly]
+        private void RoomXToggleOnChange(bool value) {
+            PluginConfig.AllowRoomXChange = value;
+        }
+
+        [UIAction("room-x-reset-on-click")]
+        [UsedImplicitly]
+        private void RoomXResetOnClick() {
+            var tmp = PluginConfig.MainSettingsModel.roomCenter.value;
+            PluginConfig.MainSettingsModel.roomCenter.value = new Vector3(0, tmp.y, tmp.z);
+        }
+
+        #endregion
+
+        #region Y
+
+        private string _roomYText = "";
+
+        [UIValue("room-y-text")]
+        [UsedImplicitly]
+        private string RoomYText {
+            get => _roomYText;
+            set {
+                _roomYText = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        [UIValue("room-y-toggle-value")] [UsedImplicitly]
+        private bool _roomYToggleValue = PluginConfig.AllowRoomYChange;
+
+        [UIAction("room-y-toggle-on-change")]
+        [UsedImplicitly]
+        private void RoomYToggleOnChange(bool value) {
+            PluginConfig.AllowRoomYChange = value;
+        }
+
+        [UIAction("room-y-reset-on-click")]
+        [UsedImplicitly]
+        private void RoomYResetOnClick() {
+            var tmp = PluginConfig.MainSettingsModel.roomCenter.value;
+            PluginConfig.MainSettingsModel.roomCenter.value = new Vector3(tmp.x, 0, tmp.z);
+        }
+
+        #endregion
+
+        #region Z
+
+        private string _roomZText = "";
+
+        [UIValue("room-z-text")]
+        [UsedImplicitly]
+        private string RoomZText {
+            get => _roomZText;
+            set {
+                _roomZText = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        [UIValue("room-z-toggle-value")] [UsedImplicitly]
+        private bool _roomZToggleValue = PluginConfig.AllowRoomZChange;
+
+        [UIAction("room-z-toggle-on-change")]
+        [UsedImplicitly]
+        private void RoomZToggleOnChange(bool value) {
+            PluginConfig.AllowRoomZChange = value;
+        }
+
+        [UIAction("room-z-reset-on-click")]
+        [UsedImplicitly]
+        private void RoomZResetOnClick() {
+            var tmp = PluginConfig.MainSettingsModel.roomCenter.value;
+            PluginConfig.MainSettingsModel.roomCenter.value = new Vector3(tmp.x, tmp.y, 0);
+        }
+
+        #endregion
+
+        #endregion
+
         #region BottomPanel
 
         #region Save button
@@ -282,11 +743,7 @@ namespace EasyOffset.UI {
         [UsedImplicitly]
         private void BottomPanelSaveOnClick() {
             UpdatePresetsBrowserList();
-
-            MainPageActive = false;
-            PresetsBrowserActive = true;
-            PresetsBrowserSaveActive = true;
-            PresetsBrowserLoadActive = false;
+            GoToBrowserPage(true, false);
         }
 
         #endregion
@@ -297,11 +754,7 @@ namespace EasyOffset.UI {
         [UsedImplicitly]
         private void BottomPanelLoadOnClick() {
             UpdatePresetsBrowserList();
-
-            MainPageActive = false;
-            PresetsBrowserActive = true;
-            PresetsBrowserSaveActive = false;
-            PresetsBrowserLoadActive = true;
+            GoToBrowserPage(false, true);
         }
 
         #endregion
@@ -314,9 +767,11 @@ namespace EasyOffset.UI {
             get => !PluginConfig.UILock;
             set {
                 PluginConfig.UILock = !value;
+
                 if (!value) {
                     PluginConfig.AdjustmentMode = AdjustmentMode.None;
                     AdjustmentModeChoice = AdjustmentModeUtils.TypeToName(AdjustmentMode.None);
+                    GoToMainPage();
                 }
 
                 NotifyPropertyChanged();
@@ -426,8 +881,7 @@ namespace EasyOffset.UI {
         [UIAction("pb-cancel-on-click")]
         [UsedImplicitly]
         private void PresetsBrowserCancelOnClick() {
-            MainPageActive = true;
-            PresetsBrowserActive = false;
+            GoToMainPage();
         }
 
         #endregion
@@ -455,8 +909,7 @@ namespace EasyOffset.UI {
         [UsedImplicitly]
         private void PresetsBrowserSaveOnClick() {
             if (!ConfigPresetsStorage.SaveCurrentPreset(PresetFileName)) return;
-            MainPageActive = true;
-            PresetsBrowserActive = false;
+            GoToMainPage();
         }
 
         #endregion
@@ -484,9 +937,8 @@ namespace EasyOffset.UI {
         [UsedImplicitly]
         private void PresetsBrowserLoadOnClick() {
             if (!ConfigPresetsStorage.LoadPreset(PresetFileName)) return;
-            MainPageActive = true;
-            PresetsBrowserActive = false;
             UpdateZOffsetSliders();
+            GoToMainPage();
         }
 
         #endregion
