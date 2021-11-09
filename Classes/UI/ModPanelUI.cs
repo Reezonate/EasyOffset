@@ -381,7 +381,7 @@ namespace EasyOffset.UI {
             var min = minimalSwingAngle * Mathf.Rad2Deg;
             var max = maximalSwingAngle * Mathf.Rad2Deg;
             var full = max - min;
-            BenchmarkAngleText = $"{full:F1}° ({-min:F1}°/{max:F1}°)";
+            BenchmarkAngleText = $"{full:F1}° ({max:F1}°/{-min:F1}°)";
         }
 
         private void OnBenchmarkFail() {
@@ -524,7 +524,7 @@ namespace EasyOffset.UI {
         #region Angle
 
         [UIValue("benchmark-angle-hint")] [UsedImplicitly]
-        private string _benchmarkAmplitudeHint = "Full swing angle (Forehand/Backhand)";
+        private string _benchmarkAmplitudeHint = "Full swing angle (Backhand/Forehand)";
 
         private string _benchmarkAngleText = "150° (70°/80°)";
 

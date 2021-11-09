@@ -4,11 +4,14 @@ namespace EasyOffset {
     internal class SwingAnalyzer {
         #region Constructor
 
+        private readonly int _maximalCapacity;
+
         private readonly WeightedList<Vector3> _tipPositions;
         private readonly WeightedList<Vector3> _pivotPositions;
         private readonly WeightedList<Vector3> _localNormals;
 
         public SwingAnalyzer(int maximalCapacity) {
+            _maximalCapacity = maximalCapacity;
             _tipPositions = new WeightedList<Vector3>(maximalCapacity);
             _pivotPositions = new WeightedList<Vector3>(maximalCapacity);
             _localNormals = new WeightedList<Vector3>(maximalCapacity);
@@ -77,13 +80,21 @@ namespace EasyOffset {
             Vector3 planeNormal
         ) {
             if (_hasPreviousTipPosition) {
-                var localNormal = controllerTransform.WorldToLocalDirection(planeNormal);
+                var planeNormalNoOffset = planeNormal;
+                TransformUtils.RemoveRoomOffsetFromDirection(ref planeNormalNoOffset);
+
+                var localNormal = controllerTransform.WorldToLocalDirection(planeNormalNoOffset);
                 var tipVelocity = (tipWorldPosition - _previousTipPosition).magnitude / Time.deltaTime;
-                _localNormals.Add(localNormal, Mathf.Pow(tipVelocity, 2.0f));
+                _localNormals.Add(localNormal, GetNormalWeight(tipVelocity));
             }
 
             _previousTipPosition = tipWorldPosition;
             _hasPreviousTipPosition = true;
+        }
+
+        private float GetNormalWeight(float tipVelocity) {
+            var dataSetRatio = (float)_localNormals.Entries.Count / _maximalCapacity;
+            return Mathf.Pow(dataSetRatio, 0.5f) * Mathf.Pow(tipVelocity, 2.0f);
         }
 
         public Vector3 GetWristRotationAxis() {

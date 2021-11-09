@@ -4,7 +4,7 @@ Beat Saber mod for intuitive controller offset adjustments.
 
 Tired from a pile of magic config numbers? Find the best offset for your grip just by moving your hand!
 
-Read [user guide](https://github.com/Reezonate/EasyOffset/tree/experimental#how-to-use) for more info
+Read [user guide](https://github.com/Reezonate/EasyOffset/#how-to-use) for more info
 
 # Compatibility
 
@@ -37,30 +37,33 @@ Read [user guide](https://github.com/Reezonate/EasyOffset/tree/experimental#how-
 - Go to `Settings` > `Mod Settings` > `Easy Offset`
 - Use `Z Offset` slider to change the `Pivot Point` position (0 - top of the hilt, 17 - bottom of the hilt)
 - Press the `Import from SaberTailor` button
+- Make sure to disable SaberTailor mod
 
 # How to use
 Before trying to find your best config, spend some time in different modes and experiment with the tools at your disposal
 
-Config values:
+### Config values:
 
 - `Pivot point` - saber origin position relative to the controller (Displayed as a white dot surrounded by a grid)
 - `Direction vector` - saber tip position relative to `Pivot point`
 - `ZOffset` - saber position offset along `Direction vector`
 
-First steps:
+### First steps:
 - Select your controller model in the `Controller Type` list
 - Choose a button you can press without changing your grip
 - If there is no such button, check the `Use Free Hand` toggle to use the button on the other hand
 
-To get a decent config, you have to achieve two goals:
+### To get a decent config, you have to achieve two goals:
+
 - `Pivot point` should be stable as the wrist rotates. In other words - it should be aligned with your actual wrist pivot point as much as possible
 - Saber trail shouldn't move in a huge circle while you pointing forward and rolling your wrist comfortably. The smaller the radius, the better
 
 To help you achieve these goals, there are four adjustment modes:
-- `Basic`
-- `Position`
-- `Rotation`
-- `Swing Benchmark`
+
+- [Basic](https://github.com/Reezonate/EasyOffset/#basic-adjustment-mode)
+- [Position](https://github.com/Reezonate/EasyOffset/#position-adjustment-mode)
+- [Rotation](https://github.com/Reezonate/EasyOffset/#rotation-adjustment-mode)
+- [Swing Benchmark](https://github.com/Reezonate/EasyOffset/#swing-benchmark-adjustment-mode)
 
 ## `Basic` adjustment mode:
 ``` diff
@@ -115,13 +118,16 @@ You can raise/lower your free hand to zoom in/out
 ```
 Gives you objective measurements of your swing. Use for config and grip analysis. Best used with `Use Free Hand` enabled
 
+Results will gradually change from vertical to horizontal swing. Optimize your config for a diagonal swing, unless you know what you're looking for
+
 - Select `Swing Benchmark` in the `Adjustment Mode` list
 - Repeat one exact swing several times while holding the button
-- Don't move around, look forward, and swing exactly as you do in-game. At least 140° swing angle required
-- Results will gradually change from vertical to horizontal swing. Optimize your config for a diagonal swing, unless you know what you're looking for
-- Humans are not robots, each time results will be slightly different
+- Stand still, look forward, and swing exactly as you do in-game
+- Swing angle of at least 140° is required
 
-After the successful test, calculated wrist rotation axis and straight swing reference plane will appear on your hand
+The steadier and repeatable your actions are, the more precise result you'll get. Calculation error mostly depends on a `Tip wobble` (smaller is better) and `Angle` (higher is better)
+
+After the successful test, the calculated wrist rotation axis and straight swing reference plane will appear on your hand.
 
 ![Benchmark mode preview](media/Benchmark.png)
 
@@ -145,6 +151,7 @@ One of the main accuracy limiting factors. You have only 3 cm of margin to score
 
 - If it is caused by the 8-shaped swing, you have poor weight balance with your grip
 - If your swing is not repeatable at all, you have to practice more and optimize your technique
+- Stretching regularly will help reduce wobble at the limiting angles
 
 How to improve:
 
@@ -160,11 +167,21 @@ Preference, optimize to your play style
 - Higher arm usage requires a lot of stamina and significantly limits your speed capabilities
 - Lower arm usage increases wobble, limiting your accuracy
 
+### `Angle` measurement
+Indicates how much angle is covered by your swing. Also shows your backhand and forehand angles (relative to the horizontal plane)
+
+- According to the game scoring system, you need at least a 100° pre-swing angle and a 60° post-swing angle. Note that these values are relative to the block (e.g. bottom lane up-swing requires a much greater forehand angle than the top lane up-swing)
+
+How to improve:
+
+- If you are constantly under-swinging a certain direction, change the forehand/backhand angle balance by rotating the saber up/down in the `Rotation` mode
+- Regular stretching will help increase the range of motion in your wrist
+
 # Extra features
 
 ## `Rotation Auto` adjustment mode:
 ``` diff
-- Expert: An understanding of what a good config looks like is required
+- Expert: An understanding of what a good config looks like is required. The result may not be optimal
 - Config-breaking: Drastically changes your config. Save the preset to have a backup
 ```
 

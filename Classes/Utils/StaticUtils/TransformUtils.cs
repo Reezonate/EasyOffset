@@ -142,6 +142,19 @@ namespace EasyOffset {
 
         #endregion
 
+        #region RemoveRoomOffset
+
+        public static void RemoveRoomOffsetFromVector(ref Vector3 position) {
+            var roomRotation = Quaternion.Euler(0, PluginConfig.MainSettingsModel.roomRotation, 0);
+            position = Quaternion.Inverse(roomRotation) * (position - PluginConfig.MainSettingsModel.roomCenter);
+        }
+        public static void RemoveRoomOffsetFromDirection(ref Vector3 direction) {
+            var roomRotation = Quaternion.Euler(0, PluginConfig.MainSettingsModel.roomRotation, 0);
+            direction = Quaternion.Inverse(roomRotation) * direction;
+        }
+
+        #endregion
+
         #region Spherical
 
         public static Vector3 SphericalToOrthoDirection(Vector2 sphericalDirectionRadians) {
