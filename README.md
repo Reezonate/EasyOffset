@@ -4,12 +4,14 @@ Beat Saber mod for intuitive controller offset adjustments.
 
 Tired from a pile of magic config numbers? Find the best offset for your grip just by moving your hand!
 
-Read [user guide](https://github.com/Reezonate/EasyOffset/#how-to-use) for more info
+- [How to use](https://github.com/Reezonate/EasyOffset/#how-to-use)
+- [Config migration](https://github.com/Reezonate/EasyOffset/#config-migration)
+- [Support the project](https://ko-fi.com/reezonate)
 
 # Compatibility
 
 - Not compatible with other offset adjustment mods (e.g. SaberTailor, ControllerSettingsHelper, etc.)
-- Config values are different from base game settings, SaberTailor, etc.
+- Config values are different from the base game settings, SaberTailor, etc.
 - **PC ONLY**! Quest version is planned, but not guaranteed
 - Best used with [CustomMenuPointers](https://github.com/dawnvt/CustomMenuPointers)
 
@@ -21,13 +23,15 @@ Read [user guide](https://github.com/Reezonate/EasyOffset/#how-to-use) for more 
   [Releases page](https://github.com/Reezonate/EasyOffset/releases)
   and put it in `/plugins` directory inside your game folder
 
-# Base game config migration
+# Config migration
+
+### From the base game settings
 
 - Go to `Settings` > `Mod Settings` > `Easy Offset`
 - Use `Z Offset` slider to change the `Pivot Point` position (0 - top of the hilt, 17 - bottom of the hilt)
 - Press the `Import from settings` button
 
-# SaberTailor config migration
+### From SaberTailor mod
 
 ```diff
 - SaberTailor.json file required in the UserData directory
@@ -37,7 +41,7 @@ Read [user guide](https://github.com/Reezonate/EasyOffset/#how-to-use) for more 
 - Go to `Settings` > `Mod Settings` > `Easy Offset`
 - Use `Z Offset` slider to change the `Pivot Point` position (0 - top of the hilt, 17 - bottom of the hilt)
 - Press the `Import from SaberTailor` button
-- Make sure to disable SaberTailor mod
+- Make sure to disable SaberTailor mod to avoid interference
 
 # How to use
 Before trying to find your best config, spend some time in different modes and experiment with the tools at your disposal
