@@ -34,7 +34,7 @@ Tired from a pile of magic config numbers? Find the best offset for your grip ju
 ### From SaberTailor mod
 
 ```diff
-- SaberTailor.json file required in the UserData directory
+- SaberTailor.json file is required in the UserData directory
 - World offset is not supported!
 ```
 
@@ -118,7 +118,7 @@ You can raise/lower your free hand to zoom in/out
 
 ## `Swing Benchmark` adjustment mode:
 ``` diff
-- Advanced: requires developed technique and ability to full swing
+- Advanced: Requires developed technique and ability to full swing
 ```
 Gives you objective measurements of your swing. Use for config and grip analysis. Best used with `Use Free Hand` enabled
 
@@ -129,7 +129,7 @@ Results will gradually change from vertical to horizontal swing. Optimize your c
 - Stand still, look forward, and swing exactly as you do in-game
 - Swing angle of at least 140° is required
 
-The steadier and repeatable your actions are, the more precise result you'll get. Calculation error mostly depends on a `Tip wobble` (smaller is better) and `Angle` (higher is better)
+The more repeatable your swings are, the more precise result you'll get. Calculation error mostly depends on a `Tip wobble` (smaller is better) and `Angle` (higher is better)
 
 After the successful test, the calculated wrist rotation axis and straight swing reference plane will appear on your hand.
 
