@@ -222,8 +222,7 @@
   <ItemGroup>
     <None Include="Directory.Build.props" Condition="Exists('Directory.Build.props')" />
     <None Include="Directory.Build.targets" Condition="Exists('Directory.Build.targets')" />
-    <EmbeddedResource Include="Resources\BSML\SettingsUI.bsml" />
-    <None Include="XYZ.csproj.user" Condition="Exists('XYZ.csproj.user')" />
+    <None Include="EasyOffset.csproj.user" Condition="Exists('EasyOffset.csproj.user')" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BeatSaberModdingTools.Tasks">
@@ -235,6 +234,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\AssetBundles\easy_offset" />
     <EmbeddedResource Include="Resources\BSML\ModPanelUI.bsml" />
+    <EmbeddedResource Include="Resources\BSML\SettingsUI.bsml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
