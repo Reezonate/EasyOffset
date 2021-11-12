@@ -129,7 +129,7 @@ Results will gradually change from vertical to horizontal swing. Optimize your c
 - Stand still, look forward, and swing exactly as you do in-game
 - Swing angle of at least 140° is required
 
-The more repeatable your swings are, the more precise result you'll get. Calculation error mostly depends on a `Tip wobble` (smaller is better) and `Angle` (higher is better)
+Calculation error mostly depends on a `Tip wobble` (smaller is better) and `Angle` (higher is better). The more repeatable your swings are, the more precise result you'll get
 
 After the successful test, the calculated wrist rotation axis and straight swing reference plane will appear on your hand.
 
@@ -144,7 +144,7 @@ Indicates how straight your swing is
 
 How to improve:
 
-- You can reduce it manually in the `Direction Only` mode (A special reference line will appear after the test)
+- You can reduce it manually in the `Rotation` mode (A special reference line will appear after the test)
 - You can completely remove it automatically by pressing the `Apply rotation fix` button. This action will change your config, backup if you're not sure!
 - Straight swing requires fairly wide hand placement, which may feel uncomfortable at first if you had a big outward curve
 
