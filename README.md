@@ -151,7 +151,7 @@ How to improve:
 ### `Tip Wobble` measurement
 Indicates how much tip of your saber deviates from the plane.
 
-One of the main accuracy limiting factors. You have only 3 cm of margin to score 115 consistently, 6 cm for 114, etc. (assuming you have no underswing, no time dependency, and always aim for the center)
+One of the main accuracy limiting factors. You have only 2 cm of margin to score 115 consistently, 4 cm for 114, etc. (assuming you have no underswing, no time dependency, and always aim for the center)
 
 - If it is caused by the 8-shaped swing, you have poor weight balance with your grip
 - If your swing is not repeatable at all, you have to practice more and optimize your technique
