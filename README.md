@@ -155,13 +155,13 @@ One of the main accuracy limiting factors. You have only 2 cm of margin to score
 
 - If it is caused by the 8-shaped swing, you have poor weight balance with your grip
 - If your swing is not repeatable at all, you have to practice more and optimize your technique
-- Stretching regularly will help reduce wobble at the limiting angles
 
 How to improve:
 
 - You can remove it only by changing your grip to a weight-balanced one
 - You can reduce it by using more arm at a stamina cost
 - Work on your technique: make your swings as smooth and slow as possible
+- Stretching regularly will help reduce wobble at the limiting angles
 
 ### `Arm Usage` measurement
 Indicates how much the hilt of your saber moves during the swing
