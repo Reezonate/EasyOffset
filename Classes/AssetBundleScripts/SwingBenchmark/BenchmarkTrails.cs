@@ -4,17 +4,16 @@ namespace EasyOffset.AssetBundleScripts {
     public class BenchmarkTrails : MonoBehaviour {
         #region Serialized
 
-        [SerializeField] private Transform pivotTrailTarget;
         [SerializeField] private Transform saberTransform;
-        [SerializeField] private StaticTrail pivotTrail;
-        [SerializeField] private StaticTrail tipTrail;
+        [SerializeField] private RainbowTrail pivotTrail;
+        [SerializeField] private RainbowTrail tipTrail;
 
         #endregion
 
         #region Interaction
-        
+
         public void SetLookAt(Vector3 position) {
-            pivotTrailTarget.LookAt(position);
+            pivotTrail.SetLookAt(position);
         }
 
         public void UpdateSaberTransform(Vector3 position, Quaternion rotation) {

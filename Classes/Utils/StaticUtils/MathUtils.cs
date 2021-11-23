@@ -3,7 +3,7 @@ using UnityEngine;
 namespace EasyOffset {
     public static class MathUtils {
         public static Matrix4x4 MatrixSum(Matrix4x4 a, Matrix4x4 b) {
-            return new() {
+            return new Matrix4x4 {
                 m00 = a.m00 + b.m00,
                 m01 = a.m01 + b.m01,
                 m02 = a.m02 + b.m02,
@@ -27,7 +27,7 @@ namespace EasyOffset {
         }
 
         public static Matrix4x4 GetOuterProduct(Vector4 a, Vector4 b) {
-            return new(
+            return new Matrix4x4(
                 new Vector4(
                     a[0] * b[0],
                     a[1] * b[0],

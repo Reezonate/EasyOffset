@@ -6,7 +6,7 @@ namespace EasyOffset.AssetBundleScripts {
 
         [SerializeField] private Material pointMaterial;
         [SerializeField] private MeshRenderer pointMeshRenderer;
-        [SerializeField] private Trail trail;
+        [SerializeField] private RainbowTrail trail;
 
         [SerializeField] private Color minimalVelocityColor;
         [SerializeField] private Color maximalVelocityColor;

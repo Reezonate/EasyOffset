@@ -133,6 +133,14 @@
     <Compile Include="Classes\AssetBundleScripts\SwingBenchmark\HandVisuals.cs" />
     <Compile Include="Classes\AssetBundleScripts\SwingBenchmark\SwingBenchmarkController.cs" />
     <Compile Include="Classes\AssetBundleScripts\SwingBenchmark\SwingIndicators.cs" />
+    <Compile Include="Classes\AssetBundleScripts\Trails\Core\AbstractTrailMesh.cs" />
+    <Compile Include="Classes\AssetBundleScripts\Trails\Core\ITrailNode.cs" />
+    <Compile Include="Classes\AssetBundleScripts\Trails\Core\TrailCurvedSegment.cs" />
+    <Compile Include="Classes\AssetBundleScripts\Trails\Core\TrailLinearSegment.cs" />
+    <Compile Include="Classes\AssetBundleScripts\Trails\Core\TrailSpline.cs" />
+    <Compile Include="Classes\AssetBundleScripts\Trails\RainbowTrail\RainbowTrail.cs" />
+    <Compile Include="Classes\AssetBundleScripts\Trails\RainbowTrail\RainbowTrailMesh.cs" />
+    <Compile Include="Classes\AssetBundleScripts\Trails\RainbowTrail\RainbowTrailNode.cs" />
     <Compile Include="Classes\Configuration\ConfigMigration\ConfigConversions.cs" />
     <Compile Include="Classes\Configuration\ConfigMigration\ConfigMigration.cs" />
     <Compile Include="Classes\Configuration\ConfigMigration\MigrationResult.cs" />
@@ -176,11 +184,6 @@
     <Compile Include="Classes\AssetBundleScripts\Gizmos\SphericalBasis.cs" />
     <Compile Include="Classes\AssetBundleScripts\Gizmos\SwingPreview.cs" />
     <Compile Include="Classes\AssetBundleScripts\Gizmos\TextTransformFixer.cs" />
-    <Compile Include="Classes\AssetBundleScripts\Trails\QuadraticBezierCurve.cs" />
-    <Compile Include="Classes\AssetBundleScripts\Trails\StaticTrail.cs" />
-    <Compile Include="Classes\AssetBundleScripts\Trails\Trail.cs" />
-    <Compile Include="Classes\AssetBundleScripts\Trails\TrailMesh.cs" />
-    <Compile Include="Classes\AssetBundleScripts\Trails\TrailSpline.cs" />
     <Compile Include="Classes\UI\ModPanelUI.cs" />
     <Compile Include="Classes\UI\ModPanelUIHelper.cs" />
     <Compile Include="Classes\UI\SettingsUIHelper.cs" />

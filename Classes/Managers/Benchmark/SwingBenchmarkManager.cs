@@ -129,6 +129,8 @@ namespace EasyOffset {
         #region Finish
 
         public void Finish() {
+            _swingBenchmarkController.StopTracking();
+            
             switch (_selectedHand) {
                 case Hand.Left:
                     _leftHandVisible = _isSwingGood;
