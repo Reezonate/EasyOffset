@@ -1,7 +1,7 @@
 namespace EasyOffset.AssetBundleScripts {
     public class TrailSpline {
         private readonly CyclicBuffer<TrailCurvedSegment> _curvedSegments;
-        private readonly CyclicBuffer<ITrailNode> _handles;
+        private readonly CyclicBuffer<TrailNode> _handles;
 
         private TrailLinearSegment _linearSegment;
 
@@ -9,17 +9,17 @@ namespace EasyOffset.AssetBundleScripts {
             int capacity
         ) {
             _curvedSegments = new CyclicBuffer<TrailCurvedSegment>(capacity);
-            _handles = new CyclicBuffer<ITrailNode>(3);
+            _handles = new CyclicBuffer<TrailNode>(3);
         }
 
         #region Add
 
-        private ITrailNode _lastAddedNode;
+        private TrailNode _lastAddedNode;
         private bool _hasFirstNode;
 
-        public bool Add(ITrailNode node) {
+        public bool Add(TrailNode node) {
             if (_hasFirstNode) {
-                var linearFrom = _lastAddedNode.Plus(node).Div(2.0f);
+                var linearFrom = (_lastAddedNode + node) / 2.0f;
                 _linearSegment = new TrailLinearSegment(linearFrom, node);
                 _lastAddedNode = node;
             } else {
@@ -41,7 +41,7 @@ namespace EasyOffset.AssetBundleScripts {
 
         #region FillArray
 
-        public void FillArray(ITrailNode[] destination) {
+        public void FillArray(TrailNode[] destination) {
             var splinesBuffer = _curvedSegments.GetBuffer();
 
             const float linearWeight = 0.5f;
@@ -67,11 +67,11 @@ namespace EasyOffset.AssetBundleScripts {
 
         #region Evaluate
 
-        private ITrailNode GetPointLinear(float localT) {
+        private TrailNode GetPointLinear(float localT) {
             return _linearSegment.Evaluate(localT);
         }
 
-        private ITrailNode GetPointSplines(TrailCurvedSegment[] buffer, float localT) {
+        private TrailNode GetPointSplines(TrailCurvedSegment[] buffer, float localT) {
             var tPerSpline = 1f / _curvedSegments.Size;
             var splineIndex = (int) (localT / tPerSpline);
             if (splineIndex >= _curvedSegments.Size) splineIndex = _curvedSegments.Size - 1;

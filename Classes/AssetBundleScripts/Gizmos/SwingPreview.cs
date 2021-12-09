@@ -5,8 +5,8 @@ namespace EasyOffset.AssetBundleScripts {
         #region Serialized
 
         [SerializeField] private GameObject visuals;
-        [SerializeField] private RainbowTrail closeTrail;
-        [SerializeField] private RainbowTrail farTrail;
+        [SerializeField] private SimpleTrail closeTrail;
+        [SerializeField] private SimpleTrail farTrail;
 
         #endregion
 

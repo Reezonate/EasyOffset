@@ -5,8 +5,8 @@ namespace EasyOffset.AssetBundleScripts {
         #region Serialized
 
         [SerializeField] private Transform saberTransform;
-        [SerializeField] private RainbowTrail pivotTrail;
-        [SerializeField] private RainbowTrail tipTrail;
+        [SerializeField] private SimpleTrail pivotTrail;
+        [SerializeField] private SimpleTrail tipTrail;
 
         #endregion
 

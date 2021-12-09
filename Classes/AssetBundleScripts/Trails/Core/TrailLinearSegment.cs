@@ -1,15 +1,15 @@
 namespace EasyOffset.AssetBundleScripts {
     public class TrailLinearSegment {
-        private readonly ITrailNode _from;
-        private readonly ITrailNode _amplitude;
+        private readonly TrailNode _from;
+        private readonly TrailNode _amplitude;
 
-        public TrailLinearSegment(ITrailNode from, ITrailNode to) {
+        public TrailLinearSegment(TrailNode from, TrailNode to) {
             _from = from;
-            _amplitude = to.Minus(from);
+            _amplitude = to - from;
         }
 
-        public ITrailNode Evaluate(float t) {
-            return _from.Plus(_amplitude.Times(t));
+        public TrailNode Evaluate(float t) {
+            return _from + _amplitude * t;
         }
     }
 }
