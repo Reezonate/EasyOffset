@@ -7,7 +7,6 @@ namespace EasyOffset.AssetBundleScripts {
 
         #region Assets
 
-        public static Mesh SphereMesh;
         public static GameObject GizmosController;
         public static GameObject SwingBenchmarkController;
 
@@ -38,7 +37,6 @@ namespace EasyOffset.AssetBundleScripts {
         #region LoadAssets
 
         private static void LoadAssets(AssetBundle assetBundle) {
-            SphereMesh = assetBundle.LoadAsset<GameObject>("Sphere").GetComponent<MeshFilter>().mesh;
             GizmosController = assetBundle.LoadAsset<GameObject>("GizmosController");
             SwingBenchmarkController = assetBundle.LoadAsset<GameObject>("SwingBenchmarkController");
         }

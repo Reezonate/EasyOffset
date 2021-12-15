@@ -1,5 +1,9 @@
+using EasyOffset.Configuration;
+
 namespace EasyOffset.UI {
     public static class ModPanelUIHelper {
+        #region Tab management
+
         private const string ResourcePath = "EasyOffset.Resources.BSML.ModPanelUI.bsml";
         public const string TabName = "Easy Offset";
 
@@ -20,5 +24,24 @@ namespace EasyOffset.UI {
             PersistentSingleton<BeatSaberMarkupLanguage.GameplaySetup.GameplaySetup>.instance.RemoveTab(TabName);
             _tabActive = false;
         }
+
+        #endregion
+
+        #region Visibility
+
+        private static AdjustmentMode _lastAdjustmentMode = AdjustmentMode.None;
+
+        public static void OnPanelBecomeVisible() {
+            PluginConfig.AdjustmentMode = _lastAdjustmentMode;
+            PluginConfig.ShowController();
+        }
+
+        public static void OnPanelBecomeInvisible() {
+            _lastAdjustmentMode = PluginConfig.AdjustmentMode;
+            PluginConfig.AdjustmentMode = AdjustmentMode.None;
+            PluginConfig.HideController();
+        }
+
+        #endregion
     }
 }

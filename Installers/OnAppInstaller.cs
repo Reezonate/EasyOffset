@@ -1,29 +1,10 @@
-using System.Reflection;
-using EasyOffset.Configuration;
 using JetBrains.Annotations;
 using Zenject;
 
 namespace EasyOffset.Installers {
     [UsedImplicitly]
     public class OnAppInstaller : Installer<OnAppInstaller> {
-        #region PreInstall
-
-        private static readonly FieldInfo MainSettingsFieldInfo = typeof(PCAppInit).GetField(
-            "_mainSettingsModel",
-            BindingFlags.Instance | BindingFlags.NonPublic
-        );
-
-        public static void PreInstall(PCAppInit appInstaller) {
-            PluginConfig.MainSettingsModel = (MainSettingsModelSO)MainSettingsFieldInfo.GetValue(appInstaller);
-        }
-
-        #endregion
-
-        #region InstallBindings
-
         public override void InstallBindings() {
-            PluginConfig.VRPlatformHelper = Container.TryResolve<IVRPlatformHelper>();
-
             BindInputManagers();
             BindGizmosManager();
             BindBenchmarkManager();
@@ -53,7 +34,5 @@ namespace EasyOffset.Installers {
             Container.BindInterfacesAndSelfTo<RotationAutoAdjustmentModeManager>().AsSingle();
             Container.BindInterfacesAndSelfTo<RoomOffsetAdjustmentModeManager>().AsSingle();
         }
-
-        #endregion
     }
 }

@@ -3,25 +3,34 @@ using HarmonyLib;
 
 namespace EasyOffset.HarmonyPatches {
     public static class HarmonyHelper {
-        private const string HarmonyID = "Reezonate.EasyOffset";
-        private static Harmony _harmony;
+        private const string RemovableHarmonyID = "Reezonate.EasyOffset.Removable";
+        private const string PermanentHarmonyID = "Reezonate.EasyOffset.Permanent";
+
+        private static Harmony _removableHarmony;
+        private static Harmony _permanentHarmony;
 
         private static bool _initialized;
 
         private static void LazyInit() {
             if (_initialized) return;
-            _harmony = new Harmony(HarmonyID);
+            _removableHarmony = new Harmony(RemovableHarmonyID);
+            _permanentHarmony = new Harmony(PermanentHarmonyID);
             _initialized = true;
         }
 
-        public static void ApplyPatches() {
+        public static void ApplyPermanentPatches() {
             LazyInit();
-            _harmony.PatchAll(Assembly.GetExecutingAssembly());
+            AppInstallerPermanentPatch.ApplyPatch(_permanentHarmony);
         }
 
-        public static void RemovePatches() {
+        public static void ApplyRemovablePatches() {
+            LazyInit();
+            _removableHarmony.PatchAll(Assembly.GetExecutingAssembly());
+        }
+
+        public static void RemoveRemovablePatches() {
             if (!_initialized) return;
-            _harmony.UnpatchAll(HarmonyID);
+            _removableHarmony.UnpatchAll(RemovableHarmonyID);
         }
     }
 }

@@ -45,10 +45,10 @@ namespace EasyOffset {
 
         private static void EnabledChangeHandler(bool enabled) {
             if (enabled) {
-                HarmonyHelper.ApplyPatches();
+                HarmonyHelper.ApplyRemovablePatches();
                 ModPanelUIHelper.AddTab();
             } else {
-                HarmonyHelper.RemovePatches();
+                HarmonyHelper.RemoveRemovablePatches();
                 ModPanelUIHelper.RemoveTab();
             }
         }
@@ -60,8 +60,11 @@ namespace EasyOffset {
         [OnStart]
         [UsedImplicitly]
         public void OnApplicationStart() {
+            HarmonyHelper.ApplyPermanentPatches();
+
             SubscribeEnabled();
             EnabledChangeHandler(PluginConfig.Enabled);
+
             SettingsUIHelper.AddTab();
         }
 

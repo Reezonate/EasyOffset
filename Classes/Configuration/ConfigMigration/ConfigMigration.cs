@@ -59,7 +59,7 @@ namespace EasyOffset.Configuration {
                 _isVRModeOculus = false;
             } else {
                 _isMigrationPossible = true;
-                _isValveController = (OpenVRHelper.VRControllerManufacturerName)manufacturerName == OpenVRHelper.VRControllerManufacturerName.Valve;
+                _isValveController = (OpenVRHelper.VRControllerManufacturerName) manufacturerName == OpenVRHelper.VRControllerManufacturerName.Valve;
             }
         }
 
@@ -79,8 +79,8 @@ namespace EasyOffset.Configuration {
 
         #region ImportFromSettings
 
-        public static MigrationResult ImportFromSettings() {
-            if (!_isMigrationPossible) return MigrationResult.DevicelessFail;
+        public static ConfigImportResult ImportFromSettings() {
+            if (!_isMigrationPossible) return ConfigImportResult.DevicelessFail;
 
             var position = PluginConfig.MainSettingsModel.controllerPosition.value;
             var rotationEuler = PluginConfig.MainSettingsModel.controllerRotation.value;
@@ -105,15 +105,15 @@ namespace EasyOffset.Configuration {
             PluginConfig.RightHandPivotPosition = rightPivotPosition;
             PluginConfig.RightHandSaberDirection = rightSaberDirection;
 
-            return MigrationResult.Success;
+            return ConfigImportResult.Success;
         }
 
         #endregion
 
         #region ImportFromSaberTailor
 
-        public static MigrationResult ImportFromSaberTailor() {
-            if (!_isMigrationPossible) return MigrationResult.DevicelessFail;
+        public static ConfigImportResult ImportFromSaberTailor() {
+            if (!_isMigrationPossible) return ConfigImportResult.DevicelessFail;
 
             if (!ParseSaberTailorConfig(
                 out var useBaseGameAdjustmentMode,
@@ -121,7 +121,7 @@ namespace EasyOffset.Configuration {
                 out var gripRightPosition,
                 out var gripLeftRotation,
                 out var gripRightRotation
-            )) return MigrationResult.ParseFail;
+            )) return ConfigImportResult.ParseFail;
 
             ConfigConversions.FromTailor(
                 useBaseGameAdjustmentMode,
@@ -147,14 +147,69 @@ namespace EasyOffset.Configuration {
             PluginConfig.RightHandPivotPosition = rightPivotPosition;
             PluginConfig.RightHandSaberDirection = rightSaberDirection;
 
-            return MigrationResult.Success;
+            return ConfigImportResult.Success;
         }
 
         #endregion
 
-        #region ParseSaberTailorConfig
+        #region ExportToSettings
+
+        public static ConfigExportResult ExportToSettings() {
+            if (!_isMigrationPossible) return ConfigExportResult.DevicelessFail;
+
+            ConfigConversions.ToBaseGame(
+                _isValveController,
+                _isVRModeOculus,
+                PluginConfig.RightHandTranslation,
+                PluginConfig.RightHandRotation,
+                out var position,
+                out var rotationEuler
+            );
+
+            PluginConfig.MainSettingsModel.controllerPosition.value = position;
+            PluginConfig.MainSettingsModel.controllerRotation.value = rotationEuler;
+
+            return ConfigExportResult.Success;
+        }
+
+        #endregion
+
+        #region ExportToSaberTailor
+
+        public static ConfigExportResult ExportToSaberTailor(bool useBaseGameAdjustmentMode = true) {
+            if (!_isMigrationPossible) return ConfigExportResult.DevicelessFail;
+
+            ConfigConversions.ToTailor(
+                useBaseGameAdjustmentMode,
+                _isValveController,
+                _isVRModeOculus,
+                PluginConfig.LeftHandTranslation,
+                PluginConfig.LeftHandRotation,
+                PluginConfig.RightHandTranslation,
+                PluginConfig.RightHandRotation,
+                out var gripLeftPosition,
+                out var gripRightPosition,
+                out var gripLeftRotation,
+                out var gripRightRotation
+            );
+
+            var result = WriteSaberTailorConfig(
+                useBaseGameAdjustmentMode,
+                gripLeftPosition,
+                gripRightPosition,
+                gripLeftRotation,
+                gripRightRotation
+            );
+
+            return result ? ConfigExportResult.Success : ConfigExportResult.WriteFail;
+        }
+
+        #endregion
+
+        #region SaberTailorConfig
 
         private static readonly string TailorConfigPath = Path.Combine(UnityGame.UserDataPath, "SaberTailor.json");
+        private static readonly string TailorExportConfigPath = Path.Combine(UnityGame.UserDataPath, "SaberTailor.EasyOffsetExported.json");
 
         private const float UnitScale = 0.001f;
 
@@ -170,10 +225,10 @@ namespace EasyOffset.Configuration {
                 var jObject = JObject.Parse(rawFileString);
 
                 useBaseGameAdjustmentMode = jObject.GetValue("UseBaseGameAdjustmentMode", StringComparison.OrdinalIgnoreCase)!.Value<bool>();
-                gripLeftPosition = ParseVector(jObject, "GripLeftPosition") * UnitScale;
-                gripRightPosition = ParseVector(jObject, "GripRightPosition") * UnitScale;
-                gripLeftRotation = ParseVector(jObject, "GripLeftRotation");
-                gripRightRotation = ParseVector(jObject, "GripRightRotation");
+                gripLeftPosition = VectorFromJObject(jObject, "GripLeftPosition") * UnitScale;
+                gripRightPosition = VectorFromJObject(jObject, "GripRightPosition") * UnitScale;
+                gripLeftRotation = VectorFromJObject(jObject, "GripLeftRotation");
+                gripRightRotation = VectorFromJObject(jObject, "GripRightRotation");
 
                 return true;
             } catch (Exception) {
@@ -186,13 +241,63 @@ namespace EasyOffset.Configuration {
             }
         }
 
-        private static Vector3 ParseVector(JObject jObject, string key) {
+        private static bool WriteSaberTailorConfig(
+            bool useBaseGameAdjustmentMode,
+            Vector3 gripLeftPosition,
+            Vector3 gripRightPosition,
+            Vector3 gripLeftRotation,
+            Vector3 gripRightRotation
+        ) {
+            try {
+                var jObject = new JObject {
+                    ["ConfigVersion"] = 5,
+                    ["IsSaberScaleModEnabled"] = false,
+                    ["SaberScaleHitbox"] = false,
+                    ["SaberLength"] = 100,
+                    ["SaberGirth"] = 100,
+                    ["IsTrailModEnabled"] = false,
+                    ["IsTrailEnabled"] = true,
+                    ["TrailDuration"] = 400,
+                    ["TrailGranularity"] = 60,
+                    ["TrailWhiteSectionDuration"] = 100,
+                    ["IsGripModEnabled"] = true,
+                    ["GripLeftPosition"] = JObjectFromVector(gripLeftPosition / UnitScale),
+                    ["GripRightPosition"] = JObjectFromVector(gripRightPosition / UnitScale),
+                    ["GripLeftRotation"] = JObjectFromVector(gripLeftRotation),
+                    ["GripRightRotation"] = JObjectFromVector(gripRightRotation),
+                    ["GripLeftOffset"] = JObjectFromVector(Vector3.zero),
+                    ["GripRightOffset"] = JObjectFromVector(Vector3.zero),
+                    ["ModifyMenuHiltGrip"] = true,
+                    ["UseBaseGameAdjustmentMode"] = useBaseGameAdjustmentMode,
+                    ["SaberPosIncrement"] = 10,
+                    ["SaberPosIncValue"] = 1,
+                    ["SaberRotIncrement"] = 5,
+                    ["SaberPosIncUnit"] = "cm",
+                    ["SaberPosDisplayUnit"] = "cm"
+                };
+
+                File.WriteAllText(TailorExportConfigPath, jObject.ToString());
+                return true;
+            } catch (Exception) {
+                return false;
+            }
+        }
+
+        private static Vector3 VectorFromJObject(JObject jObject, string key) {
             var vectorObject = jObject[key]!.Value<JObject>();
             return new Vector3(
                 vectorObject.GetValue("x", StringComparison.OrdinalIgnoreCase)!.Value<float>(),
                 vectorObject.GetValue("y", StringComparison.OrdinalIgnoreCase)!.Value<float>(),
                 vectorObject.GetValue("z", StringComparison.OrdinalIgnoreCase)!.Value<float>()
             );
+        }
+
+        private static JObject JObjectFromVector(Vector3 vector) {
+            return new JObject {
+                ["x"] = Mathf.RoundToInt(vector.x),
+                ["y"] = Mathf.RoundToInt(vector.y),
+                ["z"] = Mathf.RoundToInt(vector.z)
+            };
         }
 
         #endregion

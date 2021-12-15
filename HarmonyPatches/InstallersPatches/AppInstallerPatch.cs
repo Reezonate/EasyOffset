@@ -9,7 +9,6 @@ namespace EasyOffset.HarmonyPatches {
         // ReSharper disable once InconsistentNaming
         private static void Postfix(PCAppInit __instance) {
             var container = __instance.GetContainer();
-            OnAppInstaller.PreInstall(__instance);
             OnAppInstaller.Install(container);
         }
     }

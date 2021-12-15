@@ -1,26 +1,46 @@
-﻿<vertical preferred-width="100">
-    <!--    GLOBAL SETTINGS    -->
-    <horizontal preferred-height="10">
-        <vertical>
-            <toggle-setting text="Enabled" value="enabled-value"/>
-        </vertical>
-    </horizontal>
+﻿<horizontal preferred-height="80">
+    <vertical preferred-width="100">
+        <!--    GLOBAL SETTINGS    -->
+        <horizontal preferred-height="27">
+            <vertical>
+                <toggle-setting text="Enabled" value="enabled-value" apply-on-change="true"/>
+            </vertical>
+        </horizontal>
 
-    <!--    MIGRATION    -->
-    <horizontal preferred-height="30">
-        <vertical>
-            <text text="Config Migration" align="Center"/>
-            <slider-setting text="Z Offset" min="~zo-min" max="~zo-max" increment="~zo-increment" value="zo-value"
-                            apply-on-change="true" hover-hint="Pivot point offset along saber axis (cm)"/>
-            <horizontal>
-                <vertical preferred-width="40">
-                    <button text="Import from settings" on-click="import-from-settings-on-click" hover-hint="Copy offsets from base game controller settings"/>
-                    <button text="Import from SaberTailor" on-click="import-from-tailor-on-click" hover-hint="Copy offsets from UserData/SaberTailor.json"/>
-                </vertical>
-                <vertical preferred-width="60">
-                    <text text="~migration-result-text" align="Center"/>
-                </vertical>
-            </horizontal>
-        </vertical>
-    </horizontal>
-</vertical>
+        <!--    CONFIG MIGRATION    -->
+        <horizontal preferred-height="14">
+            <vertical>
+                <text text="Config Migration" align="Center"/>
+                <slider-setting text="Import Z Offset" min="~zo-min" max="~zo-max" increment="~zo-increment" value="zo-value"
+                                apply-on-change="true" hover-hint="Pivot point offset along saber axis (cm)"/>
+            </vertical>
+        </horizontal>
+
+        <horizontal preferred-height="14">
+            <!--    IMPORT    -->
+            <vertical preferred-width="50">
+                <button text="Import from settings" on-click="import-from-settings-on-click"
+                        hover-hint="Import offsets from the base game controller settings"/>
+                <button text="Import from SaberTailor" on-click="import-from-tailor-on-click"
+                        hover-hint="Import offsets from the UserData/SaberTailor.json file"/>
+            </vertical>
+            <!--    EXPORT    -->
+            <vertical preferred-width="50">
+                <button text="Export to settings" on-click="export-to-settings-on-click"
+                        hover-hint="Export right hand offsets to the base game controller settings"/>
+                <button text="Export to SaberTailor" on-click="export-to-tailor-on-click"
+                        hover-hint="Create SaberTailor config profile from current offsets"/>
+            </vertical>
+        </horizontal>
+
+        <!--    STATUS    -->
+        <horizontal preferred-height="6">
+            <vertical>
+                <text text="~status-text" align="Center"/>
+            </vertical>
+        </horizontal>
+
+        <!--    SPACER    -->
+        <horizontal preferred-height="14"/>
+    </vertical>
+</horizontal>

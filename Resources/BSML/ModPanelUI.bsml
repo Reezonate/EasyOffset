@@ -1,4 +1,4 @@
-<horizontal>
+<horizontal id="root">
     <!--    MAIN PAGE    -->
     <vertical active="~main-page-active" preferred-width="100">
         <!--    OPTIONS PANEL    -->
@@ -7,7 +7,8 @@
                 <horizontal preferred-height="20">
                     <vertical>
                         <horizontal>
-                            <dropdown-list-setting interactable="~interactable" text="Adjustment Mode" preferred-width="65" value="am-choice" choices="am-choices"
+                            <dropdown-list-setting interactable="~interactable" text="Adjustment Mode" preferred-width="65" value="am-choice"
+                                                   choices="am-choices"
                                                    on-change="am-on-change" apply-on-change="true" bind-value="true" hover-hint="~am-hint"/>
                             <dropdown-list-setting interactable="~interactable" text="" preferred-width="35" value="ab-choice" choices="ab-choices"
                                                    on-change="ab-on-change" apply-on-change="true" hover-hint="Controller button"/>
@@ -97,7 +98,7 @@
                 <horizontal preferred-height="4"/>
             </vertical>
         </horizontal>
-        
+
         <!--    ROOM OFFSET PANEL    -->
         <horizontal active="~room-offset-panel-active" preferred-height="30">
             <vertical>
@@ -127,7 +128,7 @@
                             hover-hint="Disable UI interaction to prevent accidental changes"/>
         </horizontal>
     </vertical>
-    
+
     <!--    PRESETS BROWSER    -->
     <vertical active="~pb-active" preferred-height="70">
         <!--    FILE NAME TEXT FIELD    -->
@@ -135,13 +136,13 @@
             <vertical>
                 <horizontal preferred-height="2"/>
                 <horizontal>
-                    <string-setting text="Beat Saber\UserData\EasyOffset\Presets\" value="pb-name-value" 
+                    <string-setting text="Beat Saber\UserData\EasyOffset\Presets\" value="pb-name-value"
                                     bind-value="true" apply-on-change="true" on-change="pb-name-on-change"/>
                     <vertical preferred-width="5"/>
                 </horizontal>
             </vertical>
         </horizontal>
-        
+
         <!--    PRESETS LIST    -->
         <horizontal preferred-height="42">
             <vertical preferred-width="90">

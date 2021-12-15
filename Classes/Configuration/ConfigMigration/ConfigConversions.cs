@@ -26,6 +26,119 @@ namespace EasyOffset.Configuration {
             }
         }
 
+        private static void RemoveBuiltInOffsets(
+            bool isValveController,
+            bool isVRModeOculus,
+            ref Vector3 position,
+            ref Vector3 rotation
+        ) {
+            if (isVRModeOculus) return;
+            if (isValveController) {
+                position -= ValvePositionOffset;
+                rotation -= ValveRotationOffset;
+            } else {
+                position -= DefaultPositionOffset;
+                rotation -= DefaultRotationOffset;
+            }
+        }
+
+        #endregion
+
+        #region OneHandConversion
+
+        private static void OneHandConversion(
+            bool useBaseGameAdjustmentMode,
+            bool isValveController,
+            bool isVRModeOculus,
+            float zOffset,
+            Vector3 gripPosition,
+            Vector3 gripRotation,
+            out Vector3 pivotPosition,
+            out Vector3 saberDirection
+        ) {
+            ApplyBuiltInOffsets(isValveController, isVRModeOculus, ref gripPosition, ref gripRotation);
+            var rotation = Quaternion.Euler(gripRotation);
+            saberDirection = rotation * Vector3.forward;
+
+            if (useBaseGameAdjustmentMode) {
+                pivotPosition = rotation * gripPosition - saberDirection * zOffset;
+            } else {
+                pivotPosition = gripPosition - saberDirection * zOffset;
+            }
+        }
+
+        private static void OneHandInverseConversion(
+            bool useBaseGameAdjustmentMode,
+            bool isValveController,
+            bool isVRModeOculus,
+            Vector3 saberTranslation,
+            Quaternion saberRotation,
+            out Vector3 gripPosition,
+            out Vector3 gripRotation
+        ) {
+            gripPosition = saberTranslation;
+            gripRotation = saberRotation.eulerAngles;
+            
+            gripRotation = new Vector3(
+                ClampRotation(gripRotation.x),
+                ClampRotation(gripRotation.y),
+                ClampRotation(gripRotation.z)
+                );
+
+            if (useBaseGameAdjustmentMode) {
+                gripPosition = Quaternion.Inverse(saberRotation) * gripPosition;
+            }
+
+            RemoveBuiltInOffsets(isValveController, isVRModeOculus, ref gripPosition, ref gripRotation);
+        }
+
+        private static float ClampRotation(float value) {
+            return value switch {
+                > 180 => -360 + value,
+                < -180 => 360 - value,
+                _ => value
+            };
+        }
+
+        #endregion
+
+        #region FromBaseGame
+
+        public static void FromBaseGame(
+            bool isValveController,
+            bool isVRModeOculus,
+            float zOffset,
+            Vector3 position,
+            Vector3 rotation,
+            out Vector3 leftPivotPosition,
+            out Vector3 rightPivotPosition,
+            out Vector3 leftSaberDirection,
+            out Vector3 rightSaberDirection
+        ) {
+            OneHandConversion(
+                true,
+                isValveController,
+                isVRModeOculus,
+                zOffset,
+                position,
+                rotation,
+                out rightPivotPosition,
+                out rightSaberDirection
+            );
+
+            leftPivotPosition = new Vector3(
+                -rightPivotPosition.x,
+                rightPivotPosition.y,
+                rightPivotPosition.z
+            );
+
+            leftSaberDirection = new Vector3(
+                -rightSaberDirection.x,
+                rightSaberDirection.y,
+                rightSaberDirection.z
+            );
+        }
+
         #endregion
 
         #region FromTailor
@@ -70,66 +183,63 @@ namespace EasyOffset.Configuration {
 
         #endregion
 
-        #region FromBaseGame
+        #region ToBaseGame
 
-        public static void FromBaseGame(
+        public static void ToBaseGame(
             bool isValveController,
             bool isVRModeOculus,
-            float zOffset,
-            Vector3 position,
-            Vector3 rotation,
-            out Vector3 leftPivotPosition,
-            out Vector3 rightPivotPosition,
-            out Vector3 leftSaberDirection,
-            out Vector3 rightSaberDirection
+            Vector3 saberTranslation,
+            Quaternion saberRotation,
+            out Vector3 position,
+            out Vector3 rotation
         ) {
-            OneHandConversion(
+            OneHandInverseConversion(
                 true,
                 isValveController,
                 isVRModeOculus,
-                zOffset,
-                position,
-                rotation,
-                out rightPivotPosition,
-                out rightSaberDirection
-            );
-
-            leftPivotPosition = new Vector3(
-                -rightPivotPosition.x,
-                rightPivotPosition.y,
-                rightPivotPosition.z
-            );
-
-            leftSaberDirection = new Vector3(
-                -rightSaberDirection.x,
-                rightSaberDirection.y,
-                rightSaberDirection.z
+                saberTranslation,
+                saberRotation,
+                out position,
+                out rotation
             );
         }
 
         #endregion
 
-        #region OneHandConversion
+        #region ToTailor
 
-        private static void OneHandConversion(
+        public static void ToTailor(
             bool useBaseGameAdjustmentMode,
             bool isValveController,
             bool isVRModeOculus,
-            float zOffset,
-            Vector3 gripPosition,
-            Vector3 gripRotation,
-            out Vector3 pivotPosition,
-            out Vector3 saberDirection
+            Vector3 leftSaberTranslation,
+            Quaternion leftSaberRotation,
+            Vector3 rightSaberTranslation,
+            Quaternion rightSaberRotation,
+            out Vector3 gripLeftPosition,
+            out Vector3 gripRightPosition,
+            out Vector3 gripLeftRotation,
+            out Vector3 gripRightRotation
         ) {
-            ApplyBuiltInOffsets(isValveController, isVRModeOculus, ref gripPosition, ref gripRotation);
-            var rotation = Quaternion.Euler(gripRotation);
-            saberDirection = rotation * Vector3.forward;
+            OneHandInverseConversion(
+                useBaseGameAdjustmentMode,
+                isValveController,
+                isVRModeOculus,
+                leftSaberTranslation,
+                leftSaberRotation,
+                out gripLeftPosition,
+                out gripLeftRotation
+            );
 
-            if (useBaseGameAdjustmentMode) {
-                pivotPosition = rotation * gripPosition - saberDirection * zOffset;
-            } else {
-                pivotPosition = gripPosition - saberDirection * zOffset;
-            }
+            OneHandInverseConversion(
+                useBaseGameAdjustmentMode,
+                isValveController,
+                isVRModeOculus,
+                rightSaberTranslation,
+                rightSaberRotation,
+                out gripRightPosition,
+                out gripRightRotation
+            );
         }
 
         #endregion

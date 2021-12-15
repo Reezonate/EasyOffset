@@ -17,7 +17,7 @@ namespace EasyOffset.UI {
 
         #endregion
 
-        #region Migration
+        #region Config Migration
 
         #region ZOffset slider
 
@@ -38,13 +38,15 @@ namespace EasyOffset.UI {
 
         #endregion
 
+        #region Import
+
         #region Import from settings
 
         [UIAction("import-from-settings-on-click")]
         [UsedImplicitly]
         private void ImportFromSettingsOnClick() {
             var result = ConfigMigration.ImportFromSettings();
-            UpdateResultText(result);
+            SetImportStatus(result);
         }
 
         #endregion
@@ -55,50 +57,99 @@ namespace EasyOffset.UI {
         [UsedImplicitly]
         private void ImportFromTailorOnClick() {
             var result = ConfigMigration.ImportFromSaberTailor();
-            UpdateResultText(result);
+            SetImportStatus(result);
         }
 
         #endregion
 
-        #region Result text
+        #region Import status
 
         private const string SuccessfulImportText = "<color=green>Imported</color>";
-        private const string DevicelessFailText = "<color=red>Import failed!</color>\nUnknown VR device";
-        private const string ParseFailText = "<color=red>Import failed!</color>\nSaberTailor.json file read error";
+        private const string DevicelessImportFailText = "<color=red>Import failed!</color> Unknown VR device";
+        private const string ParseImportFailText = "<color=red>Import failed!</color> SaberTailor.json file read error";
 
-        private void UpdateResultText(MigrationResult migrationResult) {
-            SetMigrationResultText(migrationResult switch {
-                MigrationResult.Success => SuccessfulImportText,
-                MigrationResult.DevicelessFail => DevicelessFailText,
-                MigrationResult.ParseFail => ParseFailText,
+        private void SetImportStatus(ConfigImportResult configImportResult) {
+            SetStatusText(configImportResult switch {
+                ConfigImportResult.Success => SuccessfulImportText,
+                ConfigImportResult.DevicelessFail => DevicelessImportFailText,
+                ConfigImportResult.ParseFail => ParseImportFailText,
                 _ => throw new ArgumentOutOfRangeException()
             });
         }
 
-        private string _migrationResultText = "";
+        #endregion
 
-        [UIValue("migration-result-text")]
+        #endregion
+
+        #region Export
+
+        #region Export to settings
+
+        [UIAction("export-to-settings-on-click")]
         [UsedImplicitly]
-        private string MigrationResultText {
-            get => _migrationResultText;
+        private void ExportToSettingsOnClick() {
+            var result = ConfigMigration.ExportToSettings();
+            SetExportStatus(result);
+        }
+
+        #endregion
+
+        #region Export to tailor
+
+        [UIAction("export-to-tailor-on-click")]
+        [UsedImplicitly]
+        private void ExportToTailorOnClick() {
+            var result = ConfigMigration.ExportToSaberTailor();
+            SetExportStatus(result);
+        }
+
+        #endregion
+
+        #region Export status
+
+        private const string SuccessfulExportText = "<color=green>Exported</color>";
+        private const string DevicelessExportFailText = "<color=red>Export failed!</color> Unknown VR device";
+        private const string WriteExportFailText = "<color=red>Export failed!</color> file write error";
+
+        private void SetExportStatus(ConfigExportResult configExportResult) {
+            SetStatusText(configExportResult switch {
+                ConfigExportResult.Success => SuccessfulExportText,
+                ConfigExportResult.DevicelessFail => DevicelessExportFailText,
+                ConfigExportResult.WriteFail => WriteExportFailText,
+                _ => throw new ArgumentOutOfRangeException()
+            });
+        }
+
+        #endregion
+
+        #endregion
+
+        #endregion
+
+        #region Status text
+
+        private string _statusText = "";
+
+        [UIValue("status-text")]
+        [UsedImplicitly]
+        private string StatusText {
+            get => _statusText;
             set {
-                _migrationResultText = value;
+                _statusText = value;
                 NotifyPropertyChanged();
             }
         }
 
-        private readonly DelayedAction _migrationResultTextResetAction = new();
+        private readonly DelayedAction _statusTextResetAction = new();
 
-        private void SetMigrationResultText(string value) {
-            MigrationResultText = value;
-            _migrationResultTextResetAction.InvokeLater(3000, ResetMigrationResultText);
+        private void SetStatusText(string value) {
+            StatusText = value;
+            _statusTextResetAction.InvokeLater(3000, ResetStatusText);
         }
 
-        private void ResetMigrationResultText() {
-            MigrationResultText = "";
+        private void ResetStatusText() {
+            StatusText = "";
         }
-
-        #endregion
 
         #endregion
     }

@@ -11,7 +11,7 @@ namespace EasyOffset.Installers {
                 _menuPlayerController.rightController,
                 _menuPlayerController.leftController
             );
-            
+
             Container.BindInstance(vrControllers).AsSingle();
             Container.BindInterfacesAndSelfTo<AbominationTransformManager>().AsSingle();
         }

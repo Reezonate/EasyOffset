@@ -15,6 +15,35 @@ namespace EasyOffset.UI {
         public ModPanelUI() {
             SubscribeToBenchmarkEvents();
             SubscribeToRoomOffsetEvents();
+            ModPanelUIHelper.OnPanelBecomeInvisible();
+        }
+
+        #endregion
+
+        #region Update
+
+        private void Update() {
+            UpdatePanelVisibility();
+        }
+
+        #endregion
+
+        #region Visibility
+
+        private bool _wasVisible;
+
+        [UIObject("root")] [UsedImplicitly] private GameObject _root;
+
+        private void UpdatePanelVisibility() {
+            var isVisible = (_root != null) && _root.activeInHierarchy;
+
+            if (isVisible) {
+                if (!_wasVisible) ModPanelUIHelper.OnPanelBecomeVisible();
+            } else {
+                if (_wasVisible) ModPanelUIHelper.OnPanelBecomeInvisible();
+            }
+
+            _wasVisible = isVisible;
         }
 
         #endregion
@@ -92,7 +121,6 @@ namespace EasyOffset.UI {
 
         [UIValue("am-hint")] [UsedImplicitly] private string _adjustmentModeHint = "Hold assigned button and move your hand" +
                                                                                    "\n" +
-                                                                                   
                                                                                    "\nBasic - Drag and drop adjustment mode" +
                                                                                    "\nPosition - Pivot position only" +
                                                                                    "\nRotation - Saber rotation only" +

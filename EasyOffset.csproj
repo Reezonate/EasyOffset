@@ -140,8 +140,9 @@
     <Compile Include="Classes\AssetBundleScripts\Trails\Core\TrailSpline.cs" />
     <Compile Include="Classes\AssetBundleScripts\Trails\SimpleTrail.cs" />
     <Compile Include="Classes\Configuration\ConfigMigration\ConfigConversions.cs" />
+    <Compile Include="Classes\Configuration\ConfigMigration\ConfigExportResult.cs" />
     <Compile Include="Classes\Configuration\ConfigMigration\ConfigMigration.cs" />
-    <Compile Include="Classes\Configuration\ConfigMigration\MigrationResult.cs" />
+    <Compile Include="Classes\Configuration\ConfigMigration\ConfigImportResult.cs" />
     <Compile Include="Classes\Configuration\ConfigPresetsStorage\ConfigPresetsStorage.cs" />
     <Compile Include="Classes\Configuration\ConfigPresetsStorage\PresetUtils.cs" />
     <Compile Include="Classes\Configuration\ConfigPresetsStorage\StoredConfigPreset.cs" />
@@ -161,7 +162,6 @@
     <Compile Include="Classes\Managers\Adjustments\Manual\RotationAdjustmentModeManager.cs" />
     <Compile Include="Classes\Managers\Adjustments\Manual\PositionAdjustmentModeManager.cs" />
     <Compile Include="Classes\Managers\Adjustments\Manual\RoomOffsetAdjustmentModeManager.cs" />
-    <Compile Include="Classes\Managers\Adjustments\MidPlayAdjustmentsManager.cs" />
     <Compile Include="Classes\Managers\Benchmark\SwingAnalyzer.cs" />
     <Compile Include="Classes\Managers\Benchmark\SwingBenchmarkHelper.cs" />
     <Compile Include="Classes\Managers\Benchmark\SwingBenchmarkManager.cs" />
@@ -204,16 +204,15 @@
     <Compile Include="Classes\Utils\StaticUtils\TransformUtils.cs" />
     <Compile Include="Classes\Utils\UtilityClasses\WeightedList.cs" />
     <Compile Include="HarmonyPatches\HarmonyHelper.cs" />
-    <Compile Include="HarmonyPatches\InstallersPatches\GameInstallerPatch.cs" />
     <Compile Include="HarmonyPatches\InstallersPatches\MenuInstallerPatch.cs" />
     <Compile Include="HarmonyPatches\InstallersPatches\AppInstallerPatch.cs" />
     <Compile Include="HarmonyPatches\ModMenuOrderPatch.cs" />
+    <Compile Include="HarmonyPatches\PermanentPatches\AppInstallerPermanentPatch.cs" />
     <Compile Include="HarmonyPatches\VRHelpersPatches\DevicelessVRHelperAdjustControllerTransform.cs" />
     <Compile Include="HarmonyPatches\VRHelpersPatches\OculusVRHelperAdjustControllerTransform.cs" />
     <Compile Include="HarmonyPatches\VRHelpersPatches\OpenVRHelperAdjustControllerTransform.cs" />
     <Compile Include="Installers\OnAppInstaller.cs" />
     <Compile Include="Installers\OnMenuInstaller.cs" />
-    <Compile Include="Installers\OnGameInstaller.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
