@@ -50,8 +50,8 @@
     <Reference Include="0Harmony, Version=2.5.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>D:\Games\Steam\steamapps\common\Beat Saber\Libs\0Harmony.dll</HintPath>
     </Reference>
-    <Reference Include="BSML, Version=1.5.9.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>D:\Games\Steam\steamapps\common\Beat Saber\Plugins\BSML.dll</HintPath>
+    <Reference Include="BSML, Version=1.5.11.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\..\Games\Steam\steamapps\common\Beat Saber\Plugins\BSML.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
       <HintPath>D:\Games\Steam\steamapps\common\Beat Saber\Libs\Newtonsoft.Json.dll</HintPath>
@@ -124,97 +124,97 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\AssetBundleScripts\BundleLoader.cs" />
-    <Compile Include="Classes\AssetBundleScripts\Indicators\AngleIndicator.cs" />
-    <Compile Include="Classes\AssetBundleScripts\Indicators\DistanceIndicator.cs" />
-    <Compile Include="Classes\AssetBundleScripts\Indicators\IndicatorText.cs" />
-    <Compile Include="Classes\AssetBundleScripts\Indicators\VelocityIndicator.cs" />
-    <Compile Include="Classes\AssetBundleScripts\SwingBenchmark\BenchmarkTrails.cs" />
-    <Compile Include="Classes\AssetBundleScripts\SwingBenchmark\HandVisuals.cs" />
-    <Compile Include="Classes\AssetBundleScripts\SwingBenchmark\SwingBenchmarkController.cs" />
-    <Compile Include="Classes\AssetBundleScripts\SwingBenchmark\SwingIndicators.cs" />
-    <Compile Include="Classes\AssetBundleScripts\Trails\Core\TrailCurvedSegment.cs" />
-    <Compile Include="Classes\AssetBundleScripts\Trails\Core\TrailLinearSegment.cs" />
-    <Compile Include="Classes\AssetBundleScripts\Trails\Core\TrailMesh.cs" />
-    <Compile Include="Classes\AssetBundleScripts\Trails\Core\TrailNode.cs" />
-    <Compile Include="Classes\AssetBundleScripts\Trails\Core\TrailSpline.cs" />
-    <Compile Include="Classes\AssetBundleScripts\Trails\SimpleTrail.cs" />
-    <Compile Include="Classes\Configuration\ConfigMigration\ConfigConversions.cs" />
-    <Compile Include="Classes\Configuration\ConfigMigration\ConfigExportResult.cs" />
-    <Compile Include="Classes\Configuration\ConfigMigration\ConfigMigration.cs" />
-    <Compile Include="Classes\Configuration\ConfigMigration\ConfigImportResult.cs" />
-    <Compile Include="Classes\Configuration\ConfigPresetsStorage\ConfigPresetsStorage.cs" />
-    <Compile Include="Classes\Configuration\ConfigPresetsStorage\PresetUtils.cs" />
-    <Compile Include="Classes\Configuration\ConfigPresetsStorage\StoredConfigPreset.cs" />
-    <Compile Include="Classes\Configuration\ConfigPresets\ConfigPresetV1.cs" />
-    <Compile Include="Classes\Configuration\CachedVariable.cs" />
-    <Compile Include="Classes\Configuration\ConfigPresets\IConfigPreset.cs" />
-    <Compile Include="Classes\Configuration\Defaults.cs" />
-    <Compile Include="Classes\Configuration\PluginConfig.cs" />
-    <Compile Include="Classes\Configuration\ConfigFileData.cs" />
-    <Compile Include="Classes\Managers\Abomination\Abomination.cs" />
-    <Compile Include="Classes\Managers\Abomination\AbominationInputManager.cs" />
-    <Compile Include="Classes\Managers\Abomination\AbominationTransformManager.cs" />
-    <Compile Include="Classes\Managers\Adjustments\AbstractAdjustmentModeManager.cs" />
-    <Compile Include="Classes\Managers\Adjustments\Auto\RotationAutoAdjustmentModeManager.cs" />
-    <Compile Include="Classes\Managers\Adjustments\Auto\SwingBenchmarkAdjustmentModeManager.cs" />
-    <Compile Include="Classes\Managers\Adjustments\Manual\BasicAdjustmentModeManager.cs" />
-    <Compile Include="Classes\Managers\Adjustments\Manual\RotationAdjustmentModeManager.cs" />
-    <Compile Include="Classes\Managers\Adjustments\Manual\PositionAdjustmentModeManager.cs" />
-    <Compile Include="Classes\Managers\Adjustments\Manual\RoomOffsetAdjustmentModeManager.cs" />
-    <Compile Include="Classes\Managers\Benchmark\SwingAnalyzer.cs" />
-    <Compile Include="Classes\Managers\Benchmark\SwingBenchmarkHelper.cs" />
-    <Compile Include="Classes\Managers\Benchmark\SwingBenchmarkManager.cs" />
-    <Compile Include="Classes\Managers\Gizmos\GizmosManager.cs" />
-    <Compile Include="Classes\Managers\Input\ReeInputDevice.cs" />
-    <Compile Include="Classes\Managers\Input\ReeInputManager.cs" />
-    <Compile Include="Classes\StructsAndEnums\ControllerButton.cs" />
-    <Compile Include="Classes\StructsAndEnums\ControllerType.cs" />
-    <Compile Include="Classes\StructsAndEnums\AdjustmentMode.cs" />
-    <Compile Include="Classes\StructsAndEnums\Hand.cs" />
-    <Compile Include="Classes\StructsAndEnums\HandMenuAction.cs" />
-    <Compile Include="Classes\StructsAndEnums\VRControllers.cs" />
-    <Compile Include="Classes\AssetBundleScripts\Gizmos\ControllerModel.cs" />
-    <Compile Include="Classes\AssetBundleScripts\Gizmos\GizmosController.cs" />
-    <Compile Include="Classes\AssetBundleScripts\Gizmos\OrthonormalBasis.cs" />
-    <Compile Include="Classes\AssetBundleScripts\Gizmos\Pivot.cs" />
-    <Compile Include="Classes\AssetBundleScripts\Gizmos\PivotGrid.cs" />
-    <Compile Include="Classes\AssetBundleScripts\Gizmos\SphericalBasis.cs" />
-    <Compile Include="Classes\AssetBundleScripts\Gizmos\SwingPreview.cs" />
-    <Compile Include="Classes\AssetBundleScripts\Gizmos\TextTransformFixer.cs" />
-    <Compile Include="Classes\UI\ModPanelUI.cs" />
-    <Compile Include="Classes\UI\ModPanelUIHelper.cs" />
-    <Compile Include="Classes\UI\SettingsUIHelper.cs" />
-    <Compile Include="Classes\UI\SettingsUI.cs" />
-    <Compile Include="Classes\Utils\StaticUtils\BsmlUtils.cs" />
-    <Compile Include="Classes\Utils\StaticUtils\MathUtils.cs" />
-    <Compile Include="Classes\Utils\StaticUtils\WeightedListExtensions.cs" />
-    <Compile Include="Classes\Utils\UtilityClasses\CyclicBuffer.cs" />
-    <Compile Include="Classes\Utils\UtilityClasses\DelayedAction.cs" />
-    <Compile Include="Classes\Utils\UtilityClasses\Range.cs" />
-    <Compile Include="Classes\Utils\UtilityClasses\ReeTransform.cs" />
-    <Compile Include="Classes\Utils\UtilityClasses\RelativeRotationTracker.cs" />
-    <Compile Include="Classes\Utils\UtilityClasses\RotationPlaneTracker.cs" />
-    <Compile Include="Classes\Utils\StaticUtils\EnumUtils\AdjustmentModeUtils.cs" />
-    <Compile Include="Classes\Utils\StaticUtils\EnumUtils\ControllerButtonUtils.cs" />
-    <Compile Include="Classes\Utils\StaticUtils\EnumUtils\ControllerTypeUtils.cs" />
-    <Compile Include="Classes\Utils\StaticUtils\EnumUtils\HandMenuActionUtils.cs" />
-    <Compile Include="Classes\Utils\StaticUtils\InstallerUtils.cs" />
-    <Compile Include="Classes\Utils\StaticUtils\ResourcesUtils.cs" />
-    <Compile Include="Classes\Utils\StaticUtils\TransformUtils.cs" />
-    <Compile Include="Classes\Utils\UtilityClasses\WeightedList.cs" />
-    <Compile Include="HarmonyPatches\HarmonyHelper.cs" />
-    <Compile Include="HarmonyPatches\InstallersPatches\MenuInstallerPatch.cs" />
-    <Compile Include="HarmonyPatches\InstallersPatches\AppInstallerPatch.cs" />
-    <Compile Include="HarmonyPatches\ModMenuOrderPatch.cs" />
-    <Compile Include="HarmonyPatches\PermanentPatches\AppInstallerPermanentPatch.cs" />
-    <Compile Include="HarmonyPatches\VRHelpersPatches\DevicelessVRHelperAdjustControllerTransform.cs" />
-    <Compile Include="HarmonyPatches\VRHelpersPatches\OculusVRHelperAdjustControllerTransform.cs" />
-    <Compile Include="HarmonyPatches\VRHelpersPatches\OpenVRHelperAdjustControllerTransform.cs" />
-    <Compile Include="Installers\OnAppInstaller.cs" />
-    <Compile Include="Installers\OnMenuInstaller.cs" />
+    <Compile Include="2_Core\Installers\OnAppInstaller.cs" />
+    <Compile Include="2_Core\Installers\OnMenuInstaller.cs" />
+    <Compile Include="2_Core\Managers\Abomination\Abomination.cs" />
+    <Compile Include="2_Core\Managers\Abomination\AbominationInputManager.cs" />
+    <Compile Include="2_Core\Managers\Abomination\AbominationTransformManager.cs" />
+    <Compile Include="2_Core\Managers\Adjustments\AbstractAdjustmentModeManager.cs" />
+    <Compile Include="2_Core\Managers\Adjustments\Auto\RotationAutoAdjustmentModeManager.cs" />
+    <Compile Include="2_Core\Managers\Adjustments\Auto\SwingBenchmarkAdjustmentModeManager.cs" />
+    <Compile Include="2_Core\Managers\Adjustments\Manual\BasicAdjustmentModeManager.cs" />
+    <Compile Include="2_Core\Managers\Adjustments\Manual\RotationAdjustmentModeManager.cs" />
+    <Compile Include="2_Core\Managers\Adjustments\Manual\PositionAdjustmentModeManager.cs" />
+    <Compile Include="2_Core\Managers\Adjustments\Manual\RoomOffsetAdjustmentModeManager.cs" />
+    <Compile Include="2_Core\Managers\Benchmark\SwingAnalyzer.cs" />
+    <Compile Include="2_Core\Managers\Benchmark\SwingBenchmarkHelper.cs" />
+    <Compile Include="2_Core\Managers\Benchmark\SwingBenchmarkManager.cs" />
+    <Compile Include="2_Core\Managers\Gizmos\GizmosManager.cs" />
+    <Compile Include="2_Core\Managers\Input\ReeInputDevice.cs" />
+    <Compile Include="2_Core\Managers\Input\ReeInputManager.cs" />
+    <Compile Include="2_Core\StructsAndEnums\ControllerButton.cs" />
+    <Compile Include="2_Core\StructsAndEnums\ControllerType.cs" />
+    <Compile Include="2_Core\StructsAndEnums\AdjustmentMode.cs" />
+    <Compile Include="2_Core\StructsAndEnums\Hand.cs" />
+    <Compile Include="2_Core\StructsAndEnums\HandMenuAction.cs" />
+    <Compile Include="2_Core\StructsAndEnums\VRControllers.cs" />
+    <Compile Include="0_Harmony\HarmonyHelper.cs" />
+    <Compile Include="0_Harmony\InstallersPatches\MenuInstallerPatch.cs" />
+    <Compile Include="0_Harmony\InstallersPatches\AppInstallerPatch.cs" />
+    <Compile Include="0_Harmony\ModMenuOrderPatch.cs" />
+    <Compile Include="0_Harmony\PermanentPatches\AppInstallerPermanentPatch.cs" />
+    <Compile Include="0_Harmony\VRHelpersPatches\DevicelessVRHelperAdjustControllerTransform.cs" />
+    <Compile Include="0_Harmony\VRHelpersPatches\OculusVRHelperAdjustControllerTransform.cs" />
+    <Compile Include="0_Harmony\VRHelpersPatches\OpenVRHelperAdjustControllerTransform.cs" />
+    <Compile Include="1_Config\CachedVariable.cs" />
+    <Compile Include="1_Config\ConfigFileData.cs" />
+    <Compile Include="1_Config\ConfigMigration\ConfigConversions.cs" />
+    <Compile Include="1_Config\ConfigMigration\ConfigExportResult.cs" />
+    <Compile Include="1_Config\ConfigMigration\ConfigImportResult.cs" />
+    <Compile Include="1_Config\ConfigMigration\ConfigMigration.cs" />
+    <Compile Include="1_Config\ConfigPresetsStorage\ConfigPresetsStorage.cs" />
+    <Compile Include="1_Config\ConfigPresetsStorage\PresetUtils.cs" />
+    <Compile Include="1_Config\ConfigPresetsStorage\StoredConfigPreset.cs" />
+    <Compile Include="1_Config\ConfigPresets\ConfigPresetV1.cs" />
+    <Compile Include="1_Config\ConfigPresets\IConfigPreset.cs" />
+    <Compile Include="1_Config\Defaults.cs" />
+    <Compile Include="1_Config\PluginConfig.cs" />
+    <Compile Include="3_AssetBundle\BundleLoader.cs" />
+    <Compile Include="3_AssetBundle\Gizmos\ControllerModel.cs" />
+    <Compile Include="3_AssetBundle\Gizmos\GizmosController.cs" />
+    <Compile Include="3_AssetBundle\Gizmos\OrthonormalBasis.cs" />
+    <Compile Include="3_AssetBundle\Gizmos\Pivot.cs" />
+    <Compile Include="3_AssetBundle\Gizmos\PivotGrid.cs" />
+    <Compile Include="3_AssetBundle\Gizmos\SphericalBasis.cs" />
+    <Compile Include="3_AssetBundle\Gizmos\SwingPreview.cs" />
+    <Compile Include="3_AssetBundle\Gizmos\TextTransformFixer.cs" />
+    <Compile Include="3_AssetBundle\Indicators\AngleIndicator.cs" />
+    <Compile Include="3_AssetBundle\Indicators\DistanceIndicator.cs" />
+    <Compile Include="3_AssetBundle\Indicators\IndicatorText.cs" />
+    <Compile Include="3_AssetBundle\Indicators\VelocityIndicator.cs" />
+    <Compile Include="3_AssetBundle\SwingBenchmark\BenchmarkTrails.cs" />
+    <Compile Include="3_AssetBundle\SwingBenchmark\HandVisuals.cs" />
+    <Compile Include="3_AssetBundle\SwingBenchmark\SwingBenchmarkController.cs" />
+    <Compile Include="3_AssetBundle\SwingBenchmark\SwingIndicators.cs" />
+    <Compile Include="3_AssetBundle\Trails\Core\TrailCurvedSegment.cs" />
+    <Compile Include="3_AssetBundle\Trails\Core\TrailLinearSegment.cs" />
+    <Compile Include="3_AssetBundle\Trails\Core\TrailMesh.cs" />
+    <Compile Include="3_AssetBundle\Trails\Core\TrailNode.cs" />
+    <Compile Include="3_AssetBundle\Trails\Core\TrailSpline.cs" />
+    <Compile Include="3_AssetBundle\Trails\SimpleTrail.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="8_UI\ModPanelUI.cs" />
+    <Compile Include="8_UI\ModPanelUIHelper.cs" />
+    <Compile Include="8_UI\SettingsUI.cs" />
+    <Compile Include="8_UI\SettingsUIHelper.cs" />
+    <Compile Include="7_Utils\EnumUtils\AdjustmentModeUtils.cs" />
+    <Compile Include="7_Utils\EnumUtils\ControllerButtonUtils.cs" />
+    <Compile Include="7_Utils\EnumUtils\ControllerTypeUtils.cs" />
+    <Compile Include="7_Utils\EnumUtils\HandMenuActionUtils.cs" />
+    <Compile Include="7_Utils\StaticUtils\BsmlUtils.cs" />
+    <Compile Include="7_Utils\StaticUtils\InstallerUtils.cs" />
+    <Compile Include="7_Utils\StaticUtils\MathUtils.cs" />
+    <Compile Include="7_Utils\StaticUtils\ResourcesUtils.cs" />
+    <Compile Include="7_Utils\StaticUtils\TransformUtils.cs" />
+    <Compile Include="7_Utils\StaticUtils\WeightedListExtensions.cs" />
+    <Compile Include="7_Utils\UtilityClasses\CyclicBuffer.cs" />
+    <Compile Include="7_Utils\UtilityClasses\DelayedAction.cs" />
+    <Compile Include="7_Utils\UtilityClasses\Range.cs" />
+    <Compile Include="7_Utils\UtilityClasses\ReeTransform.cs" />
+    <Compile Include="7_Utils\UtilityClasses\RelativeRotationTracker.cs" />
+    <Compile Include="7_Utils\UtilityClasses\RotationPlaneTracker.cs" />
+    <Compile Include="7_Utils\UtilityClasses\WeightedList.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="manifest.json" />
@@ -232,9 +232,11 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\AssetBundles\easy_offset" />
-    <EmbeddedResource Include="Resources\BSML\ModPanelUI.bsml" />
-    <EmbeddedResource Include="Resources\BSML\SettingsUI.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\ModPanelUI.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\SettingsUI.bsml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="9_Resources\AssetBundles\asset_bundle" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

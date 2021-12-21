@@ -1,8 +1,4 @@
-﻿using EasyOffset.AssetBundleScripts;
-using EasyOffset.Configuration;
-using EasyOffset.HarmonyPatches;
-using EasyOffset.UI;
-using IPA;
+﻿using IPA;
 using IPA.Config;
 using IPA.Config.Stores;
 using JetBrains.Annotations;
