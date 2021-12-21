@@ -25,21 +25,13 @@ Tired from a pile of magic config numbers? Find the best offset for your grip ju
 
 # Config migration
 
+## Import
+
 ### From the base game settings
 
 - Go to `Settings` > `Mod Settings` > `Easy Offset`
 - Use `Z Offset` slider to change the `Pivot Point` position (0 - top of the hilt, 17 - bottom of the hilt)
 - Press the `Import from settings` button
-
-### To the base game settings
-
-```diff
-- Per hand offset is not supported in the base game settings. Right hand offset will be used
-```
-
-- Go to `Settings` > `Mod Settings` > `Easy Offset`
-- Press the `Export to settings` button
-- Disable EasyOffset
 
 ### From SaberTailor mod
 
@@ -52,6 +44,18 @@ Tired from a pile of magic config numbers? Find the best offset for your grip ju
 - Use `Z Offset` slider to change the `Pivot Point` position (0 - top of the hilt, 17 - bottom of the hilt)
 - Press the `Import from SaberTailor` button
 - Make sure to disable SaberTailor to avoid interference
+
+## Export
+
+### To the base game settings
+
+```diff
+- Per hand offset is not supported in the base game settings. Right hand offset will be used
+```
+
+- Go to `Settings` > `Mod Settings` > `Easy Offset`
+- Press the `Export to settings` button
+- Disable EasyOffset
 
 ### To SaberTailor mod
 
