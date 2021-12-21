@@ -12,7 +12,7 @@
             <vertical>
                 <text text="Config Migration" align="Center"/>
                 <slider-setting text="Import Z Offset" min="~zo-min" max="~zo-max" increment="~zo-increment" value="zo-value"
-                                apply-on-change="true" hover-hint="Pivot point offset along saber axis (cm)"/>
+                                apply-on-change="true" hover-hint="~zo-hint"/>
             </vertical>
         </horizontal>
 

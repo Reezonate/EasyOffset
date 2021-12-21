@@ -20,6 +20,8 @@ namespace EasyOffset {
 
         #region ZOffset slider
 
+        [UIValue("zo-hint")] [UsedImplicitly] private string _zOffsetSliderHint = "Pivot point offset along saber axis (cm)\n0 - top of the hilt, 17 - bottom of the hilt";
+        
         [UIValue("zo-min")] [UsedImplicitly] private float _zOffsetSliderMin = -15f;
 
         [UIValue("zo-max")] [UsedImplicitly] private float _zOffsetSliderMax = 25f;
