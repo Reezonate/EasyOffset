@@ -30,7 +30,7 @@ namespace EasyOffset {
 
         public static void RemoveRemovablePatches() {
             if (!_initialized) return;
-            _removableHarmony.UnpatchAll(RemovableHarmonyID);
+            _removableHarmony.UnpatchSelf();
         }
     }
 }
