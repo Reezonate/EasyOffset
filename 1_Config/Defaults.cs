@@ -6,6 +6,18 @@ namespace EasyOffset {
 
         #endregion
 
+        #region HideControllers
+
+        public const bool HideControllers = true;
+
+        #endregion
+
+        #region HideCoordinates
+
+        public const bool HideCoordinates = false;
+
+        #endregion
+
         #region RoomOffset
         
         public const bool AllowRoomXChange = true;

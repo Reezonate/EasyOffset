@@ -13,9 +13,11 @@ namespace EasyOffset {
         public GizmosController RightHandGizmosController;
 
         public void Initialize() {
-            LeftHandGizmosController = InstantiateGizmosController();
-            RightHandGizmosController = InstantiateGizmosController();
+            LeftHandGizmosController = Object.Instantiate(BundleLoader.GizmosController).GetComponent<GizmosController>();
+            RightHandGizmosController = Object.Instantiate(BundleLoader.GizmosController).GetComponent<GizmosController>();
 
+            PluginConfig.IsInMainMenuChangedEvent += OnIsInMainMenuChanged;
+            PluginConfig.HideControllersChangedEvent += OnHideControllersChanged;
             PluginConfig.AdjustmentModeChangedEvent += OnAdjustmentModeChanged;
             PluginConfig.ControllerTypeChangedEvent += OnControllerTypeChanged;
             Abomination.TransformsUpdatedEvent += OnControllerTransformsChanged;
@@ -25,14 +27,8 @@ namespace EasyOffset {
         }
 
         public void Dispose() {
-            // if (LeftHandGizmosController != null && LeftHandGizmosController.gameObject != null) {
-                // Object.Destroy(LeftHandGizmosController.gameObject);
-            // }
-
-            // if (RightHandGizmosController != null && RightHandGizmosController.gameObject != null) {
-                // Object.Destroy(RightHandGizmosController.gameObject);
-            // }
-
+            PluginConfig.IsInMainMenuChangedEvent -= OnIsInMainMenuChanged;
+            PluginConfig.HideControllersChangedEvent -= OnHideControllersChanged;
             PluginConfig.AdjustmentModeChangedEvent -= OnAdjustmentModeChanged;
             PluginConfig.ControllerTypeChangedEvent -= OnControllerTypeChanged;
             Abomination.TransformsUpdatedEvent -= OnControllerTransformsChanged;
@@ -71,6 +67,14 @@ namespace EasyOffset {
             RightHandGizmosController.SetControllerTransform(rightPos, rightRot);
         }
 
+        private void OnIsInMainMenuChanged(bool value) {
+            UpdateVisibility();
+        }
+
+        private void OnHideControllersChanged(bool value) {
+            UpdateVisibility();
+        }
+
         private void OnAdjustmentModeChanged(AdjustmentMode adjustmentMode) {
             UpdateVisibility();
         }
@@ -87,14 +91,13 @@ namespace EasyOffset {
 
         private void UpdateVisibility() {
             GetVisibilityValues(
-                PluginConfig.AdjustmentMode,
-                PluginConfig.DisplayControllerType,
                 out var isPivotVisible,
                 out var isSphericalBasisVisible,
                 out var isOrthonormalBasisVisible,
                 out var isOrthonormalBasisPointerVisible,
                 out var isControllerModelVisible,
-                out var isSwingPreviewVisible
+                out var isSwingPreviewVisible,
+                out var isCoordinatesVisible
             );
 
             LeftHandGizmosController.SetVisibility(
@@ -103,7 +106,8 @@ namespace EasyOffset {
                 isOrthonormalBasisVisible,
                 isOrthonormalBasisPointerVisible,
                 isControllerModelVisible,
-                isSwingPreviewVisible
+                isSwingPreviewVisible,
+                isCoordinatesVisible
             );
 
             RightHandGizmosController.SetVisibility(
@@ -112,35 +116,36 @@ namespace EasyOffset {
                 isOrthonormalBasisVisible,
                 isOrthonormalBasisPointerVisible,
                 isControllerModelVisible,
-                isSwingPreviewVisible
+                isSwingPreviewVisible,
+                isCoordinatesVisible
             );
         }
 
         private static void GetVisibilityValues(
-            AdjustmentMode adjustmentMode,
-            ControllerType controllerType,
             out bool isPivotVisible,
             out bool isSphericalBasisVisible,
             out bool isOrthonormalBasisVisible,
             out bool isOrthonormalBasisPointerVisible,
             out bool isControllerModelVisible,
-            out bool isSwingPreviewVisible
+            out bool isSwingPreviewVisible,
+            out bool isCoordinatesVisible
         ) {
-            switch (adjustmentMode) {
+            isControllerModelVisible = PluginConfig.HideControllers ? PluginConfig.IsModPanelVisible : PluginConfig.IsInMainMenu;
+            isCoordinatesVisible = !PluginConfig.HideCoordinates;
+
+            switch (PluginConfig.AdjustmentMode) {
                 case AdjustmentMode.None:
                     isPivotVisible = false;
                     isOrthonormalBasisVisible = false;
                     isOrthonormalBasisPointerVisible = false;
                     isSphericalBasisVisible = false;
-                    isControllerModelVisible = true;
                     isSwingPreviewVisible = false;
                     break;
                 case AdjustmentMode.Basic:
                     isPivotVisible = true;
-                    isOrthonormalBasisVisible = controllerType == ControllerType.None;
+                    isOrthonormalBasisVisible = PluginConfig.DisplayControllerType == ControllerType.None;
                     isOrthonormalBasisPointerVisible = false;
                     isSphericalBasisVisible = false;
-                    isControllerModelVisible = true;
                     isSwingPreviewVisible = true;
                     break;
                 case AdjustmentMode.Position:
@@ -148,7 +153,6 @@ namespace EasyOffset {
                     isOrthonormalBasisVisible = true;
                     isOrthonormalBasisPointerVisible = true;
                     isSphericalBasisVisible = false;
-                    isControllerModelVisible = true;
                     isSwingPreviewVisible = true;
                     break;
                 case AdjustmentMode.Rotation:
@@ -156,7 +160,6 @@ namespace EasyOffset {
                     isOrthonormalBasisVisible = false;
                     isOrthonormalBasisPointerVisible = false;
                     isSphericalBasisVisible = true;
-                    isControllerModelVisible = true;
                     isSwingPreviewVisible = true;
                     break;
                 case AdjustmentMode.SwingBenchmark:
@@ -164,7 +167,6 @@ namespace EasyOffset {
                     isOrthonormalBasisVisible = false;
                     isOrthonormalBasisPointerVisible = false;
                     isSphericalBasisVisible = false;
-                    isControllerModelVisible = true;
                     isSwingPreviewVisible = false;
                     break;
                 case AdjustmentMode.RotationAuto:
@@ -172,7 +174,6 @@ namespace EasyOffset {
                     isOrthonormalBasisVisible = false;
                     isOrthonormalBasisPointerVisible = false;
                     isSphericalBasisVisible = true;
-                    isControllerModelVisible = true;
                     isSwingPreviewVisible = true;
                     break;
                 case AdjustmentMode.RoomOffset:
@@ -180,21 +181,10 @@ namespace EasyOffset {
                     isOrthonormalBasisVisible = false;
                     isOrthonormalBasisPointerVisible = false;
                     isSphericalBasisVisible = false;
-                    isControllerModelVisible = true;
                     isSwingPreviewVisible = false;
                     break;
-                default: throw new ArgumentOutOfRangeException(nameof(adjustmentMode), adjustmentMode, null);
+                default: throw new ArgumentOutOfRangeException();
             }
-        }
-
-        #endregion
-
-        #region Utils
-
-        private static GizmosController InstantiateGizmosController() {
-            var gameObject = Object.Instantiate(BundleLoader.GizmosController);
-            // Object.DontDestroyOnLoad(gameObject);
-            return gameObject.GetComponent<GizmosController>();
         }
 
         #endregion

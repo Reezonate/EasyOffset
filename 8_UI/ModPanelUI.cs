@@ -14,7 +14,6 @@ namespace EasyOffset {
         public ModPanelUI() {
             SubscribeToBenchmarkEvents();
             SubscribeToRoomOffsetEvents();
-            ModPanelUIHelper.OnPanelBecomeInvisible();
         }
 
         #endregion
@@ -29,20 +28,11 @@ namespace EasyOffset {
 
         #region Visibility
 
-        private bool _wasVisible;
-
         [UIObject("root")] [UsedImplicitly] private GameObject _root;
 
         private void UpdatePanelVisibility() {
             var isVisible = (_root != null) && _root.activeInHierarchy;
-
-            if (isVisible) {
-                if (!_wasVisible) ModPanelUIHelper.OnPanelBecomeVisible();
-            } else {
-                if (_wasVisible) ModPanelUIHelper.OnPanelBecomeInvisible();
-            }
-
-            _wasVisible = isVisible;
+            PluginConfig.IsModPanelVisible = isVisible;
         }
 
         #endregion

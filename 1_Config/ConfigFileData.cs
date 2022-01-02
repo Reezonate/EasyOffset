@@ -22,8 +22,20 @@ namespace EasyOffset {
 
         #endregion
 
+        #region HideControllers
+
+        public bool HideControllers = Defaults.HideControllers;
+
+        #endregion
+
+        #region HideCoordinates
+
+        public bool HideCoordinates = Defaults.HideCoordinates;
+
+        #endregion
+
         #region RoomOffset
-        
+
         public bool AllowRoomXChange = Defaults.AllowRoomXChange;
         public bool AllowRoomYChange = Defaults.AllowRoomYChange;
         public bool AllowRoomZChange = Defaults.AllowRoomZChange;

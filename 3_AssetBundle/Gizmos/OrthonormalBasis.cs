@@ -102,10 +102,12 @@ namespace EasyOffset {
 
         public void SetVisible(
             bool isBasisVisible,
-            bool isPointerVisible
+            bool isPointerVisible,
+            bool isTextVisible
         ) {
             axlesVisuals.SetActive(isBasisVisible);
             pointerVisuals.SetActive(isPointerVisible);
+            textMesh.gameObject.SetActive(isTextVisible);
         }
 
         #endregion

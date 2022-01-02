@@ -124,6 +124,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="0_Harmony\SceneTransitionPatch.cs" />
     <Compile Include="2_Core\Installers\OnAppInstaller.cs" />
     <Compile Include="2_Core\Installers\OnMenuInstaller.cs" />
     <Compile Include="2_Core\Managers\Abomination\Abomination.cs" />
@@ -132,6 +133,7 @@
     <Compile Include="2_Core\Managers\Adjustments\AbstractAdjustmentModeManager.cs" />
     <Compile Include="2_Core\Managers\Adjustments\Auto\RotationAutoAdjustmentModeManager.cs" />
     <Compile Include="2_Core\Managers\Adjustments\Auto\SwingBenchmarkAdjustmentModeManager.cs" />
+    <Compile Include="2_Core\Managers\Adjustments\AdjustmentBlockManager.cs" />
     <Compile Include="2_Core\Managers\Adjustments\Manual\BasicAdjustmentModeManager.cs" />
     <Compile Include="2_Core\Managers\Adjustments\Manual\RotationAdjustmentModeManager.cs" />
     <Compile Include="2_Core\Managers\Adjustments\Manual\PositionAdjustmentModeManager.cs" />

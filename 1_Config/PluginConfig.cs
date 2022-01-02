@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 namespace EasyOffset {
-    public static class PluginConfig {
+    internal static class PluginConfig {
         #region VRPlatformHelper
 
         public static event Action<IVRPlatformHelper> VRPlatformHelperChangedEvent;
@@ -35,6 +35,76 @@ namespace EasyOffset {
 
         #endregion
 
+        #region IsInMainMenu
+
+        public static event Action<bool> IsInMainMenuChangedEvent;
+
+        private static bool _isInMainMenu;
+
+        public static bool IsInMainMenu {
+            get => _isInMainMenu;
+            set {
+                if (_isInMainMenu == value) return;
+                _isInMainMenu = value;
+                IsInMainMenuChangedEvent?.Invoke(value);
+            }
+        }
+
+        #endregion
+
+        #region IsModPanelVisible
+
+        public static event Action<bool> IsModPanelVisibleChangedEvent;
+
+        private static bool _isModPanelVisible;
+
+        public static bool IsModPanelVisible {
+            get => _isModPanelVisible;
+            set {
+                if (_isModPanelVisible == value) return;
+                _isModPanelVisible = value;
+                IsModPanelVisibleChangedEvent?.Invoke(value);
+            }
+        }
+
+        #endregion
+
+        #region HideControllers
+
+        public static event Action<bool> HideControllersChangedEvent;
+
+        private static bool _hideControllers = ConfigFileData.Instance.HideControllers;
+
+        public static bool HideControllers {
+            get => _hideControllers;
+            set {
+                if (_hideControllers == value) return;
+                _hideControllers = value;
+                ConfigFileData.Instance.HideControllers = value;
+                HideControllersChangedEvent?.Invoke(value);
+            }
+        }
+
+        #endregion
+
+        #region HideCoordinates
+
+        public static event Action<bool> HideCoordinatesChangedEvent;
+
+        private static bool _hideCoordinates = ConfigFileData.Instance.HideCoordinates;
+
+        public static bool HideCoordinates {
+            get => _hideCoordinates;
+            set {
+                if (_hideCoordinates == value) return;
+                _hideCoordinates = value;
+                ConfigFileData.Instance.HideCoordinates = value;
+                HideCoordinatesChangedEvent?.Invoke(value);
+            }
+        }
+
+        #endregion
+
         #region Smoothing
 
         public static bool SmoothingEnabled { get; set; }
@@ -45,9 +115,7 @@ namespace EasyOffset {
 
         #region Enabled
 
-        public delegate void OnEnabledChangeDelegate(bool newChanged);
-
-        public static event OnEnabledChangeDelegate OnEnabledChange;
+        public static event Action<bool> OnEnabledChange;
 
         private static readonly CachedVariable<bool> CachedEnabled = new(
             () => ConfigFileData.Instance.Enabled
@@ -135,36 +203,19 @@ namespace EasyOffset {
         #region DisplayController
 
         public static event Action<ControllerType> ControllerTypeChangedEvent;
-        private static bool _hideController;
 
         private static readonly CachedVariable<ControllerType> CachedDisplayControllerType = new(
             () => ControllerTypeUtils.NameToTypeOrDefault(ConfigFileData.Instance.DisplayControllerType)
         );
 
         public static ControllerType DisplayControllerType {
-            get => _hideController ? ControllerType.None : CachedDisplayControllerType.Value;
+            get => CachedDisplayControllerType.Value;
             set {
                 CachedDisplayControllerType.Value = value;
                 ConfigFileData.Instance.DisplayControllerType = ControllerTypeUtils.TypeToName(value);
                 ControllerTypeChangedEvent?.Invoke(value);
             }
         }
-
-        public static void HideController() {
-            _hideController = true;
-            ControllerTypeChangedEvent?.Invoke(ControllerType.None);
-        }
-
-        public static void ShowController() {
-            _hideController = false;
-            ControllerTypeChangedEvent?.Invoke(DisplayControllerType);
-        }
-
-        #endregion
-
-        #region EnableMidPlayAdjustment
-
-        public static bool EnableMidPlayAdjustment { get; set; } = false;
 
         #endregion
 

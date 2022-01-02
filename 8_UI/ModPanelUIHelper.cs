@@ -24,22 +24,5 @@ namespace EasyOffset {
         }
 
         #endregion
-
-        #region Visibility
-
-        private static AdjustmentMode _lastAdjustmentMode = AdjustmentMode.None;
-
-        public static void OnPanelBecomeVisible() {
-            PluginConfig.AdjustmentMode = _lastAdjustmentMode;
-            PluginConfig.ShowController();
-        }
-
-        public static void OnPanelBecomeInvisible() {
-            _lastAdjustmentMode = PluginConfig.AdjustmentMode;
-            PluginConfig.AdjustmentMode = AdjustmentMode.None;
-            PluginConfig.HideController();
-        }
-
-        #endregion
     }
 }

@@ -140,8 +140,9 @@ namespace EasyOffset {
             UpdateTextPosition(orthoDirection);
         }
 
-        public void SetVisible(bool value) {
+        public void SetVisible(bool value, bool isTextVisible) {
             visuals.SetActive(value);
+            textMesh.gameObject.SetActive(isTextVisible);
         }
 
         #endregion

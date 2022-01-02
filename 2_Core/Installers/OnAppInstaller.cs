@@ -8,7 +8,7 @@ namespace EasyOffset.Installers {
             BindInputManagers();
             BindGizmosManager();
             BindBenchmarkManager();
-            BindOffsetManagers();
+            BindAdjustmentModeManagers();
         }
 
         private void BindInputManagers() {
@@ -26,7 +26,9 @@ namespace EasyOffset.Installers {
             Container.BindExecutionOrder<SwingBenchmarkManager>(1);
         }
 
-        private void BindOffsetManagers() {
+        private void BindAdjustmentModeManagers() {
+            Container.BindInterfacesAndSelfTo<AdjustmentBlockManager>().AsSingle();
+
             Container.BindInterfacesAndSelfTo<BasicAdjustmentModeManager>().AsSingle();
             Container.BindInterfacesAndSelfTo<PositionAdjustmentModeManager>().AsSingle();
             Container.BindInterfacesAndSelfTo<RotationAdjustmentModeManager>().AsSingle();

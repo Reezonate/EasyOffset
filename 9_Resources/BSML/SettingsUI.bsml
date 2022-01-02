@@ -3,7 +3,11 @@
         <!--    GLOBAL SETTINGS    -->
         <horizontal preferred-height="27">
             <vertical>
-                <toggle-setting text="Enabled" value="enabled-value" apply-on-change="true"/>
+                <toggle-setting text="Enabled" value="enabled-value" hover-hint="Enable plugin"/>
+                <toggle-setting text="Hide controllers" value="hide-controllers-value" apply-on-change="true"
+                                hover-hint="Don't show controllers when the mod settings tab is not visible"/>
+                <toggle-setting text="Hide coordinates" value="hide-coordinates-value" apply-on-change="true"
+                                hover-hint="Don't show coordinates in Position and Rotation modes"/>
             </vertical>
         </horizontal>
 
