@@ -140,9 +140,8 @@ namespace EasyOffset {
             UpdateTextPosition(orthoDirection);
         }
 
-        public void SetVisible(bool value, bool isTextVisible) {
+        public void SetVisible(bool value) {
             visuals.SetActive(value);
-            textMesh.gameObject.SetActive(isTextVisible);
         }
 
         #endregion
@@ -154,6 +153,7 @@ namespace EasyOffset {
             var yString = (sphericalRadians.y * Mathf.Rad2Deg).ToString("0.00");
 
             textMesh.text = $"<mspace=0.5em><color=red>X:{xString}°</color>\n<color=green>Y:{yString}°</color></mspace>";
+            textMesh.alignment = TextAlignmentOptions.Midline;
         }
 
         private void UpdateTextPosition(Vector3 orthoDirection) {

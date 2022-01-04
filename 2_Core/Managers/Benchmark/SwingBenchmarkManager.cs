@@ -39,7 +39,6 @@ namespace EasyOffset {
             _swingAnalyzer = new SwingAnalyzer(MaximalCapacity);
 
             var gameObject = Object.Instantiate(BundleLoader.SwingBenchmarkController);
-            // Object.DontDestroyOnLoad(gameObject);
             _swingBenchmarkController = gameObject.GetComponent<SwingBenchmarkController>();
         }
 
@@ -98,9 +97,9 @@ namespace EasyOffset {
             var isLeft = _selectedHand == Hand.Left;
             var swingCurveAngle = Mathf.Asin(pivotHeight);
             var fullSwingAngle = maximalSwingAngle - minimalSwingAngle;
-            
+
             _isSwingGood = fullSwingAngle > FullSwingAngleRequirement;
-            
+
             _swingBenchmarkController.SetValues(
                 isLeft,
                 planePosition,
@@ -128,7 +127,7 @@ namespace EasyOffset {
 
         public void Finish() {
             _swingBenchmarkController.StopTracking();
-            
+
             switch (_selectedHand) {
                 case Hand.Left:
                     _leftHandVisible = _isSwingGood;
@@ -269,10 +268,6 @@ namespace EasyOffset {
 
         public void Dispose() {
             UnSubscribe();
-
-            // if (_swingBenchmarkController != null) {
-                // Object.Destroy(_swingBenchmarkController.gameObject);
-            // }
         }
 
         #endregion

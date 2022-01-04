@@ -20,12 +20,11 @@ namespace EasyOffset {
             bool isOrthonormalBasisVisible,
             bool isOrthonormalBasisPointerVisible,
             bool isControllerModelVisible,
-            bool isSwingPreviewVisible,
-            bool isCoordinatesVisible
+            bool isSwingPreviewVisible
         ) {
             pivot.SetVisible(isPivotVisible);
-            sphericalBasis.SetVisible(isSphericalBasisVisible, isCoordinatesVisible);
-            orthonormalBasis.SetVisible(isOrthonormalBasisVisible, isOrthonormalBasisPointerVisible, isCoordinatesVisible);
+            sphericalBasis.SetVisible(isSphericalBasisVisible);
+            orthonormalBasis.SetVisible(isOrthonormalBasisVisible, isOrthonormalBasisPointerVisible);
             controllerModel.SetVisible(isControllerModelVisible);
             swingPreview.SetVisible(isSwingPreviewVisible);
         }

@@ -102,12 +102,10 @@ namespace EasyOffset {
 
         public void SetVisible(
             bool isBasisVisible,
-            bool isPointerVisible,
-            bool isTextVisible
+            bool isPointerVisible
         ) {
             axlesVisuals.SetActive(isBasisVisible);
             pointerVisuals.SetActive(isPointerVisible);
-            textMesh.gameObject.SetActive(isTextVisible);
         }
 
         #endregion
@@ -120,6 +118,7 @@ namespace EasyOffset {
             var zString = (coordinates.z * 100.0).ToString("0.0");
 
             textMesh.text = $"<color=red>{xString}</color>  <color=green>{yString}</color>  <color=blue>{zString}</color>";
+            textMesh.alignment = TextAlignmentOptions.Midline;
         }
 
         private void UpdateTextPosition(Vector3 coordinates) {

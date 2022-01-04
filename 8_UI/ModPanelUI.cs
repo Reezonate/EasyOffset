@@ -451,7 +451,7 @@ namespace EasyOffset {
         private string _benchmarkGuide = "Repeat one exact swing several times" +
                                          "\nwhile holding the button" +
                                          "\n" +
-                                         "\nAt least 140° swing angle required";
+                                         "\nAt least 140° swing angle is required";
 
         #endregion
 

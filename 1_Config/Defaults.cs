@@ -12,12 +12,6 @@ namespace EasyOffset {
 
         #endregion
 
-        #region HideCoordinates
-
-        public const bool HideCoordinates = false;
-
-        #endregion
-
         #region RoomOffset
         
         public const bool AllowRoomXChange = true;

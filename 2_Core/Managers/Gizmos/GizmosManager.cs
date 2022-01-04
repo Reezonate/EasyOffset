@@ -96,8 +96,7 @@ namespace EasyOffset {
                 out var isOrthonormalBasisVisible,
                 out var isOrthonormalBasisPointerVisible,
                 out var isControllerModelVisible,
-                out var isSwingPreviewVisible,
-                out var isCoordinatesVisible
+                out var isSwingPreviewVisible
             );
 
             LeftHandGizmosController.SetVisibility(
@@ -106,8 +105,7 @@ namespace EasyOffset {
                 isOrthonormalBasisVisible,
                 isOrthonormalBasisPointerVisible,
                 isControllerModelVisible,
-                isSwingPreviewVisible,
-                isCoordinatesVisible
+                isSwingPreviewVisible
             );
 
             RightHandGizmosController.SetVisibility(
@@ -116,8 +114,7 @@ namespace EasyOffset {
                 isOrthonormalBasisVisible,
                 isOrthonormalBasisPointerVisible,
                 isControllerModelVisible,
-                isSwingPreviewVisible,
-                isCoordinatesVisible
+                isSwingPreviewVisible
             );
         }
 
@@ -127,11 +124,9 @@ namespace EasyOffset {
             out bool isOrthonormalBasisVisible,
             out bool isOrthonormalBasisPointerVisible,
             out bool isControllerModelVisible,
-            out bool isSwingPreviewVisible,
-            out bool isCoordinatesVisible
+            out bool isSwingPreviewVisible
         ) {
             isControllerModelVisible = PluginConfig.HideControllers ? PluginConfig.IsModPanelVisible : PluginConfig.IsInMainMenu;
-            isCoordinatesVisible = !PluginConfig.HideCoordinates;
 
             switch (PluginConfig.AdjustmentMode) {
                 case AdjustmentMode.None:

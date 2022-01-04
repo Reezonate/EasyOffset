@@ -28,12 +28,6 @@ namespace EasyOffset {
 
         #endregion
 
-        #region HideCoordinates
-
-        public bool HideCoordinates = Defaults.HideCoordinates;
-
-        #endregion
-
         #region RoomOffset
 
         public bool AllowRoomXChange = Defaults.AllowRoomXChange;

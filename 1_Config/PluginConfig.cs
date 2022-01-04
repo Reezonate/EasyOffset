@@ -87,24 +87,6 @@ namespace EasyOffset {
 
         #endregion
 
-        #region HideCoordinates
-
-        public static event Action<bool> HideCoordinatesChangedEvent;
-
-        private static bool _hideCoordinates = ConfigFileData.Instance.HideCoordinates;
-
-        public static bool HideCoordinates {
-            get => _hideCoordinates;
-            set {
-                if (_hideCoordinates == value) return;
-                _hideCoordinates = value;
-                ConfigFileData.Instance.HideCoordinates = value;
-                HideCoordinatesChangedEvent?.Invoke(value);
-            }
-        }
-
-        #endregion
-
         #region Smoothing
 
         public static bool SmoothingEnabled { get; set; }

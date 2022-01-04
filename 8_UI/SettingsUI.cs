@@ -21,13 +21,6 @@ namespace EasyOffset {
             set => PluginConfig.HideControllers = value;
         }
 
-        [UIValue("hide-coordinates-value")]
-        [UsedImplicitly]
-        private bool HideCoordinatesValue {
-            get => PluginConfig.HideCoordinates;
-            set => PluginConfig.HideCoordinates = value;
-        }
-
         #endregion
 
         #region Config Migration
