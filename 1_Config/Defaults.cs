@@ -12,8 +12,14 @@ namespace EasyOffset {
 
         #endregion
 
+        #region MinimalWarningLevel
+
+        public static readonly string MinimalWarningLevel = WarningLevelUtils.TypeToName(WarningLevel.NonCritical);
+
+        #endregion
+
         #region RoomOffset
-        
+
         public const bool AllowRoomXChange = true;
         public const bool AllowRoomYChange = true;
         public const bool AllowRoomZChange = true;

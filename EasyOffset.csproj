@@ -171,6 +171,7 @@
     <Compile Include="1_Config\ConfigPresets\IConfigPreset.cs" />
     <Compile Include="1_Config\Defaults.cs" />
     <Compile Include="1_Config\PluginConfig.cs" />
+    <Compile Include="2_Core\StructsAndEnums\WarningLevel.cs" />
     <Compile Include="3_AssetBundle\BundleLoader.cs" />
     <Compile Include="3_AssetBundle\Gizmos\ControllerModel.cs" />
     <Compile Include="3_AssetBundle\Gizmos\GizmosController.cs" />
@@ -194,6 +195,8 @@
     <Compile Include="3_AssetBundle\Trails\Core\TrailNode.cs" />
     <Compile Include="3_AssetBundle\Trails\Core\TrailSpline.cs" />
     <Compile Include="3_AssetBundle\Trails\SimpleTrail.cs" />
+    <Compile Include="7_Utils\EnumUtils\WarningLevelUtils.cs" />
+    <Compile Include="7_Utils\StaticUtils\CompatibilityUtils.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="8_UI\ModPanelUI.cs" />
@@ -235,6 +238,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="9_Resources\Icons\Warning.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -28,6 +28,12 @@ namespace EasyOffset {
 
         #endregion
 
+        #region MinimalWarningLevel
+
+        public string MinimalWarningLevel = Defaults.MinimalWarningLevel;
+
+        #endregion
+
         #region RoomOffset
 
         public bool AllowRoomXChange = Defaults.AllowRoomXChange;

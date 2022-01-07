@@ -123,7 +123,16 @@
                     hover-hint="Save current preset"/>
             <button text="Load" interactable="~interactable" preferred-width="20" on-click="bp-load-on-click"
                     hover-hint="Load config preset"/>
-            <vertical preferred-width="30"/>
+
+            <vertical preferred-width="2"/>
+
+            <vertical preferred-width="5">
+                <image source="EasyOffset._9_Resources.Icons.Warning.png" preserve-aspect="true"
+                       active="~warning-active" image-color="~warning-color" hover-hint="~warning-hint"/>
+            </vertical>
+
+            <vertical preferred-width="22"/>
+
             <toggle-setting text="UI Lock" preferred-width="30" value="lock-value" on-change="lock-on-change" apply-on-change="true"
                             hover-hint="Disable UI interaction to prevent accidental changes"/>
         </horizontal>

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.Components;
 using JetBrains.Annotations;
@@ -20,6 +22,22 @@ namespace EasyOffset {
             get => PluginConfig.HideControllers;
             set => PluginConfig.HideControllers = value;
         }
+
+        #region Minimal warning level
+        
+        [UIValue("warnings-choices")] [UsedImplicitly]
+        private List<object> _minimalWarningLevelChoices = WarningLevelUtils.AllNamesObjects.ToList();
+
+        [UIValue("warnings-choice")] [UsedImplicitly]
+        private string _minimalWarningLevelChoice = WarningLevelUtils.TypeToName(PluginConfig.MinimalWarningLevel);
+
+        [UIAction("warnings-on-change")]
+        [UsedImplicitly]
+        private void MinimalWarningLevelOnChange(string selectedValue) {
+            PluginConfig.MinimalWarningLevel = WarningLevelUtils.NameToType(selectedValue);
+        }
+
+        #endregion
 
         #endregion
 

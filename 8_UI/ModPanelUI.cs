@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.Components;
 using HMUI;
@@ -14,6 +15,7 @@ namespace EasyOffset {
         public ModPanelUI() {
             SubscribeToBenchmarkEvents();
             SubscribeToRoomOffsetEvents();
+            SubscribeToWarningEvents();
         }
 
         #endregion
@@ -772,6 +774,110 @@ namespace EasyOffset {
         private void BottomPanelLoadOnClick() {
             UpdatePresetsBrowserList();
             GoToBrowserPage(false, true);
+        }
+
+        #endregion
+
+        #region WarningIcon
+
+        private const string NonCriticalImageColor = "#FFFF00";
+        private const string CriticalImageColor = "#FF0000";
+        private const string NonCriticalTextColor = "#CE8600";
+        private const string CriticalTextColor = "#9E0000";
+
+        private bool _warningActive;
+
+        [UIValue("warning-active")]
+        [UsedImplicitly]
+        private bool WarningActive {
+            get => _warningActive;
+            set {
+                _warningActive = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private string _warningColor = NonCriticalImageColor;
+
+        [UIValue("warning-color")]
+        [UsedImplicitly]
+        private string WarningColor {
+            get => _warningColor;
+            set {
+                _warningColor = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private string _warningHint = "";
+
+        [UIValue("warning-hint")]
+        [UsedImplicitly]
+        private string WarningHint {
+            get => _warningHint;
+            set {
+                _warningHint = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private void SubscribeToWarningEvents() {
+            PluginConfig.MinimalWarningLevelChangedEvent += OnMinimalWarningLevelChanged;
+            OnMinimalWarningLevelChanged(PluginConfig.MinimalWarningLevel);
+        }
+
+        private void OnMinimalWarningLevelChanged(WarningLevel minimalWarningLevel) {
+            CompatibilityUtils.GetCompatibilityIssues(out var issues, out var mostCriticalLevel);
+
+            if (issues.Count == 0 || mostCriticalLevel < minimalWarningLevel) {
+                WarningActive = false;
+                WarningHint = "";
+                return;
+            }
+
+            switch (mostCriticalLevel) {
+                case WarningLevel.NonCritical:
+                    WarningColor = NonCriticalImageColor;
+                    break;
+                case WarningLevel.Critical:
+                    WarningColor = CriticalImageColor;
+                    break;
+                case WarningLevel.Disable:
+                default: return;
+            }
+
+            WarningHint = BuildWarningMessage(issues, minimalWarningLevel);
+            WarningActive = true;
+        }
+
+        private static string BuildWarningMessage(IEnumerable<CompatibilityUtils.CompatibilityIssue> issues, WarningLevel minimalWarningLevel) {
+            var stringBuilder = new StringBuilder();
+
+            foreach (var issue in issues.Where(issue => issue.WarningLevel >= minimalWarningLevel)) {
+                switch (issue.WarningLevel) {
+                    case WarningLevel.NonCritical:
+                        stringBuilder.Append("<color=");
+                        stringBuilder.Append(NonCriticalTextColor);
+                        stringBuilder.Append(">Interference</color> - ");
+                        break;
+                    case WarningLevel.Critical:
+                        stringBuilder.Append("<color=");
+                        stringBuilder.Append(CriticalTextColor);
+                        stringBuilder.Append(">Incompatible</color> - ");
+                        break;
+                    case WarningLevel.Disable:
+                    default: continue;
+                }
+
+                stringBuilder.AppendLine(issue.PluginName);
+                stringBuilder.Append("<size=80%>");
+                stringBuilder.Append(issue.WarningMessage);
+                stringBuilder.AppendLine("</size>");
+                stringBuilder.AppendLine();
+            }
+
+            stringBuilder.Append("<size=80%>You can disable warnings in the mod settings</size>");
+            return stringBuilder.ToString();
         }
 
         #endregion

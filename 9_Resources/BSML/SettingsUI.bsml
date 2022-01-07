@@ -6,6 +6,8 @@
                 <toggle-setting text="Enabled" value="enabled-value" hover-hint="Enable plugin"/>
                 <toggle-setting text="Hide controllers" value="hide-controllers-value" apply-on-change="true"
                                 hover-hint="Don't show controllers when the mod settings tab is not visible"/>
+                <dropdown-list-setting text="Warnings" value="warnings-choice" choices="warnings-choices" on-change="warnings-on-change" apply-on-change="true"
+                                       hover-hint="Warning notification visibility"/>
             </vertical>
         </horizontal>
 

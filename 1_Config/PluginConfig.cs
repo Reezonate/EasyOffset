@@ -87,6 +87,26 @@ namespace EasyOffset {
 
         #endregion
 
+        #region MinimalWarningLevel
+
+        public static event Action<WarningLevel> MinimalWarningLevelChangedEvent;
+
+        private static readonly CachedVariable<WarningLevel> CachedMinimalWarningLevel = new(
+            () => WarningLevelUtils.NameToTypeOrDefault(ConfigFileData.Instance.MinimalWarningLevel)
+        );
+
+        public static WarningLevel MinimalWarningLevel {
+            get => CachedMinimalWarningLevel.Value;
+            set {
+                if (CachedMinimalWarningLevel.Value == value) return;
+                CachedMinimalWarningLevel.Value = value;
+                ConfigFileData.Instance.MinimalWarningLevel = WarningLevelUtils.TypeToName(value);
+                MinimalWarningLevelChangedEvent?.Invoke(value);
+            }
+        }
+
+        #endregion
+
         #region Smoothing
 
         public static bool SmoothingEnabled { get; set; }

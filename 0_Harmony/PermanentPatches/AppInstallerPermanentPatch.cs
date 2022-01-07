@@ -15,7 +15,7 @@ namespace EasyOffset {
 
         #endregion
 
-        #region Prefix
+        #region Postfix
 
         private static readonly FieldInfo MainSettingsFieldInfo = typeof(PCAppInit).GetField(
             "_mainSettingsModel",
