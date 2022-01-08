@@ -10,7 +10,8 @@ Tired from a pile of magic config numbers? Find the best offset for your grip ju
 
 # Compatibility
 
-- Not compatible with other offset adjustment mods (e.g. SaberTailor, ControllerSettingsHelper, etc.)
+- Partially compatible with SaberTailor (Grip modification should be turned off)
+- Not compatible with other offset adjustment mods (e.g. ControllerSettingsHelper)
 - Config values are different from the base game settings, SaberTailor, etc.
 - **PC ONLY**! Quest version is planned, but not guaranteed
 - Best used with [CustomMenuPointers](https://github.com/dawnvt/CustomMenuPointers)
