@@ -41,7 +41,7 @@ namespace EasyOffset {
             return type switch {
                 WarningLevel.NonCritical => "Everything",
                 WarningLevel.Critical => "Critical only",
-                WarningLevel.Disable => "Nothing",
+                WarningLevel.Disable => "Disable",
                 _ => throw new ArgumentOutOfRangeException()
             };
         }
