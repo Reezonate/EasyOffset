@@ -27,12 +27,10 @@ internal static class SceneTransitionPatch {
     }
 
     private static void OnEnterMainMenu() {
-        Plugin.Log.Info("MENU!");
         PluginConfig.IsInMainMenu = true;
     }
 
     private static void OnLeaveMainMenu() {
-        Plugin.Log.Info("NE MENU!");
         PluginConfig.IsInMainMenu = false;
     }
 }
