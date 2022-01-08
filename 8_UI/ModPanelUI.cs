@@ -822,11 +822,18 @@ namespace EasyOffset {
         }
 
         private void SubscribeToWarningEvents() {
-            PluginConfig.MinimalWarningLevelChangedEvent += OnMinimalWarningLevelChanged;
-            OnMinimalWarningLevelChanged(PluginConfig.MinimalWarningLevel);
+            PluginConfig.MinimalWarningLevelChangedEvent += UpdateWarning;
+            PluginConfig.IsModPanelVisibleChangedEvent += OnModPanelVisibleChanged;
+            UpdateWarning(PluginConfig.MinimalWarningLevel);
         }
 
-        private void OnMinimalWarningLevelChanged(WarningLevel minimalWarningLevel) {
+        private void OnModPanelVisibleChanged(bool value) {
+            if (!value) return;
+            UpdateWarning(PluginConfig.MinimalWarningLevel);
+        }
+        
+
+        private void UpdateWarning(WarningLevel minimalWarningLevel) {
             CompatibilityUtils.GetCompatibilityIssues(out var issues, out var mostCriticalLevel);
 
             if (issues.Count == 0 || mostCriticalLevel < minimalWarningLevel) {
