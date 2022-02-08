@@ -19,9 +19,10 @@ namespace EasyOffset {
         #region Variables
 
         public static float ZOffset = Defaults.ZOffset;
-        private static bool _isMigrationPossible;
-        private static bool _isValveController;
-        private static bool _isVRModeOculus;
+        public static bool IsMigrationPossible { get; private set; }
+
+        public static bool IsValveController { get; private set; }
+        public static bool IsVRModeOculus { get; private set; }
 
         #endregion
 
@@ -54,25 +55,25 @@ namespace EasyOffset {
             var manufacturerName = OpenVRHelperVRControllerManufacturerNamePropertyInfo?.GetValue(vrPlatformHelper);
 
             if (manufacturerName == null) {
-                _isMigrationPossible = false;
-                _isValveController = false;
-                _isVRModeOculus = false;
+                IsMigrationPossible = false;
+                IsValveController = false;
+                IsVRModeOculus = false;
             } else {
-                _isMigrationPossible = true;
-                _isValveController = (OpenVRHelper.VRControllerManufacturerName) manufacturerName == OpenVRHelper.VRControllerManufacturerName.Valve;
+                IsMigrationPossible = true;
+                IsValveController = (OpenVRHelper.VRControllerManufacturerName) manufacturerName == OpenVRHelper.VRControllerManufacturerName.Valve;
             }
         }
 
         private static void UseOculusVRHelper() {
-            _isMigrationPossible = true;
-            _isValveController = false;
-            _isVRModeOculus = true;
+            IsMigrationPossible = true;
+            IsValveController = false;
+            IsVRModeOculus = true;
         }
 
         private static void UseDevicelessVRHelper() {
-            _isMigrationPossible = false;
-            _isValveController = false;
-            _isVRModeOculus = false;
+            IsMigrationPossible = false;
+            IsValveController = false;
+            IsVRModeOculus = false;
         }
 
         #endregion
@@ -80,14 +81,14 @@ namespace EasyOffset {
         #region ImportFromSettings
 
         public static ConfigImportResult ImportFromSettings() {
-            if (!_isMigrationPossible) return ConfigImportResult.DevicelessFail;
+            if (!IsMigrationPossible) return ConfigImportResult.DevicelessFail;
 
             var position = PluginConfig.MainSettingsModel.controllerPosition.value;
             var rotationEuler = PluginConfig.MainSettingsModel.controllerRotation.value;
 
             ConfigConversions.FromBaseGame(
-                _isValveController,
-                _isVRModeOculus,
+                IsValveController,
+                IsVRModeOculus,
                 ZOffset,
                 position,
                 rotationEuler,
@@ -113,20 +114,20 @@ namespace EasyOffset {
         #region ImportFromSaberTailor
 
         public static ConfigImportResult ImportFromSaberTailor() {
-            if (!_isMigrationPossible) return ConfigImportResult.DevicelessFail;
+            if (!IsMigrationPossible) return ConfigImportResult.DevicelessFail;
 
             if (!ParseSaberTailorConfig(
-                out var useBaseGameAdjustmentMode,
-                out var gripLeftPosition,
-                out var gripRightPosition,
-                out var gripLeftRotation,
-                out var gripRightRotation
-            )) return ConfigImportResult.ParseFail;
+                    out var useBaseGameAdjustmentMode,
+                    out var gripLeftPosition,
+                    out var gripRightPosition,
+                    out var gripLeftRotation,
+                    out var gripRightRotation
+                )) return ConfigImportResult.ParseFail;
 
             ConfigConversions.FromTailor(
                 useBaseGameAdjustmentMode,
-                _isValveController,
-                _isVRModeOculus,
+                IsValveController,
+                IsVRModeOculus,
                 ZOffset,
                 ZOffset,
                 gripLeftPosition,
@@ -155,11 +156,11 @@ namespace EasyOffset {
         #region ExportToSettings
 
         public static ConfigExportResult ExportToSettings() {
-            if (!_isMigrationPossible) return ConfigExportResult.DevicelessFail;
+            if (!IsMigrationPossible) return ConfigExportResult.DevicelessFail;
 
             ConfigConversions.ToBaseGame(
-                _isValveController,
-                _isVRModeOculus,
+                IsValveController,
+                IsVRModeOculus,
                 PluginConfig.RightHandTranslation,
                 PluginConfig.RightHandRotation,
                 out var position,
@@ -177,12 +178,12 @@ namespace EasyOffset {
         #region ExportToSaberTailor
 
         public static ConfigExportResult ExportToSaberTailor(bool useBaseGameAdjustmentMode = true) {
-            if (!_isMigrationPossible) return ConfigExportResult.DevicelessFail;
+            if (!IsMigrationPossible) return ConfigExportResult.DevicelessFail;
 
             ConfigConversions.ToTailor(
                 useBaseGameAdjustmentMode,
-                _isValveController,
-                _isVRModeOculus,
+                IsValveController,
+                IsVRModeOculus,
                 PluginConfig.LeftHandTranslation,
                 PluginConfig.LeftHandRotation,
                 PluginConfig.RightHandTranslation,

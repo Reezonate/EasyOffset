@@ -1,29 +1,39 @@
 <horizontal id="root">
     <!--    MAIN PAGE    -->
     <vertical active="~main-page-active" preferred-width="100">
+        <!--    STYLE    -->
+        <macro.define name="top-section-height" value="22"/>
+        <macro.define name="middle-section-height" value="33"/>
+        <macro.define name="bottom-section-height" value="10"/>
+
         <!--    OPTIONS PANEL    -->
-        <horizontal preferred-height="25">
+        <horizontal preferred-height="~top-section-height">
             <vertical>
                 <horizontal preferred-height="20">
                     <vertical>
-                        <horizontal>
+                        <horizontal preferred-height="6">
                             <dropdown-list-setting interactable="~interactable" text="Adjustment Mode" preferred-width="65" value="am-choice"
                                                    choices="am-choices"
                                                    on-change="am-on-change" apply-on-change="true" bind-value="true" hover-hint="~am-hint"/>
                             <dropdown-list-setting interactable="~interactable" text="" preferred-width="35" value="ab-choice" choices="ab-choices"
                                                    on-change="ab-on-change" apply-on-change="true" hover-hint="Controller button"/>
                         </horizontal>
-                        <dropdown-list-setting interactable="~interactable" text="Controller type" value="dc-choice" choices="dc-choices"
-                                               on-change="dc-on-change" apply-on-change="true" hover-hint="Controller reference model"/>
-                        <toggle-setting interactable="~interactable" text="Use free hand" value="ufh-value" on-change="ufh-on-change" apply-on-change="true"
-                                        hover-hint="Use Right controller button for Left hand adjustments and vice versa"/>
+                        <horizontal preferred-height="6">
+                            <dropdown-list-setting interactable="~interactable" text="Controller type" value="dc-choice" choices="dc-choices"
+                                                   on-change="dc-on-change" apply-on-change="true" hover-hint="Controller reference model"/>
+                        </horizontal>
+                        <horizontal preferred-height="6">
+                            <toggle-setting interactable="~interactable" text="Use free hand" active="~ufh-active"
+                                            value="ufh-value" on-change="ufh-on-change" apply-on-change="true"
+                                            hover-hint="Use Right controller button for Left hand adjustments and vice versa"/>
+                        </horizontal>
                     </vertical>
                 </horizontal>
             </vertical>
         </horizontal>
 
         <!--    HANDS PANEL    -->
-        <horizontal active="~hands-panel-active" preferred-height="30">
+        <horizontal active="~hands-panel-active" preferred-height="~middle-section-height">
             <vertical>
                 <horizontal preferred-height="24">
                     <vertical preferred-width="50">
@@ -50,7 +60,7 @@
         </horizontal>
 
         <!--    BENCHMARK PANEL    -->
-        <horizontal active="~benchmark-panel-active" preferred-height="30">
+        <horizontal active="~benchmark-panel-active" preferred-height="~middle-section-height">
             <!--    GUIDE    -->
             <vertical active="~benchmark-guide-active" preferred-width="60">
                 <horizontal preferred-height="24">
@@ -99,8 +109,140 @@
             </vertical>
         </horizontal>
 
+        <!--    LEGACY PANEL    -->
+        <horizontal active="~legacy-panel-active" preferred-height="~middle-section-height" id="legacy-panel-component">
+            <!--    STYLE    -->
+            <macro.define name="legacy-sliders-section-height" value="34"/>
+            <macro.define name="legacy-sliders-section-width" value="56"/>
+            <macro.define name="legacy-hand-width" value="32"/>
+            <macro.define name="legacy-mirror-width" value="32"/>
+            <macro.define name="legacy-slider-label-width" value="8"/>
+            <macro.define name="legacy-slider-button-width" value="8"/>
+            <macro.define name="legacy-slider-width" value="40"/>
+            <macro.define name="legacy-pos-rot-spacing" value="2"/>
+            <macro.define name="legacy-x-color" value="#ff8888"/>
+            <macro.define name="legacy-y-color" value="#88ff88"/>
+            <macro.define name="legacy-z-color" value="#8888ff"/>
+
+            <vertical active="~legacy-deviceless-warning-active">
+                <text text="Unknown VR device!" font-color="#ff6666" font-size="10" align="Center"/>
+            </vertical>
+
+            <vertical active="~legacy-settings-active">
+                <horizontal spacing="2">
+                    <!--    LEFT HAND    -->
+                    <vertical preferred-width="~legacy-sliders-section-width" spacing="3">
+                        <horizontal preferred-height="7">
+                            <vertical preferred-width="~legacy-hand-width">
+                                <text text="Left Hand" font-size="5" align="Midline"/>
+                            </vertical>
+                            <vertical preferred-width="~legacy-mirror-width">
+                                <button text="Mirror to Right -&gt;" on-click="legacy-mirror-to-right-on-click"/>
+                            </vertical>
+                        </horizontal>
+                        <horizontal preferred-height="~legacy-sliders-section-height">
+                            <vertical preferred-width="~legacy-slider-button-width">
+                                <button text="-" face-color="~legacy-x-color" on-click="legacy-left-pos-x-dec-on-click"/>
+                                <button text="-" face-color="~legacy-y-color" on-click="legacy-left-pos-y-dec-on-click"/>
+                                <button text="-" face-color="~legacy-z-color" on-click="legacy-left-pos-z-dec-on-click"/>
+                                <horizontal preferred-height="~legacy-pos-rot-spacing"/>
+                                <button text="-" face-color="~legacy-x-color" on-click="legacy-left-rot-x-dec-on-click"/>
+                                <button text="-" face-color="~legacy-y-color" on-click="legacy-left-rot-y-dec-on-click"/>
+                            </vertical>
+                            <vertical preferred-width="~legacy-slider-width">
+                                <slider-setting text="" apply-on-change="true" bind-value="true"
+                                                value="legacy-left-pos-x-value" on-change="legacy-left-pos-x-on-change"
+                                                min="~pos-slider-min" max="~pos-slider-max" increment="~pos-slider-increment" formatter="pos-slider-formatter"/>
+                                <slider-setting text="" apply-on-change="true" bind-value="true"
+                                                value="legacy-left-pos-y-value" on-change="legacy-left-pos-y-on-change"
+                                                min="~pos-slider-min" max="~pos-slider-max" increment="~pos-slider-increment" formatter="pos-slider-formatter"/>
+                                <slider-setting text="" apply-on-change="true" bind-value="true"
+                                                value="legacy-left-pos-z-value" on-change="legacy-left-pos-z-on-change"
+                                                min="~pos-slider-min" max="~pos-slider-max" increment="~pos-slider-increment" formatter="pos-slider-formatter"/>
+                                <horizontal preferred-height="~legacy-pos-rot-spacing"/>
+                                <slider-setting text="" apply-on-change="true" bind-value="true"
+                                                value="legacy-left-rot-x-value" on-change="legacy-left-rot-x-on-change"
+                                                min="~rot-slider-min" max="~rot-slider-max" increment="~rot-slider-increment" formatter="rot-slider-formatter"/>
+                                <slider-setting text="" apply-on-change="true" bind-value="true"
+                                                value="legacy-left-rot-y-value" on-change="legacy-left-rot-y-on-change"
+                                                min="~rot-slider-min" max="~rot-slider-max" increment="~rot-slider-increment" formatter="rot-slider-formatter"/>
+                            </vertical>
+                            <vertical preferred-width="~legacy-slider-button-width">
+                                <button text="+" face-color="~legacy-x-color" on-click="legacy-left-pos-x-inc-on-click"/>
+                                <button text="+" face-color="~legacy-y-color" on-click="legacy-left-pos-y-inc-on-click"/>
+                                <button text="+" face-color="~legacy-z-color" on-click="legacy-left-pos-z-inc-on-click"/>
+                                <horizontal preferred-height="~legacy-pos-rot-spacing"/>
+                                <button text="+" face-color="~legacy-x-color" on-click="legacy-left-rot-x-inc-on-click"/>
+                                <button text="+" face-color="~legacy-y-color" on-click="legacy-left-rot-y-inc-on-click"/>
+                            </vertical>
+                        </horizontal>
+                    </vertical>
+
+                    <!--    LABELS    -->
+                    <vertical preferred-width="~legacy-slider-label-width">
+                        <horizontal preferred-height="10"/>
+                        <text text="Pos X" font-color="~legacy-x-color" align="Midline"/>
+                        <text text="Pos Y" font-color="~legacy-y-color" align="Midline"/>
+                        <text text="Pos Z" font-color="~legacy-z-color" align="Midline"/>
+                        <horizontal preferred-height="~legacy-pos-rot-spacing"/>
+                        <text text="Rot X" font-color="~legacy-x-color" align="Midline"/>
+                        <text text="Rot Y" font-color="~legacy-y-color" align="Midline"/>
+                    </vertical>
+
+                    <!--    Right HAND    -->
+                    <vertical preferred-width="~legacy-sliders-section-width" spacing="3">
+                        <horizontal preferred-height="7">
+                            <vertical preferred-width="~legacy-mirror-width">
+                                <button text="&lt;- Mirror to Left" on-click="legacy-mirror-to-left-on-click"/>
+                            </vertical>
+                            <vertical preferred-width="~legacy-hand-width">
+                                <text text="Right Hand" font-size="5" align="Midline"/>
+                            </vertical>
+                        </horizontal>
+                        <horizontal preferred-height="~legacy-sliders-section-height">
+                            <vertical preferred-width="~legacy-slider-button-width">
+                                <button text="-" face-color="~legacy-x-color" on-click="legacy-right-pos-x-dec-on-click"/>
+                                <button text="-" face-color="~legacy-y-color" on-click="legacy-right-pos-y-dec-on-click"/>
+                                <button text="-" face-color="~legacy-z-color" on-click="legacy-right-pos-z-dec-on-click"/>
+                                <horizontal preferred-height="~legacy-pos-rot-spacing"/>
+                                <button text="-" face-color="~legacy-x-color" on-click="legacy-right-rot-x-dec-on-click"/>
+                                <button text="-" face-color="~legacy-y-color" on-click="legacy-right-rot-y-dec-on-click"/>
+                            </vertical>
+                            <vertical preferred-width="~legacy-slider-width">
+                                <slider-setting text="" apply-on-change="true" bind-value="true"
+                                                value="legacy-right-pos-x-value" on-change="legacy-right-pos-x-on-change"
+                                                min="~pos-slider-min" max="~pos-slider-max" increment="~pos-slider-increment" formatter="pos-slider-formatter"/>
+                                <slider-setting text="" apply-on-change="true" bind-value="true"
+                                                value="legacy-right-pos-y-value" on-change="legacy-right-pos-y-on-change"
+                                                min="~pos-slider-min" max="~pos-slider-max" increment="~pos-slider-increment" formatter="pos-slider-formatter"/>
+                                <slider-setting text="" apply-on-change="true" bind-value="true"
+                                                value="legacy-right-pos-z-value" on-change="legacy-right-pos-z-on-change"
+                                                min="~pos-slider-min" max="~pos-slider-max" increment="~pos-slider-increment" formatter="pos-slider-formatter"/>
+                                <horizontal preferred-height="~legacy-pos-rot-spacing"/>
+                                <slider-setting text="" apply-on-change="true" bind-value="true"
+                                                value="legacy-right-rot-x-value" on-change="legacy-right-rot-x-on-change"
+                                                min="~rot-slider-min" max="~rot-slider-max" increment="~rot-slider-increment" formatter="rot-slider-formatter"/>
+                                <slider-setting text="" apply-on-change="true" bind-value="true"
+                                                value="legacy-right-rot-y-value" on-change="legacy-right-rot-y-on-change"
+                                                min="~rot-slider-min" max="~rot-slider-max" increment="~rot-slider-increment" formatter="rot-slider-formatter"/>
+                            </vertical>
+                            <vertical preferred-width="~legacy-slider-button-width">
+                                <button text="+" face-color="~legacy-x-color" on-click="legacy-right-pos-x-inc-on-click"/>
+                                <button text="+" face-color="~legacy-y-color" on-click="legacy-right-pos-y-inc-on-click"/>
+                                <button text="+" face-color="~legacy-z-color" on-click="legacy-right-pos-z-inc-on-click"/>
+                                <horizontal preferred-height="~legacy-pos-rot-spacing"/>
+                                <button text="+" face-color="~legacy-x-color" on-click="legacy-right-rot-x-inc-on-click"/>
+                                <button text="+" face-color="~legacy-y-color" on-click="legacy-right-rot-y-inc-on-click"/>
+                            </vertical>
+                        </horizontal>
+                    </vertical>
+                </horizontal>
+                <horizontal preferred-height="28"/>
+            </vertical>
+        </horizontal>
+
         <!--    ROOM OFFSET PANEL    -->
-        <horizontal active="~room-offset-panel-active" preferred-height="30">
+        <horizontal active="~room-offset-panel-active" preferred-height="~middle-section-height">
             <vertical>
                 <horizontal preferred-height="20">
                     <vertical preferred-width="30" child-control-width="true" child-expand-width="true">
@@ -128,7 +270,7 @@
         </horizontal>
 
         <!--    BOTTOM PANEL    -->
-        <horizontal preferred-height="10">
+        <horizontal preferred-height="~bottom-section-height">
             <button text="Save" interactable="~interactable" preferred-width="20" on-click="bp-save-on-click"
                     hover-hint="Save current preset"/>
             <button text="Load" interactable="~interactable" preferred-width="20" on-click="bp-load-on-click"

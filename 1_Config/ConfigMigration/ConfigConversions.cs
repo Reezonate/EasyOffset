@@ -78,12 +78,12 @@ namespace EasyOffset {
         ) {
             gripPosition = saberTranslation;
             gripRotation = saberRotation.eulerAngles;
-            
+
             gripRotation = new Vector3(
                 ClampRotation(gripRotation.x),
                 ClampRotation(gripRotation.y),
                 ClampRotation(gripRotation.z)
-                );
+            );
 
             if (useBaseGameAdjustmentMode) {
                 gripPosition = Quaternion.Inverse(saberRotation) * gripPosition;

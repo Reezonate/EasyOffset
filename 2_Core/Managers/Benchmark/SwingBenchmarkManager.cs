@@ -222,6 +222,7 @@ namespace EasyOffset {
                 case AdjustmentMode.None:
                 case AdjustmentMode.Basic:
                 case AdjustmentMode.Position:
+                case AdjustmentMode.Legacy:
                 case AdjustmentMode.RoomOffset:
                     swingVisible = false;
                     handsVisible = false;

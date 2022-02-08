@@ -164,6 +164,13 @@ namespace EasyOffset {
                     isSphericalBasisVisible = false;
                     isSwingPreviewVisible = false;
                     break;
+                case AdjustmentMode.Legacy:
+                    isPivotVisible = true;
+                    isOrthonormalBasisVisible = false;
+                    isOrthonormalBasisPointerVisible = false;
+                    isSphericalBasisVisible = false;
+                    isSwingPreviewVisible = true;
+                    break;
                 case AdjustmentMode.RotationAuto:
                     isPivotVisible = true;
                     isOrthonormalBasisVisible = false;
