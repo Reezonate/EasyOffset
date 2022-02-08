@@ -619,6 +619,7 @@ namespace EasyOffset {
 
         private void SubscribeToRoomOffsetEvents() {
             PluginConfig.MainSettingsModelChangedEvent += OnMainSettingsModelChanged;
+            RoomOffsetAdjustmentModeManager.OnHmdPositionChangedEvent += OnHmdPositionChange;
         }
 
         private void OnMainSettingsModelChanged(MainSettingsModelSO mainSettingsModel) {
@@ -633,9 +634,15 @@ namespace EasyOffset {
 
         private void OnRoomCenterChanged() {
             var tmp = _roomCenterSO.value;
-            RoomXText = $"X:\t{(tmp.x * 100):F2} cm";
-            RoomYText = $"Y:\t{(tmp.y * 100):F2} cm";
-            RoomZText = $"Z:\t{(tmp.z * 100):F2} cm";
+            RoomXText = $"Room X: {(tmp.x * 100):F2} cm";
+            RoomYText = $"Room Y: {(tmp.y * 100):F2} cm";
+            RoomZText = $"Room Z: {(tmp.z * 100):F2} cm";
+        }
+
+        private void OnHmdPositionChange(Vector3 position) {
+            HmdXText = $"HMD X: {(position.x * 100):F2} cm";
+            HmdYText = $"HMD Y: {(position.y * 100):F2} cm";
+            HmdZText = $"HMD Z: {(position.z * 100):F2} cm";
         }
 
         #endregion
@@ -656,7 +663,47 @@ namespace EasyOffset {
 
         #endregion
 
-        #region X
+        #region Head
+
+        private string _hmdXText = "";
+
+        [UIValue("hmd-x-text")]
+        [UsedImplicitly]
+        private string HmdXText {
+            get => _hmdXText;
+            set {
+                _hmdXText = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private string _hmdYText = "";
+
+        [UIValue("hmd-y-text")]
+        [UsedImplicitly]
+        private string HmdYText {
+            get => _hmdYText;
+            set {
+                _hmdYText = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private string _hmdZText = "";
+
+        [UIValue("hmd-z-text")]
+        [UsedImplicitly]
+        private string HmdZText {
+            get => _hmdZText;
+            set {
+                _hmdZText = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        #endregion
+
+        #region Room X
 
         private string _roomXText = "";
 
@@ -688,7 +735,7 @@ namespace EasyOffset {
 
         #endregion
 
-        #region Y
+        #region Room Y
 
         private string _roomYText = "";
 
@@ -720,7 +767,7 @@ namespace EasyOffset {
 
         #endregion
 
-        #region Z
+        #region Room Z
 
         private string _roomZText = "";
 
@@ -831,7 +878,7 @@ namespace EasyOffset {
             if (!value) return;
             UpdateWarning(PluginConfig.MinimalWarningLevel);
         }
-        
+
 
         private void UpdateWarning(WarningLevel minimalWarningLevel) {
             CompatibilityUtils.GetCompatibilityIssues(out var issues, out var mostCriticalLevel);

@@ -103,10 +103,20 @@
         <horizontal active="~room-offset-panel-active" preferred-height="30">
             <vertical>
                 <horizontal preferred-height="20">
-                    <vertical preferred-width="40">
-                        <toggle-setting text="~room-x-text" value="room-x-toggle-value" on-change="room-x-toggle-on-change" hover-hint="Allow X offset change"/>
-                        <toggle-setting text="~room-y-text" value="room-y-toggle-value" on-change="room-y-toggle-on-change" hover-hint="Allow Y offset change"/>
-                        <toggle-setting text="~room-z-text" value="room-z-toggle-value" on-change="room-z-toggle-on-change" hover-hint="Allow Z offset change"/>
+                    <vertical preferred-width="30" child-control-width="true" child-expand-width="true">
+                        <text text="~hmd-x-text" hover-hint="Headset X coordinate" align="Center"/>
+                        <text text="~hmd-y-text" hover-hint="Headset Y coordinate" align="Center"/>
+                        <text text="~hmd-z-text" hover-hint="Headset Z coordinate" align="Center"/>
+                    </vertical>
+                    <vertical preferred-width="30" child-control-width="true" child-expand-width="true">
+                        <text text="~room-x-text" hover-hint="Room X offset" align="Center"/>
+                        <text text="~room-y-text" hover-hint="Room Y offset" align="Center"/>
+                        <text text="~room-z-text" hover-hint="Room Z offset" align="Center"/>
+                    </vertical>
+                    <vertical preferred-width="20">
+                        <toggle-setting text="" value="room-x-toggle-value" on-change="room-x-toggle-on-change" hover-hint="Allow X offset change"/>
+                        <toggle-setting text="" value="room-y-toggle-value" on-change="room-y-toggle-on-change" hover-hint="Allow Y offset change"/>
+                        <toggle-setting text="" value="room-z-toggle-value" on-change="room-z-toggle-on-change" hover-hint="Allow Z offset change"/>
                     </vertical>
                     <vertical preferred-width="20" child-control-width="true" child-expand-width="true">
                         <button text="Reset" on-click="room-x-reset-on-click" hover-hint="Set X offset to 0"/>
