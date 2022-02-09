@@ -173,7 +173,7 @@ namespace EasyOffset {
         #region AssignedButton
 
         private static readonly CachedVariable<ControllerButton> CachedAssignedButton = new(
-            () => ControllerButtonUtils.NameToTypeOrDefault(ConfigFileData.Instance.AssignedButton)
+            () => ControllerButtonUtils.NameToTypeOrDefault(DisplayControllerType, ConfigFileData.Instance.AssignedButton)
         );
 
         public static ControllerButton AssignedButton {

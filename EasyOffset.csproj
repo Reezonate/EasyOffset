@@ -144,6 +144,7 @@
     <Compile Include="2_Core\Managers\Gizmos\GizmosManager.cs" />
     <Compile Include="2_Core\Managers\Input\ReeInputDevice.cs" />
     <Compile Include="2_Core\Managers\Input\ReeInputManager.cs" />
+    <Compile Include="2_Core\StructsAndEnums\ButtonAliasPair.cs" />
     <Compile Include="2_Core\StructsAndEnums\ControllerButton.cs" />
     <Compile Include="2_Core\StructsAndEnums\ControllerType.cs" />
     <Compile Include="2_Core\StructsAndEnums\AdjustmentMode.cs" />

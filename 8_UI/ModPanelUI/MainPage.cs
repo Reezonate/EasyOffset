@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using BeatSaberMarkupLanguage.Attributes;
+using BeatSaberMarkupLanguage.Components.Settings;
 using JetBrains.Annotations;
 
 namespace EasyOffset;
@@ -63,16 +64,51 @@ internal partial class ModPanelUI {
 
     #region AssignedButton
 
-    [UIValue("ab-choices")] [UsedImplicitly]
-    private List<object> _assignedButtonChoices = ControllerButtonUtils.AllNamesObjects.ToList();
+    #region Events
 
-    [UIValue("ab-choice")] [UsedImplicitly]
-    private string _assignedButtonChoice = ControllerButtonUtils.TypeToName(PluginConfig.AssignedButton);
+    private void SubscribeToAssignedButtonEvents() {
+        PluginConfig.ControllerTypeChangedEvent += OnControllerTypeChanged;
+        OnControllerTypeChanged(PluginConfig.DisplayControllerType, false);
+    }
 
-    [UIAction("ab-on-change")]
+    private void OnControllerTypeChanged(ControllerType controllerType) {
+        OnControllerTypeChanged(controllerType, true);
+    }
+
+    private void OnControllerTypeChanged(ControllerType controllerType, bool forceChoices) {
+        _buttonAliasDictionary = ControllerButtonUtils.GetAvailableOptions(controllerType, ConfigMigration.IsVRModeOculus);
+        _assignedButtonChoices = _buttonAliasDictionary.Keys.Cast<object>().ToList();
+
+        if (!forceChoices) return;
+        _assignedButtonComponent.values = _assignedButtonChoices;
+        _assignedButtonComponent.UpdateChoices();
+    }
+
+    #endregion
+
+    #region Formatter
+
+    private Dictionary<ControllerButton, string> _buttonAliasDictionary;
+
+    [UIAction("ab-formatter")]
     [UsedImplicitly]
-    private void AssignedButtonOnChange(string selectedValue) {
-        PluginConfig.AssignedButton = ControllerButtonUtils.NameToType(selectedValue);
+    private string AssignedButtonFormatter(ControllerButton controllerButton) {
+        return _buttonAliasDictionary.ContainsKey(controllerButton) ? _buttonAliasDictionary[controllerButton] : "None";
+    }
+
+    #endregion
+
+    [UIComponent("ab-component")] [UsedImplicitly]
+    private DropDownListSetting _assignedButtonComponent;
+
+    [UIValue("ab-choices")] [UsedImplicitly]
+    private List<object> _assignedButtonChoices;
+
+    [UIValue("ab-choice")]
+    [UsedImplicitly]
+    private ControllerButton AssignedButtonChoice {
+        get => PluginConfig.AssignedButton;
+        set => PluginConfig.AssignedButton = value;
     }
 
     #endregion

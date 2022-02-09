@@ -34,7 +34,7 @@ namespace EasyOffset {
 
         #region AssignedButton
 
-        public static readonly string AssignedButton = ControllerButtonUtils.TypeToName(ControllerButton.Grip);
+        public static readonly string AssignedButton = ControllerButtonUtils.TypeToName(ControllerButtonUtils.GetDefaultButton(ControllerType.None));
 
         #endregion
 

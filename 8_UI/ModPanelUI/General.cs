@@ -10,6 +10,7 @@ internal partial class ModPanelUI : NotifiableSingleton<ModPanelUI> {
     #region Constructor
 
     public ModPanelUI() {
+        SubscribeToAssignedButtonEvents();
         SubscribeToBenchmarkEvents();
         SubscribeToLegacyModeEvents();
         SubscribeToRoomOffsetEvents();

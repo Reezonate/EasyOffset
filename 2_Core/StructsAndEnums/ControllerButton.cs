@@ -1,7 +1,8 @@
-namespace EasyOffset {
-    public enum ControllerButton {
-        Grip,
-        Joystick,
-        Primary
-    }
+namespace EasyOffset; 
+
+public enum ControllerButton {
+    PrimaryButton,
+    SecondaryButton,
+    GripButton,
+    Primary2DAxisClick
 }

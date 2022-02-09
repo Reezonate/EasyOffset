@@ -15,8 +15,9 @@
                             <dropdown-list-setting interactable="~interactable" text="Adjustment Mode" preferred-width="65" value="am-choice"
                                                    choices="am-choices"
                                                    on-change="am-on-change" apply-on-change="true" bind-value="true" hover-hint="~am-hint"/>
-                            <dropdown-list-setting interactable="~interactable" text="" preferred-width="35" value="ab-choice" choices="ab-choices"
-                                                   on-change="ab-on-change" apply-on-change="true" hover-hint="Controller button"/>
+                            <dropdown-list-setting id="ab-component"  preferred-width="35" interactable="~interactable"
+                                                   text="" value="ab-choice" choices="ab-choices" hover-hint="Controller button"
+                                                   apply-on-change="true" formatter="ab-formatter"/>
                         </horizontal>
                         <horizontal preferred-height="6">
                             <dropdown-list-setting interactable="~interactable" text="Controller type" value="dc-choice" choices="dc-choices"
@@ -125,7 +126,13 @@
             <macro.define name="legacy-z-color" value="#8888ff"/>
 
             <vertical active="~legacy-deviceless-warning-active">
-                <text text="Unknown VR device!" font-color="#ff6666" font-size="10" align="Center"/>
+                <text font-color="#ff6666" font-size="8" align="Center"
+                      text="Unknown VR device!" />
+                <text font-size="5" align="Center"
+                      text="HMD information is required to mimic base game offsets"/>
+                <text font-size="5" align="Center"
+                      text="Legacy mode doesn't support FPFC"/>
+                <horizontal preferred-height="15"/>
             </vertical>
 
             <vertical active="~legacy-settings-active">
