@@ -9,7 +9,7 @@ namespace EasyOffset {
     public class RoomOffsetAdjustmentModeManager : AbstractAdjustmentModeManager, ITickable {
         #region Constructor
 
-        private IVRPlatformHelper _vrPlatformHelper;
+        private readonly IVRPlatformHelper _vrPlatformHelper;
 
         public RoomOffsetAdjustmentModeManager(
             IVRPlatformHelper vrPlatformHelper

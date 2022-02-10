@@ -115,6 +115,7 @@ namespace EasyOffset {
 
         public static string TypeToName(ControllerButton type) {
             return type switch {
+                ControllerButton.TriggerButton => "TriggerButton",
                 ControllerButton.PrimaryButton => "PrimaryButton",
                 ControllerButton.SecondaryButton => "SecondaryButton",
                 ControllerButton.GripButton => "GripButton",

@@ -14,23 +14,19 @@ namespace EasyOffset {
         }
 
         private static void OnLeftControllerButtonPressed(ControllerButton button) {
-            if (button != PluginConfig.AssignedButton) return;
-            Abomination.OnAssignedButtonPressed(Hand.Left);
+            Abomination.OnButtonPressed(Hand.Left, button);
         }
 
         private static void OnLeftControllerButtonReleased(ControllerButton button) {
-            if (button != PluginConfig.AssignedButton) return;
-            Abomination.OnAssignedButtonReleased(Hand.Left);
+            Abomination.OnButtonReleased(Hand.Left, button);
         }
 
         private static void OnRightControllerButtonPressed(ControllerButton button) {
-            if (button != PluginConfig.AssignedButton) return;
-            Abomination.OnAssignedButtonPressed(Hand.Right);
+            Abomination.OnButtonPressed(Hand.Right, button);
         }
 
         private static void OnRightControllerButtonReleased(ControllerButton button) {
-            if (button != PluginConfig.AssignedButton) return;
-            Abomination.OnAssignedButtonReleased(Hand.Right);
+            Abomination.OnButtonReleased(Hand.Right, button);
         }
 
         public void Initialize() {

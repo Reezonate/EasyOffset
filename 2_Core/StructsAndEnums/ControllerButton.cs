@@ -1,6 +1,7 @@
 namespace EasyOffset; 
 
 public enum ControllerButton {
+    TriggerButton,
     PrimaryButton,
     SecondaryButton,
     GripButton,

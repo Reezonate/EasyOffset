@@ -149,7 +149,7 @@ internal partial class ModPanelUI {
     [UsedImplicitly]
     private void PresetsBrowserLoadOnClick() {
         if (!ConfigPresetsStorage.LoadPreset(PresetFileName)) return;
-        if (PluginConfig.AdjustmentMode == AdjustmentMode.Legacy) UpdateLegacyConfig();
+        if (PluginConfig.AdjustmentMode == AdjustmentMode.Legacy) UpdateLegacyUI();
         UpdateZOffsetSliders();
         GoToMainPage();
     }

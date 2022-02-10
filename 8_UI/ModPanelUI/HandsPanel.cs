@@ -46,12 +46,6 @@ internal partial class ModPanelUI {
         }
     }
 
-    [UIAction("lzo-on-change")]
-    [UsedImplicitly]
-    private void OnLeftZOffsetValueChange(float value) {
-        PluginConfig.LeftHandZOffset = value / 100f;
-    }
-
     #endregion
 
     #region LeftHand actions menu
@@ -98,12 +92,6 @@ internal partial class ModPanelUI {
         }
     }
 
-    [UIAction("rzo-on-change")]
-    [UsedImplicitly]
-    private void OnRightZOffsetValueChange(float value) {
-        PluginConfig.RightHandZOffset = value / 100f;
-    }
-
     #endregion
 
     #region RightHand actions menu
@@ -145,14 +133,10 @@ internal partial class ModPanelUI {
             case HandMenuAction.Default: return;
 
             case HandMenuAction.LeftMirrorAll:
-                PluginConfig.MirrorPivot(hand);
-                PluginConfig.MirrorSaberDirection(hand);
-                PluginConfig.MirrorZOffset(hand);
+                PluginConfig.MirrorAll(hand);
                 break;
             case HandMenuAction.RightMirrorAll:
-                PluginConfig.MirrorPivot(hand);
-                PluginConfig.MirrorSaberDirection(hand);
-                PluginConfig.MirrorZOffset(hand);
+                PluginConfig.MirrorAll(hand);
                 break;
             case HandMenuAction.MirrorPivot:
                 PluginConfig.MirrorPivot(hand);

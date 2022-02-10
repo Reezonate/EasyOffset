@@ -21,8 +21,6 @@ namespace EasyOffset {
         [SerializeField] private GameObject viveTracker3;
         [SerializeField] private GameObject vive;
 
-        [SerializeField] private GameObject visuals;
-
         #endregion
 
         #region Instance
@@ -35,7 +33,7 @@ namespace EasyOffset {
             GameObject prefab
         ) {
             DestroyInstance();
-            _instance = Instantiate(prefab, visuals.transform, false);
+            _instance = Instantiate(prefab, transform, false);
             _spawned = true;
         }
 
@@ -77,7 +75,7 @@ namespace EasyOffset {
         }
 
         public void SetVisible(bool value) {
-            visuals.SetActive(value);
+            gameObject.SetActive(value);
         }
 
         #endregion

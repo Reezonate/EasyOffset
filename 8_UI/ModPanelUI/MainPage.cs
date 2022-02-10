@@ -68,7 +68,7 @@ internal partial class ModPanelUI {
 
     private void SubscribeToAssignedButtonEvents() {
         PluginConfig.ControllerTypeChangedEvent += OnControllerTypeChanged;
-        OnControllerTypeChanged(PluginConfig.DisplayControllerType, false);
+        OnControllerTypeChanged(PluginConfig.SelectedControllerType, false);
     }
 
     private void OnControllerTypeChanged(ControllerType controllerType) {
@@ -119,12 +119,12 @@ internal partial class ModPanelUI {
     private List<object> _displayControllerOptions = ControllerTypeUtils.AllNamesObjects.ToList();
 
     [UIValue("dc-choice")] [UsedImplicitly]
-    private string _displayControllerValue = ControllerTypeUtils.TypeToName(PluginConfig.DisplayControllerType);
+    private string _displayControllerValue = ControllerTypeUtils.TypeToName(PluginConfig.SelectedControllerType);
 
     [UIAction("dc-on-change")]
     [UsedImplicitly]
     private void OnDisplayControllerChange(string selectedValue) {
-        PluginConfig.DisplayControllerType = ControllerTypeUtils.NameToType(selectedValue);
+        PluginConfig.SelectedControllerType = ControllerTypeUtils.NameToType(selectedValue);
     }
 
     #endregion

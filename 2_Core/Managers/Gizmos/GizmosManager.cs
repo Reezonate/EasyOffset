@@ -21,9 +21,10 @@ namespace EasyOffset {
             PluginConfig.AdjustmentModeChangedEvent += OnAdjustmentModeChanged;
             PluginConfig.ControllerTypeChangedEvent += OnControllerTypeChanged;
             Abomination.TransformsUpdatedEvent += OnControllerTransformsChanged;
+            PluginConfig.ConfigWasChangedEvent += OnConfigWasChanged;
 
-            UpdateVisibility();
-            OnControllerTypeChanged(PluginConfig.DisplayControllerType);
+            OnControllerTypeChanged(PluginConfig.SelectedControllerType);
+            OnConfigWasChanged();
         }
 
         public void Dispose() {
@@ -32,18 +33,21 @@ namespace EasyOffset {
             PluginConfig.AdjustmentModeChangedEvent -= OnAdjustmentModeChanged;
             PluginConfig.ControllerTypeChangedEvent -= OnControllerTypeChanged;
             Abomination.TransformsUpdatedEvent -= OnControllerTransformsChanged;
+            PluginConfig.ConfigWasChangedEvent -= OnConfigWasChanged;
         }
 
         #endregion
 
         #region LateTick
 
-        public void LateTick() {
-            LeftHandGizmosController.SetPivotPosition(PluginConfig.LeftHandPivotPosition);
-            LeftHandGizmosController.SetSaberDirection(PluginConfig.LeftHandSaberDirection);
+        private bool _configUpdateRequired;
 
-            RightHandGizmosController.SetPivotPosition(PluginConfig.RightHandPivotPosition);
-            RightHandGizmosController.SetSaberDirection(PluginConfig.RightHandSaberDirection);
+        public void LateTick() {
+            if (_configUpdateRequired) {
+                UpdateConfigValues();
+                UpdateLegacyValues();
+                _configUpdateRequired = false;
+            }
 
             var mainCamera = Camera.main;
             if (mainCamera == null) return;
@@ -55,6 +59,57 @@ namespace EasyOffset {
         #endregion
 
         #region Events
+
+        private void OnConfigWasChanged() {
+            _configUpdateRequired = true;
+        }
+
+        private void UpdateConfigValues() {
+            LeftHandGizmosController.SetConfigValues(
+                PluginConfig.LeftHandTranslation,
+                PluginConfig.LeftHandRotation,
+                PluginConfig.LeftHandPivotPosition,
+                PluginConfig.LeftHandSaberDirection,
+                PluginConfig.LeftHandZOffset
+            );
+            RightHandGizmosController.SetConfigValues(
+                PluginConfig.RightHandTranslation,
+                PluginConfig.RightHandRotation,
+                PluginConfig.RightHandPivotPosition,
+                PluginConfig.RightHandSaberDirection,
+                PluginConfig.RightHandZOffset
+            );
+        }
+
+        private void UpdateLegacyValues() {
+            PluginConfig.GetLegacyConfig(
+                out var leftHandPosition,
+                out var leftHandRotation,
+                out var rightHandPosition,
+                out var rightHandRotation
+            );
+
+            ConfigConversions.GetBuiltInOffsets(
+                ConfigMigration.IsValveController,
+                ConfigMigration.IsVRModeOculus,
+                out var hiddenConfigPosition,
+                out var hiddenConfigRotation
+            );
+
+            LeftHandGizmosController.SetLegacyGimbalValues(
+                hiddenConfigPosition,
+                hiddenConfigRotation,
+                leftHandPosition,
+                leftHandRotation
+            );
+
+            RightHandGizmosController.SetLegacyGimbalValues(
+                hiddenConfigPosition,
+                hiddenConfigRotation,
+                rightHandPosition,
+                rightHandRotation
+            );
+        }
 
         private void OnControllerTransformsChanged(ReeTransform leftHandTransform, ReeTransform rightHandTransform) {
             var leftPos = leftHandTransform.Position;
@@ -96,7 +151,8 @@ namespace EasyOffset {
                 out var isOrthonormalBasisVisible,
                 out var isOrthonormalBasisPointerVisible,
                 out var isControllerModelVisible,
-                out var isSwingPreviewVisible
+                out var isSwingPreviewVisible,
+                out var isLegacyGimbalVisible
             );
 
             LeftHandGizmosController.SetVisibility(
@@ -105,7 +161,8 @@ namespace EasyOffset {
                 isOrthonormalBasisVisible,
                 isOrthonormalBasisPointerVisible,
                 isControllerModelVisible,
-                isSwingPreviewVisible
+                isSwingPreviewVisible,
+                isLegacyGimbalVisible
             );
 
             RightHandGizmosController.SetVisibility(
@@ -114,7 +171,8 @@ namespace EasyOffset {
                 isOrthonormalBasisVisible,
                 isOrthonormalBasisPointerVisible,
                 isControllerModelVisible,
-                isSwingPreviewVisible
+                isSwingPreviewVisible,
+                isLegacyGimbalVisible
             );
         }
 
@@ -124,7 +182,8 @@ namespace EasyOffset {
             out bool isOrthonormalBasisVisible,
             out bool isOrthonormalBasisPointerVisible,
             out bool isControllerModelVisible,
-            out bool isSwingPreviewVisible
+            out bool isSwingPreviewVisible,
+            out bool isLegacyGimbalVisible
         ) {
             isControllerModelVisible = PluginConfig.HideControllers ? PluginConfig.IsModPanelVisible : PluginConfig.IsInMainMenu;
 
@@ -135,13 +194,15 @@ namespace EasyOffset {
                     isOrthonormalBasisPointerVisible = false;
                     isSphericalBasisVisible = false;
                     isSwingPreviewVisible = false;
+                    isLegacyGimbalVisible = false;
                     break;
                 case AdjustmentMode.Basic:
                     isPivotVisible = true;
-                    isOrthonormalBasisVisible = PluginConfig.DisplayControllerType == ControllerType.None;
+                    isOrthonormalBasisVisible = PluginConfig.SelectedControllerType == ControllerType.None;
                     isOrthonormalBasisPointerVisible = false;
                     isSphericalBasisVisible = false;
                     isSwingPreviewVisible = true;
+                    isLegacyGimbalVisible = false;
                     break;
                 case AdjustmentMode.Position:
                     isPivotVisible = true;
@@ -149,6 +210,7 @@ namespace EasyOffset {
                     isOrthonormalBasisPointerVisible = true;
                     isSphericalBasisVisible = false;
                     isSwingPreviewVisible = true;
+                    isLegacyGimbalVisible = false;
                     break;
                 case AdjustmentMode.Rotation:
                     isPivotVisible = true;
@@ -156,6 +218,7 @@ namespace EasyOffset {
                     isOrthonormalBasisPointerVisible = false;
                     isSphericalBasisVisible = true;
                     isSwingPreviewVisible = true;
+                    isLegacyGimbalVisible = false;
                     break;
                 case AdjustmentMode.SwingBenchmark:
                     isPivotVisible = true;
@@ -163,13 +226,15 @@ namespace EasyOffset {
                     isOrthonormalBasisPointerVisible = false;
                     isSphericalBasisVisible = false;
                     isSwingPreviewVisible = false;
+                    isLegacyGimbalVisible = false;
                     break;
                 case AdjustmentMode.Legacy:
-                    isPivotVisible = true;
+                    isPivotVisible = false;
                     isOrthonormalBasisVisible = false;
                     isOrthonormalBasisPointerVisible = false;
                     isSphericalBasisVisible = false;
                     isSwingPreviewVisible = true;
+                    isLegacyGimbalVisible = true;
                     break;
                 case AdjustmentMode.RotationAuto:
                     isPivotVisible = true;
@@ -177,6 +242,7 @@ namespace EasyOffset {
                     isOrthonormalBasisPointerVisible = false;
                     isSphericalBasisVisible = true;
                     isSwingPreviewVisible = true;
+                    isLegacyGimbalVisible = false;
                     break;
                 case AdjustmentMode.RoomOffset:
                     isPivotVisible = false;
@@ -184,6 +250,7 @@ namespace EasyOffset {
                     isOrthonormalBasisPointerVisible = false;
                     isSphericalBasisVisible = false;
                     isSwingPreviewVisible = false;
+                    isLegacyGimbalVisible = false;
                     break;
                 default: throw new ArgumentOutOfRangeException();
             }

@@ -125,6 +125,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="0_Harmony\SceneTransitionPatch.cs" />
+    <Compile Include="1_Config\PluginConfig\LegacyConfig.cs" />
+    <Compile Include="1_Config\PluginConfig\Utilities.cs" />
+    <Compile Include="1_Config\PluginConfig\ControllerOffsets.cs" />
+    <Compile Include="1_Config\PluginConfig\UserPreferences.cs" />
     <Compile Include="2_Core\Installers\OnAppInstaller.cs" />
     <Compile Include="2_Core\Installers\OnMenuInstaller.cs" />
     <Compile Include="2_Core\Managers\Abomination\Abomination.cs" />
@@ -144,7 +148,6 @@
     <Compile Include="2_Core\Managers\Gizmos\GizmosManager.cs" />
     <Compile Include="2_Core\Managers\Input\ReeInputDevice.cs" />
     <Compile Include="2_Core\Managers\Input\ReeInputManager.cs" />
-    <Compile Include="2_Core\StructsAndEnums\ButtonAliasPair.cs" />
     <Compile Include="2_Core\StructsAndEnums\ControllerButton.cs" />
     <Compile Include="2_Core\StructsAndEnums\ControllerType.cs" />
     <Compile Include="2_Core\StructsAndEnums\AdjustmentMode.cs" />
@@ -171,11 +174,11 @@
     <Compile Include="1_Config\ConfigPresets\ConfigPresetV1.cs" />
     <Compile Include="1_Config\ConfigPresets\IConfigPreset.cs" />
     <Compile Include="1_Config\Defaults.cs" />
-    <Compile Include="1_Config\PluginConfig.cs" />
     <Compile Include="2_Core\StructsAndEnums\WarningLevel.cs" />
     <Compile Include="3_AssetBundle\BundleLoader.cs" />
     <Compile Include="3_AssetBundle\Gizmos\ControllerModel.cs" />
     <Compile Include="3_AssetBundle\Gizmos\GizmosController.cs" />
+    <Compile Include="3_AssetBundle\Gizmos\LegacyGimbal.cs" />
     <Compile Include="3_AssetBundle\Gizmos\OrthonormalBasis.cs" />
     <Compile Include="3_AssetBundle\Gizmos\Pivot.cs" />
     <Compile Include="3_AssetBundle\Gizmos\PivotGrid.cs" />
@@ -206,6 +209,7 @@
     <Compile Include="8_UI\ModPanelUI\PresetsBrowser.cs" />
     <Compile Include="8_UI\ModPanelUI\LegacyModePanel.cs" />
     <Compile Include="8_UI\ModPanelUI\RoomOffsetPanel.cs" />
+    <Compile Include="8_UI\ModPanelUI\Smoothing.cs" />
     <Compile Include="8_UI\SettingsUI\SettingsUI.cs" />
     <Compile Include="8_UI\SettingsUI\SettingsUIHelper.cs" />
     <Compile Include="Plugin.cs" />

@@ -60,58 +60,38 @@ internal partial class ModPanelUI {
 
     private void SubscribeToLegacyModeEvents() {
         PluginConfig.AdjustmentModeChangedEvent += LegacyOnAdjustmentModeChanged;
+        UpdateLegacyUI();
     }
 
     private void LegacyOnAdjustmentModeChanged(AdjustmentMode adjustmentMode) {
         if (adjustmentMode != AdjustmentMode.Legacy) return;
         ApplyScale();
-        UpdateLegacyConfig();
+        UpdateLegacyUI();
         LegacyDevicelessWarningActive = !ConfigMigration.IsMigrationPossible;
         LegacySettingsActive = ConfigMigration.IsMigrationPossible;
     }
 
-    private void OnLegacyConfigChanged() {
-        ConfigConversions.FromTailor(
-            true,
-            ConfigMigration.IsValveController,
-            ConfigMigration.IsVRModeOculus,
-            PluginConfig.LeftHandZOffset,
-            PluginConfig.RightHandZOffset,
+    private void ApplyLegacyConfig() {
+        PluginConfig.ApplyLegacyConfig(
             LegacyLeftHandPosition,
-            LegacyRightHandPosition,
             LegacyLeftHandRotation,
-            LegacyRightHandRotation,
-            out var leftPivotPosition,
-            out var rightPivotPosition,
-            out var leftSaberDirection,
-            out var rightSaberDirection
+            LegacyRightHandPosition,
+            LegacyRightHandRotation
         );
-
-        PluginConfig.LeftHandPivotPosition = leftPivotPosition;
-        PluginConfig.RightHandPivotPosition = rightPivotPosition;
-        PluginConfig.LeftHandSaberDirection = leftSaberDirection;
-        PluginConfig.RightHandSaberDirection = rightSaberDirection;
     }
 
-    private void UpdateLegacyConfig() {
-        ConfigConversions.ToTailor(
-            true,
-            ConfigMigration.IsValveController,
-            ConfigMigration.IsVRModeOculus,
-            PluginConfig.LeftHandTranslation,
-            PluginConfig.LeftHandRotation,
-            PluginConfig.RightHandTranslation,
-            PluginConfig.RightHandRotation,
-            out var gripLeftPosition,
-            out var gripRightPosition,
-            out var gripLeftRotation,
-            out var gripRightRotation
+    private void UpdateLegacyUI() {
+        PluginConfig.GetLegacyConfig(
+            out var leftHandPosition,
+            out var leftHandRotation,
+            out var rightHandPosition,
+            out var rightHandRotation
         );
 
-        LegacyLeftHandPosition = gripLeftPosition;
-        LegacyRightHandPosition = gripRightPosition;
-        LegacyLeftHandRotation = gripLeftRotation;
-        LegacyRightHandRotation = gripRightRotation;
+        LegacyLeftHandPosition = leftHandPosition;
+        LegacyLeftHandRotation = leftHandRotation;
+        LegacyRightHandPosition = rightHandPosition;
+        LegacyRightHandRotation = rightHandRotation;
     }
 
     #endregion
@@ -135,14 +115,20 @@ internal partial class ModPanelUI {
 
     #region Rotation slider settings
 
-    [UIValue("rot-slider-min")] [UsedImplicitly]
-    private float _rotSliderMin = -180.0f;
+    [UIValue("rot-x-slider-min")] [UsedImplicitly]
+    private float _rotXSliderMin = -90.0f;
 
-    [UIValue("rot-slider-max")] [UsedImplicitly]
-    private float _rotSliderMax = 180.0f;
+    [UIValue("rot-x-slider-max")] [UsedImplicitly]
+    private float _rotXSliderMax = 90.0f;
+
+    [UIValue("rot-y-slider-min")] [UsedImplicitly]
+    private float _rotYSliderMin = -180.0f;
+
+    [UIValue("rot-y-slider-max")] [UsedImplicitly]
+    private float _rotYSliderMax = 180.0f;
 
     [UIValue("rot-slider-increment")] [UsedImplicitly]
-    private float _rotSliderIncrement = 0.5f;
+    private float _rotSliderIncrement = 0.1f;
 
     [UIAction("rot-slider-formatter")]
     [UsedImplicitly]
@@ -160,7 +146,7 @@ internal partial class ModPanelUI {
         LegacyRightPosZ = LegacyLeftPosZ;
         LegacyRightRotX = LegacyLeftRotX;
         LegacyRightRotY = -LegacyLeftRotY;
-        OnLegacyConfigChanged();
+        ApplyLegacyConfig();
     }
 
     [UIAction("legacy-mirror-to-left-on-click")]
@@ -171,12 +157,14 @@ internal partial class ModPanelUI {
         LegacyLeftPosZ = LegacyRightPosZ;
         LegacyLeftRotX = LegacyRightRotX;
         LegacyLeftRotY = -LegacyRightRotY;
-        OnLegacyConfigChanged();
+        ApplyLegacyConfig();
     }
 
     #endregion
 
     #region LeftHand
+
+    #region Combined
 
     private Vector3 LegacyLeftHandPosition {
         get => new(LegacyLeftPosX, LegacyLeftPosY, LegacyLeftPosZ);
@@ -195,6 +183,8 @@ internal partial class ModPanelUI {
         }
     }
 
+    #endregion
+
     #region PositionX
 
     private float _legacyLeftPosX;
@@ -212,8 +202,8 @@ internal partial class ModPanelUI {
     [UIAction("legacy-left-pos-x-on-change")]
     [UsedImplicitly]
     private void LegacyLeftPosXOnChange(float value) {
-        _legacyLeftPosX = value;
-        OnLegacyConfigChanged();
+        _legacyLeftPosXTarget = value;
+        OnSmoothValueChanged(Hand.Left);
     }
 
     [UIAction("legacy-left-pos-x-inc-on-click")]
@@ -221,7 +211,7 @@ internal partial class ModPanelUI {
     private void LegacyLeftPosXIncOnClick() {
         var newValue = StepUp(LegacyLeftPosX, _posSliderIncrement);
         LegacyLeftPosX = FinalizePosSliderValue(newValue);
-        OnLegacyConfigChanged();
+        ApplyLegacyConfig();
     }
 
     [UIAction("legacy-left-pos-x-dec-on-click")]
@@ -229,7 +219,7 @@ internal partial class ModPanelUI {
     private void LegacyLeftPosXDecOnClick() {
         var newValue = StepDown(LegacyLeftPosX, _posSliderIncrement);
         LegacyLeftPosX = FinalizePosSliderValue(newValue);
-        OnLegacyConfigChanged();
+        ApplyLegacyConfig();
     }
 
     #endregion
@@ -251,8 +241,8 @@ internal partial class ModPanelUI {
     [UIAction("legacy-left-pos-y-on-change")]
     [UsedImplicitly]
     private void LegacyLeftPosYOnChange(float value) {
-        _legacyLeftPosY = value;
-        OnLegacyConfigChanged();
+        _legacyLeftPosYTarget = value;
+        OnSmoothValueChanged(Hand.Left);
     }
 
     [UIAction("legacy-left-pos-y-inc-on-click")]
@@ -260,7 +250,7 @@ internal partial class ModPanelUI {
     private void LegacyLeftPosYIncOnClick() {
         var newValue = StepUp(LegacyLeftPosY, _posSliderIncrement);
         LegacyLeftPosY = FinalizePosSliderValue(newValue);
-        OnLegacyConfigChanged();
+        ApplyLegacyConfig();
     }
 
     [UIAction("legacy-left-pos-y-dec-on-click")]
@@ -268,7 +258,7 @@ internal partial class ModPanelUI {
     private void LegacyLeftPosYDecOnClick() {
         var newValue = StepDown(LegacyLeftPosY, _posSliderIncrement);
         LegacyLeftPosY = FinalizePosSliderValue(newValue);
-        OnLegacyConfigChanged();
+        ApplyLegacyConfig();
     }
 
     #endregion
@@ -290,8 +280,8 @@ internal partial class ModPanelUI {
     [UIAction("legacy-left-pos-z-on-change")]
     [UsedImplicitly]
     private void LegacyLeftPosZOnChange(float value) {
-        _legacyLeftPosZ = value;
-        OnLegacyConfigChanged();
+        _legacyLeftPosZTarget = value;
+        OnSmoothValueChanged(Hand.Left);
     }
 
     [UIAction("legacy-left-pos-z-inc-on-click")]
@@ -299,7 +289,7 @@ internal partial class ModPanelUI {
     private void LegacyLeftPosZIncOnClick() {
         var newValue = StepUp(LegacyLeftPosZ, _posSliderIncrement);
         LegacyLeftPosZ = FinalizePosSliderValue(newValue);
-        OnLegacyConfigChanged();
+        ApplyLegacyConfig();
     }
 
     [UIAction("legacy-left-pos-z-dec-on-click")]
@@ -307,7 +297,7 @@ internal partial class ModPanelUI {
     private void LegacyLeftPosZDecOnClick() {
         var newValue = StepDown(LegacyLeftPosZ, _posSliderIncrement);
         LegacyLeftPosZ = FinalizePosSliderValue(newValue);
-        OnLegacyConfigChanged();
+        ApplyLegacyConfig();
     }
 
     #endregion
@@ -329,8 +319,8 @@ internal partial class ModPanelUI {
     [UIAction("legacy-left-rot-x-on-change")]
     [UsedImplicitly]
     private void LegacyLeftRotXOnChange(float value) {
-        _legacyLeftRotX = value;
-        OnLegacyConfigChanged();
+        _legacyLeftRotXTarget = value;
+        OnSmoothValueChanged(Hand.Left);
     }
 
     [UIAction("legacy-left-rot-x-inc-on-click")]
@@ -338,7 +328,7 @@ internal partial class ModPanelUI {
     private void LegacyLeftRotXIncOnClick() {
         var newValue = StepUp(LegacyLeftRotX, _rotSliderIncrement);
         LegacyLeftRotX = FinalizeRotSliderValue(newValue);
-        OnLegacyConfigChanged();
+        ApplyLegacyConfig();
     }
 
     [UIAction("legacy-left-rot-x-dec-on-click")]
@@ -346,7 +336,7 @@ internal partial class ModPanelUI {
     private void LegacyLeftRotXDecOnClick() {
         var newValue = StepDown(LegacyLeftRotX, _rotSliderIncrement);
         LegacyLeftRotX = FinalizeRotSliderValue(newValue);
-        OnLegacyConfigChanged();
+        ApplyLegacyConfig();
     }
 
     #endregion
@@ -368,8 +358,8 @@ internal partial class ModPanelUI {
     [UIAction("legacy-left-rot-y-on-change")]
     [UsedImplicitly]
     private void LegacyLeftRotYOnChange(float value) {
-        _legacyLeftRotY = value;
-        OnLegacyConfigChanged();
+        _legacyLeftRotYTarget = value;
+        OnSmoothValueChanged(Hand.Left);
     }
 
     [UIAction("legacy-left-rot-y-inc-on-click")]
@@ -377,7 +367,7 @@ internal partial class ModPanelUI {
     private void LegacyLeftRotYIncOnClick() {
         var newValue = StepUp(LegacyLeftRotY, _rotSliderIncrement);
         LegacyLeftRotY = FinalizeRotSliderValue(newValue);
-        OnLegacyConfigChanged();
+        ApplyLegacyConfig();
     }
 
     [UIAction("legacy-left-rot-y-dec-on-click")]
@@ -385,7 +375,7 @@ internal partial class ModPanelUI {
     private void LegacyLeftRotYDecOnClick() {
         var newValue = StepDown(LegacyLeftRotY, _rotSliderIncrement);
         LegacyLeftRotY = FinalizeRotSliderValue(newValue);
-        OnLegacyConfigChanged();
+        ApplyLegacyConfig();
     }
 
     #endregion
@@ -393,6 +383,8 @@ internal partial class ModPanelUI {
     #endregion
 
     #region RightHand
+
+    #region Combined
 
     private Vector3 LegacyRightHandPosition {
         get => new(LegacyRightPosX, LegacyRightPosY, LegacyRightPosZ);
@@ -411,6 +403,8 @@ internal partial class ModPanelUI {
         }
     }
 
+    #endregion
+
     #region PositionX
 
     private float _legacyRightPosX;
@@ -428,8 +422,8 @@ internal partial class ModPanelUI {
     [UIAction("legacy-right-pos-x-on-change")]
     [UsedImplicitly]
     private void LegacyRightPosXOnChange(float value) {
-        _legacyRightPosX = value;
-        OnLegacyConfigChanged();
+        _legacyRightPosXTarget = value;
+        OnSmoothValueChanged(Hand.Right);
     }
 
     [UIAction("legacy-right-pos-x-inc-on-click")]
@@ -437,7 +431,7 @@ internal partial class ModPanelUI {
     private void LegacyRightPosXIncOnClick() {
         var newValue = StepUp(LegacyRightPosX, _posSliderIncrement);
         LegacyRightPosX = FinalizePosSliderValue(newValue);
-        OnLegacyConfigChanged();
+        ApplyLegacyConfig();
     }
 
     [UIAction("legacy-right-pos-x-dec-on-click")]
@@ -445,7 +439,7 @@ internal partial class ModPanelUI {
     private void LegacyRightPosXDecOnClick() {
         var newValue = StepDown(LegacyRightPosX, _posSliderIncrement);
         LegacyRightPosX = FinalizePosSliderValue(newValue);
-        OnLegacyConfigChanged();
+        ApplyLegacyConfig();
     }
 
     #endregion
@@ -467,8 +461,8 @@ internal partial class ModPanelUI {
     [UIAction("legacy-right-pos-y-on-change")]
     [UsedImplicitly]
     private void LegacyRightPosYOnChange(float value) {
-        _legacyRightPosY = value;
-        OnLegacyConfigChanged();
+        _legacyRightPosYTarget = value;
+        OnSmoothValueChanged(Hand.Right);
     }
 
     [UIAction("legacy-right-pos-y-inc-on-click")]
@@ -476,7 +470,7 @@ internal partial class ModPanelUI {
     private void LegacyRightPosYIncOnClick() {
         var newValue = StepUp(LegacyRightPosY, _posSliderIncrement);
         LegacyRightPosY = FinalizePosSliderValue(newValue);
-        OnLegacyConfigChanged();
+        ApplyLegacyConfig();
     }
 
     [UIAction("legacy-right-pos-y-dec-on-click")]
@@ -484,7 +478,7 @@ internal partial class ModPanelUI {
     private void LegacyRightPosYDecOnClick() {
         var newValue = StepDown(LegacyRightPosY, _posSliderIncrement);
         LegacyRightPosY = FinalizePosSliderValue(newValue);
-        OnLegacyConfigChanged();
+        ApplyLegacyConfig();
     }
 
     #endregion
@@ -506,8 +500,8 @@ internal partial class ModPanelUI {
     [UIAction("legacy-right-pos-z-on-change")]
     [UsedImplicitly]
     private void LegacyRightPosZOnChange(float value) {
-        _legacyRightPosZ = value;
-        OnLegacyConfigChanged();
+        _legacyRightPosZTarget = value;
+        OnSmoothValueChanged(Hand.Right);
     }
 
     [UIAction("legacy-right-pos-z-inc-on-click")]
@@ -515,7 +509,7 @@ internal partial class ModPanelUI {
     private void LegacyRightPosZIncOnClick() {
         var newValue = StepUp(LegacyRightPosZ, _posSliderIncrement);
         LegacyRightPosZ = FinalizePosSliderValue(newValue);
-        OnLegacyConfigChanged();
+        ApplyLegacyConfig();
     }
 
     [UIAction("legacy-right-pos-z-dec-on-click")]
@@ -523,7 +517,7 @@ internal partial class ModPanelUI {
     private void LegacyRightPosZDecOnClick() {
         var newValue = StepDown(LegacyRightPosZ, _posSliderIncrement);
         LegacyRightPosZ = FinalizePosSliderValue(newValue);
-        OnLegacyConfigChanged();
+        ApplyLegacyConfig();
     }
 
     #endregion
@@ -545,8 +539,8 @@ internal partial class ModPanelUI {
     [UIAction("legacy-right-rot-x-on-change")]
     [UsedImplicitly]
     private void LegacyRightRotXOnChange(float value) {
-        _legacyRightRotX = value;
-        OnLegacyConfigChanged();
+        _legacyRightRotXTarget = value;
+        OnSmoothValueChanged(Hand.Right);
     }
 
     [UIAction("legacy-right-rot-x-inc-on-click")]
@@ -554,7 +548,7 @@ internal partial class ModPanelUI {
     private void LegacyRightRotXIncOnClick() {
         var newValue = StepUp(LegacyRightRotX, _rotSliderIncrement);
         LegacyRightRotX = FinalizeRotSliderValue(newValue);
-        OnLegacyConfigChanged();
+        ApplyLegacyConfig();
     }
 
     [UIAction("legacy-right-rot-x-dec-on-click")]
@@ -562,7 +556,7 @@ internal partial class ModPanelUI {
     private void LegacyRightRotXDecOnClick() {
         var newValue = StepDown(LegacyRightRotX, _rotSliderIncrement);
         LegacyRightRotX = FinalizeRotSliderValue(newValue);
-        OnLegacyConfigChanged();
+        ApplyLegacyConfig();
     }
 
     #endregion
@@ -584,8 +578,8 @@ internal partial class ModPanelUI {
     [UIAction("legacy-right-rot-y-on-change")]
     [UsedImplicitly]
     private void LegacyRightRotYOnChange(float value) {
-        _legacyRightRotY = value;
-        OnLegacyConfigChanged();
+        _legacyRightRotYTarget = value;
+        OnSmoothValueChanged(Hand.Right);
     }
 
     [UIAction("legacy-right-rot-y-inc-on-click")]
@@ -593,7 +587,7 @@ internal partial class ModPanelUI {
     private void LegacyRightRotYIncOnClick() {
         var newValue = StepUp(LegacyRightRotY, _rotSliderIncrement);
         LegacyRightRotY = FinalizeRotSliderValue(newValue);
-        OnLegacyConfigChanged();
+        ApplyLegacyConfig();
     }
 
     [UIAction("legacy-right-rot-y-dec-on-click")]
@@ -601,7 +595,7 @@ internal partial class ModPanelUI {
     private void LegacyRightRotYDecOnClick() {
         var newValue = StepDown(LegacyRightRotY, _rotSliderIncrement);
         LegacyRightRotY = FinalizeRotSliderValue(newValue);
-        OnLegacyConfigChanged();
+        ApplyLegacyConfig();
     }
 
     #endregion

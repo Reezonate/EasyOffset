@@ -49,19 +49,11 @@ namespace EasyOffset {
 
         private void InstantiatePlanes() {
             var root = transform;
-
+            
             var offset = -scale / 2;
             for (var i = 0; i <= resolution; i++, offset += _step) {
                 InstantiatePlane(root, prefabXY, _materialInstanceXY, new Vector3(0, 0, offset));
-            }
-
-            offset = -scale / 2;
-            for (var i = 0; i <= resolution; i++, offset += _step) {
                 InstantiatePlane(root, prefabXZ, _materialInstanceXZ, new Vector3(0, offset, 0));
-            }
-
-            offset = -scale / 2;
-            for (var i = 0; i <= resolution; i++, offset += _step) {
                 InstantiatePlane(root, prefabYZ, _materialInstanceYZ, new Vector3(offset, 0, 0));
             }
         }

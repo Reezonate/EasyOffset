@@ -15,6 +15,7 @@ namespace EasyOffset {
 
         #region Update
 
+        private bool _triggerButtonFlag;
         private bool _gripButtonFlag;
         private bool _primaryButtonFlag;
         private bool _secondaryButtonFlag;
@@ -22,6 +23,7 @@ namespace EasyOffset {
 
         public void Update() {
             PollDevice();
+            UpdateButtonState(CommonUsages.triggerButton, ref _triggerButtonFlag, ControllerButton.TriggerButton);
             UpdateButtonState(CommonUsages.primaryButton, ref _primaryButtonFlag, ControllerButton.PrimaryButton);
             UpdateButtonState(CommonUsages.secondaryButton, ref _secondaryButtonFlag, ControllerButton.SecondaryButton);
             UpdateButtonState(CommonUsages.gripButton, ref _gripButtonFlag, ControllerButton.GripButton);

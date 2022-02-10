@@ -1,7 +1,7 @@
 using UnityEngine;
 
 namespace EasyOffset {
-    public static class ConfigConversions {
+    internal static class ConfigConversions {
         #region Built-in offsets
 
         private static readonly Vector3 ValvePositionOffset = new(0.0f, 0.022f, -0.01f);
@@ -10,7 +10,25 @@ namespace EasyOffset {
         private static readonly Vector3 DefaultPositionOffset = new(0.0f, -0.008f, 0.0f);
         private static readonly Vector3 DefaultRotationOffset = new(-4.3f, 0.0f, 0.0f);
 
-        private static void ApplyBuiltInOffsets(
+        public static void GetBuiltInOffsets(
+            bool isValveController,
+            bool isVRModeOculus,
+            out Vector3 position,
+            out Vector3 rotation
+        ) {
+            if (isVRModeOculus) {
+                position = Vector3.zero;
+                rotation = Vector3.zero;
+            } else if (isValveController) {
+                position = ValvePositionOffset;
+                rotation = ValveRotationOffset;
+            } else {
+                position = DefaultPositionOffset;
+                rotation = DefaultRotationOffset;
+            }
+        }
+
+        public static void ApplyBuiltInOffsets(
             bool isValveController,
             bool isVRModeOculus,
             ref Vector3 position,
@@ -26,7 +44,7 @@ namespace EasyOffset {
             }
         }
 
-        private static void RemoveBuiltInOffsets(
+        public static void RemoveBuiltInOffsets(
             bool isValveController,
             bool isVRModeOculus,
             ref Vector3 position,

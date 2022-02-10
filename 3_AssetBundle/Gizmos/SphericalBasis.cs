@@ -7,7 +7,6 @@ namespace EasyOffset {
 
         [SerializeField] private Material material;
         [SerializeField] private MeshRenderer meshRenderer;
-        [SerializeField] private GameObject visuals;
         [SerializeField] private Transform sphereTransform;
         [SerializeField] private TextMeshPro textMesh;
         [SerializeField] private Transform textRoot;
@@ -106,6 +105,10 @@ namespace EasyOffset {
             UpdateTextRotation(lookAt);
         }
 
+        public void SetPivotPosition(Vector3 pivotPosition) {
+            transform.localPosition = pivotPosition;
+        }
+
         public void SetPreviousDirection(Vector3 orthoDirection, bool visible) {
             if (!_isReady) return;
 
@@ -141,7 +144,12 @@ namespace EasyOffset {
         }
 
         public void SetVisible(bool value) {
-            visuals.SetActive(value);
+            gameObject.SetActive(value);
+
+            if (!value) return;
+            _currentAlpha = _targetAlpha;
+            _currentScale = _targetScale;
+            _currentFadeRadius = _targetFadeRadius;
         }
 
         #endregion

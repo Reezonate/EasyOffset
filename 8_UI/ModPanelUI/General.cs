@@ -12,9 +12,10 @@ internal partial class ModPanelUI : NotifiableSingleton<ModPanelUI> {
     public ModPanelUI() {
         SubscribeToAssignedButtonEvents();
         SubscribeToBenchmarkEvents();
-        SubscribeToLegacyModeEvents();
         SubscribeToRoomOffsetEvents();
         SubscribeToWarningEvents();
+        SubscribeToLegacyModeEvents();
+        SubscribeToSmoothingEvents();
     }
 
     #endregion
@@ -23,6 +24,7 @@ internal partial class ModPanelUI : NotifiableSingleton<ModPanelUI> {
 
     private void Update() {
         UpdatePanelVisibility();
+        SmoothingUpdate();
     }
 
     #endregion
