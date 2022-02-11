@@ -52,6 +52,39 @@ namespace EasyOffset {
             _currentAlpha = _targetAlpha = NoFocusAlpha;
             _currentFadeRadius = _targetFadeRadius = NoFocusFadeRadius;
             _isReady = true;
+            UpdateMaterial();
+        }
+
+        #endregion
+
+        #region UpdateMaterials
+
+        private Vector3 _wristRotationAxis;
+        private bool _wristPlaneVisible;
+
+        private Vector4 _upDownPlaneVector;
+        private Vector4 _leftRightPlaneVector;
+        private bool _previousDirectionVisible;
+
+        private Vector3 _orthoDirection = Vector3.forward;
+        private Vector2 _sphericalCoordinates;
+
+        private void UpdateMaterial() {
+            if (!_isReady) return;
+
+            _materialInstance.SetFloat(AlphaPropertyId, _currentAlpha);
+            _materialInstance.SetFloat(ScalePropertyId, _currentScale);
+            _materialInstance.SetFloat(FadeRadiusPropertyId, _currentFadeRadius);
+
+            _materialInstance.SetVector(StraightSwingPlanePropertyId, _wristRotationAxis);
+            _materialInstance.SetFloat(StraightSwingPlaneMultiplierPropertyId, _wristPlaneVisible ? 1f : 0f);
+
+            _materialInstance.SetVector(UpDownPlanePropertyId, _upDownPlaneVector);
+            _materialInstance.SetVector(LeftRightPlanePropertyId, _leftRightPlaneVector);
+            _materialInstance.SetFloat(PlanesMultiplierPropertyId, _previousDirectionVisible ? 1f : 0f);
+
+            _materialInstance.SetVector(SphericalCoordinatesPropertyId, _sphericalCoordinates);
+            _materialInstance.SetVector(OrthoDirectionPropertyId, _orthoDirection);
         }
 
         #endregion
@@ -60,16 +93,9 @@ namespace EasyOffset {
 
         private void LateUpdate() {
             var t = Time.deltaTime * 10;
-
             _currentAlpha = Mathf.Lerp(_currentAlpha, _targetAlpha, t);
-            _materialInstance.SetFloat(AlphaPropertyId, _currentAlpha);
-
             _currentScale = Mathf.Lerp(_currentScale, _targetScale, t);
-            _materialInstance.SetFloat(ScalePropertyId, _currentScale);
-
             _currentFadeRadius = Mathf.Lerp(_currentFadeRadius, _targetFadeRadius, t);
-            _materialInstance.SetFloat(FadeRadiusPropertyId, _currentFadeRadius);
-
             sphereTransform.localPosition = -_orthoDirection * (_currentScale - 1.0f);
             sphereTransform.localScale = new Vector3(_currentScale, _currentScale, _currentScale);
         }
@@ -84,12 +110,10 @@ namespace EasyOffset {
         private const float NoFocusFadeRadius = 20 * Mathf.Deg2Rad;
         private const float FocusFadeRadius = 50 * Mathf.Deg2Rad;
 
-        private Vector3 _orthoDirection = Vector3.forward;
-
         public void SetWristValues(Vector3 rotationAxis, bool visible) {
-            if (!_isReady) return;
-            _materialInstance.SetVector(StraightSwingPlanePropertyId, rotationAxis);
-            _materialInstance.SetFloat(StraightSwingPlaneMultiplierPropertyId, visible ? 1f : 0f);
+            _wristRotationAxis = rotationAxis;
+            _wristPlaneVisible = visible;
+            UpdateMaterial();
         }
 
         public void SetFocus(bool value) {
@@ -110,37 +134,29 @@ namespace EasyOffset {
         }
 
         public void SetPreviousDirection(Vector3 orthoDirection, bool visible) {
-            if (!_isReady) return;
-
             var localUp = transform.InverseTransformDirection(Vector3.up);
             var lookFromCenter = Quaternion.LookRotation(orthoDirection, localUp);
 
             var upDownPlane = new Plane(lookFromCenter * Vector3.right, orthoDirection);
-            var upDownPlaneVector = (Vector4) upDownPlane.normal;
-            upDownPlaneVector.w = upDownPlane.distance;
+            _upDownPlaneVector = upDownPlane.normal;
+            _upDownPlaneVector.w = upDownPlane.distance;
 
             var leftRightPlane = new Plane(lookFromCenter * Vector3.up, orthoDirection);
-            var leftRightPlaneVector = (Vector4) leftRightPlane.normal;
-            leftRightPlaneVector.w = leftRightPlane.distance;
+            _leftRightPlaneVector = leftRightPlane.normal;
+            _leftRightPlaneVector.w = leftRightPlane.distance;
 
-            var planesMultiplier = visible ? 1f : 0f;
+            _previousDirectionVisible = visible;
 
-            _materialInstance.SetVector(UpDownPlanePropertyId, upDownPlaneVector);
-            _materialInstance.SetVector(LeftRightPlanePropertyId, leftRightPlaneVector);
-            _materialInstance.SetFloat(PlanesMultiplierPropertyId, planesMultiplier);
+            UpdateMaterial();
         }
 
         public void SetDirection(Vector3 orthoDirection) {
-            if (!_isReady) return;
-
             _orthoDirection = orthoDirection;
+            _sphericalCoordinates = TransformUtils.OrthoToSphericalDirection(orthoDirection);
 
-            var sphericalCoordinates = TransformUtils.OrthoToSphericalDirection(orthoDirection);
-            _materialInstance.SetVector(SphericalCoordinatesPropertyId, sphericalCoordinates);
-            _materialInstance.SetVector(OrthoDirectionPropertyId, orthoDirection);
-
-            UpdateTextString(sphericalCoordinates);
+            UpdateTextString(_sphericalCoordinates);
             UpdateTextPosition(orthoDirection);
+            UpdateMaterial();
         }
 
         public void SetVisible(bool value) {
@@ -157,7 +173,7 @@ namespace EasyOffset {
         #region Text
 
         private void UpdateTextString(Vector2 sphericalRadians) {
-            var xString = (-sphericalRadians.x * Mathf.Rad2Deg).ToString("0.00");
+            var xString = (sphericalRadians.x * Mathf.Rad2Deg).ToString("0.00");
             var yString = (sphericalRadians.y * Mathf.Rad2Deg).ToString("0.00");
 
             textMesh.text = $"<mspace=0.5em><color=red>X:{xString}°</color>\n<color=green>Y:{yString}°</color></mspace>";

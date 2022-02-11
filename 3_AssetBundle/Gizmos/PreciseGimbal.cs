@@ -1,7 +1,7 @@
 using UnityEngine;
 
 namespace EasyOffset {
-    public class LegacyGimbal : MonoBehaviour {
+    public class PreciseGimbal : MonoBehaviour {
         #region Serialized
 
         [SerializeField] private Transform arrowsTransform;
@@ -53,20 +53,16 @@ namespace EasyOffset {
         #region Interaction
 
         public void SetValues(
-            Vector3 hiddenConfigPosition,
-            Vector3 hiddenConfigRotation,
-            Vector3 legacyConfigPosition,
-            Vector3 legacyConfigRotation
+            Vector3 originPosition,
+            float xRingRotation,
+            float yRingRotation
         ) {
-            var finalPosition = legacyConfigPosition + hiddenConfigPosition;
-            var finalRotation = legacyConfigRotation + hiddenConfigRotation;
-            
-            gimbalRingYTransform.localRotation = Quaternion.Euler(0.0f, finalRotation.y, 0.0f);
-            gimbalRingXTransform.localRotation = Quaternion.Euler(finalRotation.x, 0.0f, 0.0f);
-            arrowsTransform.localPosition = finalPosition;
+            transform.localPosition = originPosition;
+            gimbalRingYTransform.localRotation = Quaternion.Euler(0.0f, yRingRotation, 0.0f);
+            gimbalRingXTransform.localRotation = Quaternion.Euler(xRingRotation, 0.0f, 0.0f);
 
-            _xAngleOffset = -legacyConfigRotation.x * Mathf.Deg2Rad;
-            _yAngleOffset = legacyConfigRotation.y * Mathf.Deg2Rad;
+            _xAngleOffset = -xRingRotation * Mathf.Deg2Rad;
+            _yAngleOffset = yRingRotation * Mathf.Deg2Rad;
             UpdateMaterials();
         }
 

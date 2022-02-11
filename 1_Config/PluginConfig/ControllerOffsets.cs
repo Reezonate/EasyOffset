@@ -345,4 +345,50 @@ internal static partial class PluginConfig {
     }
 
     #endregion
+
+    #region Precise Mode
+
+    public static void ApplyPreciseModeConfig(
+        Vector3 leftPosition,
+        Vector3 leftRotation,
+        float leftZOffset,
+        Vector3 rightPosition,
+        Vector3 rightRotation,
+        float rightZOffset
+    ) {
+        DisableChangeEvent();
+
+        LeftHandPivotPosition = leftPosition;
+        LeftHandSaberDirection = Quaternion.Euler(leftRotation) * Vector3.forward;
+        LeftHandZOffset = leftZOffset;
+
+        RightHandPivotPosition = rightPosition;
+        RightHandSaberDirection = Quaternion.Euler(rightRotation) * Vector3.forward;
+        RightHandZOffset = rightZOffset;
+
+        EnableChangeEvent();
+        NotifyConfigWasChanged();
+    }
+
+    public static void GetPreciseModeConfig(
+        out Vector3 leftPosition,
+        out Vector3 leftRotation,
+        out float leftZOffset,
+        out Vector3 rightPosition,
+        out Vector3 rightRotation,
+        out float rightZOffset
+    ) {
+        var leftSpherical = TransformUtils.OrthoToSphericalDirection(LeftHandSaberDirection);
+        var rightSpherical = TransformUtils.OrthoToSphericalDirection(RightHandSaberDirection);
+        
+        leftPosition = LeftHandPivotPosition;
+        leftRotation = new Vector3(leftSpherical.x * Mathf.Rad2Deg, leftSpherical.y * Mathf.Rad2Deg, 0);
+        leftZOffset = LeftHandZOffset;
+
+        rightPosition = RightHandPivotPosition;
+        rightRotation = new Vector3(rightSpherical.x * Mathf.Rad2Deg, rightSpherical.y * Mathf.Rad2Deg, 0);
+        rightZOffset = RightHandZOffset;
+    }
+
+    #endregion
 }

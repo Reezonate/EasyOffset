@@ -125,7 +125,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="0_Harmony\SceneTransitionPatch.cs" />
-    <Compile Include="1_Config\PluginConfig\LegacyConfig.cs" />
+    <Compile Include="1_Config\ConfigUpgrade\ConfigUpgrade.cs" />
     <Compile Include="1_Config\PluginConfig\Utilities.cs" />
     <Compile Include="1_Config\PluginConfig\ControllerOffsets.cs" />
     <Compile Include="1_Config\PluginConfig\UserPreferences.cs" />
@@ -178,7 +178,7 @@
     <Compile Include="3_AssetBundle\BundleLoader.cs" />
     <Compile Include="3_AssetBundle\Gizmos\ControllerModel.cs" />
     <Compile Include="3_AssetBundle\Gizmos\GizmosController.cs" />
-    <Compile Include="3_AssetBundle\Gizmos\LegacyGimbal.cs" />
+    <Compile Include="3_AssetBundle\Gizmos\PreciseGimbal.cs" />
     <Compile Include="3_AssetBundle\Gizmos\OrthonormalBasis.cs" />
     <Compile Include="3_AssetBundle\Gizmos\Pivot.cs" />
     <Compile Include="3_AssetBundle\Gizmos\PivotGrid.cs" />
@@ -207,7 +207,7 @@
     <Compile Include="8_UI\ModPanelUI\MainPage.cs" />
     <Compile Include="8_UI\ModPanelUI\ModPanelUIHelper.cs" />
     <Compile Include="8_UI\ModPanelUI\PresetsBrowser.cs" />
-    <Compile Include="8_UI\ModPanelUI\LegacyModePanel.cs" />
+    <Compile Include="8_UI\ModPanelUI\PreciseModePanel.cs" />
     <Compile Include="8_UI\ModPanelUI\RoomOffsetPanel.cs" />
     <Compile Include="8_UI\ModPanelUI\Smoothing.cs" />
     <Compile Include="8_UI\SettingsUI\SettingsUI.cs" />

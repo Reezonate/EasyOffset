@@ -14,7 +14,7 @@ internal partial class ModPanelUI : NotifiableSingleton<ModPanelUI> {
         SubscribeToBenchmarkEvents();
         SubscribeToRoomOffsetEvents();
         SubscribeToWarningEvents();
-        SubscribeToLegacyModeEvents();
+        SubscribeToPreciseModeEvents();
         SubscribeToSmoothingEvents();
     }
 
@@ -60,28 +60,28 @@ internal partial class ModPanelUI : NotifiableSingleton<ModPanelUI> {
                 UseFreeHandActive = true;
                 HandsPanelActive = true;
                 BenchmarkPanelActive = false;
-                LegacyPanelActive = false;
+                PrecisePanelActive = false;
                 RoomOffsetPanelActive = false;
                 break;
             case AdjustmentMode.SwingBenchmark:
                 UseFreeHandActive = true;
                 HandsPanelActive = false;
                 BenchmarkPanelActive = true;
-                LegacyPanelActive = false;
+                PrecisePanelActive = false;
                 RoomOffsetPanelActive = false;
                 break;
-            case AdjustmentMode.Legacy:
+            case AdjustmentMode.Precise:
                 UseFreeHandActive = false;
                 HandsPanelActive = false;
                 BenchmarkPanelActive = false;
-                LegacyPanelActive = true;
+                PrecisePanelActive = true;
                 RoomOffsetPanelActive = false;
                 break;
             case AdjustmentMode.RoomOffset:
                 UseFreeHandActive = true;
                 HandsPanelActive = false;
                 BenchmarkPanelActive = false;
-                LegacyPanelActive = false;
+                PrecisePanelActive = false;
                 RoomOffsetPanelActive = true;
                 break;
             default: throw new ArgumentOutOfRangeException();

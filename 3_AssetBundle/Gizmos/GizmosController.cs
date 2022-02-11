@@ -13,7 +13,7 @@ namespace EasyOffset {
         [SerializeField] private OrthonormalBasis orthonormalBasis;
         [SerializeField] private ControllerModel controllerModel;
         [SerializeField] private SwingPreview swingPreview;
-        [SerializeField] private LegacyGimbal legacyGimbal;
+        [SerializeField] private PreciseGimbal preciseGimbal;
 
         #endregion
 
@@ -26,14 +26,14 @@ namespace EasyOffset {
             bool isOrthonormalBasisPointerVisible,
             bool isControllerModelVisible,
             bool isSwingPreviewVisible,
-            bool isLegacyGimbalVisible
+            bool isPreciseGimbalVisible
         ) {
             pivot.SetVisible(isPivotVisible);
             sphericalBasis.SetVisible(isSphericalBasisVisible);
             orthonormalBasis.SetVisible(isOrthonormalBasisVisible, isOrthonormalBasisPointerVisible);
             controllerModel.SetVisible(isControllerModelVisible);
             swingPreview.SetVisible(isSwingPreviewVisible);
-            legacyGimbal.SetVisible(isLegacyGimbalVisible);
+            preciseGimbal.SetVisible(isPreciseGimbalVisible);
         }
 
         #endregion
@@ -54,6 +54,13 @@ namespace EasyOffset {
             sphericalBasis.SetDirection(saberDirection);
             sphericalBasis.SetPivotPosition(pivotPosition);
             orthonormalBasis.SetCoordinates(pivotPosition);
+
+            var rotationEuler = saberRotation.eulerAngles;
+            preciseGimbal.SetValues(
+                pivotPosition,
+                rotationEuler.x,
+                rotationEuler.y
+            );
         }
 
         #endregion
@@ -63,24 +70,6 @@ namespace EasyOffset {
         public void SetControllerTransform(Vector3 position, Quaternion rotation) {
             controllerTransform.SetPositionAndRotation(position, rotation);
             sphericalBasis.SetTextLookAt(position);
-        }
-
-        #endregion
-
-        #region SetLegacyGimbalValues
-
-        public void SetLegacyGimbalValues(
-            Vector3 hiddenConfigPosition,
-            Vector3 hiddenConfigRotation,
-            Vector3 legacyConfigPosition,
-            Vector3 legacyConfigRotation
-        ) {
-            legacyGimbal.SetValues(
-                hiddenConfigPosition,
-                hiddenConfigRotation,
-                legacyConfigPosition,
-                legacyConfigRotation
-            );
         }
 
         #endregion

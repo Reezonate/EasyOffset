@@ -45,7 +45,6 @@ namespace EasyOffset {
         public void LateTick() {
             if (_configUpdateRequired) {
                 UpdateConfigValues();
-                UpdateLegacyValues();
                 _configUpdateRequired = false;
             }
 
@@ -78,36 +77,6 @@ namespace EasyOffset {
                 PluginConfig.RightHandPivotPosition,
                 PluginConfig.RightHandSaberDirection,
                 PluginConfig.RightHandZOffset
-            );
-        }
-
-        private void UpdateLegacyValues() {
-            PluginConfig.GetLegacyConfig(
-                out var leftHandPosition,
-                out var leftHandRotation,
-                out var rightHandPosition,
-                out var rightHandRotation
-            );
-
-            ConfigConversions.GetBuiltInOffsets(
-                ConfigMigration.IsValveController,
-                ConfigMigration.IsVRModeOculus,
-                out var hiddenConfigPosition,
-                out var hiddenConfigRotation
-            );
-
-            LeftHandGizmosController.SetLegacyGimbalValues(
-                hiddenConfigPosition,
-                hiddenConfigRotation,
-                leftHandPosition,
-                leftHandRotation
-            );
-
-            RightHandGizmosController.SetLegacyGimbalValues(
-                hiddenConfigPosition,
-                hiddenConfigRotation,
-                rightHandPosition,
-                rightHandRotation
             );
         }
 
@@ -228,7 +197,7 @@ namespace EasyOffset {
                     isSwingPreviewVisible = false;
                     isLegacyGimbalVisible = false;
                     break;
-                case AdjustmentMode.Legacy:
+                case AdjustmentMode.Precise:
                     isPivotVisible = false;
                     isOrthonormalBasisVisible = false;
                     isOrthonormalBasisPointerVisible = false;
