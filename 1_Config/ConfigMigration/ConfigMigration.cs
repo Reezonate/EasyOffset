@@ -18,7 +18,7 @@ namespace EasyOffset {
 
         #region Variables
 
-        public static float ZOffset = Defaults.ZOffset;
+        public static float ZOffset = ConfigDefaults.ZOffset;
         public static bool IsMigrationPossible { get; private set; }
 
         public static bool IsValveController { get; private set; }
@@ -94,17 +94,17 @@ namespace EasyOffset {
                 rotationEuler,
                 out var leftPivotPosition,
                 out var rightPivotPosition,
-                out var leftSaberDirection,
-                out var rightSaberDirection
+                out var leftSaberRotation,
+                out var rightSaberRotation
             );
 
-            PluginConfig.LeftHandZOffset = ZOffset;
-            PluginConfig.LeftHandPivotPosition = leftPivotPosition;
-            PluginConfig.LeftHandSaberDirection = leftSaberDirection;
+            PluginConfig.LeftSaberZOffset = ZOffset;
+            PluginConfig.LeftSaberPivotPosition = leftPivotPosition;
+            PluginConfig.LeftSaberRotation = leftSaberRotation;
 
-            PluginConfig.RightHandZOffset = ZOffset;
-            PluginConfig.RightHandPivotPosition = rightPivotPosition;
-            PluginConfig.RightHandSaberDirection = rightSaberDirection;
+            PluginConfig.RightSaberZOffset = ZOffset;
+            PluginConfig.RightSaberPivotPosition = rightPivotPosition;
+            PluginConfig.RightSaberRotation = rightSaberRotation;
 
             return ConfigImportResult.Success;
         }
@@ -136,17 +136,17 @@ namespace EasyOffset {
                 gripRightRotation,
                 out var leftPivotPosition,
                 out var rightPivotPosition,
-                out var leftSaberDirection,
-                out var rightSaberDirection
+                out var leftSaberRotation,
+                out var rightSaberRotation
             );
 
-            PluginConfig.LeftHandZOffset = ZOffset;
-            PluginConfig.LeftHandPivotPosition = leftPivotPosition;
-            PluginConfig.LeftHandSaberDirection = leftSaberDirection;
+            PluginConfig.LeftSaberZOffset = ZOffset;
+            PluginConfig.LeftSaberPivotPosition = leftPivotPosition;
+            PluginConfig.LeftSaberRotation = leftSaberRotation;
 
-            PluginConfig.RightHandZOffset = ZOffset;
-            PluginConfig.RightHandPivotPosition = rightPivotPosition;
-            PluginConfig.RightHandSaberDirection = rightSaberDirection;
+            PluginConfig.RightSaberZOffset = ZOffset;
+            PluginConfig.RightSaberPivotPosition = rightPivotPosition;
+            PluginConfig.RightSaberRotation = rightSaberRotation;
 
             return ConfigImportResult.Success;
         }
@@ -161,8 +161,8 @@ namespace EasyOffset {
             ConfigConversions.ToBaseGame(
                 IsValveController,
                 IsVRModeOculus,
-                PluginConfig.RightHandTranslation,
-                PluginConfig.RightHandRotation,
+                PluginConfig.RightSaberTranslation,
+                PluginConfig.RightSaberRotation,
                 out var position,
                 out var rotationEuler
             );
@@ -184,10 +184,10 @@ namespace EasyOffset {
                 useBaseGameAdjustmentMode,
                 IsValveController,
                 IsVRModeOculus,
-                PluginConfig.LeftHandTranslation,
-                PluginConfig.LeftHandRotation,
-                PluginConfig.RightHandTranslation,
-                PluginConfig.RightHandRotation,
+                PluginConfig.LeftSaberTranslation,
+                PluginConfig.LeftSaberRotation,
+                PluginConfig.RightSaberTranslation,
+                PluginConfig.RightSaberRotation,
                 out var gripLeftPosition,
                 out var gripRightPosition,
                 out var gripLeftRotation,

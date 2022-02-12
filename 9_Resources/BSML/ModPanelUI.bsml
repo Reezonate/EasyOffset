@@ -2,63 +2,65 @@
     <!--    MAIN PAGE    -->
     <vertical active="~main-page-active" preferred-width="100">
         <!--    STYLE    -->
-        <macro.define name="top-section-height" value="22"/>
-        <macro.define name="middle-section-height" value="33"/>
+        <macro.define name="options-section-height" value="20"/>
+        <macro.define name="middle-section-height" value="35"/>
         <macro.define name="bottom-section-height" value="10"/>
 
         <!--    OPTIONS PANEL    -->
-        <horizontal preferred-height="~top-section-height">
+        <horizontal preferred-height="~options-section-height">
+            <!--    STYLE    -->
+            <macro.define name="options-section-column-width" value="36"/>
+            <macro.define name="options-row-height" value="11"/>
+            <macro.define name="options-label-height" value="4"/>
+            <macro.define name="options-label-color" value="#888888"/>
+            <macro.define name="options-label-font-size" value="3"/>
+            <macro.define name="free-hand-row-height" value="9"/>
+            <macro.define name="free-hand-row-width" value="40"/>
+
+            <!--    MODE, CONTROLLER, BUTTON    -->
             <vertical>
-                <horizontal preferred-height="20">
-                    <vertical>
-                        <horizontal preferred-height="6">
-                            <dropdown-list-setting interactable="~interactable" text="Adjustment Mode" preferred-width="65" value="am-choice"
-                                                   choices="am-choices"
-                                                   on-change="am-on-change" apply-on-change="true" bind-value="true" hover-hint="~am-hint"/>
-                            <dropdown-list-setting id="ab-component" preferred-width="35" interactable="~interactable"
-                                                   text="" value="ab-choice" choices="ab-choices" hover-hint="Controller button"
-                                                   apply-on-change="true" formatter="ab-formatter"/>
+                <horizontal preferred-height="~options-row-height">
+                    <!--    CONTROLLER TYPE    -->
+                    <vertical preferred-width="~options-section-column-width">
+                        <horizontal preferred-height="~options-label-height">
+                            <text text="Controller type" font-size="~options-label-font-size" font-color="~options-label-color" align="Midline"/>
                         </horizontal>
-                        <horizontal preferred-height="6">
-                            <dropdown-list-setting interactable="~interactable" text="Controller type" value="dc-choice" choices="dc-choices"
-                                                   on-change="dc-on-change" apply-on-change="true" hover-hint="Controller reference model"/>
+                        <dropdown-list-setting interactable="~interactable" text="" hover-hint="Controller reference model"
+                                               value="dc-choice" choices="dc-choices" on-change="dc-on-change" apply-on-change="true"/>
+                    </vertical>
+
+                    <!--    ADJUSTMENT MODE    -->
+                    <vertical preferred-width="~options-section-column-width">
+                        <horizontal preferred-height="~options-label-height">
+                            <text text="Adjustment Mode" font-size="~options-label-font-size" font-color="~options-label-color" align="Midline"/>
                         </horizontal>
-                        <horizontal preferred-height="6">
-                            <toggle-setting interactable="~interactable" text="Use free hand" active="~ufh-active"
-                                            value="ufh-value" on-change="ufh-on-change" apply-on-change="true"
-                                            hover-hint="Use Right controller button for Left hand adjustments and vice versa"/>
+                        <dropdown-list-setting interactable="~interactable" text="" value="am-choice" choices="am-choices"
+                                               on-change="am-on-change" apply-on-change="true" bind-value="true" hover-hint="~am-hint"/>
+                    </vertical>
+
+                    <!--    ASSIGNED BUTTON    -->
+                    <vertical preferred-width="~options-section-column-width">
+                        <horizontal preferred-height="~options-label-height">
+                            <text text="Button" font-size="~options-label-font-size" font-color="~options-label-color" align="Midline"/>
                         </horizontal>
+                        <dropdown-list-setting id="ab-component" interactable="~interactable" text="" hover-hint="Controller button"
+                                               value="ab-choice" choices="ab-choices" apply-on-change="true" formatter="ab-formatter"/>
+                    </vertical>
+                </horizontal>
+
+                <!--    USE FREE HAND    -->
+                <horizontal preferred-height="~free-hand-row-height">
+                    <vertical preferred-width="~free-hand-row-width">
+                        <toggle-setting interactable="~interactable" text="Use free hand" active="~ufh-active"
+                                        value="ufh-value" on-change="ufh-on-change" apply-on-change="true"
+                                        hover-hint="Use Right controller button for Left hand adjustments and vice versa"/>
                     </vertical>
                 </horizontal>
             </vertical>
         </horizontal>
 
-        <!--    HANDS PANEL    -->
-        <horizontal active="~hands-panel-active" preferred-height="~middle-section-height">
-            <vertical>
-                <horizontal preferred-height="24">
-                    <vertical preferred-width="50">
-                        <text text="Left Hand" align="Center"/>
-                        <slider-setting interactable="~interactable" text="Z Offset" min="~zo-min" max="~zo-max" increment="~zo-increment" value="lzo-value"
-                                        bind-value="true" apply-on-change="true" hover-hint="Move Left saber along its axis"/>
-                        <dropdown-list-setting interactable="~interactable" text="Actions" value="lam-choice" choices="lam-choices"
-                                               on-change="lam-on-change" apply-on-change="true" bind-value="true" hover-hint="Left hand actions"/>
-                        <horizontal preferred-height="6.0"/>
-                    </vertical>
-
-                    <vertical preferred-width="2.0"/>
-
-                    <vertical preferred-width="50">
-                        <text text="Right Hand" align="Center"/>
-                        <slider-setting interactable="~interactable" text="Z Offset" min="~zo-min" max="~zo-max" increment="~zo-increment" value="rzo-value"
-                                        bind-value="true" apply-on-change="true" hover-hint="Move Right saber along its axis"/>
-                        <dropdown-list-setting interactable="~interactable" text="Actions" value="ram-choice" choices="ram-choices"
-                                               on-change="ram-on-change" apply-on-change="true" bind-value="true" hover-hint="Right hand actions"/>
-                        <horizontal preferred-height="6.0"/>
-                    </vertical>
-                </horizontal>
-            </vertical>
-        </horizontal>
+        <!--    NONE PANEL    -->
+        <horizontal active="~none-panel-active" preferred-height="~middle-section-height"/>
 
         <!--    BENCHMARK PANEL    -->
         <horizontal active="~benchmark-panel-active" preferred-height="~middle-section-height">
@@ -113,14 +115,14 @@
         <!--    PRECISE PANEL    -->
         <horizontal active="~precise-panel-active" preferred-height="~middle-section-height" id="precise-panel-component">
             <!--    STYLE    -->
-            <macro.define name="precise-sliders-section-height" value="40"/>
             <macro.define name="precise-sliders-section-width" value="56"/>
-            <macro.define name="precise-hand-width" value="32"/>
+            <macro.define name="precise-reset-width" value="10"/>
+            <macro.define name="precise-hand-width" value="22"/>
             <macro.define name="precise-mirror-width" value="32"/>
             <macro.define name="precise-slider-label-width" value="8"/>
             <macro.define name="precise-slider-button-width" value="8"/>
             <macro.define name="precise-slider-width" value="40"/>
-            <macro.define name="precise-group-spacing" value="2"/>
+            <macro.define name="precise-group-spacing" value="1"/>
             <macro.define name="precise-x-color" value="#ff8888"/>
             <macro.define name="precise-y-color" value="#88ff88"/>
             <macro.define name="precise-z-color" value="#8888ff"/>
@@ -129,59 +131,85 @@
                 <horizontal spacing="2">
                     <!--    LEFT HAND    -->
                     <vertical preferred-width="~precise-sliders-section-width" spacing="2">
-                        <horizontal preferred-height="7">
-                            <vertical preferred-width="~precise-hand-width">
-                                <text text="Left Hand" font-size="5" align="Midline"/>
+                        <horizontal preferred-height="7" spacing="2">
+                            <!--    RESET BUTTON    -->
+                            <vertical preferred-width="~precise-reset-width">
+                                <button text="~precise-left-reset-text" on-click="precise-left-reset-on-click"/>
                             </vertical>
+                            <!--    HAND LABEL    -->
+                            <vertical preferred-width="~precise-hand-width">
+                                <text text="Left Hand" font-size="4" align="Midline"/>
+                            </vertical>
+                            <!--    MIRROR BUTTON    -->
                             <vertical preferred-width="~precise-mirror-width">
-                                <button text="Mirror to Right -&gt;" on-click="precise-mirror-to-right-on-click"/>
+                                <button text="~precise-left-mirror-text" on-click="precise-left-mirror-on-click"/>
                             </vertical>
                         </horizontal>
                         <horizontal preferred-height="~precise-sliders-section-height">
+                            <!--    DECREMENT BUTTONS    -->
                             <vertical preferred-width="~precise-slider-button-width">
-                                <button text="-" face-color="~precise-x-color" on-click="precise-left-pos-x-dec-on-click"/>
-                                <button text="-" face-color="~precise-y-color" on-click="precise-left-pos-y-dec-on-click"/>
-                                <button text="-" face-color="~precise-z-color" on-click="precise-left-pos-z-dec-on-click"/>
-                                <horizontal preferred-height="~precise-group-spacing"/>
-                                <button text="-" face-color="~precise-x-color" on-click="precise-left-rot-x-dec-on-click"/>
-                                <button text="-" face-color="~precise-y-color" on-click="precise-left-rot-y-dec-on-click"/>
-                                <horizontal preferred-height="~precise-group-spacing"/>
-                                <button text="-" face-color="~precise-z-color" on-click="precise-left-z-offset-dec-on-click"/>
+                                <!--    Z OFFSET    -->
+                                <button active="~precise-z-offset-active" text="-" face-color="~precise-z-color" on-click="precise-left-z-offset-dec-on-click"/>
+                                <!--    POS    -->
+                                <horizontal active="~precise-position-active" preferred-height="~precise-group-spacing"/>
+                                <button active="~precise-position-active" text="-" face-color="~precise-x-color" on-click="precise-left-pos-x-dec-on-click"/>
+                                <button active="~precise-position-active" text="-" face-color="~precise-y-color" on-click="precise-left-pos-y-dec-on-click"/>
+                                <button active="~precise-position-active" text="-" face-color="~precise-z-color" on-click="precise-left-pos-z-dec-on-click"/>
+                                <!--    ROT    -->
+                                <horizontal active="~precise-rotation-active" preferred-height="~precise-group-spacing"/>
+                                <button active="~precise-rotation-active" text="-" face-color="~precise-x-color" on-click="precise-left-rot-x-dec-on-click"/>
+                                <button active="~precise-rotation-active" text="-" face-color="~precise-y-color" on-click="precise-left-rot-y-dec-on-click"/>
+                                <button active="~precise-rotation-active" text="-" face-color="~precise-z-color" on-click="precise-left-rot-z-dec-on-click"/>
                             </vertical>
+
+                            <!--    SLIDERS    -->
                             <vertical preferred-width="~precise-slider-width">
-                                <slider-setting text="" apply-on-change="true" bind-value="true"
-                                                value="precise-left-pos-x-value" on-change="precise-left-pos-x-on-change"
-                                                min="~pos-slider-min" max="~pos-slider-max" increment="~pos-slider-increment" formatter="pos-slider-formatter"/>
-                                <slider-setting text="" apply-on-change="true" bind-value="true"
-                                                value="precise-left-pos-y-value" on-change="precise-left-pos-y-on-change"
-                                                min="~pos-slider-min" max="~pos-slider-max" increment="~pos-slider-increment" formatter="pos-slider-formatter"/>
-                                <slider-setting text="" apply-on-change="true" bind-value="true"
-                                                value="precise-left-pos-z-value" on-change="precise-left-pos-z-on-change"
-                                                min="~pos-slider-min" max="~pos-slider-max" increment="~pos-slider-increment" formatter="pos-slider-formatter"/>
-                                <horizontal preferred-height="~precise-group-spacing"/>
-                                <slider-setting text="" apply-on-change="true" bind-value="true"
-                                                value="precise-left-rot-x-value" on-change="precise-left-rot-x-on-change"
-                                                min="~rot-x-slider-min" max="~rot-x-slider-max" increment="~rot-slider-increment"
-                                                formatter="rot-slider-formatter"/>
-                                <slider-setting text="" apply-on-change="true" bind-value="true"
-                                                value="precise-left-rot-y-value" on-change="precise-left-rot-y-on-change"
-                                                min="~rot-y-slider-min" max="~rot-y-slider-max" increment="~rot-slider-increment"
-                                                formatter="rot-slider-formatter"/>
-                                <horizontal preferred-height="~precise-group-spacing"/>
-                                <slider-setting text="" apply-on-change="true" bind-value="true"
+                                <!--    Z OFFSET    -->
+                                <slider-setting active="~precise-z-offset-active" text="" apply-on-change="true" bind-value="true"
                                                 value="precise-left-z-offset-value" on-change="precise-left-z-offset-on-change"
                                                 min="~z-offset-slider-min" max="~z-offset-slider-max" increment="~z-offset-slider-increment"
                                                 formatter="z-offset-slider-formatter"/>
+                                <!--    POS    -->
+                                <horizontal active="~precise-position-active" preferred-height="~precise-group-spacing"/>
+                                <slider-setting active="~precise-position-active" text="" apply-on-change="true" bind-value="true"
+                                                value="precise-left-pos-x-value" on-change="precise-left-pos-x-on-change"
+                                                min="~pos-slider-min" max="~pos-slider-max" increment="~pos-slider-increment" formatter="pos-slider-formatter"/>
+                                <slider-setting active="~precise-position-active" text="" apply-on-change="true" bind-value="true"
+                                                value="precise-left-pos-y-value" on-change="precise-left-pos-y-on-change"
+                                                min="~pos-slider-min" max="~pos-slider-max" increment="~pos-slider-increment" formatter="pos-slider-formatter"/>
+                                <slider-setting active="~precise-position-active" text="" apply-on-change="true" bind-value="true"
+                                                value="precise-left-pos-z-value" on-change="precise-left-pos-z-on-change"
+                                                min="~pos-slider-min" max="~pos-slider-max" increment="~pos-slider-increment" formatter="pos-slider-formatter"/>
+                                <!--    ROT    -->
+                                <horizontal active="~precise-rotation-active" preferred-height="~precise-group-spacing"/>
+                                <slider-setting active="~precise-rotation-active" text="" apply-on-change="true" bind-value="true"
+                                                value="precise-left-rot-x-value" on-change="precise-left-rot-x-on-change"
+                                                min="~rot-x-slider-min" max="~rot-x-slider-max" increment="~rot-slider-increment"
+                                                formatter="rot-slider-formatter"/>
+                                <slider-setting active="~precise-rotation-active" text="" apply-on-change="true" bind-value="true"
+                                                value="precise-left-rot-y-value" on-change="precise-left-rot-y-on-change"
+                                                min="~rot-slider-min" max="~rot-slider-max" increment="~rot-slider-increment"
+                                                formatter="rot-slider-formatter"/>
+                                <slider-setting active="~precise-rotation-active" text="" apply-on-change="true" bind-value="true"
+                                                value="precise-left-rot-z-value" on-change="precise-left-rot-z-on-change"
+                                                min="~rot-slider-min" max="~rot-slider-max" increment="~rot-slider-increment"
+                                                formatter="rot-slider-formatter"/>
                             </vertical>
+
+                            <!--    INCREMENT BUTTONS    -->
                             <vertical preferred-width="~precise-slider-button-width">
-                                <button text="+" face-color="~precise-x-color" on-click="precise-left-pos-x-inc-on-click"/>
-                                <button text="+" face-color="~precise-y-color" on-click="precise-left-pos-y-inc-on-click"/>
-                                <button text="+" face-color="~precise-z-color" on-click="precise-left-pos-z-inc-on-click"/>
-                                <horizontal preferred-height="~precise-group-spacing"/>
-                                <button text="+" face-color="~precise-x-color" on-click="precise-left-rot-x-inc-on-click"/>
-                                <button text="+" face-color="~precise-y-color" on-click="precise-left-rot-y-inc-on-click"/>
-                                <horizontal preferred-height="~precise-group-spacing"/>
-                                <button text="+" face-color="~precise-z-color" on-click="precise-left-z-offset-inc-on-click"/>
+                                <!--    Z OFFSET    -->
+                                <button active="~precise-z-offset-active" text="+" face-color="~precise-z-color" on-click="precise-left-z-offset-inc-on-click"/>
+                                <!--    POS    -->
+                                <horizontal active="~precise-position-active" preferred-height="~precise-group-spacing"/>
+                                <button active="~precise-position-active" text="+" face-color="~precise-x-color" on-click="precise-left-pos-x-inc-on-click"/>
+                                <button active="~precise-position-active" text="+" face-color="~precise-y-color" on-click="precise-left-pos-y-inc-on-click"/>
+                                <button active="~precise-position-active" text="+" face-color="~precise-z-color" on-click="precise-left-pos-z-inc-on-click"/>
+                                <!--    ROT    -->
+                                <horizontal active="~precise-rotation-active" preferred-height="~precise-group-spacing"/>
+                                <button active="~precise-rotation-active" text="+" face-color="~precise-x-color" on-click="precise-left-rot-x-inc-on-click"/>
+                                <button active="~precise-rotation-active" text="+" face-color="~precise-y-color" on-click="precise-left-rot-y-inc-on-click"/>
+                                <button active="~precise-rotation-active" text="+" face-color="~precise-z-color" on-click="precise-left-rot-z-inc-on-click"/>
                             </vertical>
                         </horizontal>
                     </vertical>
@@ -189,76 +217,108 @@
                     <!--    LABELS    -->
                     <vertical preferred-width="~precise-slider-label-width">
                         <horizontal preferred-height="9"/>
-                        <text text="Pos X" font-color="~precise-x-color" align="Midline"/>
-                        <text text="Pos Y" font-color="~precise-y-color" align="Midline"/>
-                        <text text="Pos Z" font-color="~precise-z-color" align="Midline"/>
-                        <horizontal preferred-height="~precise-group-spacing"/>
-                        <text text="Rot X" font-color="~precise-x-color" align="Midline"/>
-                        <text text="Rot Y" font-color="~precise-y-color" align="Midline"/>
-                        <horizontal preferred-height="~precise-group-spacing"/>
-                        <text text="ZOffset" font-color="~precise-z-color" align="Midline"/>
+                        <!--    Z OFFSET    -->
+                        <text active="~precise-z-offset-active" text="ZOffset" font-color="~precise-z-color" align="Midline"/>
+                        <!--    POS    -->
+                        <horizontal active="~precise-position-active" preferred-height="~precise-group-spacing"/>
+                        <text active="~precise-position-active" text="Pos X" font-color="~precise-x-color" align="Midline"/>
+                        <text active="~precise-position-active" text="Pos Y" font-color="~precise-y-color" align="Midline"/>
+                        <text active="~precise-position-active" text="Pos Z" font-color="~precise-z-color" align="Midline"/>
+                        <!--    ROT    -->
+                        <horizontal active="~precise-rotation-active" preferred-height="~precise-group-spacing"/>
+                        <text active="~precise-rotation-active" text="Rot X" font-color="~precise-x-color" align="Midline"/>
+                        <text active="~precise-rotation-active" text="Rot Y" font-color="~precise-y-color" align="Midline"/>
+                        <text active="~precise-rotation-active" text="Rot Z" font-color="~precise-z-color" align="Midline"/>
                     </vertical>
 
-                    <!--    Right HAND    -->
+                    <!--    RIGHT HAND    -->
                     <vertical preferred-width="~precise-sliders-section-width" spacing="2">
-                        <horizontal preferred-height="7">
+                        <horizontal preferred-height="7" spacing="2">
+                            <!--    MIRROR BUTTON    -->
                             <vertical preferred-width="~precise-mirror-width">
-                                <button text="&lt;- Mirror to Left" on-click="precise-mirror-to-left-on-click"/>
+                                <button text="~precise-right-mirror-text" on-click="precise-right-mirror-on-click"/>
                             </vertical>
+                            <!--    HAND LABEL    -->
                             <vertical preferred-width="~precise-hand-width">
-                                <text text="Right Hand" font-size="5" align="Midline"/>
+                                <text text="Right Hand" font-size="4" align="Midline"/>
+                            </vertical>
+                            <!--    RESET BUTTON    -->
+                            <vertical preferred-width="~precise-reset-width">
+                                <button text="~precise-right-reset-text" on-click="precise-right-reset-on-click"/>
                             </vertical>
                         </horizontal>
                         <horizontal preferred-height="~precise-sliders-section-height">
+                            <!--    DECREMENT BUTTONS    -->
                             <vertical preferred-width="~precise-slider-button-width">
-                                <button text="-" face-color="~precise-x-color" on-click="precise-right-pos-x-dec-on-click"/>
-                                <button text="-" face-color="~precise-y-color" on-click="precise-right-pos-y-dec-on-click"/>
-                                <button text="-" face-color="~precise-z-color" on-click="precise-right-pos-z-dec-on-click"/>
-                                <horizontal preferred-height="~precise-group-spacing"/>
-                                <button text="-" face-color="~precise-x-color" on-click="precise-right-rot-x-dec-on-click"/>
-                                <button text="-" face-color="~precise-y-color" on-click="precise-right-rot-y-dec-on-click"/>
-                                <horizontal preferred-height="~precise-group-spacing"/>
-                                <button text="-" face-color="~precise-z-color" on-click="precise-right-z-offset-dec-on-click"/>
+                                <!--    Z OFFSET    -->
+                                <button active="~precise-z-offset-active" text="-" face-color="~precise-z-color"
+                                        on-click="precise-right-z-offset-dec-on-click"/>
+                                <!--    POS    -->
+                                <horizontal active="~precise-position-active" preferred-height="~precise-group-spacing"/>
+                                <button active="~precise-position-active" text="-" face-color="~precise-x-color" on-click="precise-right-pos-x-dec-on-click"/>
+                                <button active="~precise-position-active" text="-" face-color="~precise-y-color" on-click="precise-right-pos-y-dec-on-click"/>
+                                <button active="~precise-position-active" text="-" face-color="~precise-z-color" on-click="precise-right-pos-z-dec-on-click"/>
+                                <!--    ROT    -->
+                                <horizontal active="~precise-rotation-active" preferred-height="~precise-group-spacing"/>
+                                <button active="~precise-rotation-active" text="-" face-color="~precise-x-color" on-click="precise-right-rot-x-dec-on-click"/>
+                                <button active="~precise-rotation-active" text="-" face-color="~precise-y-color" on-click="precise-right-rot-y-dec-on-click"/>
+                                <button active="~precise-rotation-active" text="-" face-color="~precise-z-color" on-click="precise-right-rot-z-dec-on-click"/>
                             </vertical>
+
+                            <!--    SLIDERS    -->
                             <vertical preferred-width="~precise-slider-width">
-                                <slider-setting text="" apply-on-change="true" bind-value="true"
-                                                value="precise-right-pos-x-value" on-change="precise-right-pos-x-on-change"
-                                                min="~pos-slider-min" max="~pos-slider-max" increment="~pos-slider-increment" formatter="pos-slider-formatter"/>
-                                <slider-setting text="" apply-on-change="true" bind-value="true"
-                                                value="precise-right-pos-y-value" on-change="precise-right-pos-y-on-change"
-                                                min="~pos-slider-min" max="~pos-slider-max" increment="~pos-slider-increment" formatter="pos-slider-formatter"/>
-                                <slider-setting text="" apply-on-change="true" bind-value="true"
-                                                value="precise-right-pos-z-value" on-change="precise-right-pos-z-on-change"
-                                                min="~pos-slider-min" max="~pos-slider-max" increment="~pos-slider-increment" formatter="pos-slider-formatter"/>
-                                <horizontal preferred-height="~precise-group-spacing"/>
-                                <slider-setting text="" apply-on-change="true" bind-value="true"
-                                                value="precise-right-rot-x-value" on-change="precise-right-rot-x-on-change"
-                                                min="~rot-x-slider-min" max="~rot-x-slider-max" increment="~rot-slider-increment"
-                                                formatter="rot-slider-formatter"/>
-                                <slider-setting text="" apply-on-change="true" bind-value="true"
-                                                value="precise-right-rot-y-value" on-change="precise-right-rot-y-on-change"
-                                                min="~rot-y-slider-min" max="~rot-y-slider-max" increment="~rot-slider-increment"
-                                                formatter="rot-slider-formatter"/>
-                                <horizontal preferred-height="~precise-group-spacing"/>
-                                <slider-setting text="" apply-on-change="true" bind-value="true"
+                                <!--    Z OFFSET    -->
+                                <slider-setting active="~precise-z-offset-active" text="" apply-on-change="true" bind-value="true"
                                                 value="precise-right-z-offset-value" on-change="precise-right-z-offset-on-change"
                                                 min="~z-offset-slider-min" max="~z-offset-slider-max" increment="~z-offset-slider-increment"
                                                 formatter="z-offset-slider-formatter"/>
+                                <!--    POS    -->
+                                <horizontal active="~precise-position-active" preferred-height="~precise-group-spacing"/>
+                                <slider-setting active="~precise-position-active" text="" apply-on-change="true" bind-value="true"
+                                                value="precise-right-pos-x-value" on-change="precise-right-pos-x-on-change"
+                                                min="~pos-slider-min" max="~pos-slider-max" increment="~pos-slider-increment" formatter="pos-slider-formatter"/>
+                                <slider-setting active="~precise-position-active" text="" apply-on-change="true" bind-value="true"
+                                                value="precise-right-pos-y-value" on-change="precise-right-pos-y-on-change"
+                                                min="~pos-slider-min" max="~pos-slider-max" increment="~pos-slider-increment" formatter="pos-slider-formatter"/>
+                                <slider-setting active="~precise-position-active" text="" apply-on-change="true" bind-value="true"
+                                                value="precise-right-pos-z-value" on-change="precise-right-pos-z-on-change"
+                                                min="~pos-slider-min" max="~pos-slider-max" increment="~pos-slider-increment" formatter="pos-slider-formatter"/>
+                                <!--    ROT    -->
+                                <horizontal active="~precise-rotation-active" preferred-height="~precise-group-spacing"/>
+                                <slider-setting active="~precise-rotation-active" text="" apply-on-change="true" bind-value="true"
+                                                value="precise-right-rot-x-value" on-change="precise-right-rot-x-on-change"
+                                                min="~rot-x-slider-min" max="~rot-x-slider-max" increment="~rot-slider-increment"
+                                                formatter="rot-slider-formatter"/>
+                                <slider-setting active="~precise-rotation-active" text="" apply-on-change="true" bind-value="true"
+                                                value="precise-right-rot-y-value" on-change="precise-right-rot-y-on-change"
+                                                min="~rot-slider-min" max="~rot-slider-max" increment="~rot-slider-increment"
+                                                formatter="rot-slider-formatter"/>
+                                <slider-setting active="~precise-rotation-active" text="" apply-on-change="true" bind-value="true"
+                                                value="precise-right-rot-z-value" on-change="precise-right-rot-z-on-change"
+                                                min="~rot-slider-min" max="~rot-slider-max" increment="~rot-slider-increment"
+                                                formatter="rot-slider-formatter"/>
                             </vertical>
+
+                            <!--    INCREMENT BUTTONS    -->
                             <vertical preferred-width="~precise-slider-button-width">
-                                <button text="+" face-color="~precise-x-color" on-click="precise-right-pos-x-inc-on-click"/>
-                                <button text="+" face-color="~precise-y-color" on-click="precise-right-pos-y-inc-on-click"/>
-                                <button text="+" face-color="~precise-z-color" on-click="precise-right-pos-z-inc-on-click"/>
-                                <horizontal preferred-height="~precise-group-spacing"/>
-                                <button text="+" face-color="~precise-x-color" on-click="precise-right-rot-x-inc-on-click"/>
-                                <button text="+" face-color="~precise-y-color" on-click="precise-right-rot-y-inc-on-click"/>
-                                <horizontal preferred-height="~precise-group-spacing"/>
-                                <button text="+" face-color="~precise-z-color" on-click="precise-right-z-offset-inc-on-click"/>
+                                <!--    Z OFFSET    -->
+                                <button active="~precise-z-offset-active" text="+" face-color="~precise-z-color"
+                                        on-click="precise-right-z-offset-inc-on-click"/>
+                                <!--    POS    -->
+                                <horizontal active="~precise-position-active" preferred-height="~precise-group-spacing"/>
+                                <button active="~precise-position-active" text="+" face-color="~precise-x-color" on-click="precise-right-pos-x-inc-on-click"/>
+                                <button active="~precise-position-active" text="+" face-color="~precise-y-color" on-click="precise-right-pos-y-inc-on-click"/>
+                                <button active="~precise-position-active" text="+" face-color="~precise-z-color" on-click="precise-right-pos-z-inc-on-click"/>
+                                <!--    ROT    -->
+                                <horizontal active="~precise-rotation-active" preferred-height="~precise-group-spacing"/>
+                                <button active="~precise-rotation-active" text="+" face-color="~precise-x-color" on-click="precise-right-rot-x-inc-on-click"/>
+                                <button active="~precise-rotation-active" text="+" face-color="~precise-y-color" on-click="precise-right-rot-y-inc-on-click"/>
+                                <button active="~precise-rotation-active" text="+" face-color="~precise-z-color" on-click="precise-right-rot-z-inc-on-click"/>
                             </vertical>
                         </horizontal>
                     </vertical>
                 </horizontal>
-                <horizontal preferred-height="22"/>
+                <horizontal preferred-height="~precise-filler-height"/>
             </vertical>
         </horizontal>
 

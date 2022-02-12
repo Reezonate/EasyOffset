@@ -12,8 +12,8 @@ namespace EasyOffset {
         private static readonly HandMenuAction[] LeftHandMenuChoices = {
             HandMenuAction.Default,
             HandMenuAction.LeftMirrorAll,
-            HandMenuAction.MirrorPivot,
-            HandMenuAction.MirrorDirection,
+            HandMenuAction.MirrorPivotPosition,
+            HandMenuAction.MirrorRotation,
             HandMenuAction.MirrorZOffset,
             HandMenuAction.Reset
         };
@@ -27,8 +27,8 @@ namespace EasyOffset {
         private static readonly HandMenuAction[] RightHandMenuChoices = {
             HandMenuAction.Default,
             HandMenuAction.RightMirrorAll,
-            HandMenuAction.MirrorPivot,
-            HandMenuAction.MirrorDirection,
+            HandMenuAction.MirrorPivotPosition,
+            HandMenuAction.MirrorRotation,
             HandMenuAction.MirrorZOffset,
             HandMenuAction.Reset
         };
@@ -77,8 +77,8 @@ namespace EasyOffset {
                 HandMenuAction.Default => "Select action",
                 HandMenuAction.LeftMirrorAll => "Mirror to Right",
                 HandMenuAction.RightMirrorAll => "Mirror to Left",
-                HandMenuAction.MirrorPivot => "Mirror pivot",
-                HandMenuAction.MirrorDirection => "Mirror direction",
+                HandMenuAction.MirrorPivotPosition => "Mirror position",
+                HandMenuAction.MirrorRotation => "Mirror rotation",
                 HandMenuAction.MirrorZOffset => "Mirror ZOffset",
                 HandMenuAction.Reset => "Reset to defaults",
                 _ => throw new ArgumentOutOfRangeException()

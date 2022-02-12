@@ -98,6 +98,7 @@ namespace EasyOffset {
             _currentFadeRadius = Mathf.Lerp(_currentFadeRadius, _targetFadeRadius, t);
             sphereTransform.localPosition = -_orthoDirection * (_currentScale - 1.0f);
             sphereTransform.localScale = new Vector3(_currentScale, _currentScale, _currentScale);
+            UpdateMaterial();
         }
 
         #endregion
@@ -133,7 +134,9 @@ namespace EasyOffset {
             transform.localPosition = pivotPosition;
         }
 
-        public void SetPreviousDirection(Vector3 orthoDirection, bool visible) {
+        public void SetPreviousRotation(Quaternion previousRotation, bool visible) {
+            var orthoDirection = previousRotation * Vector3.forward;
+
             var localUp = transform.InverseTransformDirection(Vector3.up);
             var lookFromCenter = Quaternion.LookRotation(orthoDirection, localUp);
 
@@ -150,12 +153,12 @@ namespace EasyOffset {
             UpdateMaterial();
         }
 
-        public void SetDirection(Vector3 orthoDirection) {
-            _orthoDirection = orthoDirection;
-            _sphericalCoordinates = TransformUtils.OrthoToSphericalDirection(orthoDirection);
+        public void SetRotation(Quaternion rotation) {
+            _orthoDirection = rotation * Vector3.forward;
+            _sphericalCoordinates = TransformUtils.OrthoToSphericalDirection(_orthoDirection);
 
             UpdateTextString(_sphericalCoordinates);
-            UpdateTextPosition(orthoDirection);
+            UpdateTextPosition(_orthoDirection);
             UpdateMaterial();
         }
 

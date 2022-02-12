@@ -1,5 +1,7 @@
+using UnityEngine;
+
 namespace EasyOffset {
-    internal static class Defaults {
+    internal static class ConfigDefaults {
         #region Enabled
 
         public const bool Enabled = true;
@@ -50,17 +52,15 @@ namespace EasyOffset {
 
         #endregion
 
-        #region Offsets
-
-        public const float PivotX = 0f;
-        public const float PivotY = 0f;
-        public const float PivotZ = -0.11f;
-
-        public const float SaberDirectionX = 0f;
-        public const float SaberDirectionY = 0f;
-        public const float SaberDirectionZ = 1f;
+        #region SaberOffsets
 
         public const float ZOffset = 0.11f;
+
+        public static readonly Vector3 LeftSaberPivotPosition = new(0.0f, 0.0f, -ZOffset);
+        public static readonly Quaternion LeftSaberRotation = Quaternion.identity;
+
+        public static readonly Vector3 RightSaberPivotPosition = new(0.0f, 0.0f, -ZOffset);
+        public static readonly Quaternion RightSaberRotation = Quaternion.identity;
 
         #endregion
     }

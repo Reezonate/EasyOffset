@@ -34,11 +34,11 @@ namespace EasyOffset {
 
             switch (adjustmentHand) {
                 case Hand.Left:
-                    storedLocalPosition = PluginConfig.LeftHandPivotPosition;
+                    storedLocalPosition = PluginConfig.LeftSaberPivotPosition;
                     _gizmosManager.LeftHandGizmosController.SetOrthonormalBasisFocus(true);
                     break;
                 case Hand.Right:
-                    storedLocalPosition = PluginConfig.RightHandPivotPosition;
+                    storedLocalPosition = PluginConfig.RightSaberPivotPosition;
                     _gizmosManager.RightHandGizmosController.SetOrthonormalBasisFocus(true);
                     break;
                 default: throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null);
@@ -56,10 +56,10 @@ namespace EasyOffset {
 
             switch (adjustmentHand) {
                 case Hand.Left:
-                    PluginConfig.LeftHandPivotPosition = pivotLocalPosition;
+                    PluginConfig.LeftSaberPivotPosition = pivotLocalPosition;
                     break;
                 case Hand.Right:
-                    PluginConfig.RightHandPivotPosition = pivotLocalPosition;
+                    PluginConfig.RightSaberPivotPosition = pivotLocalPosition;
                     break;
                 default: throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null);
             }

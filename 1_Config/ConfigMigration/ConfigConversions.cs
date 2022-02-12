@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace EasyOffset; 
+namespace EasyOffset;
 
 internal static class ConfigConversions {
     #region Built-in offsets
@@ -73,16 +73,16 @@ internal static class ConfigConversions {
         Vector3 gripPosition,
         Vector3 gripRotation,
         out Vector3 pivotPosition,
-        out Vector3 saberDirection
+        out Quaternion saberRotation
     ) {
         ApplyBuiltInOffsets(isValveController, isVRModeOculus, ref gripPosition, ref gripRotation);
-        var rotation = Quaternion.Euler(gripRotation);
-        saberDirection = rotation * Vector3.forward;
+        saberRotation = Quaternion.Euler(gripRotation);
+        var offset = saberRotation * new Vector3(0, 0, zOffset);
 
         if (useBaseGameAdjustmentMode) {
-            pivotPosition = rotation * gripPosition - saberDirection * zOffset;
+            pivotPosition = saberRotation * gripPosition - offset;
         } else {
-            pivotPosition = gripPosition - saberDirection * zOffset;
+            pivotPosition = gripPosition - offset;
         }
     }
 
@@ -96,27 +96,13 @@ internal static class ConfigConversions {
         out Vector3 gripRotation
     ) {
         gripPosition = saberTranslation;
-        gripRotation = saberRotation.eulerAngles;
-
-        gripRotation = new Vector3(
-            ClampRotation(gripRotation.x),
-            ClampRotation(gripRotation.y),
-            ClampRotation(gripRotation.z)
-        );
+        gripRotation = TransformUtils.EulerFromRotation(saberRotation);
 
         if (useBaseGameAdjustmentMode) {
             gripPosition = Quaternion.Inverse(saberRotation) * gripPosition;
         }
 
         RemoveBuiltInOffsets(isValveController, isVRModeOculus, ref gripPosition, ref gripRotation);
-    }
-
-    private static float ClampRotation(float value) {
-        return value switch {
-            > 180 => -360 + value,
-            < -180 => 360 - value,
-            _ => value
-        };
     }
 
     #endregion
@@ -131,8 +117,8 @@ internal static class ConfigConversions {
         Vector3 rotation,
         out Vector3 leftPivotPosition,
         out Vector3 rightPivotPosition,
-        out Vector3 leftSaberDirection,
-        out Vector3 rightSaberDirection
+        out Quaternion leftSaberRotation,
+        out Quaternion rightSaberRotation
     ) {
         OneHandConversion(
             true,
@@ -142,20 +128,11 @@ internal static class ConfigConversions {
             position,
             rotation,
             out rightPivotPosition,
-            out rightSaberDirection
+            out rightSaberRotation
         );
 
-        leftPivotPosition = new Vector3(
-            -rightPivotPosition.x,
-            rightPivotPosition.y,
-            rightPivotPosition.z
-        );
-
-        leftSaberDirection = new Vector3(
-            -rightSaberDirection.x,
-            rightSaberDirection.y,
-            rightSaberDirection.z
-        );
+        leftPivotPosition = TransformUtils.MirrorVector(rightPivotPosition);
+        leftSaberRotation = TransformUtils.MirrorRotation(rightSaberRotation);
     }
 
     #endregion
@@ -174,8 +151,8 @@ internal static class ConfigConversions {
         Vector3 gripRightRotation,
         out Vector3 leftPivotPosition,
         out Vector3 rightPivotPosition,
-        out Vector3 leftSaberDirection,
-        out Vector3 rightSaberDirection
+        out Quaternion leftSaberRotation,
+        out Quaternion rightSaberRotation
     ) {
         OneHandConversion(
             useBaseGameAdjustmentMode,
@@ -185,7 +162,7 @@ internal static class ConfigConversions {
             gripLeftPosition,
             gripLeftRotation,
             out leftPivotPosition,
-            out leftSaberDirection
+            out leftSaberRotation
         );
 
         OneHandConversion(
@@ -196,7 +173,7 @@ internal static class ConfigConversions {
             gripRightPosition,
             gripRightRotation,
             out rightPivotPosition,
-            out rightSaberDirection
+            out rightSaberRotation
         );
     }
 

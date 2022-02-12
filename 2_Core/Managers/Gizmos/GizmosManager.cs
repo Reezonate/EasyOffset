@@ -22,6 +22,8 @@ namespace EasyOffset {
             PluginConfig.ControllerTypeChangedEvent += OnControllerTypeChanged;
             Abomination.TransformsUpdatedEvent += OnControllerTransformsChanged;
             PluginConfig.ConfigWasChangedEvent += OnConfigWasChanged;
+            ModPanelUI.PreciseChangeStartedEvent += OnPreciseChangeStarted;
+            ModPanelUI.PreciseChangeFinishedEvent += OnPreciseChangeFinished;
 
             OnControllerTypeChanged(PluginConfig.SelectedControllerType);
             OnConfigWasChanged();
@@ -34,6 +36,8 @@ namespace EasyOffset {
             PluginConfig.ControllerTypeChangedEvent -= OnControllerTypeChanged;
             Abomination.TransformsUpdatedEvent -= OnControllerTransformsChanged;
             PluginConfig.ConfigWasChangedEvent -= OnConfigWasChanged;
+            ModPanelUI.PreciseChangeStartedEvent -= OnPreciseChangeStarted;
+            ModPanelUI.PreciseChangeFinishedEvent -= OnPreciseChangeFinished;
         }
 
         #endregion
@@ -59,24 +63,42 @@ namespace EasyOffset {
 
         #region Events
 
+        private void OnPreciseChangeStarted(Hand? hand) {
+            switch (hand) {
+                case Hand.Left:
+                    LeftHandGizmosController.SetOrthonormalBasisFocus(true);
+                    LeftHandGizmosController.SetSphericalBasisFocus(true);
+                    break;
+                case Hand.Right:
+                    RightHandGizmosController.SetOrthonormalBasisFocus(true);
+                    RightHandGizmosController.SetSphericalBasisFocus(true);
+                    break;
+                case null: return;
+                default: throw new ArgumentOutOfRangeException(nameof(hand), hand, null);
+            }
+        }
+
+        private void OnPreciseChangeFinished(Hand? hand) {
+            LeftHandGizmosController.SetOrthonormalBasisFocus(false);
+            LeftHandGizmosController.SetSphericalBasisFocus(false);
+            RightHandGizmosController.SetOrthonormalBasisFocus(false);
+            RightHandGizmosController.SetSphericalBasisFocus(false);
+        }
+
         private void OnConfigWasChanged() {
             _configUpdateRequired = true;
         }
 
         private void UpdateConfigValues() {
             LeftHandGizmosController.SetConfigValues(
-                PluginConfig.LeftHandTranslation,
-                PluginConfig.LeftHandRotation,
-                PluginConfig.LeftHandPivotPosition,
-                PluginConfig.LeftHandSaberDirection,
-                PluginConfig.LeftHandZOffset
+                PluginConfig.LeftSaberPivotPosition,
+                PluginConfig.LeftSaberRotation,
+                PluginConfig.LeftSaberZOffset
             );
             RightHandGizmosController.SetConfigValues(
-                PluginConfig.RightHandTranslation,
-                PluginConfig.RightHandRotation,
-                PluginConfig.RightHandPivotPosition,
-                PluginConfig.RightHandSaberDirection,
-                PluginConfig.RightHandZOffset
+                PluginConfig.RightSaberPivotPosition,
+                PluginConfig.RightSaberRotation,
+                PluginConfig.RightSaberZOffset
             );
         }
 

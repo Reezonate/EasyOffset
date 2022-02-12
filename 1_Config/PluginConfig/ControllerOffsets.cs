@@ -25,200 +25,154 @@ internal static partial class PluginConfig {
 
     #endregion
 
-    #region RightHand
-
-    #region Translation
-
-    private static readonly CachedVariable<Vector3> CachedRightHandTranslation = new(GetRightHandTranslationValue);
-
-    public static Vector3 RightHandTranslation => CachedRightHandTranslation.Value;
-
-    private static void UpdateRightHandTranslation() {
-        CachedRightHandTranslation.Value = GetRightHandTranslationValue();
-    }
-
-    private static Vector3 GetRightHandTranslationValue() {
-        return TransformUtils.GetSaberLocalPosition(RightHandPivotPosition, RightHandSaberDirection, RightHandZOffset);
-    }
-
-    #endregion
-
-    #region Rotation
-
-    private static readonly CachedVariable<Quaternion> CachedRightHandRotation = new(GetRightHandRotationValue);
-
-    public static Quaternion RightHandRotation => CachedRightHandRotation.Value;
-
-    private static void UpdateRightHandRotation() {
-        CachedRightHandRotation.Value = GetRightHandRotationValue();
-    }
-
-    private static Quaternion GetRightHandRotationValue() {
-        return TransformUtils.GetSaberLocalRotation(RightHandSaberDirection);
-    }
-
-    #endregion
-
-    #region PivotPosition
-
-    private static readonly CachedVariable<Vector3> CachedRightHandPivotPosition = new(() => new Vector3(
-        ConfigFileData.Instance.RightHandPivotX,
-        ConfigFileData.Instance.RightHandPivotY,
-        ConfigFileData.Instance.RightHandPivotZ
-    ));
-
-    public static Vector3 RightHandPivotPosition {
-        get => CachedRightHandPivotPosition.Value;
-        set {
-            CachedRightHandPivotPosition.Value = value;
-            ConfigFileData.Instance.RightHandPivotX = value.x;
-            ConfigFileData.Instance.RightHandPivotY = value.y;
-            ConfigFileData.Instance.RightHandPivotZ = value.z;
-            UpdateRightHandTranslation();
-            NotifyConfigWasChanged();
-        }
-    }
-
-    #endregion
-
-    #region SaberDirection
-
-    private static readonly CachedVariable<Vector3> CachedRightHandSaberDirection = new(() => new Vector3(
-        ConfigFileData.Instance.RightHandSaberDirectionX,
-        ConfigFileData.Instance.RightHandSaberDirectionY,
-        ConfigFileData.Instance.RightHandSaberDirectionZ
-    ).normalized);
-
-    public static Vector3 RightHandSaberDirection {
-        get => CachedRightHandSaberDirection.Value;
-        set {
-            var normalized = value.normalized;
-            CachedRightHandSaberDirection.Value = normalized;
-            ConfigFileData.Instance.RightHandSaberDirectionX = normalized.x;
-            ConfigFileData.Instance.RightHandSaberDirectionY = normalized.y;
-            ConfigFileData.Instance.RightHandSaberDirectionZ = normalized.z;
-            UpdateRightHandTranslation();
-            UpdateRightHandRotation();
-            NotifyConfigWasChanged();
-        }
-    }
-
-    #endregion
-
-    #region ZOffset
-
-    private static readonly CachedVariable<float> CachedRightHandZOffset = new(
-        () => ConfigFileData.Instance.RightHandZOffset
-    );
-
-    public static float RightHandZOffset {
-        get => CachedRightHandZOffset.Value;
-        set {
-            CachedRightHandZOffset.Value = value;
-            ConfigFileData.Instance.RightHandZOffset = value;
-            UpdateRightHandTranslation();
-            NotifyConfigWasChanged();
-        }
-    }
-
-    #endregion
-
-    #endregion
-
     #region LeftHand
 
-    #region Translation
+    #region SaberTranslation
 
-    private static readonly CachedVariable<Vector3> CachedLeftHandTranslation = new(GetLeftHandTranslationValue);
+    private static readonly CachedVariable<Vector3> CachedLeftSaberTranslation = new(GetLeftSaberTranslationValue);
 
-    public static Vector3 LeftHandTranslation => CachedLeftHandTranslation.Value;
+    public static Vector3 LeftSaberTranslation => CachedLeftSaberTranslation.Value;
 
-    private static void UpdateLeftHandTranslation() {
-        CachedLeftHandTranslation.Value = GetLeftHandTranslationValue();
+    private static void UpdateLeftSaberTranslation() {
+        CachedLeftSaberTranslation.Value = GetLeftSaberTranslationValue();
     }
 
-    private static Vector3 GetLeftHandTranslationValue() {
-        return TransformUtils.GetSaberLocalPosition(LeftHandPivotPosition, LeftHandSaberDirection, LeftHandZOffset);
-    }
-
-    #endregion
-
-    #region Rotation
-
-    private static readonly CachedVariable<Quaternion> CachedLeftHandRotation = new(GetLeftHandRotationValue);
-
-    public static Quaternion LeftHandRotation => CachedLeftHandRotation.Value;
-
-    private static void UpdateLeftHandRotation() {
-        CachedLeftHandRotation.Value = GetLeftHandRotationValue();
-    }
-
-    private static Quaternion GetLeftHandRotationValue() {
-        return TransformUtils.GetSaberLocalRotation(LeftHandSaberDirection);
+    private static Vector3 GetLeftSaberTranslationValue() {
+        return TransformUtils.GetSaberTranslation(LeftSaberPivotPosition, LeftSaberRotation, LeftSaberZOffset);
     }
 
     #endregion
 
-    #region PivotPosition
+    #region SaberRotation
 
-    private static readonly CachedVariable<Vector3> CachedLeftHandPivotPosition = new(() => new Vector3(
-        ConfigFileData.Instance.LeftHandPivotX,
-        ConfigFileData.Instance.LeftHandPivotY,
-        ConfigFileData.Instance.LeftHandPivotZ
-    ));
+    private static readonly CachedVariable<Quaternion> CachedLeftSaberRotation =
+        new(() => TransformUtils.RotationFromEuler(ConfigFileData.Instance.LeftSaberRotationEuler));
 
-    public static Vector3 LeftHandPivotPosition {
-        get => CachedLeftHandPivotPosition.Value;
+    public static Quaternion LeftSaberRotation {
+        get => CachedLeftSaberRotation.Value;
         set {
-            CachedLeftHandPivotPosition.Value = value;
-            ConfigFileData.Instance.LeftHandPivotX = value.x;
-            ConfigFileData.Instance.LeftHandPivotY = value.y;
-            ConfigFileData.Instance.LeftHandPivotZ = value.z;
-            UpdateLeftHandTranslation();
+            CachedLeftSaberRotation.Value = value;
+            ConfigFileData.Instance.LeftSaberRotationEuler = TransformUtils.EulerFromRotation(value);
+            UpdateLeftSaberTranslation();
             NotifyConfigWasChanged();
         }
     }
 
     #endregion
 
-    #region SaberDirection
+    #region SaberPivotPosition
 
-    private static readonly CachedVariable<Vector3> CachedLeftHandSaberDirection = new(() => new Vector3(
-        ConfigFileData.Instance.LeftHandSaberDirectionX,
-        ConfigFileData.Instance.LeftHandSaberDirectionY,
-        ConfigFileData.Instance.LeftHandSaberDirectionZ
-    ).normalized);
-
-    public static Vector3 LeftHandSaberDirection {
-        get => CachedLeftHandSaberDirection.Value;
+    public static Vector3 LeftSaberPivotPosition {
+        get => ConfigFileData.Instance.GetLeftSaberPivotPositionInMeters();
         set {
-            var normalized = value.normalized;
-            CachedLeftHandSaberDirection.Value = normalized;
-            ConfigFileData.Instance.LeftHandSaberDirectionX = normalized.x;
-            ConfigFileData.Instance.LeftHandSaberDirectionY = normalized.y;
-            ConfigFileData.Instance.LeftHandSaberDirectionZ = normalized.z;
-            UpdateLeftHandTranslation();
-            UpdateLeftHandRotation();
+            ConfigFileData.Instance.SetLeftSaberPivotPositionInMeters(value);
+            UpdateLeftSaberTranslation();
             NotifyConfigWasChanged();
         }
     }
 
     #endregion
 
-    #region ZOffset
+    #region SaberZOffset
 
-    private static readonly CachedVariable<float> CachedLeftHandZOffset = new(
-        () => ConfigFileData.Instance.LeftHandZOffset
+    private static readonly CachedVariable<float> CachedLeftSaberZOffset = new(
+        () => ConfigFileData.Instance.GetLeftSaberZOffsetInMeters()
     );
 
-    public static float LeftHandZOffset {
-        get => CachedLeftHandZOffset.Value;
+    public static float LeftSaberZOffset {
+        get => CachedLeftSaberZOffset.Value;
         set {
-            CachedLeftHandZOffset.Value = value;
-            ConfigFileData.Instance.LeftHandZOffset = value;
-            UpdateLeftHandTranslation();
+            CachedLeftSaberZOffset.Value = value;
+            ConfigFileData.Instance.SetLeftSaberZOffsetInMeters(value);
+            UpdateLeftSaberTranslation();
             NotifyConfigWasChanged();
         }
+    }
+
+    #endregion
+
+    #region SaberRotationEuler
+
+    public static Vector3 LeftSaberRotationEuler {
+        get => TransformUtils.EulerFromRotation(LeftSaberRotation);
+        private set => LeftSaberRotation = TransformUtils.RotationFromEuler(value);
+    }
+
+    #endregion
+
+    #endregion
+
+    #region RightHand
+
+    #region SaberTranslation
+
+    private static readonly CachedVariable<Vector3> CachedRightSaberTranslation = new(GetRightSaberTranslationValue);
+
+    public static Vector3 RightSaberTranslation => CachedRightSaberTranslation.Value;
+
+    private static void UpdateRightSaberTranslation() {
+        CachedRightSaberTranslation.Value = GetRightSaberTranslationValue();
+    }
+
+    private static Vector3 GetRightSaberTranslationValue() {
+        return TransformUtils.GetSaberTranslation(RightSaberPivotPosition, RightSaberRotation, RightSaberZOffset);
+    }
+
+    #endregion
+
+    #region SaberRotation
+
+    private static readonly CachedVariable<Quaternion> CachedRightSaberRotation =
+        new(() => TransformUtils.RotationFromEuler(ConfigFileData.Instance.RightSaberRotationEuler));
+
+    public static Quaternion RightSaberRotation {
+        get => CachedRightSaberRotation.Value;
+        set {
+            CachedRightSaberRotation.Value = value;
+            ConfigFileData.Instance.RightSaberRotationEuler = TransformUtils.EulerFromRotation(value);
+            UpdateRightSaberTranslation();
+            NotifyConfigWasChanged();
+        }
+    }
+
+    #endregion
+
+    #region SaberPivotPosition
+
+    public static Vector3 RightSaberPivotPosition {
+        get => ConfigFileData.Instance.GetRightSaberPivotPositionInMeters();
+        set {
+            ConfigFileData.Instance.SetRightSaberPivotPositionInMeters(value);
+            UpdateRightSaberTranslation();
+            NotifyConfigWasChanged();
+        }
+    }
+
+    #endregion
+
+    #region SaberZOffset
+
+    private static readonly CachedVariable<float> CachedRightSaberZOffset = new(
+        () => ConfigFileData.Instance.GetRightSaberZOffsetInMeters()
+    );
+
+    public static float RightSaberZOffset {
+        get => CachedRightSaberZOffset.Value;
+        set {
+            CachedRightSaberZOffset.Value = value;
+            ConfigFileData.Instance.SetRightSaberZOffsetInMeters(value);
+            UpdateRightSaberTranslation();
+            NotifyConfigWasChanged();
+        }
+    }
+
+    #endregion
+
+    #region SaberRotationEuler
+
+    public static Vector3 RightSaberRotationEuler {
+        get => TransformUtils.EulerFromRotation(RightSaberRotation);
+        private set => RightSaberRotation = TransformUtils.RotationFromEuler(value);
     }
 
     #endregion
@@ -231,7 +185,7 @@ internal static partial class PluginConfig {
         DisableChangeEvent();
 
         MirrorPivot(mirrorSource);
-        MirrorSaberDirection(mirrorSource);
+        MirrorSaberRotation(mirrorSource);
         MirrorZOffset(mirrorSource);
 
         EnableChangeEvent();
@@ -239,30 +193,24 @@ internal static partial class PluginConfig {
     }
 
     public static void MirrorPivot(Hand mirrorSource) {
-        Vector3 from;
         switch (mirrorSource) {
             case Hand.Left:
-                from = LeftHandPivotPosition;
-                RightHandPivotPosition = new Vector3(-from.x, from.y, from.z);
+                RightSaberPivotPosition = TransformUtils.MirrorVector(LeftSaberPivotPosition);
                 break;
             case Hand.Right:
-                from = RightHandPivotPosition;
-                LeftHandPivotPosition = new Vector3(-from.x, from.y, from.z);
+                LeftSaberPivotPosition = TransformUtils.MirrorVector(RightSaberPivotPosition);
                 break;
             default: throw new ArgumentOutOfRangeException(nameof(mirrorSource), mirrorSource, null);
         }
     }
 
-    public static void MirrorSaberDirection(Hand mirrorSource) {
-        Vector3 from;
+    public static void MirrorSaberRotation(Hand mirrorSource) {
         switch (mirrorSource) {
             case Hand.Left:
-                from = LeftHandSaberDirection;
-                RightHandSaberDirection = new Vector3(-from.x, from.y, from.z);
+                RightSaberRotation = TransformUtils.MirrorRotation(LeftSaberRotation);
                 break;
             case Hand.Right:
-                from = RightHandSaberDirection;
-                LeftHandSaberDirection = new Vector3(-from.x, from.y, from.z);
+                LeftSaberRotation = TransformUtils.MirrorRotation(RightSaberRotation);
                 break;
             default: throw new ArgumentOutOfRangeException(nameof(mirrorSource), mirrorSource, null);
         }
@@ -271,10 +219,10 @@ internal static partial class PluginConfig {
     public static void MirrorZOffset(Hand mirrorSource) {
         switch (mirrorSource) {
             case Hand.Left:
-                RightHandZOffset = LeftHandZOffset;
+                RightSaberZOffset = LeftSaberZOffset;
                 break;
             case Hand.Right:
-                LeftHandZOffset = RightHandZOffset;
+                LeftSaberZOffset = RightSaberZOffset;
                 break;
             default: throw new ArgumentOutOfRangeException(nameof(mirrorSource), mirrorSource, null);
         }
@@ -289,14 +237,14 @@ internal static partial class PluginConfig {
 
         switch (hand) {
             case Hand.Left:
-                LeftHandPivotPosition = new Vector3(-Defaults.PivotX, Defaults.PivotY, Defaults.PivotZ);
-                LeftHandSaberDirection = new Vector3(-Defaults.SaberDirectionX, Defaults.SaberDirectionY, Defaults.SaberDirectionZ);
-                LeftHandZOffset = Defaults.ZOffset;
+                LeftSaberPivotPosition = ConfigDefaults.LeftSaberPivotPosition;
+                LeftSaberRotation = ConfigDefaults.LeftSaberRotation;
+                LeftSaberZOffset = ConfigDefaults.ZOffset;
                 break;
             case Hand.Right:
-                RightHandPivotPosition = new Vector3(Defaults.PivotX, Defaults.PivotY, Defaults.PivotZ);
-                RightHandSaberDirection = new Vector3(Defaults.SaberDirectionX, Defaults.SaberDirectionY, Defaults.SaberDirectionZ);
-                RightHandZOffset = Defaults.ZOffset;
+                RightSaberPivotPosition = ConfigDefaults.RightSaberPivotPosition;
+                RightSaberRotation = ConfigDefaults.RightSaberRotation;
+                RightSaberZOffset = ConfigDefaults.ZOffset;
                 break;
             default: throw new ArgumentOutOfRangeException(nameof(hand), hand, null);
         }
@@ -320,74 +268,54 @@ internal static partial class PluginConfig {
     public static void ApplyPreset(IConfigPreset preset) {
         DisableChangeEvent();
 
-        RightHandPivotPosition = preset.RightHandPivotPosition;
-        RightHandSaberDirection = preset.RightHandSaberDirection;
-        RightHandZOffset = preset.RightHandZOffset;
-        LeftHandPivotPosition = preset.LeftHandPivotPosition;
-        LeftHandSaberDirection = preset.LeftHandSaberDirection;
-        LeftHandZOffset = preset.LeftHandZOffset;
+        LeftSaberPivotPosition = preset.LeftSaberPivotPosition;
+        LeftSaberRotation = preset.LeftSaberRotation;
+        LeftSaberZOffset = preset.LeftSaberZOffset;
+        RightSaberPivotPosition = preset.RightSaberPivotPosition;
+        RightSaberRotation = preset.RightSaberRotation;
+        RightSaberZOffset = preset.RightSaberZOffset;
 
         EnableChangeEvent();
         NotifyConfigWasChanged();
     }
 
     public static IConfigPreset GeneratePreset() {
-        return new ConfigPresetV1(
+        return new ConfigPresetV2(
             DateTimeOffset.Now.ToUnixTimeSeconds(),
             SelectedControllerType,
-            RightHandPivotPosition,
-            RightHandSaberDirection,
-            RightHandZOffset,
-            LeftHandPivotPosition,
-            LeftHandSaberDirection,
-            LeftHandZOffset
+            LeftSaberPivotPosition,
+            LeftSaberRotationEuler,
+            LeftSaberZOffset,
+            RightSaberPivotPosition,
+            RightSaberRotationEuler,
+            RightSaberZOffset
         );
     }
 
     #endregion
 
-    #region Precise Mode
+    #region ApplyPreciseModeValues
 
-    public static void ApplyPreciseModeConfig(
-        Vector3 leftPosition,
-        Vector3 leftRotation,
+    public static void ApplyPreciseModeValues(
+        Vector3 leftPivotPosition,
+        Vector3 leftRotationEuler,
         float leftZOffset,
-        Vector3 rightPosition,
-        Vector3 rightRotation,
+        Vector3 rightPivotPosition,
+        Vector3 rightRotationEuler,
         float rightZOffset
     ) {
         DisableChangeEvent();
 
-        LeftHandPivotPosition = leftPosition;
-        LeftHandSaberDirection = Quaternion.Euler(leftRotation) * Vector3.forward;
-        LeftHandZOffset = leftZOffset;
+        LeftSaberPivotPosition = leftPivotPosition;
+        LeftSaberRotationEuler = leftRotationEuler;
+        LeftSaberZOffset = leftZOffset;
 
-        RightHandPivotPosition = rightPosition;
-        RightHandSaberDirection = Quaternion.Euler(rightRotation) * Vector3.forward;
-        RightHandZOffset = rightZOffset;
+        RightSaberPivotPosition = rightPivotPosition;
+        RightSaberRotationEuler = rightRotationEuler;
+        RightSaberZOffset = rightZOffset;
 
         EnableChangeEvent();
         NotifyConfigWasChanged();
-    }
-
-    public static void GetPreciseModeConfig(
-        out Vector3 leftPosition,
-        out Vector3 leftRotation,
-        out float leftZOffset,
-        out Vector3 rightPosition,
-        out Vector3 rightRotation,
-        out float rightZOffset
-    ) {
-        var leftSpherical = TransformUtils.OrthoToSphericalDirection(LeftHandSaberDirection);
-        var rightSpherical = TransformUtils.OrthoToSphericalDirection(RightHandSaberDirection);
-        
-        leftPosition = LeftHandPivotPosition;
-        leftRotation = new Vector3(leftSpherical.x * Mathf.Rad2Deg, leftSpherical.y * Mathf.Rad2Deg, 0);
-        leftZOffset = LeftHandZOffset;
-
-        rightPosition = RightHandPivotPosition;
-        rightRotation = new Vector3(rightSpherical.x * Mathf.Rad2Deg, rightSpherical.y * Mathf.Rad2Deg, 0);
-        rightZOffset = RightHandZOffset;
     }
 
     #endregion

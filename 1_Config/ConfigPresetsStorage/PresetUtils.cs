@@ -22,6 +22,7 @@ namespace EasyOffset {
         private static IConfigPreset ParsePresetFromJson(JObject jObject) {
             var presetVersion = jObject.GetValue("version", StringComparison.OrdinalIgnoreCase)?.Value<string>();
             return presetVersion switch {
+                ConfigPresetV2.Version => ConfigPresetV2.Deserialize(jObject),
                 ConfigPresetV1.Version => ConfigPresetV1.Deserialize(jObject),
                 null => throw new Exception("Preset version is not specified"),
                 _ => throw new Exception($"Unknown preset version: {presetVersion}")

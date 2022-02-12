@@ -125,6 +125,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="0_Harmony\SceneTransitionPatch.cs" />
+    <Compile Include="1_Config\ConfigPresets\ConfigPresetV2.cs" />
     <Compile Include="1_Config\ConfigUpgrade\ConfigUpgrade.cs" />
     <Compile Include="1_Config\PluginConfig\Utilities.cs" />
     <Compile Include="1_Config\PluginConfig\ControllerOffsets.cs" />
@@ -173,7 +174,7 @@
     <Compile Include="1_Config\ConfigPresetsStorage\StoredConfigPreset.cs" />
     <Compile Include="1_Config\ConfigPresets\ConfigPresetV1.cs" />
     <Compile Include="1_Config\ConfigPresets\IConfigPreset.cs" />
-    <Compile Include="1_Config\Defaults.cs" />
+    <Compile Include="1_Config\ConfigDefaults.cs" />
     <Compile Include="2_Core\StructsAndEnums\WarningLevel.cs" />
     <Compile Include="3_AssetBundle\BundleLoader.cs" />
     <Compile Include="3_AssetBundle\Gizmos\ControllerModel.cs" />
@@ -203,9 +204,9 @@
     <Compile Include="7_Utils\StaticUtils\CompatibilityUtils.cs" />
     <Compile Include="8_UI\ModPanelUI\BenchmarkPanel.cs" />
     <Compile Include="8_UI\ModPanelUI\General.cs" />
-    <Compile Include="8_UI\ModPanelUI\HandsPanel.cs" />
     <Compile Include="8_UI\ModPanelUI\MainPage.cs" />
     <Compile Include="8_UI\ModPanelUI\ModPanelUIHelper.cs" />
+    <Compile Include="8_UI\ModPanelUI\NonePanel.cs" />
     <Compile Include="8_UI\ModPanelUI\PresetsBrowser.cs" />
     <Compile Include="8_UI\ModPanelUI\PreciseModePanel.cs" />
     <Compile Include="8_UI\ModPanelUI\RoomOffsetPanel.cs" />

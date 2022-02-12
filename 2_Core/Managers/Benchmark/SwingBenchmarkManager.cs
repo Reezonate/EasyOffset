@@ -158,19 +158,19 @@ namespace EasyOffset {
         private void ApplyAutoFix() {
             if (!_hasAnyResults || !_isSwingGood) return;
 
-            Vector3 saberLocalDirection;
-            Plane localPlane;
+            Vector3 directionToFix;
+            Vector3 fixedDirection;
 
             switch (_selectedHand) {
                 case Hand.Left:
-                    saberLocalDirection = PluginConfig.LeftHandSaberDirection;
-                    localPlane = new Plane(_leftWristRotationAxis, 0f);
-                    PluginConfig.LeftHandSaberDirection = localPlane.ClosestPointOnPlane(saberLocalDirection);
+                    directionToFix = TransformUtils.DirectionFromRotation(PluginConfig.LeftSaberRotation);
+                    fixedDirection = new Plane(_leftWristRotationAxis, 0f).ClosestPointOnPlane(directionToFix);
+                    PluginConfig.LeftSaberRotation = Quaternion.FromToRotation(directionToFix, fixedDirection) * PluginConfig.LeftSaberRotation;
                     break;
                 case Hand.Right:
-                    saberLocalDirection = PluginConfig.RightHandSaberDirection;
-                    localPlane = new Plane(_rightWristRotationAxis, 0f);
-                    PluginConfig.RightHandSaberDirection = localPlane.ClosestPointOnPlane(saberLocalDirection);
+                    directionToFix = TransformUtils.DirectionFromRotation(PluginConfig.RightSaberRotation);
+                    fixedDirection = new Plane(_rightWristRotationAxis, 0f).ClosestPointOnPlane(directionToFix);
+                    PluginConfig.RightSaberRotation = Quaternion.FromToRotation(directionToFix, fixedDirection) * PluginConfig.RightSaberRotation;
                     break;
                 default: throw new ArgumentOutOfRangeException(nameof(_selectedHand), _selectedHand, null);
             }
@@ -186,9 +186,9 @@ namespace EasyOffset {
         private Quaternion _rightHandLocalRotation = Quaternion.identity;
 
         private void OnControllerTransformsUpdated(ReeTransform leftControllerTransform, ReeTransform rightControllerTransform) {
-            var leftHandWorldPosition = leftControllerTransform.LocalToWorldPosition(PluginConfig.LeftHandPivotPosition);
+            var leftHandWorldPosition = leftControllerTransform.LocalToWorldPosition(PluginConfig.LeftSaberPivotPosition);
             var leftHandWorldRotation = leftControllerTransform.LocalToWorldRotation(_leftHandLocalRotation);
-            var rightHandWorldPosition = rightControllerTransform.LocalToWorldPosition(PluginConfig.RightHandPivotPosition);
+            var rightHandWorldPosition = rightControllerTransform.LocalToWorldPosition(PluginConfig.RightSaberPivotPosition);
             var rightHandWorldRotation = rightControllerTransform.LocalToWorldRotation(_rightHandLocalRotation);
 
             TransformUtils.ApplyRoomOffset(ref leftHandWorldPosition, ref leftHandWorldRotation);

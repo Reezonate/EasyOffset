@@ -149,8 +149,6 @@ internal partial class ModPanelUI {
     [UsedImplicitly]
     private void PresetsBrowserLoadOnClick() {
         if (!ConfigPresetsStorage.LoadPreset(PresetFileName)) return;
-        if (PluginConfig.AdjustmentMode == AdjustmentMode.Precise) UpdatePreciseUI();
-        UpdateZOffsetSliders();
         GoToMainPage();
     }
 

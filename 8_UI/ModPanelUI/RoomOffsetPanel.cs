@@ -26,15 +26,15 @@ internal partial class ModPanelUI {
 
     private void OnRoomCenterChanged() {
         var tmp = _roomCenterSO.value;
-        RoomXText = $"Room X: {(tmp.x * 100):F2} cm";
-        RoomYText = $"Room Y: {(tmp.y * 100):F2} cm";
-        RoomZText = $"Room Z: {(tmp.z * 100):F2} cm";
+        RoomXText = $"Room X: <mspace=0.45em>{(tmp.x * 100):F1}</mspace> cm";
+        RoomYText = $"Room Y: <mspace=0.45em>{(tmp.y * 100):F1}</mspace> cm";
+        RoomZText = $"Room Z: <mspace=0.45em>{(tmp.z * 100):F1}</mspace> cm";
     }
 
     private void OnHmdPositionChange(Vector3 position) {
-        HmdXText = $"HMD X: {(position.x * 100):F2} cm";
-        HmdYText = $"HMD Y: {(position.y * 100):F2} cm";
-        HmdZText = $"HMD Z: {(position.z * 100):F2} cm";
+        HmdXText = $"HMD X: <mspace=0.45em>{(position.x * 100):F1}</mspace> cm";
+        HmdYText = $"HMD Y: <mspace=0.45em>{(position.y * 100):F1}</mspace> cm";
+        HmdZText = $"HMD Z: <mspace=0.45em>{(position.z * 100):F1}</mspace> cm";
     }
 
     #endregion

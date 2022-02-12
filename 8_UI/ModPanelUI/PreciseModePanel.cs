@@ -1,3 +1,4 @@
+using System;
 using BeatSaberMarkupLanguage.Attributes;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -5,7 +6,231 @@ using UnityEngine;
 namespace EasyOffset;
 
 internal partial class ModPanelUI {
-    #region Active
+    #region Events
+
+    private void SubscribeToPrecisePanelEvents() {
+        PluginConfig.ConfigWasChangedEvent += OnConfigWasChanged;
+        OnConfigWasChanged();
+    }
+
+    private void OnConfigWasChanged() {
+        if (_smoothingEnabled) return;
+        NotifySynchronizationRequired();
+    }
+
+    #endregion
+
+    #region Synchronization
+
+    private int _synchronizationsRequired;
+
+    private void SynchronizationUpdate() {
+        if (_synchronizationsRequired <= 0) return;
+        SyncPreciseUIValuesWithConfig();
+        _synchronizationsRequired -= 1;
+    }
+
+    private void NotifySynchronizationRequired() {
+        _synchronizationsRequired = 2; //ISSUE: Slider formatter requires 2 frames after activation (1.18.3)
+    }
+
+    private void SyncPreciseUIValuesWithConfig() {
+        PreciseLeftPivotPosition = PluginConfig.LeftSaberPivotPosition;
+        PreciseLeftRotationEuler = PluginConfig.LeftSaberRotationEuler;
+        PreciseLeftZOffset = PluginConfig.LeftSaberZOffset;
+        PreciseRightPivotPosition = PluginConfig.RightSaberPivotPosition;
+        PreciseRightRotationEuler = PluginConfig.RightSaberRotationEuler;
+        PreciseRightZOffset = PluginConfig.RightSaberZOffset;
+    }
+
+    #endregion
+
+    #region Apply & Reset
+
+    private void ApplyPreciseConfig() {
+        PluginConfig.ApplyPreciseModeValues(
+            PreciseLeftPivotPosition,
+            PreciseLeftRotationEuler,
+            PreciseLeftZOffset,
+            PreciseRightPivotPosition,
+            PreciseRightRotationEuler,
+            PreciseRightZOffset
+        );
+    }
+
+    private void ResetLeftHandPreciseConfig() {
+        switch (_precisePanelState) {
+            case PrecisePanelState.Hidden: return;
+            case PrecisePanelState.PositionOnly:
+                PreciseLeftPivotPosition = Vector3.zero;
+                PreciseLeftZOffset = 0.0f;
+                break;
+            case PrecisePanelState.RotationOnly:
+                PreciseLeftRotationEuler = Vector3.zero;
+                break;
+            case PrecisePanelState.ZOffsetOnly:
+            case PrecisePanelState.Full:
+                PreciseLeftPivotPosition = Vector3.zero;
+                PreciseLeftRotationEuler = Vector3.zero;
+                PreciseLeftZOffset = 0.0f;
+                break;
+            default: throw new ArgumentOutOfRangeException();
+        }
+
+        ApplyPreciseConfig();
+    }
+
+    private void ResetRightHandPreciseConfig() {
+        switch (_precisePanelState) {
+            case PrecisePanelState.Hidden: return;
+            case PrecisePanelState.PositionOnly:
+                PreciseRightPivotPosition = Vector3.zero;
+                PreciseRightZOffset = 0.0f;
+                break;
+            case PrecisePanelState.RotationOnly:
+                PreciseRightRotationEuler = Vector3.zero;
+                break;
+            case PrecisePanelState.ZOffsetOnly:
+            case PrecisePanelState.Full:
+                PreciseRightPivotPosition = Vector3.zero;
+                PreciseRightRotationEuler = Vector3.zero;
+                PreciseRightZOffset = 0.0f;
+                break;
+            default: throw new ArgumentOutOfRangeException();
+        }
+
+        ApplyPreciseConfig();
+    }
+
+    #endregion
+
+    #region Mirror
+
+    private void PreciseMirrorFromLeft() {
+        switch (_precisePanelState) {
+            case PrecisePanelState.Hidden: return;
+            case PrecisePanelState.PositionOnly:
+                PreciseRightZOffset = PreciseLeftZOffset;
+                PreciseRightPosX = -PreciseLeftPosX;
+                PreciseRightPosY = PreciseLeftPosY;
+                PreciseRightPosZ = PreciseLeftPosZ;
+                break;
+            case PrecisePanelState.RotationOnly:
+                PreciseRightRotX = PreciseLeftRotX;
+                PreciseRightRotY = -PreciseLeftRotY;
+                PreciseRightRotZ = -PreciseLeftRotZ;
+                break;
+            case PrecisePanelState.ZOffsetOnly:
+            case PrecisePanelState.Full:
+                PreciseRightZOffset = PreciseLeftZOffset;
+                PreciseRightPosX = -PreciseLeftPosX;
+                PreciseRightPosY = PreciseLeftPosY;
+                PreciseRightPosZ = PreciseLeftPosZ;
+                PreciseRightRotX = PreciseLeftRotX;
+                PreciseRightRotY = -PreciseLeftRotY;
+                PreciseRightRotZ = -PreciseLeftRotZ;
+                break;
+            default: throw new ArgumentOutOfRangeException();
+        }
+
+        ApplyPreciseConfig();
+    }
+
+    private void PreciseMirrorFromRight() {
+        switch (_precisePanelState) {
+            case PrecisePanelState.Hidden: return;
+            case PrecisePanelState.PositionOnly:
+                PreciseLeftZOffset = PreciseRightZOffset;
+                PreciseLeftPosX = -PreciseRightPosX;
+                PreciseLeftPosY = PreciseRightPosY;
+                PreciseLeftPosZ = PreciseRightPosZ;
+                break;
+            case PrecisePanelState.RotationOnly:
+                PreciseLeftRotX = PreciseRightRotX;
+                PreciseLeftRotY = -PreciseRightRotY;
+                PreciseLeftRotZ = -PreciseRightRotZ;
+                break;
+            case PrecisePanelState.ZOffsetOnly:
+            case PrecisePanelState.Full:
+                PreciseLeftZOffset = PreciseRightZOffset;
+                PreciseLeftPosX = -PreciseRightPosX;
+                PreciseLeftPosY = PreciseRightPosY;
+                PreciseLeftPosZ = PreciseRightPosZ;
+                PreciseLeftRotX = PreciseRightRotX;
+                PreciseLeftRotY = -PreciseRightRotY;
+                PreciseLeftRotZ = -PreciseRightRotZ;
+                break;
+            default: throw new ArgumentOutOfRangeException();
+        }
+
+        ApplyPreciseConfig();
+    }
+
+    #endregion
+
+    #region State
+
+    private PrecisePanelState _precisePanelState = PrecisePanelState.Hidden;
+
+    private void SetPrecisePanelState(PrecisePanelState newState) {
+        switch (newState) {
+            case PrecisePanelState.Hidden:
+                PrecisePanelActive = false;
+                break;
+            case PrecisePanelState.ZOffsetOnly:
+                PrecisePanelActive = true;
+                PreciseZOffsetActive = true;
+                PrecisePositionActive = false;
+                PreciseRotationActive = false;
+                PreciseSlidersHeight = 8.0f;
+                PreciseFillerHeight = 0.0f;
+                ApplyScale(0.85f);
+                break;
+            case PrecisePanelState.PositionOnly:
+                PrecisePanelActive = true;
+                PreciseZOffsetActive = true;
+                PrecisePositionActive = true;
+                PreciseRotationActive = false;
+                PreciseSlidersHeight = 27.0f;
+                PreciseFillerHeight = 0.0f;
+                ApplyScale(0.85f);
+                break;
+            case PrecisePanelState.RotationOnly:
+                PrecisePanelActive = true;
+                PreciseZOffsetActive = false;
+                PrecisePositionActive = false;
+                PreciseRotationActive = true;
+                PreciseSlidersHeight = 20.0f;
+                PreciseFillerHeight = 0.0f;
+                ApplyScale(0.85f);
+                break;
+            case PrecisePanelState.Full:
+                PrecisePanelActive = true;
+                PreciseZOffsetActive = true;
+                PrecisePositionActive = true;
+                PreciseRotationActive = true;
+                PreciseSlidersHeight = 44.0f;
+                PreciseFillerHeight = 22.0f;
+                ApplyScale(0.8f);
+                break;
+            default: throw new ArgumentOutOfRangeException();
+        }
+
+        _precisePanelState = newState;
+        NotifySynchronizationRequired();
+    }
+
+    private enum PrecisePanelState {
+        Hidden,
+        ZOffsetOnly,
+        PositionOnly,
+        RotationOnly,
+        Full
+    }
+
+    #endregion
+
+    #region Active & Filler
 
     private bool _precisePanelActive;
 
@@ -19,6 +244,66 @@ internal partial class ModPanelUI {
         }
     }
 
+    private bool _preciseZOffsetActive;
+
+    [UIValue("precise-z-offset-active")]
+    [UsedImplicitly]
+    private bool PreciseZOffsetActive {
+        get => _preciseZOffsetActive;
+        set {
+            _preciseZOffsetActive = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    private bool _precisePositionActive;
+
+    [UIValue("precise-position-active")]
+    [UsedImplicitly]
+    private bool PrecisePositionActive {
+        get => _precisePositionActive;
+        set {
+            _precisePositionActive = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    private bool _preciseRotationActive;
+
+    [UIValue("precise-rotation-active")]
+    [UsedImplicitly]
+    private bool PreciseRotationActive {
+        get => _preciseRotationActive;
+        set {
+            _preciseRotationActive = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    private float _preciseFillerHeight;
+
+    [UIValue("precise-filler-height")]
+    [UsedImplicitly]
+    private float PreciseFillerHeight {
+        get => _preciseFillerHeight;
+        set {
+            _preciseFillerHeight = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    private float _preciseSlidersHeight;
+
+    [UIValue("precise-sliders-section-height")]
+    [UsedImplicitly]
+    private float PreciseSlidersHeight {
+        get => _preciseSlidersHeight;
+        set {
+            _preciseSlidersHeight = value;
+            NotifyPropertyChanged();
+        }
+    }
+
     #endregion
 
     #region Panel Scaling
@@ -26,54 +311,8 @@ internal partial class ModPanelUI {
     [UIComponent("precise-panel-component")] [UsedImplicitly]
     private RectTransform _precisePanelComponent;
 
-    private void ApplyScale() {
-        _precisePanelComponent.localScale = Vector3.one * 0.84f;
-    }
-
-    #endregion
-
-    #region Events
-
-    private void SubscribeToPreciseModeEvents() {
-        PluginConfig.AdjustmentModeChangedEvent += PreciseOnAdjustmentModeChanged;
-        UpdatePreciseUI();
-    }
-
-    private void PreciseOnAdjustmentModeChanged(AdjustmentMode adjustmentMode) {
-        if (adjustmentMode != AdjustmentMode.Precise) return;
-        ApplyScale();
-        UpdatePreciseUI();
-    }
-
-    private void ApplyPreciseConfig() {
-        PluginConfig.ApplyPreciseModeConfig(
-            PreciseLeftPosition,
-            PreciseLeftRotation,
-            PreciseLeftZOffset,
-            PreciseRightPosition,
-            PreciseRightRotation,
-            PreciseRightZOffset
-        );
-        UpdateZOffsetSliders();
-    }
-
-    private void UpdatePreciseUI() {
-        PluginConfig.GetPreciseModeConfig(
-            out var leftPosition,
-            out var leftRotation,
-            out var leftZOffset,
-            out var rightPosition,
-            out var rightRotation,
-            out var rightZOffset
-        );
-
-        PreciseLeftPosition = leftPosition;
-        PreciseLeftRotation = leftRotation;
-        PreciseLeftZOffset = leftZOffset;
-
-        PreciseRightPosition = rightPosition;
-        PreciseRightRotation = rightRotation;
-        PreciseRightZOffset = rightZOffset;
+    private void ApplyScale(float scale) {
+        _precisePanelComponent.localScale = Vector3.one * scale;
     }
 
     #endregion
@@ -115,16 +354,16 @@ internal partial class ModPanelUI {
     #region Rotation slider settings
 
     [UIValue("rot-x-slider-min")] [UsedImplicitly]
-    private float _rotXSliderMin = -89.9f;
+    private float _rotXSliderMin = -89.5f;
 
     [UIValue("rot-x-slider-max")] [UsedImplicitly]
-    private float _rotXSliderMax = 89.9f;
+    private float _rotXSliderMax = 89.5f;
 
-    [UIValue("rot-y-slider-min")] [UsedImplicitly]
-    private float _rotYSliderMin = -180.0f;
+    [UIValue("rot-slider-min")] [UsedImplicitly]
+    private float _rotSliderMin = -180.0f;
 
-    [UIValue("rot-y-slider-max")] [UsedImplicitly]
-    private float _rotYSliderMax = 180.0f;
+    [UIValue("rot-slider-max")] [UsedImplicitly]
+    private float _rotSliderMax = 180.0f;
 
     [UIValue("rot-slider-increment")] [UsedImplicitly]
     private float _rotSliderIncrement = 0.1f;
@@ -135,39 +374,100 @@ internal partial class ModPanelUI {
 
     #endregion
 
-    #region Mirror
+    #region ButtonsSettings
 
-    [UIAction("precise-mirror-to-right-on-click")]
-    [UsedImplicitly]
-    private void PreciseMirrorToRightOnClick() {
-        PreciseRightPosX = -PreciseLeftPosX;
-        PreciseRightPosY = PreciseLeftPosY;
-        PreciseRightPosZ = PreciseLeftPosZ;
-        PreciseRightRotX = PreciseLeftRotX;
-        PreciseRightRotY = -PreciseLeftRotY;
-        PreciseRightZOffset = PreciseLeftZOffset;
-        ApplyPreciseConfig();
-    }
+    private const int ButtonPromptDelayMillis = 2000;
 
-    [UIAction("precise-mirror-to-left-on-click")]
-    [UsedImplicitly]
-    private void PreciseMirrorToLeftOnClick() {
-        PreciseLeftPosX = -PreciseRightPosX;
-        PreciseLeftPosY = PreciseRightPosY;
-        PreciseLeftPosZ = PreciseRightPosZ;
-        PreciseLeftRotX = PreciseRightRotX;
-        PreciseLeftRotY = -PreciseRightRotY;
-        PreciseLeftZOffset = PreciseRightZOffset;
-        ApplyPreciseConfig();
-    }
+    private const string ResetButtonIdleText = "Reset";
+    private const string ResetButtonPromptText = "<color=#ff5555>Sure?</color>";
+
+    private const string LeftMirrorButtonIdleText = "- Mirror to Right >";
+    private const string LeftMirrorButtonPromptText = "<color=#ff5555>-<mspace=1.9em> </mspace>Sure?<mspace=1.9em> </mspace>></color>";
+
+    private const string RightMirrorButtonIdleText = "< Mirror to Left -";
+    private const string RightMirrorButtonPromptText = "<color=#ff5555><<mspace=1.67em> </mspace>Sure?<mspace=1.67em> </mspace>-</color>";
 
     #endregion
 
     #region LeftHand
 
+    #region Reset Button
+
+    private string _preciseLeftResetText = ResetButtonIdleText;
+    private bool _preciseLeftResetClickedOnce;
+
+    [UIValue("precise-left-reset-text")]
+    [UsedImplicitly]
+    private string PreciseLeftResetText {
+        get => _preciseLeftResetText;
+        set {
+            _preciseLeftResetText = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    [UIAction("precise-left-reset-on-click")]
+    [UsedImplicitly]
+    private void PreciseLeftResetOnClick() {
+        if (_preciseLeftResetClickedOnce) {
+            ResetLeftHandPreciseConfig();
+            ResetLeftResetButton();
+        } else {
+            _leftResetButtonAction.InvokeLater(ButtonPromptDelayMillis, ResetLeftResetButton);
+            PreciseLeftResetText = ResetButtonPromptText;
+            _preciseLeftResetClickedOnce = true;
+        }
+    }
+
+    private readonly DelayedAction _leftResetButtonAction = new();
+
+    private void ResetLeftResetButton() {
+        PreciseLeftResetText = ResetButtonIdleText;
+        _preciseLeftResetClickedOnce = false;
+    }
+
+    #endregion
+
+    #region MirrorButton
+
+    private string _preciseLeftMirrorText = LeftMirrorButtonIdleText;
+    private bool _preciseLeftMirrorClickedOnce;
+
+    [UIValue("precise-left-mirror-text")]
+    [UsedImplicitly]
+    private string PreciseLeftMirrorText {
+        get => _preciseLeftMirrorText;
+        set {
+            _preciseLeftMirrorText = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    [UIAction("precise-left-mirror-on-click")]
+    [UsedImplicitly]
+    private void PreciseLeftMirrorOnClick() {
+        if (_preciseLeftMirrorClickedOnce) {
+            PreciseMirrorFromLeft();
+            MirrorLeftMirrorButton();
+        } else {
+            _leftMirrorButtonAction.InvokeLater(ButtonPromptDelayMillis, MirrorLeftMirrorButton);
+            PreciseLeftMirrorText = LeftMirrorButtonPromptText;
+            _preciseLeftMirrorClickedOnce = true;
+        }
+    }
+
+    private readonly DelayedAction _leftMirrorButtonAction = new();
+
+    private void MirrorLeftMirrorButton() {
+        PreciseLeftMirrorText = LeftMirrorButtonIdleText;
+        _preciseLeftMirrorClickedOnce = false;
+    }
+
+    #endregion
+
     #region Combined
 
-    private Vector3 PreciseLeftPosition {
+    private Vector3 PreciseLeftPivotPosition {
         get => new(PreciseLeftPosX, PreciseLeftPosY, PreciseLeftPosZ);
         set {
             PreciseLeftPosX = value.x;
@@ -176,11 +476,12 @@ internal partial class ModPanelUI {
         }
     }
 
-    private Vector3 PreciseLeftRotation {
-        get => new(PreciseLeftRotX, PreciseLeftRotY, 0.0f);
+    private Vector3 PreciseLeftRotationEuler {
+        get => new(PreciseLeftRotX, PreciseLeftRotY, PreciseLeftRotZ);
         set {
             PreciseLeftRotX = value.x;
             PreciseLeftRotY = value.y;
+            PreciseLeftRotZ = value.z;
         }
     }
 
@@ -203,8 +504,13 @@ internal partial class ModPanelUI {
     [UIAction("precise-left-z-offset-on-change")]
     [UsedImplicitly]
     private void PreciseLeftZOffsetOnChange(float value) {
-        _preciseLeftZOffsetTarget = value;
-        OnSmoothValueChanged(null);
+        if (_smoothingEnabled) {
+            _preciseLeftZOffsetTarget = value;
+            OnSmoothValueChanged(null);
+        } else {
+            _preciseLeftZOffset = value;
+            ApplyPreciseConfig();
+        }
     }
 
     [UIAction("precise-left-z-offset-inc-on-click")]
@@ -242,8 +548,13 @@ internal partial class ModPanelUI {
     [UIAction("precise-left-pos-x-on-change")]
     [UsedImplicitly]
     private void PreciseLeftPosXOnChange(float value) {
-        _preciseLeftPosXTarget = value;
-        OnSmoothValueChanged(Hand.Left);
+        if (_smoothingEnabled) {
+            _preciseLeftPosXTarget = value;
+            OnSmoothValueChanged(Hand.Left);
+        } else {
+            _preciseLeftPosX = value;
+            ApplyPreciseConfig();
+        }
     }
 
     [UIAction("precise-left-pos-x-inc-on-click")]
@@ -281,8 +592,13 @@ internal partial class ModPanelUI {
     [UIAction("precise-left-pos-y-on-change")]
     [UsedImplicitly]
     private void PreciseLeftPosYOnChange(float value) {
-        _preciseLeftPosYTarget = value;
-        OnSmoothValueChanged(Hand.Left);
+        if (_smoothingEnabled) {
+            _preciseLeftPosYTarget = value;
+            OnSmoothValueChanged(Hand.Left);
+        } else {
+            _preciseLeftPosY = value;
+            ApplyPreciseConfig();
+        }
     }
 
     [UIAction("precise-left-pos-y-inc-on-click")]
@@ -320,8 +636,13 @@ internal partial class ModPanelUI {
     [UIAction("precise-left-pos-z-on-change")]
     [UsedImplicitly]
     private void PreciseLeftPosZOnChange(float value) {
-        _preciseLeftPosZTarget = value;
-        OnSmoothValueChanged(Hand.Left);
+        if (_smoothingEnabled) {
+            _preciseLeftPosZTarget = value;
+            OnSmoothValueChanged(Hand.Left);
+        } else {
+            _preciseLeftPosZ = value;
+            ApplyPreciseConfig();
+        }
     }
 
     [UIAction("precise-left-pos-z-inc-on-click")]
@@ -359,23 +680,28 @@ internal partial class ModPanelUI {
     [UIAction("precise-left-rot-x-on-change")]
     [UsedImplicitly]
     private void PreciseLeftRotXOnChange(float value) {
-        _preciseLeftRotXTarget = value;
-        OnSmoothValueChanged(Hand.Left);
+        if (_smoothingEnabled) {
+            _preciseLeftRotXTarget = value;
+            OnSmoothValueChanged(Hand.Left);
+        } else {
+            _preciseLeftRotX = value;
+            ApplyPreciseConfig();
+        }
     }
 
     [UIAction("precise-left-rot-x-inc-on-click")]
     [UsedImplicitly]
     private void PreciseLeftRotXIncOnClick() {
         var newValue = StepUp(PreciseLeftRotX, _rotSliderIncrement);
-        PreciseLeftRotX = FinalizeXRotSliderValue(newValue);
+        PreciseLeftRotX = FinalizeRotXSliderValue(newValue);
         ApplyPreciseConfig();
     }
 
     [UIAction("precise-left-rot-x-dec-on-click")]
     [UsedImplicitly]
-    private void FinalizeXRotSliderValue() {
+    private void PreciseLeftRotXDecOnClick() {
         var newValue = StepDown(PreciseLeftRotX, _rotSliderIncrement);
-        PreciseLeftRotX = FinalizeYRotSliderValue(newValue);
+        PreciseLeftRotX = FinalizeRotXSliderValue(newValue);
         ApplyPreciseConfig();
     }
 
@@ -398,15 +724,20 @@ internal partial class ModPanelUI {
     [UIAction("precise-left-rot-y-on-change")]
     [UsedImplicitly]
     private void PreciseLeftRotYOnChange(float value) {
-        _preciseLeftRotYTarget = value;
-        OnSmoothValueChanged(Hand.Left);
+        if (_smoothingEnabled) {
+            _preciseLeftRotYTarget = value;
+            OnSmoothValueChanged(Hand.Left);
+        } else {
+            _preciseLeftRotY = value;
+            ApplyPreciseConfig();
+        }
     }
 
     [UIAction("precise-left-rot-y-inc-on-click")]
     [UsedImplicitly]
     private void PreciseLeftRotYIncOnClick() {
         var newValue = StepUp(PreciseLeftRotY, _rotSliderIncrement);
-        PreciseLeftRotY = FinalizeYRotSliderValue(newValue);
+        PreciseLeftRotY = FinalizeRotSliderValue(newValue);
         ApplyPreciseConfig();
     }
 
@@ -414,7 +745,51 @@ internal partial class ModPanelUI {
     [UsedImplicitly]
     private void PreciseLeftRotYDecOnClick() {
         var newValue = StepDown(PreciseLeftRotY, _rotSliderIncrement);
-        PreciseLeftRotY = FinalizeYRotSliderValue(newValue);
+        PreciseLeftRotY = FinalizeRotSliderValue(newValue);
+        ApplyPreciseConfig();
+    }
+
+    #endregion
+
+    #region RotationZ
+
+    private float _preciseLeftRotZ;
+
+    [UIValue("precise-left-rot-z-value")]
+    [UsedImplicitly]
+    private float PreciseLeftRotZ {
+        get => _preciseLeftRotZ;
+        set {
+            _preciseLeftRotZ = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    [UIAction("precise-left-rot-z-on-change")]
+    [UsedImplicitly]
+    private void PreciseLeftRotZOnChange(float value) {
+        if (_smoothingEnabled) {
+            _preciseLeftRotZTarget = value;
+            OnSmoothValueChanged(Hand.Left);
+        } else {
+            _preciseLeftRotZ = value;
+            ApplyPreciseConfig();
+        }
+    }
+
+    [UIAction("precise-left-rot-z-inc-on-click")]
+    [UsedImplicitly]
+    private void PreciseLeftRotZIncOnClick() {
+        var newValue = StepUp(PreciseLeftRotZ, _rotSliderIncrement);
+        PreciseLeftRotZ = FinalizeRotSliderValue(newValue);
+        ApplyPreciseConfig();
+    }
+
+    [UIAction("precise-left-rot-z-dec-on-click")]
+    [UsedImplicitly]
+    private void PreciseLeftRotZDecOnClick() {
+        var newValue = StepDown(PreciseLeftRotZ, _rotSliderIncrement);
+        PreciseLeftRotZ = FinalizeRotSliderValue(newValue);
         ApplyPreciseConfig();
     }
 
@@ -424,9 +799,83 @@ internal partial class ModPanelUI {
 
     #region RightHand
 
+    #region Reset Button
+
+    private string _preciseRightResetText = ResetButtonIdleText;
+    private bool _preciseRightResetClickedOnce;
+
+    [UIValue("precise-right-reset-text")]
+    [UsedImplicitly]
+    private string PreciseRightResetText {
+        get => _preciseRightResetText;
+        set {
+            _preciseRightResetText = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    [UIAction("precise-right-reset-on-click")]
+    [UsedImplicitly]
+    private void PreciseRightResetOnClick() {
+        if (_preciseRightResetClickedOnce) {
+            ResetRightHandPreciseConfig();
+            ResetRightResetButton();
+        } else {
+            _rightResetButtonAction.InvokeLater(ButtonPromptDelayMillis, ResetRightResetButton);
+            PreciseRightResetText = ResetButtonPromptText;
+            _preciseRightResetClickedOnce = true;
+        }
+    }
+
+    private readonly DelayedAction _rightResetButtonAction = new();
+
+    private void ResetRightResetButton() {
+        PreciseRightResetText = ResetButtonIdleText;
+        _preciseRightResetClickedOnce = false;
+    }
+
+    #endregion
+
+    #region MirrorButton
+
+    private string _preciseRightMirrorText = RightMirrorButtonIdleText;
+    private bool _preciseRightMirrorClickedOnce;
+
+    [UIValue("precise-right-mirror-text")]
+    [UsedImplicitly]
+    private string PreciseRightMirrorText {
+        get => _preciseRightMirrorText;
+        set {
+            _preciseRightMirrorText = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    [UIAction("precise-right-mirror-on-click")]
+    [UsedImplicitly]
+    private void PreciseRightMirrorOnClick() {
+        if (_preciseRightMirrorClickedOnce) {
+            PreciseMirrorFromRight();
+            MirrorRightMirrorButton();
+        } else {
+            _rightMirrorButtonAction.InvokeLater(ButtonPromptDelayMillis, MirrorRightMirrorButton);
+            PreciseRightMirrorText = RightMirrorButtonPromptText;
+            _preciseRightMirrorClickedOnce = true;
+        }
+    }
+
+    private readonly DelayedAction _rightMirrorButtonAction = new();
+
+    private void MirrorRightMirrorButton() {
+        PreciseRightMirrorText = RightMirrorButtonIdleText;
+        _preciseRightMirrorClickedOnce = false;
+    }
+
+    #endregion
+
     #region Combined
 
-    private Vector3 PreciseRightPosition {
+    private Vector3 PreciseRightPivotPosition {
         get => new(PreciseRightPosX, PreciseRightPosY, PreciseRightPosZ);
         set {
             PreciseRightPosX = value.x;
@@ -435,11 +884,12 @@ internal partial class ModPanelUI {
         }
     }
 
-    private Vector3 PreciseRightRotation {
-        get => new(PreciseRightRotX, PreciseRightRotY, 0.0f);
+    private Vector3 PreciseRightRotationEuler {
+        get => new(PreciseRightRotX, PreciseRightRotY, PreciseRightRotZ);
         set {
             PreciseRightRotX = value.x;
             PreciseRightRotY = value.y;
+            PreciseRightRotZ = value.z;
         }
     }
 
@@ -462,8 +912,13 @@ internal partial class ModPanelUI {
     [UIAction("precise-right-z-offset-on-change")]
     [UsedImplicitly]
     private void PreciseRightZOffsetOnChange(float value) {
-        _preciseRightZOffsetTarget = value;
-        OnSmoothValueChanged(null);
+        if (_smoothingEnabled) {
+            _preciseRightZOffsetTarget = value;
+            OnSmoothValueChanged(null);
+        } else {
+            _preciseRightZOffset = value;
+            ApplyPreciseConfig();
+        }
     }
 
     [UIAction("precise-right-z-offset-inc-on-click")]
@@ -501,8 +956,13 @@ internal partial class ModPanelUI {
     [UIAction("precise-right-pos-x-on-change")]
     [UsedImplicitly]
     private void PreciseRightPosXOnChange(float value) {
-        _preciseRightPosXTarget = value;
-        OnSmoothValueChanged(Hand.Right);
+        if (_smoothingEnabled) {
+            _preciseRightPosXTarget = value;
+            OnSmoothValueChanged(Hand.Right);
+        } else {
+            _preciseRightPosX = value;
+            ApplyPreciseConfig();
+        }
     }
 
     [UIAction("precise-right-pos-x-inc-on-click")]
@@ -540,8 +1000,13 @@ internal partial class ModPanelUI {
     [UIAction("precise-right-pos-y-on-change")]
     [UsedImplicitly]
     private void PreciseRightPosYOnChange(float value) {
-        _preciseRightPosYTarget = value;
-        OnSmoothValueChanged(Hand.Right);
+        if (_smoothingEnabled) {
+            _preciseRightPosYTarget = value;
+            OnSmoothValueChanged(Hand.Right);
+        } else {
+            _preciseRightPosY = value;
+            ApplyPreciseConfig();
+        }
     }
 
     [UIAction("precise-right-pos-y-inc-on-click")]
@@ -579,8 +1044,13 @@ internal partial class ModPanelUI {
     [UIAction("precise-right-pos-z-on-change")]
     [UsedImplicitly]
     private void PreciseRightPosZOnChange(float value) {
-        _preciseRightPosZTarget = value;
-        OnSmoothValueChanged(Hand.Right);
+        if (_smoothingEnabled) {
+            _preciseRightPosZTarget = value;
+            OnSmoothValueChanged(Hand.Right);
+        } else {
+            _preciseRightPosZ = value;
+            ApplyPreciseConfig();
+        }
     }
 
     [UIAction("precise-right-pos-z-inc-on-click")]
@@ -618,15 +1088,20 @@ internal partial class ModPanelUI {
     [UIAction("precise-right-rot-x-on-change")]
     [UsedImplicitly]
     private void PreciseRightRotXOnChange(float value) {
-        _preciseRightRotXTarget = value;
-        OnSmoothValueChanged(Hand.Right);
+        if (_smoothingEnabled) {
+            _preciseRightRotXTarget = value;
+            OnSmoothValueChanged(Hand.Right);
+        } else {
+            _preciseRightRotX = value;
+            ApplyPreciseConfig();
+        }
     }
 
     [UIAction("precise-right-rot-x-inc-on-click")]
     [UsedImplicitly]
     private void PreciseRightRotXIncOnClick() {
         var newValue = StepUp(PreciseRightRotX, _rotSliderIncrement);
-        PreciseRightRotX = FinalizeXRotSliderValue(newValue);
+        PreciseRightRotX = FinalizeRotXSliderValue(newValue);
         ApplyPreciseConfig();
     }
 
@@ -634,7 +1109,7 @@ internal partial class ModPanelUI {
     [UsedImplicitly]
     private void PreciseRightRotXDecOnClick() {
         var newValue = StepDown(PreciseRightRotX, _rotSliderIncrement);
-        PreciseRightRotX = FinalizeXRotSliderValue(newValue);
+        PreciseRightRotX = FinalizeRotXSliderValue(newValue);
         ApplyPreciseConfig();
     }
 
@@ -657,15 +1132,20 @@ internal partial class ModPanelUI {
     [UIAction("precise-right-rot-y-on-change")]
     [UsedImplicitly]
     private void PreciseRightRotYOnChange(float value) {
-        _preciseRightRotYTarget = value;
-        OnSmoothValueChanged(Hand.Right);
+        if (_smoothingEnabled) {
+            _preciseRightRotYTarget = value;
+            OnSmoothValueChanged(Hand.Right);
+        } else {
+            _preciseRightRotY = value;
+            ApplyPreciseConfig();
+        }
     }
 
     [UIAction("precise-right-rot-y-inc-on-click")]
     [UsedImplicitly]
     private void PreciseRightRotYIncOnClick() {
         var newValue = StepUp(PreciseRightRotY, _rotSliderIncrement);
-        PreciseRightRotY = FinalizeYRotSliderValue(newValue);
+        PreciseRightRotY = FinalizeRotSliderValue(newValue);
         ApplyPreciseConfig();
     }
 
@@ -673,7 +1153,51 @@ internal partial class ModPanelUI {
     [UsedImplicitly]
     private void PreciseRightRotYDecOnClick() {
         var newValue = StepDown(PreciseRightRotY, _rotSliderIncrement);
-        PreciseRightRotY = FinalizeYRotSliderValue(newValue);
+        PreciseRightRotY = FinalizeRotSliderValue(newValue);
+        ApplyPreciseConfig();
+    }
+
+    #endregion
+
+    #region RotationZ
+
+    private float _preciseRightRotZ;
+
+    [UIValue("precise-right-rot-z-value")]
+    [UsedImplicitly]
+    private float PreciseRightRotZ {
+        get => _preciseRightRotZ;
+        set {
+            _preciseRightRotZ = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    [UIAction("precise-right-rot-z-on-change")]
+    [UsedImplicitly]
+    private void PreciseRightRotZOnChange(float value) {
+        if (_smoothingEnabled) {
+            _preciseRightRotZTarget = value;
+            OnSmoothValueChanged(Hand.Right);
+        } else {
+            _preciseRightRotZ = value;
+            ApplyPreciseConfig();
+        }
+    }
+
+    [UIAction("precise-right-rot-z-inc-on-click")]
+    [UsedImplicitly]
+    private void PreciseRightRotZIncOnClick() {
+        var newValue = StepUp(PreciseRightRotZ, _rotSliderIncrement);
+        PreciseRightRotZ = FinalizeRotSliderValue(newValue);
+        ApplyPreciseConfig();
+    }
+
+    [UIAction("precise-right-rot-z-dec-on-click")]
+    [UsedImplicitly]
+    private void PreciseRightRotZDecOnClick() {
+        var newValue = StepDown(PreciseRightRotZ, _rotSliderIncrement);
+        PreciseRightRotZ = FinalizeRotSliderValue(newValue);
         ApplyPreciseConfig();
     }
 
@@ -694,18 +1218,18 @@ internal partial class ModPanelUI {
     }
 
     private float FinalizeZOffsetSliderValue(float value) {
-        return Mathf.Clamp(value, _zOffsetSliderMin, _zOffsetSliderMax);
+        return Mathf.Clamp(value, _preciseZOffsetSliderMin, _preciseZOffsetSliderMax);
     }
-    
+
     private float FinalizePosSliderValue(float value) {
         return Mathf.Clamp(value, _posSliderMin, _posSliderMax);
     }
 
-    private float FinalizeXRotSliderValue(float value) {
+    private float FinalizeRotXSliderValue(float value) {
         return Mathf.Clamp(value, _rotXSliderMin, _rotXSliderMax);
     }
 
-    private static float FinalizeYRotSliderValue(float value) {
+    private static float FinalizeRotSliderValue(float value) {
         return value switch {
             >= 180 => -360 + value,
             <= -180 => 360 - value,

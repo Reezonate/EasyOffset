@@ -70,12 +70,12 @@ namespace EasyOffset {
         ) {
             switch (hand) {
                 case Hand.Left:
-                    pivotWorldPosition = controllerTransform.LocalToWorldPosition(PluginConfig.LeftHandPivotPosition);
-                    saberWorldRotation = controllerTransform.LocalToWorldRotation(PluginConfig.LeftHandRotation);
+                    pivotWorldPosition = controllerTransform.LocalToWorldPosition(PluginConfig.LeftSaberPivotPosition);
+                    saberWorldRotation = controllerTransform.LocalToWorldRotation(PluginConfig.LeftSaberRotation);
                     break;
                 case Hand.Right:
-                    pivotWorldPosition = controllerTransform.LocalToWorldPosition(PluginConfig.RightHandPivotPosition);
-                    saberWorldRotation = controllerTransform.LocalToWorldRotation(PluginConfig.RightHandRotation);
+                    pivotWorldPosition = controllerTransform.LocalToWorldPosition(PluginConfig.RightSaberPivotPosition);
+                    saberWorldRotation = controllerTransform.LocalToWorldRotation(PluginConfig.RightSaberRotation);
                     break;
                 default: throw new ArgumentOutOfRangeException(nameof(hand), hand, null);
             }

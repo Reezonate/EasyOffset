@@ -43,8 +43,8 @@ namespace EasyOffset {
                 AdjustmentMode.Basic => "Basic",
                 AdjustmentMode.Position => "Position",
                 AdjustmentMode.Rotation => "Rotation",
-                AdjustmentMode.SwingBenchmark => "Swing Benchmark",
                 AdjustmentMode.Precise => "Precise",
+                AdjustmentMode.SwingBenchmark => "Swing Benchmark",
                 AdjustmentMode.RotationAuto => "Rotation Auto",
                 AdjustmentMode.RoomOffset => "Room offset",
                 _ => throw new ArgumentOutOfRangeException()

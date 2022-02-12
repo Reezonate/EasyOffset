@@ -23,8 +23,7 @@ namespace EasyOffset {
 
         #region Logic
 
-        private Vector3 _storedLocalDirection;
-        private Vector3 _grabWorldDirection;
+        private Quaternion _grabWorldRotation;
 
         private readonly Range _heightRange = new Range(0.05f, 0.4f);
         private readonly Range _zoomRange = new Range(1f, 4f);
@@ -35,21 +34,23 @@ namespace EasyOffset {
             ReeTransform adjustmentHandTransform,
             ReeTransform freeHandTransform
         ) {
+            Quaternion grabLocalRotation;
+
             switch (adjustmentHand) {
                 case Hand.Left:
-                    _storedLocalDirection = PluginConfig.LeftHandSaberDirection;
+                    grabLocalRotation = PluginConfig.LeftSaberRotation;
                     _gizmosManager.LeftHandGizmosController.SetSphericalBasisFocus(true);
-                    _gizmosManager.LeftHandGizmosController.SetPreviousDirection(_storedLocalDirection, true);
+                    _gizmosManager.LeftHandGizmosController.SetPreviousRotation(grabLocalRotation, true);
                     break;
                 case Hand.Right:
-                    _storedLocalDirection = PluginConfig.RightHandSaberDirection;
+                    grabLocalRotation = PluginConfig.RightSaberRotation;
                     _gizmosManager.RightHandGizmosController.SetSphericalBasisFocus(true);
-                    _gizmosManager.RightHandGizmosController.SetPreviousDirection(_storedLocalDirection, true);
+                    _gizmosManager.RightHandGizmosController.SetPreviousRotation(grabLocalRotation, true);
                     break;
                 default: throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null);
             }
 
-            _grabWorldDirection = adjustmentHandTransform.LocalToWorldDirection(_storedLocalDirection);
+            _grabWorldRotation = adjustmentHandTransform.LocalToWorldRotation(grabLocalRotation);
             _grabFreeY = freeHandTransform.Position.y;
         }
 
@@ -58,7 +59,7 @@ namespace EasyOffset {
             ReeTransform adjustmentHandTransform,
             ReeTransform freeHandTransform
         ) {
-            var finalLocalDirection = adjustmentHandTransform.WorldToLocalDirection(_grabWorldDirection);
+            var finalLocalRotation = adjustmentHandTransform.WorldToLocalRotation(_grabWorldRotation);
 
             var heightDifference = freeHandTransform.Position.y - _grabFreeY;
             var zoomRatio = _heightRange.GetRatioClamped(heightDifference);
@@ -66,11 +67,11 @@ namespace EasyOffset {
 
             switch (adjustmentHand) {
                 case Hand.Left:
-                    PluginConfig.LeftHandSaberDirection = finalLocalDirection;
+                    PluginConfig.LeftSaberRotation = finalLocalRotation;
                     _gizmosManager.LeftHandGizmosController.Zoom(zoom);
                     break;
                 case Hand.Right:
-                    PluginConfig.RightHandSaberDirection = finalLocalDirection;
+                    PluginConfig.RightSaberRotation = finalLocalRotation;
                     _gizmosManager.RightHandGizmosController.Zoom(zoom);
                     break;
                 default: throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null);
@@ -85,12 +86,12 @@ namespace EasyOffset {
             switch (adjustmentHand) {
                 case Hand.Left:
                     _gizmosManager.LeftHandGizmosController.SetSphericalBasisFocus(false);
-                    _gizmosManager.LeftHandGizmosController.SetPreviousDirection(PluginConfig.LeftHandSaberDirection, false);
+                    _gizmosManager.LeftHandGizmosController.SetPreviousRotation(PluginConfig.LeftSaberRotation, false);
                     _gizmosManager.LeftHandGizmosController.Zoom(1);
                     break;
                 case Hand.Right:
                     _gizmosManager.RightHandGizmosController.SetSphericalBasisFocus(false);
-                    _gizmosManager.RightHandGizmosController.SetPreviousDirection(PluginConfig.RightHandSaberDirection, false);
+                    _gizmosManager.RightHandGizmosController.SetPreviousRotation(PluginConfig.RightSaberRotation, false);
                     _gizmosManager.RightHandGizmosController.Zoom(1);
                     break;
                 default: throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null);

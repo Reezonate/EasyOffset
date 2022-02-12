@@ -9,9 +9,7 @@ namespace EasyOffset {
 
         private readonly GizmosManager _gizmosManager;
 
-        public BasicAdjustmentModeManager(
-            GizmosManager gizmosManager
-        ) : base(
+        public BasicAdjustmentModeManager(GizmosManager gizmosManager) : base(
             AdjustmentMode.Basic,
             4f,
             4f
@@ -23,8 +21,7 @@ namespace EasyOffset {
 
         #region Logic
 
-        private Vector3 _storedLocalDirection;
-        private Vector3 _grabWorldDirection;
+        private Quaternion _grabWorldRotation;
         private Vector3 _grabPosition;
 
         protected override void OnGrabStarted(
@@ -32,24 +29,24 @@ namespace EasyOffset {
             ReeTransform adjustmentHandTransform,
             ReeTransform freeHandTransform
         ) {
+            Quaternion grabLocalRotation;
             Vector3 grabPivotPosition;
 
             switch (adjustmentHand) {
                 case Hand.Left:
-                    grabPivotPosition = PluginConfig.LeftHandPivotPosition;
-                    _storedLocalDirection = PluginConfig.LeftHandSaberDirection;
+                    grabPivotPosition = PluginConfig.LeftSaberPivotPosition;
+                    grabLocalRotation = PluginConfig.LeftSaberRotation;
                     _gizmosManager.LeftHandGizmosController.SetOrthonormalBasisFocus(true);
                     break;
                 case Hand.Right:
-                    grabPivotPosition = PluginConfig.RightHandPivotPosition;
-                    _storedLocalDirection = PluginConfig.RightHandSaberDirection;
+                    grabPivotPosition = PluginConfig.RightSaberPivotPosition;
+                    grabLocalRotation = PluginConfig.RightSaberRotation;
                     _gizmosManager.RightHandGizmosController.SetOrthonormalBasisFocus(true);
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null);
+                default: throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null);
             }
 
-            _grabWorldDirection = adjustmentHandTransform.LocalToWorldDirection(_storedLocalDirection);
+            _grabWorldRotation = adjustmentHandTransform.LocalToWorldRotation(grabLocalRotation);
             _grabPosition = adjustmentHandTransform.LocalToWorldPosition(grabPivotPosition);
         }
 
@@ -58,17 +55,17 @@ namespace EasyOffset {
             ReeTransform adjustmentHandTransform,
             ReeTransform freeHandTransform
         ) {
-            var finalLocalDirection = adjustmentHandTransform.WorldToLocalDirection(_grabWorldDirection);
+            var finalLocalRotation = adjustmentHandTransform.WorldToLocalRotation(_grabWorldRotation);
             var newPivotPosition = adjustmentHandTransform.WorldToLocalPosition(_grabPosition);
 
             switch (adjustmentHand) {
                 case Hand.Left:
-                    PluginConfig.LeftHandSaberDirection = finalLocalDirection;
-                    PluginConfig.LeftHandPivotPosition = newPivotPosition;
+                    PluginConfig.LeftSaberRotation = finalLocalRotation;
+                    PluginConfig.LeftSaberPivotPosition = newPivotPosition;
                     break;
                 case Hand.Right:
-                    PluginConfig.RightHandSaberDirection = finalLocalDirection;
-                    PluginConfig.RightHandPivotPosition = newPivotPosition;
+                    PluginConfig.RightSaberRotation = finalLocalRotation;
+                    PluginConfig.RightSaberPivotPosition = newPivotPosition;
                     break;
                 default: throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null);
             }

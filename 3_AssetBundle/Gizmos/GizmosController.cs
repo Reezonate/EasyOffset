@@ -41,17 +41,17 @@ namespace EasyOffset {
         #region SetConfigValues
 
         public void SetConfigValues(
-            Vector3 saberTranslation,
-            Quaternion saberRotation,
             Vector3 pivotPosition,
-            Vector3 saberDirection,
+            Quaternion saberRotation,
             float zOffset
         ) {
+            var saberTranslation = pivotPosition + saberRotation * new Vector3(0, 0, zOffset);
+            
             saberTransform.localPosition = saberTranslation;
             saberTransform.localRotation = saberRotation;
             pivotTransform.localPosition = new Vector3(0, 0, -zOffset);
 
-            sphericalBasis.SetDirection(saberDirection);
+            sphericalBasis.SetRotation(saberRotation);
             sphericalBasis.SetPivotPosition(pivotPosition);
             orthonormalBasis.SetCoordinates(pivotPosition);
 
@@ -104,10 +104,10 @@ namespace EasyOffset {
 
         #endregion
 
-        #region SetPreviousDirection
+        #region SetPreviousRotation
 
-        public void SetPreviousDirection(Vector3 orthoDirection, bool visible) {
-            sphericalBasis.SetPreviousDirection(orthoDirection, visible);
+        public void SetPreviousRotation(Quaternion previousRotation, bool visible) {
+            sphericalBasis.SetPreviousRotation(previousRotation, visible);
         }
 
         #endregion

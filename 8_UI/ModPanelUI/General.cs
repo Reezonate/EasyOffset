@@ -14,17 +14,22 @@ internal partial class ModPanelUI : NotifiableSingleton<ModPanelUI> {
         SubscribeToBenchmarkEvents();
         SubscribeToRoomOffsetEvents();
         SubscribeToWarningEvents();
-        SubscribeToPreciseModeEvents();
         SubscribeToSmoothingEvents();
+        SubscribeToPrecisePanelEvents();
+        GoToMainPage();
     }
 
     #endregion
 
-    #region Update
+    #region Updates
 
     private void Update() {
         UpdatePanelVisibility();
         SmoothingUpdate();
+    }
+
+    private void LateUpdate() {
+        SynchronizationUpdate();
     }
 
     #endregion
@@ -53,36 +58,54 @@ internal partial class ModPanelUI : NotifiableSingleton<ModPanelUI> {
 
         switch (PluginConfig.AdjustmentMode) {
             case AdjustmentMode.None:
+                UseFreeHandActive = false;
+                NonePanelActive = true;
+                BenchmarkPanelActive = false;
+                RoomOffsetPanelActive = false;
+                SetPrecisePanelState(PrecisePanelState.Hidden);
+                break;
             case AdjustmentMode.Basic:
+                UseFreeHandActive = true;
+                NonePanelActive = false;
+                BenchmarkPanelActive = false;
+                RoomOffsetPanelActive = false;
+                SetPrecisePanelState(PrecisePanelState.ZOffsetOnly);
+                break;
             case AdjustmentMode.Position:
+                UseFreeHandActive = true;
+                NonePanelActive = false;
+                BenchmarkPanelActive = false;
+                RoomOffsetPanelActive = false;
+                SetPrecisePanelState(PrecisePanelState.PositionOnly);
+                break;
             case AdjustmentMode.Rotation:
             case AdjustmentMode.RotationAuto:
                 UseFreeHandActive = true;
-                HandsPanelActive = true;
+                NonePanelActive = false;
                 BenchmarkPanelActive = false;
-                PrecisePanelActive = false;
                 RoomOffsetPanelActive = false;
+                SetPrecisePanelState(PrecisePanelState.RotationOnly);
                 break;
             case AdjustmentMode.SwingBenchmark:
                 UseFreeHandActive = true;
-                HandsPanelActive = false;
+                NonePanelActive = false;
                 BenchmarkPanelActive = true;
-                PrecisePanelActive = false;
                 RoomOffsetPanelActive = false;
+                SetPrecisePanelState(PrecisePanelState.Hidden);
                 break;
             case AdjustmentMode.Precise:
                 UseFreeHandActive = false;
-                HandsPanelActive = false;
+                NonePanelActive = false;
                 BenchmarkPanelActive = false;
-                PrecisePanelActive = true;
                 RoomOffsetPanelActive = false;
+                SetPrecisePanelState(PrecisePanelState.Full);
                 break;
             case AdjustmentMode.RoomOffset:
                 UseFreeHandActive = true;
-                HandsPanelActive = false;
+                NonePanelActive = false;
                 BenchmarkPanelActive = false;
-                PrecisePanelActive = false;
                 RoomOffsetPanelActive = true;
+                SetPrecisePanelState(PrecisePanelState.Hidden);
                 break;
             default: throw new ArgumentOutOfRangeException();
         }

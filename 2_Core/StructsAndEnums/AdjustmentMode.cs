@@ -4,8 +4,8 @@ namespace EasyOffset {
         Basic,
         Position,
         Rotation,
-        SwingBenchmark,
         Precise,
+        SwingBenchmark,
         RotationAuto,
         RoomOffset
     }
