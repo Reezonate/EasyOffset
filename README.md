@@ -75,7 +75,7 @@ Beat Saber mod for intuitive controller offset adjustments. Suitable for both be
 - `Saber Rotation` - saber rotation euler angles
 - `ZOffset` - saber position offset along its axis
 
-Config values are different from the base game settings, SaberTailor, etc.
+Config values are different from the base game settings, SaberTailor, etc. Use the [Config Migration](https://github.com/Reezonate/EasyOffset#config-migration) to plug these values in
 
 ### First steps:
 - Select your controller model in the `Controller Type` list
