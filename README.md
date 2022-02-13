@@ -1,8 +1,6 @@
 # Easy Offset
 
-Beat Saber mod for intuitive controller offset adjustments.
-
-Tired from a pile of magic config numbers? Find the best offset for your grip just by moving your hand!
+Beat Saber mod for intuitive controller offset adjustments. Suitable for both beginners and advanced players
 
 - [How to use](https://github.com/Reezonate/EasyOffset#how-to-use)
 - [Config migration](https://github.com/Reezonate/EasyOffset#config-migration)
@@ -71,29 +69,32 @@ Tired from a pile of magic config numbers? Find the best offset for your grip ju
 - Refresh profiles list and load `EasyOffsetExported` profile
 
 # How to use
-Before trying to find your best config, spend some time in different modes and experiment with the tools at your disposal
-
 ### Config values:
 
-- `Pivot point` - saber origin position relative to the controller (Displayed as a white dot surrounded by a grid)
-- `Direction vector` - saber tip position relative to `Pivot point`
-- `ZOffset` - saber position offset along `Direction vector`
+- `Pivot point` - saber origin position relative to the controller. Displayed as a white dot surrounded by a grid
+- `Saber Rotation` - saber rotation euler angles
+- `ZOffset` - saber position offset along its axis
+
+Config values are different from the base game settings, SaberTailor, etc.
 
 ### First steps:
 - Select your controller model in the `Controller Type` list
 - Choose a button you can press without changing your grip
 - If there is no such button, check the `Use Free Hand` toggle to use the button on the other hand
 
+Before trying to find your best config, spend some time in different adjustment modes and experiment with the tools at your disposal
+
 ### To get a decent config, you have to achieve two goals:
 
 - `Pivot point` should be stable as the wrist rotates. In other words - it should be aligned with your actual wrist pivot point as much as possible
 - Saber trail shouldn't move in a huge circle while you pointing forward and rolling your wrist comfortably. The smaller the radius, the better
 
-To help you achieve these goals, there are four adjustment modes:
+To help you achieve these goals, there are five main adjustment modes:
 
 - [Basic](https://github.com/Reezonate/EasyOffset#basic-adjustment-mode)
 - [Position](https://github.com/Reezonate/EasyOffset#position-adjustment-mode)
 - [Rotation](https://github.com/Reezonate/EasyOffset#rotation-adjustment-mode)
+- [Precise](https://github.com/Reezonate/EasyOffset#precise-adjustment-mode)
 - [Swing Benchmark](https://github.com/Reezonate/EasyOffset#swing-benchmark-adjustment-mode)
 
 ## `Basic` adjustment mode:
@@ -103,7 +104,7 @@ To help you achieve these goals, there are four adjustment modes:
 Simple drag and drop adjustment mode
 
 - Select `Basic` in the `Adjustment Mode` list
-- While holding the selected button, move your hand and pick up the saber in a new position by releasing the button
+- Press the selected button, move your hand to a new position, release the button
 - You can move the saber along its axis using the `ZOffset` slider
 
 ![Basic mode image](media/Basic.png)
@@ -114,14 +115,14 @@ Simple drag and drop adjustment mode
 ```
 Position only adjustment mode. Displays `Pivot point` coordinates in centimeters
 
-Allows you to change the `Pivot point` without changing the `Direction vector`
+Allows you to change the `Pivot point` without changing `Saber Rotation`
 
 - Select `Position` in the `Adjustment Mode` list
 - Align the `Pivot point` with your wrist pivot point. You can see where it is relative to the controller IRL
-- World-aligned 3D grid serves as a stationary reference to track `Pivot point` movement.
-  Keeping it in one cell regardless of wrist rotation is good enough
-- You can move the saber along its axis using the `ZOffset` slider
 
+- You can move the saber along its axis using the `ZOffset` slider 
+
+World-aligned 3D grid serves as a stationary reference to track `Pivot point` movement. Keeping it in one cell regardless of wrist rotation is good enough
 ![Position mode preview](media/Position.png)
 
 ## `Rotation` adjustment mode:
@@ -129,9 +130,9 @@ Allows you to change the `Pivot point` without changing the `Direction vector`
 - Advanced: An understanding of how the saber rotation affects your swing is required
 ```
 
-Rotation only adjustment mode. Displays `Direction Vector` in spherical coordinates. Best used with `Use Free Hand` enabled
+Rotation only adjustment mode. Displays `Saber Rotation` on a spherical grid. Best used with the `Use Free Hand` enabled
 
-Allows you to change the `Direction vector` without changing the `Pivot point`
+Allows you to change the `Saber Rotation` without changing the `Pivot point`
 
 - Select `Rotation` in the `Adjustment Mode` list
 - Point forward with your palm facing down and press the button
@@ -142,6 +143,19 @@ Allows you to change the `Direction vector` without changing the `Pivot point`
 You can raise/lower your free hand to zoom in/out
 
 ![Rotation mode preview](media/Rotation.png)
+
+## `Precise` adjustment mode:
+``` diff
+- Expert: Deep understanding of each config value is required
+```
+Mode for final tweaks that allows independent control over all config values with extreme precision
+
+- Select `Precise` in the `Adjustment Mode` list
+- Click on slider and hold the trigger to change its value (The longer you it, the faster the value changes)
+- Use the opposite hand to see the changes in real time, otherwise the changes will only be applied when the trigger is released
+- Use increment/decrement buttons for the tiny adjustments
+
+![Precise mode preview](media/Precise.png)
 
 ## `Swing Benchmark` adjustment mode:
 ``` diff
@@ -155,6 +169,9 @@ Results will gradually change from vertical to horizontal swing. Optimize your c
 - Repeat one exact swing several times while holding the button
 - Stand still, look forward, and swing exactly as you do in-game
 - Swing angle of at least 140° is required
+
+
+Note that due to swing inconsistencies, the suggested "Auto-fix" may not be perfect
 
 Calculation error mostly depends on a `Tip wobble` (smaller is better) and `Angle` (higher is better). The more repeatable your swings are, the more precise result you'll get
 
@@ -172,7 +189,7 @@ Indicates how straight your swing is
 How to improve:
 
 - You can reduce it manually in the `Rotation` mode (A special reference line will appear after the test)
-- You can completely remove it automatically by pressing the `Apply rotation fix` button. This action will change your config, backup if you're not sure!
+- You can reduce it automatically by pressing the `Apply rotation fix` button. This action will change your config, backup if you're not sure!
 - Straight swing requires fairly wide hand placement, which may feel uncomfortable at first if you had a big outward curve
 
 ### `Tip Wobble` measurement
@@ -216,7 +233,7 @@ How to improve:
 - Config-breaking: Drastically changes your config. Save the preset to have a backup
 ```
 
-Automatic calculation of the `Direction vector` based on your movement. Great for getting initial values for a new grip, requires manual tweaking in `Rotation` mode afterward.
+Automatic calculation of the `Saber Rotation` based on your movement. Great for getting initial values for a new grip, requires manual tweaking in `Rotation` mode afterward.
 Affects only rotation, doesn't change the position values
 
 - Select `Rotation Auto` in the `Adjustment Mode` list
@@ -235,5 +252,6 @@ World pulling locomotion in Beat Saber! This mode uses base game room offset set
 - Select `Room offset` in the `Adjustment Mode` list
 - Hold the button and pull or push the world around you
 - To move only vertically, disable X and Z axles
+- To move only horizontally, disable Y axis
 
-Useful for quick floor level alignment. Just put one controller on the floor and use its model as a reference
+Useful for getting consistent player height. Disable an in-game auto height calculation and use your preferred hmd Y position as a reference for future tweaks
