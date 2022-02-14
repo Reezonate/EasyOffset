@@ -46,28 +46,21 @@ namespace EasyOffset {
         #endregion
 
         #region GetPresetCellString
-
-        private const int TimeColumnCharCount = 12;
-        private const int NameColumnCharCount = 25;
-
+        
         public static string GetPresetCellString(StoredConfigPreset preset) {
             var stringBuilder = new StringBuilder();
 
             stringBuilder.Append("<align=\"left\">");
-            stringBuilder.Append("<mspace=0.4em>");
 
             if (preset.LoadFailed) {
                 stringBuilder.Append("<color=red>");
-                stringBuilder.AppendFixed("load error", TimeColumnCharCount);
-            } else
-                switch (preset.ConfigPreset.ConfigVersion) {
-                    default:
-                        stringBuilder.AppendTimeString(preset.ConfigPreset.UnixTimestamp, TimeColumnCharCount);
-                        break;
-                }
+                stringBuilder.Append("load error");
+            } else {
+                stringBuilder.Append(GetTimeString(preset.ConfigPreset.UnixTimestamp));
+            }
 
-            stringBuilder.Append("</mspace>");
-            stringBuilder.AppendFixed(preset.Name, NameColumnCharCount);
+            stringBuilder.Append("<pos=30%>");
+            stringBuilder.Append(preset.Name);
 
             return stringBuilder.ToString();
         }
@@ -84,58 +77,28 @@ namespace EasyOffset {
         private const string FutureString = "o_O";
         private const string VeryOldString = "-";
 
-        private static void AppendTimeString(this StringBuilder stringBuilder, long unixTimestamp, int charCount) {
+        private static string GetTimeString(long unixTimestamp) {
             var now = DateTimeOffset.Now.ToUnixTimeSeconds();
             var timeDifference = now - unixTimestamp;
 
             switch (timeDifference) {
-                case < 0:
-                    stringBuilder.AppendFixed(FutureString, charCount);
-                    break;
-                case > VeryOldTimeDifference:
-                    stringBuilder.AppendFixed(VeryOldString, charCount);
-                    break;
-                default:
-                    var fullDays = timeDifference / SecondsInDay;
-                    if (fullDays > 0) {
-                        stringBuilder.AppendFixed($"{fullDays} d ago", charCount);
-                    } else {
-                        timeDifference -= fullDays * SecondsInDay;
-                        var fullHours = timeDifference / SecondsInHour;
-                        if (fullHours > 0) {
-                            stringBuilder.AppendFixed($"{fullHours} h ago", charCount);
-                        } else {
-                            timeDifference -= fullHours * SecondsInHour;
-                            var fullMinutes = timeDifference / SecondsInMinute;
-                            if (fullMinutes > 0) {
-                                stringBuilder.AppendFixed($"{fullMinutes} m ago", charCount);
-                            } else {
-                                timeDifference -= fullMinutes * SecondsInMinute;
-                                stringBuilder.AppendFixed($"{timeDifference} s ago", charCount);
-                            }
-                        }
-                    }
-
-                    break;
+                case < 0: return FutureString;
+                case > VeryOldTimeDifference: return VeryOldString;
             }
-        }
 
-        private static void AppendFixed(this StringBuilder stringBuilder, string str, int charCount) {
-            var overflow = str.Length > charCount;
+            var fullDays = timeDifference / SecondsInDay;
 
-            for (var i = 0; i < charCount; i++) {
-                if (i >= str.Length) {
-                    stringBuilder.Append(' ');
-                    continue;
-                }
-
-                if (overflow && i > (charCount - 4)) {
-                    stringBuilder.Append('.');
-                    continue;
-                }
-
-                stringBuilder.Append(str[i]);
+            if (fullDays > 0) {
+                return $"{fullDays} d ago";
             }
+
+            var fullHours = timeDifference / SecondsInHour;
+            if (fullHours > 0) {
+                return $"{fullHours} h ago";
+            }
+
+            var fullMinutes = timeDifference / SecondsInMinute;
+            return fullMinutes > 0 ? $"{fullMinutes} m ago" : $"{timeDifference} s ago";
         }
 
         #endregion

@@ -1,5 +1,6 @@
 using System;
 using BeatSaberMarkupLanguage.Attributes;
+using IPA.Utilities;
 using JetBrains.Annotations;
 using UnityEngine;
 
@@ -10,12 +11,18 @@ internal partial class ModPanelUI {
 
     private void SubscribeToPrecisePanelEvents() {
         PluginConfig.ConfigWasChangedEvent += OnConfigWasChanged;
+        PluginConfig.IsModPanelVisibleChangedEvent += OnIsModPanelVisibleChanged;
         OnConfigWasChanged();
     }
 
     private void OnConfigWasChanged() {
         if (_smoothingEnabled) return;
         NotifySynchronizationRequired();
+    }
+
+    private void OnIsModPanelVisibleChanged(bool isVisible) {
+        if (!isVisible) return;
+        SetPrecisePanelState(_precisePanelState);
     }
 
     #endregion
@@ -184,7 +191,7 @@ internal partial class ModPanelUI {
                 PreciseRotationActive = false;
                 PreciseSlidersHeight = 8.0f;
                 PreciseFillerHeight = 0.0f;
-                ApplyScale(0.85f);
+                ApplyScale(0.82f);
                 break;
             case PrecisePanelState.PositionOnly:
                 PrecisePanelActive = true;
@@ -193,7 +200,7 @@ internal partial class ModPanelUI {
                 PreciseRotationActive = false;
                 PreciseSlidersHeight = 27.0f;
                 PreciseFillerHeight = 0.0f;
-                ApplyScale(0.85f);
+                ApplyScale(0.82f);
                 break;
             case PrecisePanelState.RotationOnly:
                 PrecisePanelActive = true;
@@ -202,7 +209,7 @@ internal partial class ModPanelUI {
                 PreciseRotationActive = true;
                 PreciseSlidersHeight = 20.0f;
                 PreciseFillerHeight = 0.0f;
-                ApplyScale(0.85f);
+                ApplyScale(0.82f);
                 break;
             case PrecisePanelState.Full:
                 PrecisePanelActive = true;
@@ -315,6 +322,12 @@ internal partial class ModPanelUI {
         _precisePanelComponent.localScale = Vector3.one * scale;
     }
 
+    [UIValue("precise-sliders-section-pad")] [UsedImplicitly]
+    private float _precisePanelSlidersWidth = UnityGame.GameVersion.ToString() switch {
+        "1.18.3" => 0.0f,
+        _ => 1.0f
+    };
+
     #endregion
 
     #region ZOffsetSliderSettings
@@ -377,6 +390,7 @@ internal partial class ModPanelUI {
     #region ButtonsSettings
 
     private const int ButtonPromptDelayMillis = 2000;
+    private const float ButtonPromptDelaySeconds = 2.0f;
 
     private const string ResetButtonIdleText = "Reset";
     private const string ResetButtonPromptText = "<color=#ff5555>Sure?</color>";
@@ -413,13 +427,11 @@ internal partial class ModPanelUI {
             ResetLeftHandPreciseConfig();
             ResetLeftResetButton();
         } else {
-            _leftResetButtonAction.InvokeLater(ButtonPromptDelayMillis, ResetLeftResetButton);
+            StartCoroutine(AsyncUtils.InvokeWithDelay(ResetLeftResetButton, ButtonPromptDelaySeconds));
             PreciseLeftResetText = ResetButtonPromptText;
             _preciseLeftResetClickedOnce = true;
         }
     }
-
-    private readonly DelayedAction _leftResetButtonAction = new();
 
     private void ResetLeftResetButton() {
         PreciseLeftResetText = ResetButtonIdleText;
@@ -448,17 +460,15 @@ internal partial class ModPanelUI {
     private void PreciseLeftMirrorOnClick() {
         if (_preciseLeftMirrorClickedOnce) {
             PreciseMirrorFromLeft();
-            MirrorLeftMirrorButton();
+            ResetLeftMirrorButton();
         } else {
-            _leftMirrorButtonAction.InvokeLater(ButtonPromptDelayMillis, MirrorLeftMirrorButton);
+            StartCoroutine(AsyncUtils.InvokeWithDelay(ResetLeftMirrorButton, ButtonPromptDelaySeconds));
             PreciseLeftMirrorText = LeftMirrorButtonPromptText;
             _preciseLeftMirrorClickedOnce = true;
         }
     }
 
-    private readonly DelayedAction _leftMirrorButtonAction = new();
-
-    private void MirrorLeftMirrorButton() {
+    private void ResetLeftMirrorButton() {
         PreciseLeftMirrorText = LeftMirrorButtonIdleText;
         _preciseLeftMirrorClickedOnce = false;
     }
@@ -821,13 +831,11 @@ internal partial class ModPanelUI {
             ResetRightHandPreciseConfig();
             ResetRightResetButton();
         } else {
-            _rightResetButtonAction.InvokeLater(ButtonPromptDelayMillis, ResetRightResetButton);
+            StartCoroutine(AsyncUtils.InvokeWithDelay(ResetRightResetButton, ButtonPromptDelaySeconds));
             PreciseRightResetText = ResetButtonPromptText;
             _preciseRightResetClickedOnce = true;
         }
     }
-
-    private readonly DelayedAction _rightResetButtonAction = new();
 
     private void ResetRightResetButton() {
         PreciseRightResetText = ResetButtonIdleText;
@@ -856,17 +864,15 @@ internal partial class ModPanelUI {
     private void PreciseRightMirrorOnClick() {
         if (_preciseRightMirrorClickedOnce) {
             PreciseMirrorFromRight();
-            MirrorRightMirrorButton();
+            ResetRightMirrorButton();
         } else {
-            _rightMirrorButtonAction.InvokeLater(ButtonPromptDelayMillis, MirrorRightMirrorButton);
+            StartCoroutine(AsyncUtils.InvokeWithDelay(ResetRightMirrorButton, ButtonPromptDelaySeconds));
             PreciseRightMirrorText = RightMirrorButtonPromptText;
             _preciseRightMirrorClickedOnce = true;
         }
     }
 
-    private readonly DelayedAction _rightMirrorButtonAction = new();
-
-    private void MirrorRightMirrorButton() {
+    private void ResetRightMirrorButton() {
         PreciseRightMirrorText = RightMirrorButtonIdleText;
         _preciseRightMirrorClickedOnce = false;
     }

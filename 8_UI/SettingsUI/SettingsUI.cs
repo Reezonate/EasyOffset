@@ -24,7 +24,7 @@ namespace EasyOffset {
         }
 
         #region Minimal warning level
-        
+
         [UIValue("warnings-choices")] [UsedImplicitly]
         private List<object> _minimalWarningLevelChoices = WarningLevelUtils.AllNamesObjects.ToList();
 
@@ -167,11 +167,9 @@ namespace EasyOffset {
             }
         }
 
-        private readonly DelayedAction _statusTextResetAction = new();
-
         private void SetStatusText(string value) {
             StatusText = value;
-            _statusTextResetAction.InvokeLater(3000, ResetStatusText);
+            StartCoroutine(AsyncUtils.InvokeWithDelay(ResetStatusText, 3.0f));
         }
 
         private void ResetStatusText() {

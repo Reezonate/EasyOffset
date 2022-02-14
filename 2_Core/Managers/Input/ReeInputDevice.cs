@@ -5,12 +5,15 @@ using UnityEngine.XR;
 namespace EasyOffset {
     public class ReeInputDevice {
         private readonly XRNode _xrNode;
+        private readonly Hand _hand;
 
-        public event Action<ControllerButton> OnButtonPressed;
-        public event Action<ControllerButton> OnButtonReleased;
-
-        public ReeInputDevice(XRNode xrNode) {
-            _xrNode = xrNode;
+        public ReeInputDevice(Hand hand) {
+            _hand = hand;
+            _xrNode = hand switch {
+                Hand.Left => XRNode.LeftHand,
+                Hand.Right => XRNode.RightHand,
+                _ => throw new ArgumentOutOfRangeException(nameof(hand), hand, null)
+            };
         }
 
         #region Update
@@ -69,11 +72,11 @@ namespace EasyOffset {
 
             if (value) {
                 if (flag) return;
-                OnButtonPressed?.Invoke(controllerButton);
+                Abomination.OnButtonPressed(_hand, controllerButton);
                 flag = true;
             } else {
                 if (!flag) return;
-                OnButtonReleased?.Invoke(controllerButton);
+                Abomination.OnButtonReleased(_hand, controllerButton);
                 flag = false;
             }
         }

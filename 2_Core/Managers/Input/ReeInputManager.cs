@@ -1,21 +1,20 @@
 using JetBrains.Annotations;
-using UnityEngine.XR;
 using Zenject;
 
 namespace EasyOffset {
     [UsedImplicitly]
     public class ReeInputManager : ITickable {
-        public readonly ReeInputDevice LeftReeInput;
-        public readonly ReeInputDevice RightReeInput;
+        private readonly ReeInputDevice _leftReeInputDevice;
+        private readonly ReeInputDevice _rightReeInputDevice;
 
         public ReeInputManager() {
-            LeftReeInput = new ReeInputDevice(XRNode.LeftHand);
-            RightReeInput = new ReeInputDevice(XRNode.RightHand);
+            _leftReeInputDevice = new ReeInputDevice(Hand.Left);
+            _rightReeInputDevice = new ReeInputDevice(Hand.Right);
         }
 
         public void Tick() {
-            LeftReeInput.Update();
-            RightReeInput.Update();
+            _leftReeInputDevice.Update();
+            _rightReeInputDevice.Update();
         }
     }
 }

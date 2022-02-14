@@ -32,7 +32,7 @@
                     <!--    ADJUSTMENT MODE    -->
                     <vertical preferred-width="~options-section-column-width">
                         <horizontal preferred-height="~options-label-height">
-                            <text text="Adjustment Mode" font-size="~options-label-font-size" font-color="~options-label-color" align="Midline"/>
+                            <text text="Adjustment mode" font-size="~options-label-font-size" font-color="~options-label-color" align="Midline"/>
                         </horizontal>
                         <dropdown-list-setting interactable="~interactable" text="" value="am-choice" choices="am-choices"
                                                on-change="am-on-change" apply-on-change="true" bind-value="true" hover-hint="~am-hint"/>
@@ -60,7 +60,13 @@
         </horizontal>
 
         <!--    NONE PANEL    -->
-        <horizontal active="~none-panel-active" preferred-height="~middle-section-height"/>
+        <horizontal active="~none-panel-active" preferred-height="~middle-section-height">
+            <vertical active="~interactable" preferred-width="74" spacing="10">
+                <text text="~none-panel-guide-text" font-size="4" align="Left"/>
+                <clickable-text text="~none-panel-more-info-text" font-size="3" face-color="#333388" align="Center"
+                    on-click="none-panel-more-info-on-click"/>
+            </vertical>
+        </horizontal>
 
         <!--    BENCHMARK PANEL    -->
         <horizontal active="~benchmark-panel-active" preferred-height="~middle-section-height">
@@ -118,6 +124,7 @@
             <macro.define name="precise-sliders-section-width" value="56"/>
             <macro.define name="precise-reset-width" value="10"/>
             <macro.define name="precise-hand-width" value="22"/>
+            <macro.define name="precise-hand-color" value="#888888"/>
             <macro.define name="precise-mirror-width" value="32"/>
             <macro.define name="precise-slider-label-width" value="8"/>
             <macro.define name="precise-slider-button-width" value="8"/>
@@ -138,7 +145,7 @@
                             </vertical>
                             <!--    HAND LABEL    -->
                             <vertical preferred-width="~precise-hand-width">
-                                <text text="Left Hand" font-size="4" align="Midline"/>
+                                <text text="Left Hand" font-size="4" font-color="~precise-hand-color" align="Midline"/>
                             </vertical>
                             <!--    MIRROR BUTTON    -->
                             <vertical preferred-width="~precise-mirror-width">
@@ -163,7 +170,7 @@
                             </vertical>
 
                             <!--    SLIDERS    -->
-                            <vertical preferred-width="~precise-slider-width">
+                            <vertical preferred-width="~precise-slider-width" pad-right="~precise-sliders-section-pad">
                                 <!--    Z OFFSET    -->
                                 <slider-setting active="~precise-z-offset-active" text="" apply-on-change="true" bind-value="true"
                                                 value="precise-left-z-offset-value" on-change="precise-left-z-offset-on-change"
@@ -173,13 +180,16 @@
                                 <horizontal active="~precise-position-active" preferred-height="~precise-group-spacing"/>
                                 <slider-setting active="~precise-position-active" text="" apply-on-change="true" bind-value="true"
                                                 value="precise-left-pos-x-value" on-change="precise-left-pos-x-on-change"
-                                                min="~pos-slider-min" max="~pos-slider-max" increment="~pos-slider-increment" formatter="pos-slider-formatter"/>
+                                                min="~pos-slider-min" max="~pos-slider-max" increment="~pos-slider-increment" 
+                                                formatter="pos-slider-formatter"/>
                                 <slider-setting active="~precise-position-active" text="" apply-on-change="true" bind-value="true"
                                                 value="precise-left-pos-y-value" on-change="precise-left-pos-y-on-change"
-                                                min="~pos-slider-min" max="~pos-slider-max" increment="~pos-slider-increment" formatter="pos-slider-formatter"/>
+                                                min="~pos-slider-min" max="~pos-slider-max" increment="~pos-slider-increment" 
+                                                formatter="pos-slider-formatter"/>
                                 <slider-setting active="~precise-position-active" text="" apply-on-change="true" bind-value="true"
                                                 value="precise-left-pos-z-value" on-change="precise-left-pos-z-on-change"
-                                                min="~pos-slider-min" max="~pos-slider-max" increment="~pos-slider-increment" formatter="pos-slider-formatter"/>
+                                                min="~pos-slider-min" max="~pos-slider-max" increment="~pos-slider-increment" 
+                                                formatter="pos-slider-formatter"/>
                                 <!--    ROT    -->
                                 <horizontal active="~precise-rotation-active" preferred-height="~precise-group-spacing"/>
                                 <slider-setting active="~precise-rotation-active" text="" apply-on-change="true" bind-value="true"
@@ -240,7 +250,7 @@
                             </vertical>
                             <!--    HAND LABEL    -->
                             <vertical preferred-width="~precise-hand-width">
-                                <text text="Right Hand" font-size="4" align="Midline"/>
+                                <text text="Right Hand" font-size="4" font-color="~precise-hand-color" align="Midline"/>
                             </vertical>
                             <!--    RESET BUTTON    -->
                             <vertical preferred-width="~precise-reset-width">
@@ -266,7 +276,7 @@
                             </vertical>
 
                             <!--    SLIDERS    -->
-                            <vertical preferred-width="~precise-slider-width">
+                            <vertical preferred-width="~precise-slider-width" pad-right="~precise-sliders-section-pad">
                                 <!--    Z OFFSET    -->
                                 <slider-setting active="~precise-z-offset-active" text="" apply-on-change="true" bind-value="true"
                                                 value="precise-right-z-offset-value" on-change="precise-right-z-offset-on-change"

@@ -14,7 +14,7 @@ namespace EasyOffset {
         ) : base(
             AdjustmentMode.Rotation,
             6f,
-            3f
+            ZoomedOutSmoothing
         ) {
             _gizmosManager = gizmosManager;
         }
@@ -23,10 +23,14 @@ namespace EasyOffset {
 
         #region Logic
 
-        private Quaternion _grabWorldRotation;
+        private const float ZoomedOutSmoothing = 3f;
+        private const float ZoomedInSmoothing = 1f;
 
-        private readonly Range _heightRange = new Range(0.05f, 0.4f);
-        private readonly Range _zoomRange = new Range(1f, 4f);
+        private readonly Range _zoomRange = new(1f, 4f);
+        private readonly Range _heightRange = new(0.05f, 0.4f);
+        private readonly Range _smoothingRange = new(ZoomedOutSmoothing, ZoomedInSmoothing);
+        
+        private Quaternion _grabWorldRotation;
         private float _grabFreeY;
 
         protected override void OnGrabStarted(
@@ -64,6 +68,7 @@ namespace EasyOffset {
             var heightDifference = freeHandTransform.Position.y - _grabFreeY;
             var zoomRatio = _heightRange.GetRatioClamped(heightDifference);
             var zoom = _zoomRange.SlideBy(zoomRatio);
+            PluginConfig.RotationalSmoothing = _smoothingRange.SlideBy(zoomRatio);
 
             switch (adjustmentHand) {
                 case Hand.Left:

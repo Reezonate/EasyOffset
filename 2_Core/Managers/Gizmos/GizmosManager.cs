@@ -211,6 +211,14 @@ namespace EasyOffset {
                     isSwingPreviewVisible = true;
                     isLegacyGimbalVisible = false;
                     break;
+                case AdjustmentMode.Precise:
+                    isPivotVisible = false;
+                    isOrthonormalBasisVisible = PluginConfig.SelectedControllerType == ControllerType.None;
+                    isOrthonormalBasisPointerVisible = false;
+                    isSphericalBasisVisible = false;
+                    isSwingPreviewVisible = true;
+                    isLegacyGimbalVisible = true;
+                    break;
                 case AdjustmentMode.SwingBenchmark:
                     isPivotVisible = true;
                     isOrthonormalBasisVisible = false;
@@ -218,14 +226,6 @@ namespace EasyOffset {
                     isSphericalBasisVisible = false;
                     isSwingPreviewVisible = false;
                     isLegacyGimbalVisible = false;
-                    break;
-                case AdjustmentMode.Precise:
-                    isPivotVisible = false;
-                    isOrthonormalBasisVisible = false;
-                    isOrthonormalBasisPointerVisible = false;
-                    isSphericalBasisVisible = false;
-                    isSwingPreviewVisible = true;
-                    isLegacyGimbalVisible = true;
                     break;
                 case AdjustmentMode.RotationAuto:
                     isPivotVisible = true;

@@ -18,6 +18,8 @@ internal static class ConfigUpgrade {
 
     public static void TryUpgrade() {
         try {
+            if (!File.Exists(ConfigFilePath)) return;
+            
             var jsonObject = JObject.Parse(File.ReadAllText(ConfigFilePath));
             if (!jsonObject.DoUpgradeCycle()) return;
 

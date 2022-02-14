@@ -233,11 +233,9 @@ internal partial class ModPanelUI {
         }
     }
 
-    private readonly DelayedAction _benchmarkStatusTextResetAction = new();
-
     private void SetBenchmarkStatusText(string value) {
         BenchmarkStatusText = value;
-        _benchmarkStatusTextResetAction.InvokeLater(2000, ResetBenchmarkStatusText);
+        StartCoroutine(AsyncUtils.InvokeWithDelay(ResetBenchmarkStatusText, 2.0f));
     }
 
     private void ResetBenchmarkStatusText() {

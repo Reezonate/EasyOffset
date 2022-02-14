@@ -22,7 +22,8 @@ namespace EasyOffset {
         private static readonly int LeftRightPlanePropertyId = Shader.PropertyToID("_LeftRightPlane");
         private static readonly int PlanesMultiplierPropertyId = Shader.PropertyToID("_PlanesMultiplier");
 
-        private static readonly int StraightSwingPlanePropertyId = Shader.PropertyToID("_StraightSwingPlane");
+        private static readonly int StraightSwingVerticalPlanePropertyId = Shader.PropertyToID("_StraightSwingVerticalPlane");
+        private static readonly int StraightSwingHorizontalPlanePropertyId = Shader.PropertyToID("_StraightSwingHorizontalPlane");
         private static readonly int StraightSwingPlaneMultiplierPropertyId = Shader.PropertyToID("_StraightSwingPlaneMultiplier");
 
         private static readonly int ScalePropertyId = Shader.PropertyToID("_Scale");
@@ -59,8 +60,9 @@ namespace EasyOffset {
 
         #region UpdateMaterials
 
-        private Vector3 _wristRotationAxis;
-        private bool _wristPlaneVisible;
+        private Vector4 _straightSwingVerticalPlane;
+        private Vector4 _straightSwingHorizontalPlane;
+        private bool _straightSwingPlaneVisible;
 
         private Vector4 _upDownPlaneVector;
         private Vector4 _leftRightPlaneVector;
@@ -76,8 +78,9 @@ namespace EasyOffset {
             _materialInstance.SetFloat(ScalePropertyId, _currentScale);
             _materialInstance.SetFloat(FadeRadiusPropertyId, _currentFadeRadius);
 
-            _materialInstance.SetVector(StraightSwingPlanePropertyId, _wristRotationAxis);
-            _materialInstance.SetFloat(StraightSwingPlaneMultiplierPropertyId, _wristPlaneVisible ? 1f : 0f);
+            _materialInstance.SetVector(StraightSwingVerticalPlanePropertyId, _straightSwingVerticalPlane);
+            _materialInstance.SetVector(StraightSwingHorizontalPlanePropertyId, _straightSwingHorizontalPlane);
+            _materialInstance.SetFloat(StraightSwingPlaneMultiplierPropertyId, _straightSwingPlaneVisible ? 1f : 0f);
 
             _materialInstance.SetVector(UpDownPlanePropertyId, _upDownPlaneVector);
             _materialInstance.SetVector(LeftRightPlanePropertyId, _leftRightPlaneVector);
@@ -103,36 +106,20 @@ namespace EasyOffset {
 
         #endregion
 
-        #region Interaction
+        #region SetRotation
 
-        private const float NoFocusAlpha = 0.2f;
-        private const float FocusAlpha = 1.0f;
+        public void SetRotation(Quaternion rotation) {
+            _orthoDirection = rotation * Vector3.forward;
+            _sphericalCoordinates = TransformUtils.OrthoToSphericalDirection(_orthoDirection);
 
-        private const float NoFocusFadeRadius = 20 * Mathf.Deg2Rad;
-        private const float FocusFadeRadius = 50 * Mathf.Deg2Rad;
-
-        public void SetWristValues(Vector3 rotationAxis, bool visible) {
-            _wristRotationAxis = rotationAxis;
-            _wristPlaneVisible = visible;
+            UpdateTextString(_sphericalCoordinates);
+            UpdateTextPosition(_orthoDirection);
             UpdateMaterial();
         }
 
-        public void SetFocus(bool value) {
-            _targetAlpha = value ? FocusAlpha : NoFocusAlpha;
-            _targetFadeRadius = value ? FocusFadeRadius : NoFocusFadeRadius;
-        }
+        #endregion
 
-        public void Zoom(float magnitude) {
-            _targetScale = magnitude;
-        }
-
-        public void SetTextLookAt(Vector3 lookAt) {
-            UpdateTextRotation(lookAt);
-        }
-
-        public void SetPivotPosition(Vector3 pivotPosition) {
-            transform.localPosition = pivotPosition;
-        }
+        #region SetPreviousRotation
 
         public void SetPreviousRotation(Quaternion previousRotation, bool visible) {
             var orthoDirection = previousRotation * Vector3.forward;
@@ -153,14 +140,61 @@ namespace EasyOffset {
             UpdateMaterial();
         }
 
-        public void SetRotation(Quaternion rotation) {
-            _orthoDirection = rotation * Vector3.forward;
-            _sphericalCoordinates = TransformUtils.OrthoToSphericalDirection(_orthoDirection);
+        #endregion
 
-            UpdateTextString(_sphericalCoordinates);
-            UpdateTextPosition(_orthoDirection);
+        #region SetWristValues
+
+        private Plane _wristRotationPlane;
+
+        public void SetWristValues(Vector3 rotationAxis, bool visible) {
+            _wristRotationPlane = new Plane(rotationAxis, 0.0f);
+            _straightSwingVerticalPlane = rotationAxis;
+            _straightSwingPlaneVisible = visible;
+
+            UpdateStraightSwingHorizontalPlane();
             UpdateMaterial();
         }
+
+        private void UpdateStraightSwingHorizontalPlane() {
+            var tipProjection = _wristRotationPlane.ClosestPointOnPlane(_orthoDirection);
+            var lookRotation = Quaternion.LookRotation(_wristRotationPlane.normal, tipProjection);
+            _straightSwingHorizontalPlane = lookRotation * Vector3.left;
+        }
+
+        #endregion
+
+        #region SetPivotPosition
+
+        public void SetPivotPosition(Vector3 pivotPosition) {
+            transform.localPosition = pivotPosition;
+        }
+
+        #endregion
+
+        #region Focus
+
+        private const float NoFocusAlpha = 0.2f;
+        private const float FocusAlpha = 1.0f;
+
+        private const float NoFocusFadeRadius = 20 * Mathf.Deg2Rad;
+        private const float FocusFadeRadius = 50 * Mathf.Deg2Rad;
+
+        public void SetFocus(bool value) {
+            _targetAlpha = value ? FocusAlpha : NoFocusAlpha;
+            _targetFadeRadius = value ? FocusFadeRadius : NoFocusFadeRadius;
+        }
+
+        #endregion
+
+        #region Zoom
+
+        public void Zoom(float magnitude) {
+            _targetScale = magnitude;
+        }
+
+        #endregion
+
+        #region SetVisible
 
         public void SetVisible(bool value) {
             gameObject.SetActive(value);
@@ -169,6 +203,14 @@ namespace EasyOffset {
             _currentAlpha = _targetAlpha;
             _currentScale = _targetScale;
             _currentFadeRadius = _targetFadeRadius;
+        }
+
+        #endregion
+
+        #region SetTextLookAt
+
+        public void SetTextLookAt(Vector3 lookAt) {
+            UpdateTextRotation(lookAt);
         }
 
         #endregion

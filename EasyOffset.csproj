@@ -133,7 +133,6 @@
     <Compile Include="2_Core\Installers\OnAppInstaller.cs" />
     <Compile Include="2_Core\Installers\OnMenuInstaller.cs" />
     <Compile Include="2_Core\Managers\Abomination\Abomination.cs" />
-    <Compile Include="2_Core\Managers\Abomination\AbominationInputManager.cs" />
     <Compile Include="2_Core\Managers\Abomination\AbominationTransformManager.cs" />
     <Compile Include="2_Core\Managers\Adjustments\AbstractAdjustmentModeManager.cs" />
     <Compile Include="2_Core\Managers\Adjustments\Auto\RotationAutoAdjustmentModeManager.cs" />
@@ -201,6 +200,7 @@
     <Compile Include="3_AssetBundle\Trails\Core\TrailSpline.cs" />
     <Compile Include="3_AssetBundle\Trails\SimpleTrail.cs" />
     <Compile Include="7_Utils\EnumUtils\WarningLevelUtils.cs" />
+    <Compile Include="7_Utils\StaticUtils\AsyncUtils.cs" />
     <Compile Include="7_Utils\StaticUtils\CompatibilityUtils.cs" />
     <Compile Include="8_UI\ModPanelUI\BenchmarkPanel.cs" />
     <Compile Include="8_UI\ModPanelUI\General.cs" />
@@ -226,7 +226,6 @@
     <Compile Include="7_Utils\StaticUtils\TransformUtils.cs" />
     <Compile Include="7_Utils\StaticUtils\WeightedListExtensions.cs" />
     <Compile Include="7_Utils\UtilityClasses\CyclicBuffer.cs" />
-    <Compile Include="7_Utils\UtilityClasses\DelayedAction.cs" />
     <Compile Include="7_Utils\UtilityClasses\Range.cs" />
     <Compile Include="7_Utils\UtilityClasses\ReeTransform.cs" />
     <Compile Include="7_Utils\UtilityClasses\RelativeRotationTracker.cs" />
@@ -253,6 +252,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="9_Resources\Icons\Warning.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="media\Precise.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
