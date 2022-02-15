@@ -2,8 +2,8 @@
 
 Beat Saber mod for intuitive controller offset adjustments. Suitable for both beginners and advanced players
 
-- [How to use](https://github.com/Reezonate/EasyOffset#how-to-use)
-- [Config migration](https://github.com/Reezonate/EasyOffset#config-migration)
+- [How to use](#how-to-use)
+- [Config migration](#config-migration)
 - [Support the project](https://ko-fi.com/reezonate)
 
 # Compatibility
@@ -75,7 +75,7 @@ Beat Saber mod for intuitive controller offset adjustments. Suitable for both be
 - `Saber Rotation` - saber rotation euler angles
 - `ZOffset` - saber position offset along its axis
 
-Config values are different from the base game settings, SaberTailor, etc. Use the [Config Migration](https://github.com/Reezonate/EasyOffset#config-migration) to plug these values in
+Config values are different from the base game settings, SaberTailor, etc. Use the [Config Migration](#config-migration) to plug these values in
 
 ### First steps:
 - Select your controller model in the `Controller Type` list
@@ -91,11 +91,11 @@ Before trying to find your best config, spend some time in different adjustment 
 
 To help you achieve these goals, there are five main adjustment modes:
 
-- [Basic](https://github.com/Reezonate/EasyOffset#basic-adjustment-mode)
-- [Position](https://github.com/Reezonate/EasyOffset#position-adjustment-mode)
-- [Rotation](https://github.com/Reezonate/EasyOffset#rotation-adjustment-mode)
-- [Precise](https://github.com/Reezonate/EasyOffset#precise-adjustment-mode)
-- [Swing Benchmark](https://github.com/Reezonate/EasyOffset#swing-benchmark-adjustment-mode)
+- [Basic](#basic-adjustment-mode)
+- [Position](#position-adjustment-mode)
+- [Rotation](#rotation-adjustment-mode)
+- [Precise](#precise-adjustment-mode)
+- [Swing Benchmark](#swing-benchmark-adjustment-mode)
 
 ## `Basic` adjustment mode:
 ``` diff
@@ -151,7 +151,7 @@ You can raise/lower your free hand to zoom in/out
 Mode for final tweaks that allows independent control over all config values with extreme precision
 
 - Select `Precise` in the `Adjustment Mode` list
-- Click on slider and hold the trigger to change its value (The longer you it, the faster the value changes)
+- Click on slider and hold the trigger to change its value (The longer you hold it, the faster the value changes)
 - Use the opposite hand to see the changes in real time, otherwise the changes will only be applied when the trigger is released
 - Use increment/decrement buttons for the tiny adjustments
 
