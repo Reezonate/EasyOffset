@@ -4,6 +4,7 @@ using System.Linq;
 using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.Components;
 using JetBrains.Annotations;
+using UnityEngine;
 
 namespace EasyOffset {
     public class SettingsUI : NotifiableSingleton<SettingsUI> {
@@ -169,8 +170,10 @@ namespace EasyOffset {
 
         private void SetStatusText(string value) {
             StatusText = value;
-            StartCoroutine(AsyncUtils.InvokeWithDelay(ResetStatusText, 3.0f));
+            this.ReInvokeWithDelay(ref _statusResetCoroutine, ResetStatusText, 3.0f);
         }
+
+        private Coroutine _statusResetCoroutine;
 
         private void ResetStatusText() {
             StatusText = "";

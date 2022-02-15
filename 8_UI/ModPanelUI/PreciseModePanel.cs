@@ -427,11 +427,13 @@ internal partial class ModPanelUI {
             ResetLeftHandPreciseConfig();
             ResetLeftResetButton();
         } else {
-            StartCoroutine(AsyncUtils.InvokeWithDelay(ResetLeftResetButton, ButtonPromptDelaySeconds));
+            this.ReInvokeWithDelay(ref _leftResetButtonResetCoroutine, ResetLeftResetButton, ButtonPromptDelaySeconds);
             PreciseLeftResetText = ResetButtonPromptText;
             _preciseLeftResetClickedOnce = true;
         }
     }
+
+    private Coroutine _leftResetButtonResetCoroutine;
 
     private void ResetLeftResetButton() {
         PreciseLeftResetText = ResetButtonIdleText;
@@ -462,11 +464,13 @@ internal partial class ModPanelUI {
             PreciseMirrorFromLeft();
             ResetLeftMirrorButton();
         } else {
-            StartCoroutine(AsyncUtils.InvokeWithDelay(ResetLeftMirrorButton, ButtonPromptDelaySeconds));
+            this.ReInvokeWithDelay(ref _leftMirrorButtonResetCoroutine, ResetLeftMirrorButton, ButtonPromptDelaySeconds);
             PreciseLeftMirrorText = LeftMirrorButtonPromptText;
             _preciseLeftMirrorClickedOnce = true;
         }
     }
+
+    private Coroutine _leftMirrorButtonResetCoroutine;
 
     private void ResetLeftMirrorButton() {
         PreciseLeftMirrorText = LeftMirrorButtonIdleText;
@@ -831,11 +835,13 @@ internal partial class ModPanelUI {
             ResetRightHandPreciseConfig();
             ResetRightResetButton();
         } else {
-            StartCoroutine(AsyncUtils.InvokeWithDelay(ResetRightResetButton, ButtonPromptDelaySeconds));
+            this.ReInvokeWithDelay(ref _rightResetButtonResetCoroutine, ResetRightResetButton, ButtonPromptDelaySeconds);
             PreciseRightResetText = ResetButtonPromptText;
             _preciseRightResetClickedOnce = true;
         }
     }
+
+    private Coroutine _rightResetButtonResetCoroutine;
 
     private void ResetRightResetButton() {
         PreciseRightResetText = ResetButtonIdleText;
@@ -866,11 +872,13 @@ internal partial class ModPanelUI {
             PreciseMirrorFromRight();
             ResetRightMirrorButton();
         } else {
-            StartCoroutine(AsyncUtils.InvokeWithDelay(ResetRightMirrorButton, ButtonPromptDelaySeconds));
+            this.ReInvokeWithDelay(ref _rightMirrorButtonResetCoroutine, ResetRightMirrorButton, ButtonPromptDelaySeconds);
             PreciseRightMirrorText = RightMirrorButtonPromptText;
             _preciseRightMirrorClickedOnce = true;
         }
     }
+
+    private Coroutine _rightMirrorButtonResetCoroutine;
 
     private void ResetRightMirrorButton() {
         PreciseRightMirrorText = RightMirrorButtonIdleText;

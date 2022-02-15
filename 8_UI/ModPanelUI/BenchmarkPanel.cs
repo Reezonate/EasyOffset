@@ -235,8 +235,10 @@ internal partial class ModPanelUI {
 
     private void SetBenchmarkStatusText(string value) {
         BenchmarkStatusText = value;
-        StartCoroutine(AsyncUtils.InvokeWithDelay(ResetBenchmarkStatusText, 2.0f));
+        this.ReInvokeWithDelay(ref _benchmarkStatusResetCoroutine, ResetBenchmarkStatusText, 2.0f);
     }
+
+    private Coroutine _benchmarkStatusResetCoroutine;
 
     private void ResetBenchmarkStatusText() {
         BenchmarkStatusText = "";

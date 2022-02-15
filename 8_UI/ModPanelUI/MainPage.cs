@@ -28,9 +28,7 @@ internal partial class ModPanelUI {
 
     #region AdjustmentMode
 
-    [UIValue("am-hint")] [UsedImplicitly] private string _adjustmentModeHint = "Hold assigned button and move your hand" +
-                                                                               "\n" +
-                                                                               "\nBasic - Drag and drop adjustment mode" +
+    [UIValue("am-hint")] [UsedImplicitly] private string _adjustmentModeHint = "Basic - Drag and drop adjustment mode" +
                                                                                "\nPosition - Pivot position only" +
                                                                                "\nRotation - Saber rotation only" +
                                                                                "\nPrecise - Direct config values change" +
