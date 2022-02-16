@@ -4,7 +4,7 @@ namespace EasyOffset {
     internal static class ConfigDefaults {
         #region Enabled
 
-        public const bool Enabled = true;
+        public const bool Enabled = false;
 
         #endregion
 
@@ -58,9 +58,13 @@ namespace EasyOffset {
 
         public static readonly Vector3 LeftSaberPivotPosition = new(0.0f, 0.0f, -ZOffset);
         public static readonly Quaternion LeftSaberRotation = Quaternion.identity;
+        public static readonly Quaternion LeftSaberReferenceRotation = Quaternion.identity;
+        public const bool LeftSaberHasReference = false;
 
         public static readonly Vector3 RightSaberPivotPosition = new(0.0f, 0.0f, -ZOffset);
         public static readonly Quaternion RightSaberRotation = Quaternion.identity;
+        public static readonly Quaternion RightSaberReferenceRotation = Quaternion.identity;
+        public const bool RightSaberHasReference = false;
 
         #endregion
     }

@@ -98,7 +98,7 @@ namespace EasyOffset {
         }
 
         public Vector3 GetWristRotationAxis() {
-            return !_hasPreviousTipPosition ? Vector3.forward : _localNormals.GetAverage();
+            return _hasPreviousTipPosition ? _localNormals.GetAverage() : Vector3.forward;
         }
 
         #endregion

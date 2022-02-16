@@ -100,6 +100,20 @@ internal static partial class PluginConfig {
 
     #endregion
 
+    #region ReferenceRotation
+
+    public static bool LeftSaberHasReference {
+        get => ConfigFileData.Instance.LeftSaberHasReference;
+        private set => ConfigFileData.Instance.LeftSaberHasReference = value;
+    }
+
+    public static Quaternion LeftSaberReferenceRotation {
+        get => ConfigFileData.Instance.LeftSaberReferenceRotation;
+        private set => ConfigFileData.Instance.LeftSaberReferenceRotation = value;
+    }
+
+    #endregion
+
     #endregion
 
     #region RightHand
@@ -173,6 +187,26 @@ internal static partial class PluginConfig {
     public static Vector3 RightSaberRotationEuler {
         get => TransformUtils.EulerFromRotation(RightSaberRotation);
         private set => RightSaberRotation = TransformUtils.RotationFromEuler(value);
+    }
+
+    #endregion
+
+    #region ReferenceRotation
+
+    public static bool RightSaberHasReference {
+        get => ConfigFileData.Instance.RightSaberHasReference;
+        set {
+            ConfigFileData.Instance.RightSaberHasReference = value;
+            NotifyConfigWasChanged();
+        }
+    }
+
+    public static Quaternion RightSaberReferenceRotation {
+        get => ConfigFileData.Instance.RightSaberReferenceRotation;
+        set {
+            ConfigFileData.Instance.RightSaberReferenceRotation = value;
+            NotifyConfigWasChanged();
+        }
     }
 
     #endregion
@@ -315,6 +349,22 @@ internal static partial class PluginConfig {
         RightSaberZOffset = rightZOffset;
 
         EnableChangeEvent();
+        NotifyConfigWasChanged();
+    }
+
+    #endregion
+
+    #region SetReference
+
+    public static void SetLeftSaberReference(bool hasReference, Quaternion referenceRotation) {
+        LeftSaberHasReference = hasReference;
+        LeftSaberReferenceRotation = referenceRotation;
+        NotifyConfigWasChanged();
+    }
+
+    public static void SetRightSaberReference(bool hasReference, Quaternion referenceRotation) {
+        RightSaberHasReference = hasReference;
+        RightSaberReferenceRotation = referenceRotation;
         NotifyConfigWasChanged();
     }
 

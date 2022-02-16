@@ -7,6 +7,8 @@ namespace EasyOffset {
         [SerializeField] private Transform controllerTransform;
         [SerializeField] private Transform saberTransform;
         [SerializeField] private Transform pivotTransform;
+        [SerializeField] private Transform pivotPositionOnly;
+        [SerializeField] private Transform referenceRotationVisuals;
 
         [SerializeField] private Pivot pivot;
         [SerializeField] private SphericalBasis sphericalBasis;
@@ -19,6 +21,9 @@ namespace EasyOffset {
 
         #region SetVisibility
 
+        private bool _isReferenceVisible;
+        private bool _hasReference;
+
         public void SetVisibility(
             bool isPivotVisible,
             bool isSphericalBasisVisible,
@@ -26,7 +31,8 @@ namespace EasyOffset {
             bool isOrthonormalBasisPointerVisible,
             bool isControllerModelVisible,
             bool isSwingPreviewVisible,
-            bool isPreciseGimbalVisible
+            bool isPreciseGimbalVisible,
+            bool isReferenceVisible
         ) {
             pivot.SetVisible(isPivotVisible);
             sphericalBasis.SetVisible(isSphericalBasisVisible);
@@ -34,6 +40,12 @@ namespace EasyOffset {
             controllerModel.SetVisible(isControllerModelVisible);
             swingPreview.SetVisible(isSwingPreviewVisible);
             preciseGimbal.SetVisible(isPreciseGimbalVisible);
+            _isReferenceVisible = isReferenceVisible;
+            UpdateReferenceVisibility();
+        }
+
+        private void UpdateReferenceVisibility() {
+            referenceRotationVisuals.gameObject.SetActive(_isReferenceVisible && _hasReference);
         }
 
         #endregion
@@ -43,17 +55,24 @@ namespace EasyOffset {
         public void SetConfigValues(
             Vector3 pivotPosition,
             Quaternion saberRotation,
-            float zOffset
+            float zOffset,
+            bool hasReference,
+            Quaternion referenceRotation
         ) {
             var saberTranslation = pivotPosition + saberRotation * new Vector3(0, 0, zOffset);
-            
+
             saberTransform.localPosition = saberTranslation;
             saberTransform.localRotation = saberRotation;
             pivotTransform.localPosition = new Vector3(0, 0, -zOffset);
+            pivotPositionOnly.localPosition = pivotPosition;
 
             sphericalBasis.SetRotation(saberRotation);
-            sphericalBasis.SetPivotPosition(pivotPosition);
             orthonormalBasis.SetCoordinates(pivotPosition);
+
+            _hasReference = hasReference;
+            referenceRotationVisuals.localRotation = referenceRotation;
+            sphericalBasis.SetReferenceRotation(hasReference, referenceRotation);
+            UpdateReferenceVisibility();
 
             var rotationEuler = saberRotation.eulerAngles;
             preciseGimbal.SetValues(
@@ -92,14 +111,6 @@ namespace EasyOffset {
             orthonormalBasis.SetTextLookAt(cameraWorldPosition);
             swingPreview.SetLookAt(cameraWorldPosition);
             pivot.SetLookAt(cameraWorldPosition);
-        }
-
-        #endregion
-
-        #region SetWristValues
-
-        public void SetWristValues(Vector3 rotationAxis, bool visible) {
-            sphericalBasis.SetWristValues(rotationAxis, visible);
         }
 
         #endregion

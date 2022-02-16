@@ -1,5 +1,5 @@
-using System;
 using BeatSaberMarkupLanguage.Attributes;
+using BeatSaberMarkupLanguage.Components.Settings;
 using JetBrains.Annotations;
 
 namespace EasyOffset;

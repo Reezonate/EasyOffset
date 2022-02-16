@@ -146,6 +146,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="0_Harmony\SceneTransitionPatch.cs" />
+    <Compile Include="0_Harmony\UIPatches\ModMenuOrderPatch.cs" />
+    <Compile Include="0_Harmony\UIPatches\SelectablePatches.cs" />
     <Compile Include="1_Config\ConfigPresets\ConfigPresetV2.cs" />
     <Compile Include="1_Config\ConfigUpgrade\ConfigUpgrade.cs" />
     <Compile Include="1_Config\PluginConfig\Utilities.cs" />
@@ -174,11 +176,11 @@
     <Compile Include="2_Core\StructsAndEnums\AdjustmentMode.cs" />
     <Compile Include="2_Core\StructsAndEnums\Hand.cs" />
     <Compile Include="2_Core\StructsAndEnums\HandMenuAction.cs" />
+    <Compile Include="2_Core\StructsAndEnums\ReeTriggerState.cs" />
     <Compile Include="2_Core\StructsAndEnums\VRControllers.cs" />
     <Compile Include="0_Harmony\HarmonyHelper.cs" />
     <Compile Include="0_Harmony\InstallersPatches\MenuInstallerPatch.cs" />
     <Compile Include="0_Harmony\InstallersPatches\AppInstallerPatch.cs" />
-    <Compile Include="0_Harmony\ModMenuOrderPatch.cs" />
     <Compile Include="0_Harmony\PermanentPatches\AppInstallerPermanentPatch.cs" />
     <Compile Include="0_Harmony\VRHelpersPatches\DevicelessVRHelperAdjustControllerTransform.cs" />
     <Compile Include="0_Harmony\VRHelpersPatches\OculusVRHelperAdjustControllerTransform.cs" />
@@ -211,7 +213,6 @@
     <Compile Include="3_AssetBundle\Indicators\IndicatorText.cs" />
     <Compile Include="3_AssetBundle\Indicators\VelocityIndicator.cs" />
     <Compile Include="3_AssetBundle\SwingBenchmark\BenchmarkTrails.cs" />
-    <Compile Include="3_AssetBundle\SwingBenchmark\HandVisuals.cs" />
     <Compile Include="3_AssetBundle\SwingBenchmark\SwingBenchmarkController.cs" />
     <Compile Include="3_AssetBundle\SwingBenchmark\SwingIndicators.cs" />
     <Compile Include="3_AssetBundle\Trails\Core\TrailCurvedSegment.cs" />
@@ -228,10 +229,15 @@
     <Compile Include="8_UI\ModPanelUI\MainPage.cs" />
     <Compile Include="8_UI\ModPanelUI\ModPanelUIHelper.cs" />
     <Compile Include="8_UI\ModPanelUI\NonePanel.cs" />
+    <Compile Include="8_UI\ModPanelUI\PreciseSlidersPanel\ConfigActions.cs" />
+    <Compile Include="8_UI\ModPanelUI\PreciseSlidersPanel\Constants.cs" />
+    <Compile Include="8_UI\ModPanelUI\PreciseSlidersPanel\LeftHandSliders.cs" />
+    <Compile Include="8_UI\ModPanelUI\PreciseSlidersPanel\PrecisePanelFlow.cs" />
+    <Compile Include="8_UI\ModPanelUI\PreciseSlidersPanel\RightHandSliders.cs" />
+    <Compile Include="8_UI\ModPanelUI\PreciseSlidersPanel\Smoothing.cs" />
+    <Compile Include="8_UI\ModPanelUI\PreciseSlidersPanel\Utils.cs" />
     <Compile Include="8_UI\ModPanelUI\PresetsBrowser.cs" />
-    <Compile Include="8_UI\ModPanelUI\PreciseModePanel.cs" />
     <Compile Include="8_UI\ModPanelUI\RoomOffsetPanel.cs" />
-    <Compile Include="8_UI\ModPanelUI\Smoothing.cs" />
     <Compile Include="8_UI\SettingsUI\SettingsUI.cs" />
     <Compile Include="8_UI\SettingsUI\SettingsUIHelper.cs" />
     <Compile Include="Plugin.cs" />

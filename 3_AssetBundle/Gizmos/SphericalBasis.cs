@@ -142,31 +142,13 @@ namespace EasyOffset {
 
         #endregion
 
-        #region SetWristValues
+        #region SetReferenceRotation
 
-        private Plane _wristRotationPlane;
-
-        public void SetWristValues(Vector3 rotationAxis, bool visible) {
-            _wristRotationPlane = new Plane(rotationAxis, 0.0f);
-            _straightSwingVerticalPlane = rotationAxis;
-            _straightSwingPlaneVisible = visible;
-
-            UpdateStraightSwingHorizontalPlane();
+        public void SetReferenceRotation(bool hasReference, Quaternion referenceRotation) {
+            _straightSwingPlaneVisible = hasReference;
+            _straightSwingVerticalPlane = referenceRotation * Vector3.left;
+            _straightSwingHorizontalPlane = referenceRotation * Vector3.up;
             UpdateMaterial();
-        }
-
-        private void UpdateStraightSwingHorizontalPlane() {
-            var tipProjection = _wristRotationPlane.ClosestPointOnPlane(_orthoDirection);
-            var lookRotation = Quaternion.LookRotation(_wristRotationPlane.normal, tipProjection);
-            _straightSwingHorizontalPlane = lookRotation * Vector3.left;
-        }
-
-        #endregion
-
-        #region SetPivotPosition
-
-        public void SetPivotPosition(Vector3 pivotPosition) {
-            transform.localPosition = pivotPosition;
         }
 
         #endregion

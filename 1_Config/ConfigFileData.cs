@@ -107,6 +107,13 @@ namespace EasyOffset {
 
         #endregion
 
+        #region LeftSaberReferenceRotation
+
+        public bool LeftSaberHasReference = ConfigDefaults.LeftSaberHasReference;
+        public Quaternion LeftSaberReferenceRotation = ConfigDefaults.LeftSaberReferenceRotation;
+
+        #endregion
+
         #region RightSaberPivotPosition
 
         [UsedImplicitly] public Vector3 RightSaberPivotPosition = ConfigDefaults.RightSaberPivotPosition / PositionUnitScale;
@@ -138,6 +145,13 @@ namespace EasyOffset {
         public void SetRightSaberZOffsetInMeters(float value) {
             RightSaberZOffset = value / PositionUnitScale;
         }
+
+        #endregion
+
+        #region RightSaberReferenceRotation
+
+        public bool RightSaberHasReference = ConfigDefaults.RightSaberHasReference;
+        public Quaternion RightSaberReferenceRotation = ConfigDefaults.RightSaberReferenceRotation;
 
         #endregion
 
