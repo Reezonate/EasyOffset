@@ -16,7 +16,7 @@ internal partial class ModPanelUI : NotifiableSingleton<ModPanelUI> {
         SubscribeToWarningEvents();
         SubscribeToSmoothingEvents();
         SubscribeToPrecisePanelEvents();
-        SubscribeToUndoRedoEvents();
+        SubscribeToBottomPanelEvents();
         GoToMainPage();
     }
 

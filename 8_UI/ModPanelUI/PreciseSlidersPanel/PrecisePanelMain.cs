@@ -44,7 +44,7 @@ internal partial class ModPanelUI {
                 PreciseRotationReferenceActive = false;
                 PreciseSlidersHeight = 8.0f;
                 PreciseFillerHeight = 0.0f;
-                ApplyScale(0.82f);
+                ApplySlidersScale(0.82f);
                 break;
             case PrecisePanelState.PositionOnly:
                 PrecisePanelActive = true;
@@ -54,7 +54,7 @@ internal partial class ModPanelUI {
                 PreciseRotationReferenceActive = false;
                 PreciseSlidersHeight = 27.0f;
                 PreciseFillerHeight = 0.0f;
-                ApplyScale(0.82f);
+                ApplySlidersScale(0.82f);
                 break;
             case PrecisePanelState.RotationOnly:
                 PrecisePanelActive = true;
@@ -62,9 +62,9 @@ internal partial class ModPanelUI {
                 PrecisePositionActive = false;
                 PreciseRotationActive = false;
                 PreciseRotationReferenceActive = true;
-                PreciseSlidersHeight = 15.0f;
+                PreciseSlidersHeight = 13.0f;
                 PreciseFillerHeight = 0.0f;
-                ApplyScale(0.82f);
+                ApplySlidersScale(0.82f);
                 break;
             case PrecisePanelState.Full:
                 PrecisePanelActive = true;
@@ -74,7 +74,7 @@ internal partial class ModPanelUI {
                 PreciseRotationReferenceActive = false;
                 PreciseSlidersHeight = 44.0f;
                 PreciseFillerHeight = 22.0f;
-                ApplyScale(0.8f);
+                ApplySlidersScale(0.8f);
                 break;
             default: throw new ArgumentOutOfRangeException();
         }
@@ -185,7 +185,7 @@ internal partial class ModPanelUI {
 
     #endregion
 
-    #region Filler, Height, Scaling
+    #region Filler, Height, Scale
 
     private float _preciseFillerHeight;
 
@@ -214,7 +214,7 @@ internal partial class ModPanelUI {
     [UIComponent("precise-panel-component")] [UsedImplicitly]
     private RectTransform _precisePanelComponent;
 
-    private void ApplyScale(float scale) {
+    private void ApplySlidersScale(float scale) {
         _precisePanelComponent.localScale = Vector3.one * scale;
     }
 

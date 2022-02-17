@@ -93,27 +93,31 @@ internal partial class ModPanelUI {
     #region RecalculateRotations
 
     private void CalculateControllerSpaceRotations() {
-        var leftCoordinates = FromReferenceSpace(
-            PreciseLeftRotationEuler,
-            PluginConfig.LeftSaberReferenceRotation,
-            PreciseLeftRotHor,
-            PreciseLeftRotVert
-        );
+        if (PluginConfig.LeftSaberHasReference) {
+            var leftCoordinates = FromReferenceSpace(
+                PreciseLeftRotationEuler,
+                PluginConfig.LeftSaberReferenceRotation,
+                PreciseLeftRotHor,
+                PreciseLeftRotVert
+            );
 
-        PreciseLeftRotX = _preciseLeftRotXCurrent = _preciseLeftRotXTarget = leftCoordinates.x;
-        PreciseLeftRotY = _preciseLeftRotYCurrent = _preciseLeftRotYTarget = leftCoordinates.y;
-        PreciseLeftRotZ = _preciseLeftRotZCurrent = _preciseLeftRotZTarget = leftCoordinates.z;
+            PreciseLeftRotX = _preciseLeftRotXCurrent = _preciseLeftRotXTarget = leftCoordinates.x;
+            PreciseLeftRotY = _preciseLeftRotYCurrent = _preciseLeftRotYTarget = leftCoordinates.y;
+            PreciseLeftRotZ = _preciseLeftRotZCurrent = _preciseLeftRotZTarget = leftCoordinates.z;
+        }
+        
+        if (PluginConfig.RightSaberHasReference) {
+            var rightCoordinates = FromReferenceSpace(
+                PreciseRightRotationEuler,
+                PluginConfig.RightSaberReferenceRotation,
+                PreciseRightRotHor,
+                PreciseRightRotVert
+            );
 
-        var rightCoordinates = FromReferenceSpace(
-            PreciseRightRotationEuler,
-            PluginConfig.RightSaberReferenceRotation,
-            PreciseRightRotHor,
-            PreciseRightRotVert
-        );
-
-        PreciseRightRotX = _preciseRightRotXCurrent = _preciseRightRotXTarget = rightCoordinates.x;
-        PreciseRightRotY = _preciseRightRotYCurrent = _preciseRightRotYTarget = rightCoordinates.y;
-        PreciseRightRotZ = _preciseRightRotZCurrent = _preciseRightRotZTarget = rightCoordinates.z;
+            PreciseRightRotX = _preciseRightRotXCurrent = _preciseRightRotXTarget = rightCoordinates.x;
+            PreciseRightRotY = _preciseRightRotYCurrent = _preciseRightRotYTarget = rightCoordinates.y;
+            PreciseRightRotZ = _preciseRightRotZCurrent = _preciseRightRotZTarget = rightCoordinates.z;
+        }
     }
 
     private void CalculateReferenceSpaceRotations() {

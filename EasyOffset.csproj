@@ -233,7 +233,7 @@
     <Compile Include="8_UI\ModPanelUI\PreciseSlidersPanel\ConfigActions.cs" />
     <Compile Include="8_UI\ModPanelUI\PreciseSlidersPanel\Constants.cs" />
     <Compile Include="8_UI\ModPanelUI\PreciseSlidersPanel\LeftHandSliders.cs" />
-    <Compile Include="8_UI\ModPanelUI\PreciseSlidersPanel\PrecisePanelFlow.cs" />
+    <Compile Include="8_UI\ModPanelUI\PreciseSlidersPanel\PrecisePanelMain.cs" />
     <Compile Include="8_UI\ModPanelUI\PreciseSlidersPanel\RightHandSliders.cs" />
     <Compile Include="8_UI\ModPanelUI\PreciseSlidersPanel\Smoothing.cs" />
     <Compile Include="8_UI\ModPanelUI\PreciseSlidersPanel\Utils.cs" />

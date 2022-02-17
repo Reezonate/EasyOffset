@@ -128,13 +128,24 @@
             <macro.define name="precise-mirror-width" value="32"/>
             <macro.define name="precise-slider-label-width" value="8"/>
             <macro.define name="precise-slider-button-width" value="8"/>
+            <macro.define name="precise-slider-button-height" value="6"/>
             <macro.define name="precise-slider-width" value="40"/>
             <macro.define name="precise-group-spacing" value="1"/>
             <macro.define name="precise-x-color" value="#ff8888"/>
             <macro.define name="precise-y-color" value="#88ff88"/>
             <macro.define name="precise-z-color" value="#8888ff"/>
             <macro.define name="precise-hor-color" value="#88ffff"/>
-            <macro.define name="precise-vert-color" value="#ff88ff"/>
+            <macro.define name="precise-vert-color" value="#ff66ff"/>
+
+            <macro.define name="inc-text" value="+"/>
+            <macro.define name="dec-text" value="-"/>
+
+            <macro.define name="l-arrow" value="◄"/>
+            <macro.define name="r-arrow" value="►"/>
+
+            <macro.define name="up-text" value="+"/>
+            <macro.define name="down-text" value="-"/>
+            <!--    /STYLE    -->
 
             <vertical>
                 <horizontal spacing="2">
@@ -158,23 +169,32 @@
                             <!--    DECREMENT BUTTONS    -->
                             <vertical preferred-width="~precise-slider-button-width">
                                 <!--    Z OFFSET    -->
-                                <button active="~precise-z-offset-active" text="-" face-color="~precise-z-color" on-click="precise-left-z-offset-dec-on-click"/>
+                                <button active="~precise-z-offset-active" text="~dec-text" face-color="~precise-z-color"
+                                        on-click="precise-left-z-offset-dec-on-click" preferred-width="~precise-slider-button-width"/>
                                 <!--    POS    -->
                                 <horizontal active="~precise-position-active" preferred-height="~precise-group-spacing"/>
-                                <button active="~precise-position-active" text="-" face-color="~precise-x-color" on-click="precise-left-pos-x-dec-on-click"/>
-                                <button active="~precise-position-active" text="-" face-color="~precise-y-color" on-click="precise-left-pos-y-dec-on-click"/>
-                                <button active="~precise-position-active" text="-" face-color="~precise-z-color" on-click="precise-left-pos-z-dec-on-click"/>
+                                <button active="~precise-position-active" text="~dec-text" face-color="~precise-x-color"
+                                        on-click="precise-left-pos-x-dec-on-click" preferred-width="~precise-slider-button-width"/>
+                                <button active="~precise-position-active" text="~dec-text" face-color="~precise-y-color"
+                                        on-click="precise-left-pos-y-dec-on-click" preferred-width="~precise-slider-button-width"/>
+                                <button active="~precise-position-active" text="~dec-text" face-color="~precise-z-color"
+                                        on-click="precise-left-pos-z-dec-on-click" preferred-width="~precise-slider-button-width"/>
                                 <!--    ROT    -->
                                 <horizontal active="~precise-rotation-active" preferred-height="~precise-group-spacing"/>
-                                <button active="~precise-rotation-active" text="-" face-color="~precise-x-color" on-click="precise-left-rot-x-dec-on-click"/>
-                                <button active="~precise-rotation-active" text="-" face-color="~precise-y-color" on-click="precise-left-rot-y-dec-on-click"/>
-                                <button active="~precise-rotation-active" text="-" face-color="~precise-z-color" on-click="precise-left-rot-z-dec-on-click"/>
+                                <button active="~precise-rotation-active" text="~dec-text" face-color="~precise-x-color"
+                                        on-click="precise-left-rot-x-dec-on-click" preferred-width="~precise-slider-button-width"/>
+                                <button active="~precise-rotation-active" text="~dec-text" face-color="~precise-y-color"
+                                        on-click="precise-left-rot-y-dec-on-click" preferred-width="~precise-slider-button-width"/>
+                                <button active="~precise-rotation-active" text="~dec-text" face-color="~precise-z-color"
+                                        on-click="precise-left-rot-z-dec-on-click" preferred-width="~precise-slider-button-width"/>
                                 <!--    ROT REFERENCE    -->
                                 <horizontal active="~precise-rotation-reference-active" preferred-height="~precise-group-spacing"/>
-                                <button active="~precise-rotation-reference-active" text="-" face-color="~precise-hor-color"
-                                        on-click="precise-left-rot-hor-dec-on-click" interactable="~precise-left-rotation-reference-interactable"/>
-                                <button active="~precise-rotation-reference-active" text="-" face-color="~precise-vert-color"
-                                        on-click="precise-left-rot-vert-dec-on-click" interactable="~precise-left-rotation-reference-interactable"/>
+                                <button active="~precise-rotation-reference-active" text="~l-arrow" face-color="~precise-hor-color"
+                                        on-click="precise-left-rot-hor-dec-on-click" interactable="~precise-left-rotation-reference-interactable"
+                                        preffered-height="~precise-slider-button-height" preferred-width="~precise-slider-button-width"/>
+                                <button active="~precise-rotation-reference-active" text="~down-text" face-color="~precise-vert-color"
+                                        on-click="precise-left-rot-vert-dec-on-click" interactable="~precise-left-rotation-reference-interactable"
+                                        preffered-height="~precise-slider-button-height" preferred-width="~precise-slider-button-width"/>
                             </vertical>
 
                             <!--    SLIDERS    -->
@@ -217,7 +237,7 @@
                                 <slider-setting active="~precise-rotation-reference-active" text="" apply-on-change="true" bind-value="true"
                                                 value="precise-left-rot-hor-value" on-change="precise-left-rot-hor-on-change"
                                                 min="~rot-180-slider-min" max="~rot-180-slider-max" increment="~rot-slider-increment"
-                                                formatter="rot-slider-formatter" interactable="~precise-left-rotation-reference-interactable"/>
+                                                formatter="rot-curve-left-slider-formatter" interactable="~precise-left-rotation-reference-interactable"/>
                                 <slider-setting active="~precise-rotation-reference-active" text="" apply-on-change="true" bind-value="true"
                                                 value="precise-left-rot-vert-value" on-change="precise-left-rot-vert-on-change"
                                                 min="~rot-90-slider-min" max="~rot-90-slider-max" increment="~rot-slider-increment"
@@ -227,23 +247,32 @@
                             <!--    INCREMENT BUTTONS    -->
                             <vertical preferred-width="~precise-slider-button-width">
                                 <!--    Z OFFSET    -->
-                                <button active="~precise-z-offset-active" text="+" face-color="~precise-z-color" on-click="precise-left-z-offset-inc-on-click"/>
+                                <button active="~precise-z-offset-active" text="~inc-text" face-color="~precise-z-color"
+                                        on-click="precise-left-z-offset-inc-on-click" preferred-width="~precise-slider-button-width"/>
                                 <!--    POS    -->
                                 <horizontal active="~precise-position-active" preferred-height="~precise-group-spacing"/>
-                                <button active="~precise-position-active" text="+" face-color="~precise-x-color" on-click="precise-left-pos-x-inc-on-click"/>
-                                <button active="~precise-position-active" text="+" face-color="~precise-y-color" on-click="precise-left-pos-y-inc-on-click"/>
-                                <button active="~precise-position-active" text="+" face-color="~precise-z-color" on-click="precise-left-pos-z-inc-on-click"/>
+                                <button active="~precise-position-active" text="~inc-text" face-color="~precise-x-color"
+                                        on-click="precise-left-pos-x-inc-on-click" preferred-width="~precise-slider-button-width"/>
+                                <button active="~precise-position-active" text="~inc-text" face-color="~precise-y-color"
+                                        on-click="precise-left-pos-y-inc-on-click" preferred-width="~precise-slider-button-width"/>
+                                <button active="~precise-position-active" text="~inc-text" face-color="~precise-z-color"
+                                        on-click="precise-left-pos-z-inc-on-click" preferred-width="~precise-slider-button-width"/>
                                 <!--    ROT    -->
                                 <horizontal active="~precise-rotation-active" preferred-height="~precise-group-spacing"/>
-                                <button active="~precise-rotation-active" text="+" face-color="~precise-x-color" on-click="precise-left-rot-x-inc-on-click"/>
-                                <button active="~precise-rotation-active" text="+" face-color="~precise-y-color" on-click="precise-left-rot-y-inc-on-click"/>
-                                <button active="~precise-rotation-active" text="+" face-color="~precise-z-color" on-click="precise-left-rot-z-inc-on-click"/>
+                                <button active="~precise-rotation-active" text="~inc-text" face-color="~precise-x-color"
+                                        on-click="precise-left-rot-x-inc-on-click" preferred-width="~precise-slider-button-width"/>
+                                <button active="~precise-rotation-active" text="~inc-text" face-color="~precise-y-color"
+                                        on-click="precise-left-rot-y-inc-on-click" preferred-width="~precise-slider-button-width"/>
+                                <button active="~precise-rotation-active" text="~inc-text" face-color="~precise-z-color"
+                                        on-click="precise-left-rot-z-inc-on-click" preferred-width="~precise-slider-button-width"/>
                                 <!--    ROT REFERENCE    -->
                                 <horizontal active="~precise-rotation-reference-active" preferred-height="~precise-group-spacing"/>
-                                <button active="~precise-rotation-reference-active" text="+" face-color="~precise-hor-color"
-                                        on-click="precise-left-rot-hor-inc-on-click" interactable="~precise-left-rotation-reference-interactable"/>
-                                <button active="~precise-rotation-reference-active" text="+" face-color="~precise-vert-color"
-                                        on-click="precise-left-rot-vert-inc-on-click" interactable="~precise-left-rotation-reference-interactable"/>
+                                <button active="~precise-rotation-reference-active" text="~r-arrow" face-color="~precise-hor-color"
+                                        on-click="precise-left-rot-hor-inc-on-click" interactable="~precise-left-rotation-reference-interactable"
+                                        preferred-width="~precise-slider-button-width"/>
+                                <button active="~precise-rotation-reference-active" text="~up-text" face-color="~precise-vert-color"
+                                        on-click="precise-left-rot-vert-inc-on-click" interactable="~precise-left-rotation-reference-interactable"
+                                        preferred-width="~precise-slider-button-width"/>
                             </vertical>
                         </horizontal>
                     </vertical>
@@ -289,24 +318,32 @@
                             <!--    DECREMENT BUTTONS    -->
                             <vertical preferred-width="~precise-slider-button-width">
                                 <!--    Z OFFSET    -->
-                                <button active="~precise-z-offset-active" text="-" face-color="~precise-z-color"
-                                        on-click="precise-right-z-offset-dec-on-click"/>
+                                <button active="~precise-z-offset-active" text="~dec-text" face-color="~precise-z-color"
+                                        on-click="precise-right-z-offset-dec-on-click" preferred-width="~precise-slider-button-width"/>
                                 <!--    POS    -->
                                 <horizontal active="~precise-position-active" preferred-height="~precise-group-spacing"/>
-                                <button active="~precise-position-active" text="-" face-color="~precise-x-color" on-click="precise-right-pos-x-dec-on-click"/>
-                                <button active="~precise-position-active" text="-" face-color="~precise-y-color" on-click="precise-right-pos-y-dec-on-click"/>
-                                <button active="~precise-position-active" text="-" face-color="~precise-z-color" on-click="precise-right-pos-z-dec-on-click"/>
+                                <button active="~precise-position-active" text="~dec-text" face-color="~precise-x-color"
+                                        on-click="precise-right-pos-x-dec-on-click" preferred-width="~precise-slider-button-width"/>
+                                <button active="~precise-position-active" text="~dec-text" face-color="~precise-y-color"
+                                        on-click="precise-right-pos-y-dec-on-click" preferred-width="~precise-slider-button-width"/>
+                                <button active="~precise-position-active" text="~dec-text" face-color="~precise-z-color"
+                                        on-click="precise-right-pos-z-dec-on-click" preferred-width="~precise-slider-button-width"/>
                                 <!--    ROT    -->
                                 <horizontal active="~precise-rotation-active" preferred-height="~precise-group-spacing"/>
-                                <button active="~precise-rotation-active" text="-" face-color="~precise-x-color" on-click="precise-right-rot-x-dec-on-click"/>
-                                <button active="~precise-rotation-active" text="-" face-color="~precise-y-color" on-click="precise-right-rot-y-dec-on-click"/>
-                                <button active="~precise-rotation-active" text="-" face-color="~precise-z-color" on-click="precise-right-rot-z-dec-on-click"/>
+                                <button active="~precise-rotation-active" text="~dec-text" face-color="~precise-x-color"
+                                        on-click="precise-right-rot-x-dec-on-click" preferred-width="~precise-slider-button-width"/>
+                                <button active="~precise-rotation-active" text="~dec-text" face-color="~precise-y-color"
+                                        on-click="precise-right-rot-y-dec-on-click" preferred-width="~precise-slider-button-width"/>
+                                <button active="~precise-rotation-active" text="~dec-text" face-color="~precise-z-color"
+                                        on-click="precise-right-rot-z-dec-on-click" preferred-width="~precise-slider-button-width"/>
                                 <!--    ROT REFERENCE    -->
                                 <horizontal active="~precise-rotation-reference-active" preferred-height="~precise-group-spacing"/>
-                                <button active="~precise-rotation-reference-active" text="-" face-color="~precise-hor-color"
-                                        on-click="precise-right-rot-hor-dec-on-click" interactable="~precise-right-rotation-reference-interactable"/>
-                                <button active="~precise-rotation-reference-active" text="-" face-color="~precise-vert-color"
-                                        on-click="precise-right-rot-vert-dec-on-click" interactable="~precise-right-rotation-reference-interactable"/>
+                                <button active="~precise-rotation-reference-active" text="~l-arrow" face-color="~precise-hor-color"
+                                        on-click="precise-right-rot-hor-dec-on-click" interactable="~precise-right-rotation-reference-interactable"
+                                        preferred-width="~precise-slider-button-width"/>
+                                <button active="~precise-rotation-reference-active" text="~down-text" face-color="~precise-vert-color"
+                                        on-click="precise-right-rot-vert-dec-on-click" interactable="~precise-right-rotation-reference-interactable"
+                                        preferred-width="~precise-slider-button-width"/>
                             </vertical>
 
                             <!--    SLIDERS    -->
@@ -349,7 +386,7 @@
                                 <slider-setting active="~precise-rotation-reference-active" text="" apply-on-change="true" bind-value="true"
                                                 value="precise-right-rot-hor-value" on-change="precise-right-rot-hor-on-change"
                                                 min="~rot-180-slider-min" max="~rot-180-slider-max" increment="~rot-slider-increment"
-                                                formatter="rot-slider-formatter" interactable="~precise-right-rotation-reference-interactable"/>
+                                                formatter="rot-curve-right-slider-formatter" interactable="~precise-right-rotation-reference-interactable"/>
                                 <slider-setting active="~precise-rotation-reference-active" text="" apply-on-change="true" bind-value="true"
                                                 value="precise-right-rot-vert-value" on-change="precise-right-rot-vert-on-change"
                                                 min="~rot-90-slider-min" max="~rot-90-slider-max" increment="~rot-slider-increment"
@@ -359,24 +396,32 @@
                             <!--    INCREMENT BUTTONS    -->
                             <vertical preferred-width="~precise-slider-button-width">
                                 <!--    Z OFFSET    -->
-                                <button active="~precise-z-offset-active" text="+" face-color="~precise-z-color"
-                                        on-click="precise-right-z-offset-inc-on-click"/>
+                                <button active="~precise-z-offset-active" text="~inc-text" face-color="~precise-z-color"
+                                        on-click="precise-right-z-offset-inc-on-click" preferred-width="~precise-slider-button-width"/>
                                 <!--    POS    -->
                                 <horizontal active="~precise-position-active" preferred-height="~precise-group-spacing"/>
-                                <button active="~precise-position-active" text="+" face-color="~precise-x-color" on-click="precise-right-pos-x-inc-on-click"/>
-                                <button active="~precise-position-active" text="+" face-color="~precise-y-color" on-click="precise-right-pos-y-inc-on-click"/>
-                                <button active="~precise-position-active" text="+" face-color="~precise-z-color" on-click="precise-right-pos-z-inc-on-click"/>
+                                <button active="~precise-position-active" text="~inc-text" face-color="~precise-x-color"
+                                        on-click="precise-right-pos-x-inc-on-click"/>
+                                <button active="~precise-position-active" text="~inc-text" face-color="~precise-y-color"
+                                        on-click="precise-right-pos-y-inc-on-click"/>
+                                <button active="~precise-position-active" text="~inc-text" face-color="~precise-z-color"
+                                        on-click="precise-right-pos-z-inc-on-click" preferred-width="~precise-slider-button-width"/>
                                 <!--    ROT    -->
                                 <horizontal active="~precise-rotation-active" preferred-height="~precise-group-spacing"/>
-                                <button active="~precise-rotation-active" text="+" face-color="~precise-x-color" on-click="precise-right-rot-x-inc-on-click"/>
-                                <button active="~precise-rotation-active" text="+" face-color="~precise-y-color" on-click="precise-right-rot-y-inc-on-click"/>
-                                <button active="~precise-rotation-active" text="+" face-color="~precise-z-color" on-click="precise-right-rot-z-inc-on-click"/>
+                                <button active="~precise-rotation-active" text="~inc-text" face-color="~precise-x-color"
+                                        on-click="precise-right-rot-x-inc-on-click" preferred-width="~precise-slider-button-width"/>
+                                <button active="~precise-rotation-active" text="~inc-text" face-color="~precise-y-color"
+                                        on-click="precise-right-rot-y-inc-on-click" preferred-width="~precise-slider-button-width"/>
+                                <button active="~precise-rotation-active" text="~inc-text" face-color="~precise-z-color"
+                                        on-click="precise-right-rot-z-inc-on-click" preferred-width="~precise-slider-button-width"/>
                                 <!--    ROT REFERENCE    -->
                                 <horizontal active="~precise-rotation-reference-active" preferred-height="~precise-group-spacing"/>
-                                <button active="~precise-rotation-reference-active" text="+" face-color="~precise-hor-color"
-                                        on-click="precise-right-rot-hor-inc-on-click" interactable="~precise-right-rotation-reference-interactable"/>
-                                <button active="~precise-rotation-reference-active" text="+" face-color="~precise-vert-color"
-                                        on-click="precise-right-rot-vert-inc-on-click" interactable="~precise-right-rotation-reference-interactable"/>
+                                <button active="~precise-rotation-reference-active" text="~r-arrow" face-color="~precise-hor-color"
+                                        on-click="precise-right-rot-hor-inc-on-click" interactable="~precise-right-rotation-reference-interactable"
+                                        preferred-width="~precise-slider-button-width"/>
+                                <button active="~precise-rotation-reference-active" text="~up-text" face-color="~precise-vert-color"
+                                        on-click="precise-right-rot-vert-inc-on-click" interactable="~precise-right-rotation-reference-interactable"
+                                        preferred-width="~precise-slider-button-width"/>
                             </vertical>
                         </horizontal>
                     </vertical>
@@ -415,26 +460,33 @@
 
         <!--    BOTTOM PANEL    -->
         <horizontal preferred-height="~bottom-section-height" spacing="1">
-            <button preferred-width="20" text="Save" interactable="~interactable" on-click="bp-save-on-click" hover-hint="Save current preset"/>
-            <button preferred-width="20" text="Load" interactable="~interactable" on-click="bp-load-on-click" hover-hint="Load config preset"/>
+            <vertical preferred-width="40">
+                <horizontal>
+                    <button preferred-width="20" text="Save" interactable="~interactable" on-click="bp-save-on-click" hover-hint="Save current preset"/>
+                    <button preferred-width="20" text="Load" interactable="~interactable" on-click="bp-load-on-click" hover-hint="Load config preset"/>
+                </horizontal>
+            </vertical>
 
-            <vertical preferred-width="6" pad="2">
+            <vertical preferred-width="10" pad="2">
                 <image source="EasyOffset._9_Resources.Icons.Warning.png" preserve-aspect="true"
                        active="~warning-active" image-color="~warning-color" hover-hint="~warning-hint"/>
             </vertical>
 
-            <vertical preferred-width="8">
-                <button text="◄" active="~undo-redo-buttons-active" interactable="~undo-button-interactable"
-                        on-click="undo-button-on-click" hover-hint="~undo-button-hover-hint"/>
+            <vertical preferred-width="30" pad-left="10">
+                <horizontal id="undo-redo-buttons-container" active="~undo-redo-buttons-active">
+                    <button preferred-width="10" text="◄" interactable="~undo-button-interactable"
+                            on-click="undo-button-on-click" hover-hint="~undo-button-hover-hint"/>
+                    <button preferred-width="10" text="►" interactable="~redo-button-interactable"
+                            on-click="redo-button-on-click" hover-hint="~redo-button-hover-hint"/>
+                </horizontal>
             </vertical>
 
-            <vertical preferred-width="8">
-                <button text="►" active="~undo-redo-buttons-active" interactable="~redo-button-interactable"
-                        on-click="redo-button-on-click" hover-hint="~redo-button-hover-hint"/>
+            <vertical preferred-width="30">
+                <horizontal id="ui-lock-container">
+                    <toggle-setting text="UI Lock" value="lock-value" on-change="lock-on-change" apply-on-change="true"
+                                    hover-hint="Disable UI interaction to prevent accidental changes"/>
+                </horizontal>
             </vertical>
-
-            <toggle-setting preferred-width="30" text="UI Lock" value="lock-value" on-change="lock-on-change" apply-on-change="true"
-                            hover-hint="Disable UI interaction to prevent accidental changes"/>
         </horizontal>
     </vertical>
 

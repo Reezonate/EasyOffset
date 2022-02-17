@@ -16,24 +16,19 @@ namespace EasyOffset {
 
         #region Variables
 
-        private readonly GizmosManager _gizmosManager;
-
         private readonly SwingAnalyzer _swingAnalyzer;
         private readonly SwingBenchmarkController _swingBenchmarkController;
 
-        private bool _isSwingGood;
         private Hand _selectedHand = Hand.Left;
-
+        private bool _isSwingGood;
         private bool _hasAnyResults;
+        private float _swingCurveAngleDeg;
 
         #endregion
 
         #region Constructor
 
-        public SwingBenchmarkManager(
-            GizmosManager gizmosManager
-        ) {
-            _gizmosManager = gizmosManager;
+        public SwingBenchmarkManager() {
             _swingAnalyzer = new SwingAnalyzer(MaximalCapacity);
 
             var gameObject = Object.Instantiate(BundleLoader.SwingBenchmarkController);
@@ -87,6 +82,7 @@ namespace EasyOffset {
             var fullSwingAngle = maximalSwingAngle - minimalSwingAngle;
 
             _isSwingGood = fullSwingAngle > FullSwingAngleRequirement;
+            _swingCurveAngleDeg = swingCurveAngle * Mathf.Rad2Deg;
 
             _swingBenchmarkController.SetValues(
                 isLeft,
@@ -116,19 +112,26 @@ namespace EasyOffset {
         public void Finish() {
             _swingBenchmarkController.StopTracking();
 
+            var averageNormal = _swingAnalyzer.GetAverageLocalPlaneNormal();
             Quaternion referenceRotation;
 
             switch (_selectedHand) {
                 case Hand.Left:
+                    CalculateReferenceRotation(averageNormal, PluginConfig.LeftSaberRotation,
+                        out referenceRotation,
+                        out _leftWristRotationAxis
+                    );
+
                     PluginConfig.CreateUndoStep("Left Benchmark");
-                    _leftWristRotationAxis = _swingAnalyzer.GetWristRotationAxis();
-                    referenceRotation = CalculateReferenceRotation(_leftWristRotationAxis, PluginConfig.LeftSaberRotation);
                     PluginConfig.SetLeftSaberReference(_isSwingGood, referenceRotation);
                     break;
                 case Hand.Right:
+                    CalculateReferenceRotation(averageNormal, PluginConfig.RightSaberRotation,
+                        out referenceRotation,
+                        out _rightWristRotationAxis
+                    );
+
                     PluginConfig.CreateUndoStep("Right Benchmark");
-                    _rightWristRotationAxis = _swingAnalyzer.GetWristRotationAxis();
-                    referenceRotation = CalculateReferenceRotation(_rightWristRotationAxis, PluginConfig.RightSaberRotation);
                     PluginConfig.SetRightSaberReference(_isSwingGood, referenceRotation);
                     break;
                 default: throw new ArgumentOutOfRangeException();
@@ -143,7 +146,20 @@ namespace EasyOffset {
             }
         }
 
-        private static Quaternion CalculateReferenceRotation(Vector3 straightSwingPlaneNormal, Quaternion currentLocalRotation) {
+        private void CalculateReferenceRotation(
+            Vector3 averageNormal,
+            Quaternion currentLocalRotation,
+            out Quaternion referenceRotation,
+            out Vector3 wristRotationAxis
+        ) {
+            var currentLocalDirection = TransformUtils.DirectionFromRotation(currentLocalRotation);
+            referenceRotation = Quaternion.LookRotation(currentLocalDirection, averageNormal);
+            referenceRotation *= Quaternion.Euler(-_swingCurveAngleDeg, 0.0f, 0.0f);
+            referenceRotation *= Quaternion.Euler(0.0f, 0.0f, 90.0f);
+            wristRotationAxis = referenceRotation * Vector3.left;
+        }
+
+        private static Quaternion CalculateReferenceRotationDep(Vector3 straightSwingPlaneNormal, Quaternion currentLocalRotation) {
             var currentLocalDirection = TransformUtils.DirectionFromRotation(currentLocalRotation);
             var projectedDirection = new Plane(straightSwingPlaneNormal, 0.0f).ClosestPointOnPlane(currentLocalDirection);
             var lookRotation = Quaternion.LookRotation(projectedDirection, straightSwingPlaneNormal);
@@ -165,11 +181,13 @@ namespace EasyOffset {
 
             switch (_selectedHand) {
                 case Hand.Left:
+                    PluginConfig.CreateUndoStep("Left Auto-fix");
                     directionToFix = TransformUtils.DirectionFromRotation(PluginConfig.LeftSaberRotation);
                     fixedDirection = new Plane(_leftWristRotationAxis, 0f).ClosestPointOnPlane(directionToFix);
                     PluginConfig.LeftSaberRotation = Quaternion.FromToRotation(directionToFix, fixedDirection) * PluginConfig.LeftSaberRotation;
                     break;
                 case Hand.Right:
+                    PluginConfig.CreateUndoStep("Right Auto-fix");
                     directionToFix = TransformUtils.DirectionFromRotation(PluginConfig.RightSaberRotation);
                     fixedDirection = new Plane(_rightWristRotationAxis, 0f).ClosestPointOnPlane(directionToFix);
                     PluginConfig.RightSaberRotation = Quaternion.FromToRotation(directionToFix, fixedDirection) * PluginConfig.RightSaberRotation;

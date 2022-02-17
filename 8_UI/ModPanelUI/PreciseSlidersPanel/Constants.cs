@@ -1,6 +1,5 @@
 using BeatSaberMarkupLanguage.Attributes;
 using JetBrains.Annotations;
-using UnityEngine;
 
 namespace EasyOffset;
 
@@ -59,6 +58,14 @@ internal partial class ModPanelUI {
     [UIAction("rot-slider-formatter")]
     [UsedImplicitly]
     private string RotSliderFormatter(float value) => $"{value:F1}°";
+
+    [UIAction("rot-curve-left-slider-formatter")]
+    [UsedImplicitly]
+    private string RotCurveLeftSliderFormatter(float value) => $"{-value:F1}°";
+
+    [UIAction("rot-curve-right-slider-formatter")]
+    [UsedImplicitly]
+    private string RotCurveRightSliderFormatter(float value) => $"{value:F1}°";
 
     #endregion
 

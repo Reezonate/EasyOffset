@@ -4,6 +4,7 @@ using System.Text;
 using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.Components.Settings;
 using JetBrains.Annotations;
+using UnityEngine;
 
 namespace EasyOffset;
 
@@ -74,7 +75,7 @@ internal partial class ModPanelUI {
     }
 
     private void OnControllerTypeChanged(ControllerType controllerType, bool forceChoices) {
-        _buttonAliasDictionary = ControllerButtonUtils.GetAvailableOptions(controllerType, ConfigMigration.IsVRModeOculus);
+        _buttonAliasDictionary = ControllerButtonUtils.GetAvailableOptions(controllerType);
         _assignedButtonChoices = _buttonAliasDictionary.Keys.Cast<object>().ToList();
 
         if (!forceChoices) return;
@@ -156,6 +157,42 @@ internal partial class ModPanelUI {
 
     #region BottomPanel
 
+    #region Events
+
+    private void SubscribeToBottomPanelEvents() {
+        PluginConfig.UndoAvailableChangedEvent += OnUndoAvailableChanged;
+        PluginConfig.RedoAvailableChangedEvent += OnRedoAvailableChanged;
+        PluginConfig.IsModPanelVisibleChangedEvent += BottomPanelOnVisibleChanged;
+    }
+
+    private void BottomPanelOnVisibleChanged(bool value) {
+        if (!value) return;
+        ApplyBottomPanelScale();
+    }
+
+    private void OnUndoAvailableChanged(bool isAvailable, string description) {
+        UndoButtonInteractable = isAvailable;
+        UndoButtonHoverHint = isAvailable ? $"Undo '{description}'" : "Undo";
+    }
+
+    private void OnRedoAvailableChanged(bool isAvailable, string description) {
+        RedoButtonInteractable = isAvailable;
+        RedoButtonHoverHint = isAvailable ? $"Redo '{description}'" : "Redo";
+    }
+
+    #endregion
+
+    #region Scale
+
+    private static readonly Vector3 BottomElementsScale = Vector3.one * 0.85f;
+            
+    private void ApplyBottomPanelScale() {
+        _undoRedoButtonsContainer.localScale = BottomElementsScale;
+        _uiLockContainer.localScale = BottomElementsScale;
+    }
+
+    #endregion
+
     #region Save button
 
     [UIAction("bp-save-on-click")]
@@ -232,7 +269,6 @@ internal partial class ModPanelUI {
         UpdateWarning(PluginConfig.MinimalWarningLevel);
     }
 
-
     private void UpdateWarning(WarningLevel minimalWarningLevel) {
         CompatibilityUtils.GetCompatibilityIssues(out var issues, out var mostCriticalLevel);
 
@@ -291,25 +327,6 @@ internal partial class ModPanelUI {
 
     #region Undo / Redo buttons
 
-    #region Events
-
-    private void SubscribeToUndoRedoEvents() {
-        PluginConfig.UndoAvailableChangedEvent += OnUndoAvailableChanged;
-        PluginConfig.RedoAvailableChangedEvent += OnRedoAvailableChanged;
-    }
-
-    private void OnUndoAvailableChanged(bool isAvailable, string description) {
-        UndoButtonInteractable = isAvailable;
-        UndoButtonHoverHint = isAvailable ? $"Undo '{description}'" : "Undo";
-    }
-
-    private void OnRedoAvailableChanged(bool isAvailable, string description) {
-        RedoButtonInteractable = isAvailable;
-        RedoButtonHoverHint = isAvailable ? $"Redo '{description}'" : "Redo";
-    }
-
-    #endregion
-
     #region Active
 
     private bool _undoRedoButtonsActive;
@@ -323,6 +340,13 @@ internal partial class ModPanelUI {
             NotifyPropertyChanged();
         }
     }
+
+    #endregion
+
+    #region Container
+
+    [UIComponent("undo-redo-buttons-container")] [UsedImplicitly]
+    private RectTransform _undoRedoButtonsContainer;
 
     #endregion
 
@@ -397,6 +421,9 @@ internal partial class ModPanelUI {
     #endregion
 
     #region UI Lock
+
+    [UIComponent("ui-lock-container")] [UsedImplicitly]
+    private RectTransform _uiLockContainer;
 
     [UIValue("interactable")]
     [UsedImplicitly]

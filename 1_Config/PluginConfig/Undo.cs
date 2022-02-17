@@ -21,7 +21,7 @@ internal partial class PluginConfig {
         var snapshot = GenerateSnapshot(description);
         UndoSteps.Add(snapshot);
         RedoSteps.Clear();
-        if (UndoSteps.Count > MaxUndoStepsCount) UndoSteps.RemoveAt(UndoSteps.Count - 1);
+        if (UndoSteps.Count > MaxUndoStepsCount) UndoSteps.RemoveAt(0);
         NotifyUndoListChanged();
         NotifyRedoListChanged();
     }

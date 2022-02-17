@@ -69,7 +69,7 @@ namespace EasyOffset {
 
         #endregion
 
-        #region WristRotationAxis
+        #region LocalNormals
 
         private Vector3 _previousTipPosition = Vector3.zero;
         private bool _hasPreviousTipPosition;
@@ -97,7 +97,7 @@ namespace EasyOffset {
             return Mathf.Pow(dataSetRatio, 0.5f) * Mathf.Pow(tipVelocity, 2.0f);
         }
 
-        public Vector3 GetWristRotationAxis() {
+        public Vector3 GetAverageLocalPlaneNormal() {
             return _hasPreviousTipPosition ? _localNormals.GetAverage() : Vector3.forward;
         }
 
