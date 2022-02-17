@@ -29,7 +29,7 @@ namespace EasyOffset {
         private readonly Range _zoomRange = new(1f, 4f);
         private readonly Range _heightRange = new(0.05f, 0.4f);
         private readonly Range _smoothingRange = new(ZoomedOutSmoothing, ZoomedInSmoothing);
-        
+
         private Quaternion _grabWorldRotation;
         private float _grabFreeY;
 
@@ -56,6 +56,7 @@ namespace EasyOffset {
 
             _grabWorldRotation = adjustmentHandTransform.LocalToWorldRotation(grabLocalRotation);
             _grabFreeY = freeHandTransform.Position.y;
+            PluginConfig.CreateUndoStep($"Change {adjustmentHand} Rotation");
         }
 
         protected override void OnGrabUpdated(

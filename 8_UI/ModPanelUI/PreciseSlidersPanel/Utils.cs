@@ -54,7 +54,7 @@ internal partial class ModPanelUI {
         var differenceDirection = TransformUtils.DirectionFromRotation(rotationDifference);
         var resultEulerRad = TransformUtils.OrthoToSphericalDirection(differenceDirection);
 
-        horizontal = resultEulerRad.y * Mathf.Rad2Deg;
+        horizontal = -resultEulerRad.y * Mathf.Rad2Deg;
         vertical = resultEulerRad.x * Mathf.Rad2Deg;
     }
 
@@ -66,7 +66,7 @@ internal partial class ModPanelUI {
     ) {
         var originalRotation = TransformUtils.RotationFromEuler(originalRotationEuler);
         var originalDirection = TransformUtils.DirectionFromEuler(originalRotationEuler);
-        var additionalRotation = Quaternion.Euler(vertical, horizontal, 0.0f);
+        var additionalRotation = Quaternion.Euler(vertical, -horizontal, 0.0f);
         var resultRotation = rotationReference * additionalRotation;
         var resultDirection = TransformUtils.DirectionFromRotation(resultRotation);
         var rotationDifference = Quaternion.FromToRotation(originalDirection, resultDirection);

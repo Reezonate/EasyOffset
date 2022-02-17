@@ -150,6 +150,7 @@
     <Compile Include="0_Harmony\UIPatches\SelectablePatches.cs" />
     <Compile Include="1_Config\ConfigPresets\ConfigPresetV2.cs" />
     <Compile Include="1_Config\ConfigUpgrade\ConfigUpgrade.cs" />
+    <Compile Include="1_Config\PluginConfig\Undo.cs" />
     <Compile Include="1_Config\PluginConfig\Utilities.cs" />
     <Compile Include="1_Config\PluginConfig\ControllerOffsets.cs" />
     <Compile Include="1_Config\PluginConfig\UserPreferences.cs" />

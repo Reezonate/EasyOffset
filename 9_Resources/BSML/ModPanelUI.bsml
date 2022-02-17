@@ -240,9 +240,9 @@
                                 <button active="~precise-rotation-active" text="+" face-color="~precise-z-color" on-click="precise-left-rot-z-inc-on-click"/>
                                 <!--    ROT REFERENCE    -->
                                 <horizontal active="~precise-rotation-reference-active" preferred-height="~precise-group-spacing"/>
-                                <button active="~precise-rotation-reference-active" text="+" face-color="~precise-hor-color" 
+                                <button active="~precise-rotation-reference-active" text="+" face-color="~precise-hor-color"
                                         on-click="precise-left-rot-hor-inc-on-click" interactable="~precise-left-rotation-reference-interactable"/>
-                                <button active="~precise-rotation-reference-active" text="+" face-color="~precise-vert-color" 
+                                <button active="~precise-rotation-reference-active" text="+" face-color="~precise-vert-color"
                                         on-click="precise-left-rot-vert-inc-on-click" interactable="~precise-left-rotation-reference-interactable"/>
                             </vertical>
                         </horizontal>
@@ -289,7 +289,8 @@
                             <!--    DECREMENT BUTTONS    -->
                             <vertical preferred-width="~precise-slider-button-width">
                                 <!--    Z OFFSET    -->
-                                <button active="~precise-z-offset-active" text="-" face-color="~precise-z-color" on-click="precise-right-z-offset-dec-on-click"/>
+                                <button active="~precise-z-offset-active" text="-" face-color="~precise-z-color"
+                                        on-click="precise-right-z-offset-dec-on-click"/>
                                 <!--    POS    -->
                                 <horizontal active="~precise-position-active" preferred-height="~precise-group-spacing"/>
                                 <button active="~precise-position-active" text="-" face-color="~precise-x-color" on-click="precise-right-pos-x-dec-on-click"/>
@@ -358,7 +359,8 @@
                             <!--    INCREMENT BUTTONS    -->
                             <vertical preferred-width="~precise-slider-button-width">
                                 <!--    Z OFFSET    -->
-                                <button active="~precise-z-offset-active" text="+" face-color="~precise-z-color" on-click="precise-right-z-offset-inc-on-click"/>
+                                <button active="~precise-z-offset-active" text="+" face-color="~precise-z-color"
+                                        on-click="precise-right-z-offset-inc-on-click"/>
                                 <!--    POS    -->
                                 <horizontal active="~precise-position-active" preferred-height="~precise-group-spacing"/>
                                 <button active="~precise-position-active" text="+" face-color="~precise-x-color" on-click="precise-right-pos-x-inc-on-click"/>
@@ -412,22 +414,26 @@
         </horizontal>
 
         <!--    BOTTOM PANEL    -->
-        <horizontal preferred-height="~bottom-section-height">
-            <button text="Save" interactable="~interactable" preferred-width="20" on-click="bp-save-on-click"
-                    hover-hint="Save current preset"/>
-            <button text="Load" interactable="~interactable" preferred-width="20" on-click="bp-load-on-click"
-                    hover-hint="Load config preset"/>
+        <horizontal preferred-height="~bottom-section-height" spacing="1">
+            <button preferred-width="20" text="Save" interactable="~interactable" on-click="bp-save-on-click" hover-hint="Save current preset"/>
+            <button preferred-width="20" text="Load" interactable="~interactable" on-click="bp-load-on-click" hover-hint="Load config preset"/>
 
-            <vertical preferred-width="2"/>
-
-            <vertical preferred-width="5">
+            <vertical preferred-width="6" pad="2">
                 <image source="EasyOffset._9_Resources.Icons.Warning.png" preserve-aspect="true"
                        active="~warning-active" image-color="~warning-color" hover-hint="~warning-hint"/>
             </vertical>
 
-            <vertical preferred-width="22"/>
+            <vertical preferred-width="8">
+                <button text="◄" active="~undo-redo-buttons-active" interactable="~undo-button-interactable"
+                        on-click="undo-button-on-click" hover-hint="~undo-button-hover-hint"/>
+            </vertical>
 
-            <toggle-setting text="UI Lock" preferred-width="30" value="lock-value" on-change="lock-on-change" apply-on-change="true"
+            <vertical preferred-width="8">
+                <button text="►" active="~undo-redo-buttons-active" interactable="~redo-button-interactable"
+                        on-click="redo-button-on-click" hover-hint="~redo-button-hover-hint"/>
+            </vertical>
+
+            <toggle-setting preferred-width="30" text="UI Lock" value="lock-value" on-change="lock-on-change" apply-on-change="true"
                             hover-hint="Disable UI interaction to prevent accidental changes"/>
         </horizontal>
     </vertical>

@@ -57,12 +57,19 @@ internal partial class ModPanelUI {
 
         LerpPositions(positionT);
 
-        switch (_smoothValueType) {
-            case SmoothValueType.Position: break;
-            case SmoothValueType.Rotation:
+        switch (_sliderValueType) {
+            case SliderValueType.PositionX:
+            case SliderValueType.PositionY:
+            case SliderValueType.PositionZ:
+            case SliderValueType.ZOffset:
+                break;
+            case SliderValueType.RotationX:
+            case SliderValueType.RotationY:
+            case SliderValueType.RotationZ:
                 LerpRotationsSelf(rotationT);
                 break;
-            case SmoothValueType.RotationReference:
+            case SliderValueType.Curve:
+            case SliderValueType.Balance:
                 LerpRotationsReference(rotationT);
                 break;
             default: throw new ArgumentOutOfRangeException();
@@ -159,44 +166,47 @@ internal partial class ModPanelUI {
 
     #region Smoothing Flow
 
-    private Hand? _changeHand;
-    private SmoothValueType _smoothValueType = SmoothValueType.Position;
+    private Hand _changeHand;
+    private SliderValueType _sliderValueType = SliderValueType.ZOffset;
     private ReeTriggerState _clickedState = ReeTriggerState.Released;
-    private bool _smoothValueWasChanged;
+    private bool _sliderValueWasChanged;
     private bool _applySmoothingUpdates;
     private bool _smoothingEnabled;
     private float _smoothingStartTime;
 
     private void SmoothingUpdate() {
         if (_precisePanelState == PrecisePanelState.Hidden) return;
-        if (!_smoothingEnabled || !_smoothValueWasChanged) return;
+        if (!_smoothingEnabled || !_sliderValueWasChanged) return;
 
         SmoothingLerpAll();
-        if (_applySmoothingUpdates) ApplyPreciseConfig();
+        if (_applySmoothingUpdates || _sliderValueType == SliderValueType.ZOffset) ApplyPreciseConfig();
     }
 
     private void OnSomethingWasPressed(ReeTriggerState triggerState) {
         _clickedState = triggerState;
         _smoothingEnabled = true;
-        _smoothValueWasChanged = false;
+        _sliderValueWasChanged = false;
         _applySmoothingUpdates = false;
     }
 
     private void OnSomethingWasReleased() {
         _smoothingEnabled = false;
-        if (!_smoothValueWasChanged) return;
-        _smoothValueWasChanged = false;
+        if (!_sliderValueWasChanged) return;
+        _sliderValueWasChanged = false;
         SmoothingFinalize();
         ApplyPreciseConfig();
         PreciseChangeFinishedEvent?.Invoke(_changeHand);
     }
 
-    private void OnSmoothValueChanged(Hand? hand, SmoothValueType smoothValueType) {
-        if (_smoothValueWasChanged) return;
+    private void OnSliderTargetChanged(Hand hand, SliderValueType sliderValueType) {
+        if (_sliderValueWasChanged) return;
+
         _changeHand = hand;
-        _smoothValueType = smoothValueType;
+        _sliderValueType = sliderValueType;
         _smoothingStartTime = Time.time;
-        _smoothValueWasChanged = true;
+        _sliderValueWasChanged = true;
+
+        CreateSmoothValueUndoPoint(hand, sliderValueType);
 
         _applySmoothingUpdates = _clickedState switch {
             ReeTriggerState.Released => true,
@@ -209,14 +219,29 @@ internal partial class ModPanelUI {
         PreciseChangeStartedEvent?.Invoke(_changeHand);
     }
 
+    private void OnSliderValueChangedDirectly(Hand hand, SliderValueType sliderValueType) {
+        CreateSmoothValueUndoPoint(hand, sliderValueType);
+        ApplyPreciseConfig();
+    }
+
+    private static void CreateSmoothValueUndoPoint(Hand hand, SliderValueType sliderValueType) {
+        PluginConfig.CreateUndoStep($"Change {hand} {sliderValueType}");
+    }
+
     #endregion
 
     #region Enums
 
-    private enum SmoothValueType {
-        Position,
-        Rotation,
-        RotationReference
+    private enum SliderValueType {
+        ZOffset,
+        PositionX,
+        PositionY,
+        PositionZ,
+        RotationX,
+        RotationY,
+        RotationZ,
+        Curve,
+        Balance
     }
 
     #endregion

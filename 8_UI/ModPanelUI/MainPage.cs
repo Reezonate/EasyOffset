@@ -289,6 +289,113 @@ internal partial class ModPanelUI {
 
     #endregion
 
+    #region Undo / Redo buttons
+
+    #region Events
+
+    private void SubscribeToUndoRedoEvents() {
+        PluginConfig.UndoAvailableChangedEvent += OnUndoAvailableChanged;
+        PluginConfig.RedoAvailableChangedEvent += OnRedoAvailableChanged;
+    }
+
+    private void OnUndoAvailableChanged(bool isAvailable, string description) {
+        UndoButtonInteractable = isAvailable;
+        UndoButtonHoverHint = isAvailable ? $"Undo '{description}'" : "Undo";
+    }
+
+    private void OnRedoAvailableChanged(bool isAvailable, string description) {
+        RedoButtonInteractable = isAvailable;
+        RedoButtonHoverHint = isAvailable ? $"Redo '{description}'" : "Redo";
+    }
+
+    #endregion
+
+    #region Active
+
+    private bool _undoRedoButtonsActive;
+
+    [UIValue("undo-redo-buttons-active")]
+    [UsedImplicitly]
+    private bool UndoRedoButtonsActive {
+        get => _undoRedoButtonsActive;
+        set {
+            _undoRedoButtonsActive = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    #endregion
+
+    #region Undo button
+
+    private bool _undoButtonInteractable;
+
+    [UIValue("undo-button-interactable")]
+    [UsedImplicitly]
+    private bool UndoButtonInteractable {
+        get => _undoButtonInteractable;
+        set {
+            _undoButtonInteractable = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    private string _undoButtonHoverHint = "Undo";
+
+    [UIValue("undo-button-hover-hint")]
+    [UsedImplicitly]
+    private string UndoButtonHoverHint {
+        get => _undoButtonHoverHint;
+        set {
+            _undoButtonHoverHint = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    [UIAction("undo-button-on-click")]
+    [UsedImplicitly]
+    private void UndoButtonOnClick() {
+        PluginConfig.UndoLastChange();
+    }
+
+    #endregion
+
+    #region Redo button
+
+    private bool _redoButtonInteractable;
+
+    [UIValue("redo-button-interactable")]
+    [UsedImplicitly]
+    private bool RedoButtonInteractable {
+        get => _redoButtonInteractable;
+        set {
+            _redoButtonInteractable = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    private string _redoButtonHoverHint = "Redo";
+
+    [UIValue("redo-button-hover-hint")]
+    [UsedImplicitly]
+    private string RedoButtonHoverHint {
+        get => _redoButtonHoverHint;
+        set {
+            _redoButtonHoverHint = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    [UIAction("redo-button-on-click")]
+    [UsedImplicitly]
+    private void RedoButtonOnClick() {
+        PluginConfig.RedoLastChange();
+    }
+
+    #endregion
+
+    #endregion
+
     #region UI Lock
 
     [UIValue("interactable")]

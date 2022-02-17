@@ -120,11 +120,13 @@ namespace EasyOffset {
 
             switch (_selectedHand) {
                 case Hand.Left:
+                    PluginConfig.CreateUndoStep("Left Benchmark");
                     _leftWristRotationAxis = _swingAnalyzer.GetWristRotationAxis();
                     referenceRotation = CalculateReferenceRotation(_leftWristRotationAxis, PluginConfig.LeftSaberRotation);
                     PluginConfig.SetLeftSaberReference(_isSwingGood, referenceRotation);
                     break;
                 case Hand.Right:
+                    PluginConfig.CreateUndoStep("Right Benchmark");
                     _rightWristRotationAxis = _swingAnalyzer.GetWristRotationAxis();
                     referenceRotation = CalculateReferenceRotation(_rightWristRotationAxis, PluginConfig.RightSaberRotation);
                     PluginConfig.SetRightSaberReference(_isSwingGood, referenceRotation);

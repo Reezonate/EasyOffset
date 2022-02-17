@@ -16,6 +16,7 @@ internal partial class ModPanelUI : NotifiableSingleton<ModPanelUI> {
         SubscribeToWarningEvents();
         SubscribeToSmoothingEvents();
         SubscribeToPrecisePanelEvents();
+        SubscribeToUndoRedoEvents();
         GoToMainPage();
     }
 
@@ -62,6 +63,7 @@ internal partial class ModPanelUI : NotifiableSingleton<ModPanelUI> {
                 NonePanelActive = true;
                 BenchmarkPanelActive = false;
                 RoomOffsetPanelActive = false;
+                UndoRedoButtonsActive = false;
                 SetPrecisePanelState(PrecisePanelState.Hidden);
                 break;
             case AdjustmentMode.Basic:
@@ -69,6 +71,7 @@ internal partial class ModPanelUI : NotifiableSingleton<ModPanelUI> {
                 NonePanelActive = false;
                 BenchmarkPanelActive = false;
                 RoomOffsetPanelActive = false;
+                UndoRedoButtonsActive = true;
                 SetPrecisePanelState(PrecisePanelState.ZOffsetOnly);
                 break;
             case AdjustmentMode.Position:
@@ -76,6 +79,7 @@ internal partial class ModPanelUI : NotifiableSingleton<ModPanelUI> {
                 NonePanelActive = false;
                 BenchmarkPanelActive = false;
                 RoomOffsetPanelActive = false;
+                UndoRedoButtonsActive = true;
                 SetPrecisePanelState(PrecisePanelState.PositionOnly);
                 break;
             case AdjustmentMode.Rotation:
@@ -84,6 +88,7 @@ internal partial class ModPanelUI : NotifiableSingleton<ModPanelUI> {
                 NonePanelActive = false;
                 BenchmarkPanelActive = false;
                 RoomOffsetPanelActive = false;
+                UndoRedoButtonsActive = true;
                 SetPrecisePanelState(PrecisePanelState.RotationOnly);
                 break;
             case AdjustmentMode.SwingBenchmark:
@@ -91,6 +96,7 @@ internal partial class ModPanelUI : NotifiableSingleton<ModPanelUI> {
                 NonePanelActive = false;
                 BenchmarkPanelActive = true;
                 RoomOffsetPanelActive = false;
+                UndoRedoButtonsActive = true;
                 SetPrecisePanelState(PrecisePanelState.Hidden);
                 break;
             case AdjustmentMode.Precise:
@@ -98,6 +104,7 @@ internal partial class ModPanelUI : NotifiableSingleton<ModPanelUI> {
                 NonePanelActive = false;
                 BenchmarkPanelActive = false;
                 RoomOffsetPanelActive = false;
+                UndoRedoButtonsActive = true;
                 SetPrecisePanelState(PrecisePanelState.Full);
                 break;
             case AdjustmentMode.RoomOffset:
@@ -105,6 +112,7 @@ internal partial class ModPanelUI : NotifiableSingleton<ModPanelUI> {
                 NonePanelActive = false;
                 BenchmarkPanelActive = false;
                 RoomOffsetPanelActive = true;
+                UndoRedoButtonsActive = false;
                 SetPrecisePanelState(PrecisePanelState.Hidden);
                 break;
             default: throw new ArgumentOutOfRangeException();

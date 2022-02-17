@@ -5,19 +5,19 @@ namespace EasyOffset;
 internal partial class ModPanelUI {
     #region Synchronization
 
-    private int _synchronizationsRequired;
+    private int _syncCount;
 
     private void NotifySynchronizationRequired() {
-        _synchronizationsRequired = 2; //ISSUE: Slider formatter requires 2 frames after activation (1.18.3)
+        _syncCount = 2; //ISSUE: Slider formatter requires 2 frames after activation (1.18.3)
     }
 
     private void SynchronizationUpdate() {
-        if (_synchronizationsRequired <= 0) return;
-        SyncPreciseUIValuesWithConfig();
-        _synchronizationsRequired -= 1;
+        if (_syncCount <= 0) return;
+        SyncConfigValues();
+        _syncCount -= 1;
     }
 
-    private void SyncPreciseUIValuesWithConfig() {
+    private void SyncConfigValues() {
         PreciseLeftPivotPosition = PluginConfig.LeftSaberPivotPosition;
         PreciseLeftRotationEuler = PluginConfig.LeftSaberRotationEuler;
         PreciseLeftZOffset = PluginConfig.LeftSaberZOffset;
@@ -48,67 +48,44 @@ internal partial class ModPanelUI {
 
     #endregion
 
-    #region Mirror
+    #region Reset
 
-    private void PreciseMirrorFromLeft() {
+    private void PreciseReset(Hand hand) {
         switch (_precisePanelState) {
             case PrecisePanelState.Hidden: return;
             case PrecisePanelState.PositionOnly:
-                PreciseRightZOffset = PreciseLeftZOffset;
-                PreciseRightPosX = -PreciseLeftPosX;
-                PreciseRightPosY = PreciseLeftPosY;
-                PreciseRightPosZ = PreciseLeftPosZ;
+                PluginConfig.ResetOffsets(hand, true, false, false);
                 break;
             case PrecisePanelState.RotationOnly:
-                PreciseRightRotX = PreciseLeftRotX;
-                PreciseRightRotY = -PreciseLeftRotY;
-                PreciseRightRotZ = -PreciseLeftRotZ;
+                PluginConfig.ResetOffsets(hand, false, true, true);
                 break;
             case PrecisePanelState.ZOffsetOnly:
             case PrecisePanelState.Full:
-                PreciseRightZOffset = PreciseLeftZOffset;
-                PreciseRightPosX = -PreciseLeftPosX;
-                PreciseRightPosY = PreciseLeftPosY;
-                PreciseRightPosZ = PreciseLeftPosZ;
-                PreciseRightRotX = PreciseLeftRotX;
-                PreciseRightRotY = -PreciseLeftRotY;
-                PreciseRightRotZ = -PreciseLeftRotZ;
+                PluginConfig.ResetOffsets(hand, true, true, false);
                 break;
             default: throw new ArgumentOutOfRangeException();
         }
-
-        CalculateReferenceSpaceRotations();
-        ApplyPreciseConfig();
     }
 
-    private void PreciseMirrorFromRight() {
+    #endregion
+
+    #region Mirror
+
+    private void PreciseMirror(Hand mirrorSource) {
         switch (_precisePanelState) {
             case PrecisePanelState.Hidden: return;
             case PrecisePanelState.PositionOnly:
-                PreciseLeftZOffset = PreciseRightZOffset;
-                PreciseLeftPosX = -PreciseRightPosX;
-                PreciseLeftPosY = PreciseRightPosY;
-                PreciseLeftPosZ = PreciseRightPosZ;
+                PluginConfig.Mirror(mirrorSource, true, false);
                 break;
             case PrecisePanelState.RotationOnly:
-                PreciseLeftRotX = PreciseRightRotX;
-                PreciseLeftRotY = -PreciseRightRotY;
-                PreciseLeftRotZ = -PreciseRightRotZ;
+                PluginConfig.Mirror(mirrorSource, false, true);
                 break;
             case PrecisePanelState.ZOffsetOnly:
             case PrecisePanelState.Full:
-                PreciseLeftZOffset = PreciseRightZOffset;
-                PreciseLeftPosX = -PreciseRightPosX;
-                PreciseLeftPosY = PreciseRightPosY;
-                PreciseLeftPosZ = PreciseRightPosZ;
-                PreciseLeftRotX = PreciseRightRotX;
-                PreciseLeftRotY = -PreciseRightRotY;
-                PreciseLeftRotZ = -PreciseRightRotZ;
+                PluginConfig.Mirror(mirrorSource, true, true);
                 break;
             default: throw new ArgumentOutOfRangeException();
         }
-
-        ApplyPreciseConfig();
     }
 
     #endregion
@@ -140,13 +117,23 @@ internal partial class ModPanelUI {
     }
 
     private void CalculateReferenceSpaceRotations() {
-        ToReferenceSpace(PreciseLeftRotationEuler, PluginConfig.LeftSaberReferenceRotation, out var leftHorizontal, out var leftVertical);
-        PreciseLeftRotHor = _preciseLeftRotHorCurrent = _preciseLeftRotHorTarget = leftHorizontal;
-        PreciseLeftRotVert = _preciseLeftRotVertCurrent = _preciseLeftRotVertTarget = leftVertical;
+        if (PluginConfig.LeftSaberHasReference) {
+            ToReferenceSpace(PreciseLeftRotationEuler, PluginConfig.LeftSaberReferenceRotation, out var leftHorizontal, out var leftVertical);
+            PreciseLeftRotHor = leftHorizontal;
+            PreciseLeftRotVert = leftVertical;
+        } else {
+            PreciseLeftRotHor = 0.0f;
+            PreciseLeftRotVert = 0.0f;
+        }
 
-        ToReferenceSpace(PreciseRightRotationEuler, PluginConfig.RightSaberReferenceRotation, out var rightHorizontal, out var rightVertical);
-        PreciseRightRotHor = _preciseRightRotHorCurrent = _preciseRightRotHorTarget = rightHorizontal;
-        PreciseRightRotVert = _preciseRightRotVertCurrent = _preciseRightRotVertTarget = rightVertical;
+        if (PluginConfig.RightSaberHasReference) {
+            ToReferenceSpace(PreciseRightRotationEuler, PluginConfig.RightSaberReferenceRotation, out var rightHorizontal, out var rightVertical);
+            PreciseRightRotHor = rightHorizontal;
+            PreciseRightRotVert = rightVertical;
+        } else {
+            PreciseRightRotHor = 0.0f;
+            PreciseRightRotVert = 0.0f;
+        }
     }
 
     #endregion

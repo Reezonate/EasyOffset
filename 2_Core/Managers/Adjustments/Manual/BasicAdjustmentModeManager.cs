@@ -48,6 +48,7 @@ namespace EasyOffset {
 
             _grabWorldRotation = adjustmentHandTransform.LocalToWorldRotation(grabLocalRotation);
             _grabPosition = adjustmentHandTransform.LocalToWorldPosition(grabPivotPosition);
+            PluginConfig.CreateUndoStep($"Change {adjustmentHand} Offset");
         }
 
         protected override void OnGrabUpdated(

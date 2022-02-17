@@ -85,6 +85,7 @@ namespace EasyOffset {
 
             _grabLocalDirection = TransformUtils.DirectionFromRotation(_grabLocalRotation);
             Reset(adjustmentHandTransform);
+            PluginConfig.CreateUndoStep($"Auto {adjustmentHand} Rotation");
         }
 
         protected override void OnGrabUpdated(

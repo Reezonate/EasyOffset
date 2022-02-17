@@ -148,6 +148,7 @@ internal partial class ModPanelUI {
     [UIAction("pb-load-on-click")]
     [UsedImplicitly]
     private void PresetsBrowserLoadOnClick() {
+        PluginConfig.CreateUndoStep("Load preset");
         if (!ConfigPresetsStorage.LoadPreset(PresetFileName)) return;
         GoToMainPage();
     }

@@ -8,19 +8,19 @@ internal static partial class PluginConfig {
 
     public static event Action ConfigWasChangedEvent;
 
-    private static bool _notifyOnChange = true;
+    private static bool _disableChangeEvent;
 
     private static void NotifyConfigWasChanged() {
-        if (!_notifyOnChange) return;
+        if (_disableChangeEvent) return;
         ConfigWasChangedEvent?.Invoke();
     }
 
-    private static void DisableChangeEvent() {
-        _notifyOnChange = false;
+    private static void DisableConfigChangeEvent() {
+        _disableChangeEvent = true;
     }
 
-    private static void EnableChangeEvent() {
-        _notifyOnChange = true;
+    private static void EnableConfigChangeEvent() {
+        _disableChangeEvent = false;
     }
 
     #endregion
@@ -45,13 +45,13 @@ internal static partial class PluginConfig {
 
     #region SaberRotation
 
-    private static readonly CachedVariable<Quaternion> CachedLeftSaberRotation =
-        new(() => TransformUtils.RotationFromEuler(ConfigFileData.Instance.LeftSaberRotationEuler));
+    private static Quaternion _leftSaberRotation = TransformUtils.RotationFromEuler(ConfigFileData.Instance.LeftSaberRotationEuler);
 
     public static Quaternion LeftSaberRotation {
-        get => CachedLeftSaberRotation.Value;
+        get => _leftSaberRotation;
         set {
-            CachedLeftSaberRotation.Value = value;
+            if (_leftSaberRotation.Equals(value)) return;
+            _leftSaberRotation = value;
             ConfigFileData.Instance.LeftSaberRotationEuler = TransformUtils.EulerFromRotation(value);
             UpdateLeftSaberTranslation();
             NotifyConfigWasChanged();
@@ -62,9 +62,13 @@ internal static partial class PluginConfig {
 
     #region SaberPivotPosition
 
+    private static Vector3 _leftSaberPivotPosition = ConfigFileData.Instance.GetLeftSaberPivotPositionInMeters();
+
     public static Vector3 LeftSaberPivotPosition {
-        get => ConfigFileData.Instance.GetLeftSaberPivotPositionInMeters();
+        get => _leftSaberPivotPosition;
         set {
+            if (_leftSaberPivotPosition.Equals(value)) return;
+            _leftSaberPivotPosition = value;
             ConfigFileData.Instance.SetLeftSaberPivotPositionInMeters(value);
             UpdateLeftSaberTranslation();
             NotifyConfigWasChanged();
@@ -75,14 +79,13 @@ internal static partial class PluginConfig {
 
     #region SaberZOffset
 
-    private static readonly CachedVariable<float> CachedLeftSaberZOffset = new(
-        () => ConfigFileData.Instance.GetLeftSaberZOffsetInMeters()
-    );
+    private static float _leftSaberZOffset = ConfigFileData.Instance.GetLeftSaberZOffsetInMeters();
 
     public static float LeftSaberZOffset {
-        get => CachedLeftSaberZOffset.Value;
+        get => _leftSaberZOffset;
         set {
-            CachedLeftSaberZOffset.Value = value;
+            if (_leftSaberZOffset.Equals(value)) return;
+            _leftSaberZOffset = value;
             ConfigFileData.Instance.SetLeftSaberZOffsetInMeters(value);
             UpdateLeftSaberTranslation();
             NotifyConfigWasChanged();
@@ -136,13 +139,13 @@ internal static partial class PluginConfig {
 
     #region SaberRotation
 
-    private static readonly CachedVariable<Quaternion> CachedRightSaberRotation =
-        new(() => TransformUtils.RotationFromEuler(ConfigFileData.Instance.RightSaberRotationEuler));
+    private static Quaternion _rightSaberRotation = TransformUtils.RotationFromEuler(ConfigFileData.Instance.RightSaberRotationEuler);
 
     public static Quaternion RightSaberRotation {
-        get => CachedRightSaberRotation.Value;
+        get => _rightSaberRotation;
         set {
-            CachedRightSaberRotation.Value = value;
+            if (_rightSaberRotation.Equals(value)) return;
+            _rightSaberRotation = value;
             ConfigFileData.Instance.RightSaberRotationEuler = TransformUtils.EulerFromRotation(value);
             UpdateRightSaberTranslation();
             NotifyConfigWasChanged();
@@ -153,9 +156,13 @@ internal static partial class PluginConfig {
 
     #region SaberPivotPosition
 
+    private static Vector3 _rightSaberPivotPosition = ConfigFileData.Instance.GetRightSaberPivotPositionInMeters();
+
     public static Vector3 RightSaberPivotPosition {
-        get => ConfigFileData.Instance.GetRightSaberPivotPositionInMeters();
+        get => _rightSaberPivotPosition;
         set {
+            if (_rightSaberPivotPosition.Equals(value)) return;
+            _rightSaberPivotPosition = value;
             ConfigFileData.Instance.SetRightSaberPivotPositionInMeters(value);
             UpdateRightSaberTranslation();
             NotifyConfigWasChanged();
@@ -166,14 +173,13 @@ internal static partial class PluginConfig {
 
     #region SaberZOffset
 
-    private static readonly CachedVariable<float> CachedRightSaberZOffset = new(
-        () => ConfigFileData.Instance.GetRightSaberZOffsetInMeters()
-    );
+    private static float _rightSaberZOffset = ConfigFileData.Instance.GetRightSaberZOffsetInMeters();
 
     public static float RightSaberZOffset {
-        get => CachedRightSaberZOffset.Value;
+        get => _rightSaberZOffset;
         set {
-            CachedRightSaberZOffset.Value = value;
+            if (_rightSaberZOffset.Equals(value)) return;
+            _rightSaberZOffset = value;
             ConfigFileData.Instance.SetRightSaberZOffsetInMeters(value);
             UpdateRightSaberTranslation();
             NotifyConfigWasChanged();
@@ -195,18 +201,12 @@ internal static partial class PluginConfig {
 
     public static bool RightSaberHasReference {
         get => ConfigFileData.Instance.RightSaberHasReference;
-        set {
-            ConfigFileData.Instance.RightSaberHasReference = value;
-            NotifyConfigWasChanged();
-        }
+        private set => ConfigFileData.Instance.RightSaberHasReference = value;
     }
 
     public static Quaternion RightSaberReferenceRotation {
         get => ConfigFileData.Instance.RightSaberReferenceRotation;
-        set {
-            ConfigFileData.Instance.RightSaberReferenceRotation = value;
-            NotifyConfigWasChanged();
-        }
+        private set => ConfigFileData.Instance.RightSaberReferenceRotation = value;
     }
 
     #endregion
@@ -215,75 +215,83 @@ internal static partial class PluginConfig {
 
     #region Mirror
 
-    public static void MirrorAll(Hand mirrorSource) {
-        DisableChangeEvent();
+    public static void Mirror(Hand mirrorSource, bool mirrorPosition, bool mirrorRotation) {
+        DisableConfigChangeEvent();
 
-        MirrorPivot(mirrorSource);
-        MirrorSaberRotation(mirrorSource);
-        MirrorZOffset(mirrorSource);
+        switch (mirrorSource) {
+            case Hand.Left:
+                if (mirrorPosition) {
+                    RightSaberPivotPosition = TransformUtils.MirrorVector(LeftSaberPivotPosition);
+                    RightSaberZOffset = LeftSaberZOffset;
+                }
 
-        EnableChangeEvent();
+                if (mirrorRotation) {
+                    RightSaberRotation = TransformUtils.MirrorRotation(LeftSaberRotation);
+                }
+
+                break;
+            case Hand.Right:
+                if (mirrorPosition) {
+                    LeftSaberPivotPosition = TransformUtils.MirrorVector(RightSaberPivotPosition);
+                    LeftSaberZOffset = RightSaberZOffset;
+                }
+
+                if (mirrorRotation) {
+                    LeftSaberRotation = TransformUtils.MirrorRotation(RightSaberRotation);
+                }
+
+                break;
+            default: throw new ArgumentOutOfRangeException(nameof(mirrorSource), mirrorSource, null);
+        }
+
+        EnableConfigChangeEvent();
         NotifyConfigWasChanged();
-    }
-
-    public static void MirrorPivot(Hand mirrorSource) {
-        switch (mirrorSource) {
-            case Hand.Left:
-                RightSaberPivotPosition = TransformUtils.MirrorVector(LeftSaberPivotPosition);
-                break;
-            case Hand.Right:
-                LeftSaberPivotPosition = TransformUtils.MirrorVector(RightSaberPivotPosition);
-                break;
-            default: throw new ArgumentOutOfRangeException(nameof(mirrorSource), mirrorSource, null);
-        }
-    }
-
-    public static void MirrorSaberRotation(Hand mirrorSource) {
-        switch (mirrorSource) {
-            case Hand.Left:
-                RightSaberRotation = TransformUtils.MirrorRotation(LeftSaberRotation);
-                break;
-            case Hand.Right:
-                LeftSaberRotation = TransformUtils.MirrorRotation(RightSaberRotation);
-                break;
-            default: throw new ArgumentOutOfRangeException(nameof(mirrorSource), mirrorSource, null);
-        }
-    }
-
-    public static void MirrorZOffset(Hand mirrorSource) {
-        switch (mirrorSource) {
-            case Hand.Left:
-                RightSaberZOffset = LeftSaberZOffset;
-                break;
-            case Hand.Right:
-                LeftSaberZOffset = RightSaberZOffset;
-                break;
-            default: throw new ArgumentOutOfRangeException(nameof(mirrorSource), mirrorSource, null);
-        }
     }
 
     #endregion
 
     #region Reset
 
-    public static void ResetOffsets(Hand hand) {
-        DisableChangeEvent();
+    public static void ResetOffsets(Hand hand, bool resetPosition, bool resetRotation, bool resetReference) {
+        DisableConfigChangeEvent();
 
         switch (hand) {
             case Hand.Left:
-                LeftSaberPivotPosition = ConfigDefaults.LeftSaberPivotPosition;
-                LeftSaberRotation = ConfigDefaults.LeftSaberRotation;
-                LeftSaberZOffset = ConfigDefaults.ZOffset;
+                if (resetPosition) {
+                    LeftSaberPivotPosition = ConfigDefaults.LeftSaberPivotPosition;
+                    LeftSaberZOffset = ConfigDefaults.ZOffset;
+                }
+
+                if (resetRotation) {
+                    LeftSaberRotation = ConfigDefaults.LeftSaberRotation;
+                }
+
+                if (resetReference) {
+                    LeftSaberHasReference = ConfigDefaults.LeftSaberHasReference;
+                    LeftSaberReferenceRotation = ConfigDefaults.LeftSaberReferenceRotation;
+                }
+
                 break;
             case Hand.Right:
-                RightSaberPivotPosition = ConfigDefaults.RightSaberPivotPosition;
-                RightSaberRotation = ConfigDefaults.RightSaberRotation;
-                RightSaberZOffset = ConfigDefaults.ZOffset;
+                if (resetPosition) {
+                    RightSaberPivotPosition = ConfigDefaults.RightSaberPivotPosition;
+                    RightSaberZOffset = ConfigDefaults.ZOffset;
+                }
+
+                if (resetRotation) {
+                    RightSaberRotation = ConfigDefaults.RightSaberRotation;
+                }
+
+                if (resetReference) {
+                    RightSaberHasReference = ConfigDefaults.RightSaberHasReference;
+                    RightSaberReferenceRotation = ConfigDefaults.RightSaberReferenceRotation;
+                }
+
                 break;
             default: throw new ArgumentOutOfRangeException(nameof(hand), hand, null);
         }
 
-        EnableChangeEvent();
+        EnableConfigChangeEvent();
         NotifyConfigWasChanged();
     }
 
@@ -300,7 +308,7 @@ internal static partial class PluginConfig {
     #region Preset
 
     public static void ApplyPreset(IConfigPreset preset) {
-        DisableChangeEvent();
+        DisableConfigChangeEvent();
 
         LeftSaberPivotPosition = preset.LeftSaberPivotPosition;
         LeftSaberRotation = preset.LeftSaberRotation;
@@ -309,7 +317,7 @@ internal static partial class PluginConfig {
         RightSaberRotation = preset.RightSaberRotation;
         RightSaberZOffset = preset.RightSaberZOffset;
 
-        EnableChangeEvent();
+        EnableConfigChangeEvent();
         NotifyConfigWasChanged();
     }
 
@@ -338,7 +346,7 @@ internal static partial class PluginConfig {
         Vector3 rightRotationEuler,
         float rightZOffset
     ) {
-        DisableChangeEvent();
+        DisableConfigChangeEvent();
 
         LeftSaberPivotPosition = leftPivotPosition;
         LeftSaberRotationEuler = leftRotationEuler;
@@ -348,7 +356,7 @@ internal static partial class PluginConfig {
         RightSaberRotationEuler = rightRotationEuler;
         RightSaberZOffset = rightZOffset;
 
-        EnableChangeEvent();
+        EnableConfigChangeEvent();
         NotifyConfigWasChanged();
     }
 

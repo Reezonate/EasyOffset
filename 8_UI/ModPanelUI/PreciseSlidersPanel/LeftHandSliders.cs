@@ -24,7 +24,8 @@ internal partial class ModPanelUI {
     [UsedImplicitly]
     private void PreciseLeftResetOnClick() {
         if (_preciseLeftResetClickedOnce) {
-            PluginConfig.ResetOffsets(Hand.Left);
+            PluginConfig.CreateUndoStep("Reset Left");
+            PreciseReset(Hand.Left);
             ResetLeftResetButton();
         } else {
             this.ReInvokeWithDelay(ref _leftResetButtonResetCoroutine, ResetLeftResetButton, ButtonPromptDelaySeconds);
@@ -61,7 +62,8 @@ internal partial class ModPanelUI {
     [UsedImplicitly]
     private void PreciseLeftMirrorOnClick() {
         if (_preciseLeftMirrorClickedOnce) {
-            PreciseMirrorFromLeft();
+            PluginConfig.CreateUndoStep("Mirror Left");
+            PreciseMirror(Hand.Left);
             ResetLeftMirrorButton();
         } else {
             this.ReInvokeWithDelay(ref _leftMirrorButtonResetCoroutine, ResetLeftMirrorButton, ButtonPromptDelaySeconds);
@@ -79,7 +81,7 @@ internal partial class ModPanelUI {
 
     #endregion
 
-    #region Combined
+    #region Combined Position
 
     private Vector3 PreciseLeftPivotPosition {
         get => new(PreciseLeftPosX, PreciseLeftPosY, PreciseLeftPosZ);
@@ -89,6 +91,10 @@ internal partial class ModPanelUI {
             PreciseLeftPosZ = value.z;
         }
     }
+
+    #endregion
+
+    #region Combined Rotation Euler
 
     private Vector3 PreciseLeftRotationEuler {
         get => new(PreciseLeftRotX, PreciseLeftRotY, PreciseLeftRotZ);
@@ -120,10 +126,10 @@ internal partial class ModPanelUI {
     private void PreciseLeftZOffsetOnChange(float value) {
         if (_smoothingEnabled) {
             _preciseLeftZOffsetTarget = value;
-            OnSmoothValueChanged(null, SmoothValueType.Position);
+            OnSliderTargetChanged(Hand.Left, SliderValueType.ZOffset);
         } else {
             _preciseLeftZOffset = value;
-            ApplyPreciseConfig();
+            OnSliderValueChangedDirectly(Hand.Left, SliderValueType.ZOffset);
         }
     }
 
@@ -132,7 +138,7 @@ internal partial class ModPanelUI {
     private void PreciseLeftZOffsetIncOnClick() {
         var newValue = StepUp(PreciseLeftZOffset, _posSliderIncrement);
         PreciseLeftZOffset = ClampZOffsetSliderValue(newValue);
-        ApplyPreciseConfig();
+        OnSliderValueChangedDirectly(Hand.Left, SliderValueType.ZOffset);
     }
 
     [UIAction("precise-left-z-offset-dec-on-click")]
@@ -140,7 +146,7 @@ internal partial class ModPanelUI {
     private void PreciseLeftZOffsetDecOnClick() {
         var newValue = StepDown(PreciseLeftZOffset, _posSliderIncrement);
         PreciseLeftZOffset = ClampZOffsetSliderValue(newValue);
-        ApplyPreciseConfig();
+        OnSliderValueChangedDirectly(Hand.Left, SliderValueType.ZOffset);
     }
 
     #endregion
@@ -164,10 +170,10 @@ internal partial class ModPanelUI {
     private void PreciseLeftPosXOnChange(float value) {
         if (_smoothingEnabled) {
             _preciseLeftPosXTarget = value;
-            OnSmoothValueChanged(Hand.Left, SmoothValueType.Position);
+            OnSliderTargetChanged(Hand.Left, SliderValueType.PositionX);
         } else {
             _preciseLeftPosX = value;
-            ApplyPreciseConfig();
+            OnSliderValueChangedDirectly(Hand.Left, SliderValueType.PositionX);
         }
     }
 
@@ -176,7 +182,7 @@ internal partial class ModPanelUI {
     private void PreciseLeftPosXIncOnClick() {
         var newValue = StepUp(PreciseLeftPosX, _posSliderIncrement);
         PreciseLeftPosX = ClampPosSliderValue(newValue);
-        ApplyPreciseConfig();
+        OnSliderValueChangedDirectly(Hand.Left, SliderValueType.PositionX);
     }
 
     [UIAction("precise-left-pos-x-dec-on-click")]
@@ -184,7 +190,7 @@ internal partial class ModPanelUI {
     private void PreciseLeftPosXDecOnClick() {
         var newValue = StepDown(PreciseLeftPosX, _posSliderIncrement);
         PreciseLeftPosX = ClampPosSliderValue(newValue);
-        ApplyPreciseConfig();
+        OnSliderValueChangedDirectly(Hand.Left, SliderValueType.PositionX);
     }
 
     #endregion
@@ -208,10 +214,10 @@ internal partial class ModPanelUI {
     private void PreciseLeftPosYOnChange(float value) {
         if (_smoothingEnabled) {
             _preciseLeftPosYTarget = value;
-            OnSmoothValueChanged(Hand.Left, SmoothValueType.Position);
+            OnSliderTargetChanged(Hand.Left, SliderValueType.PositionY);
         } else {
             _preciseLeftPosY = value;
-            ApplyPreciseConfig();
+            OnSliderValueChangedDirectly(Hand.Left, SliderValueType.PositionY);
         }
     }
 
@@ -220,7 +226,7 @@ internal partial class ModPanelUI {
     private void PreciseLeftPosYIncOnClick() {
         var newValue = StepUp(PreciseLeftPosY, _posSliderIncrement);
         PreciseLeftPosY = ClampPosSliderValue(newValue);
-        ApplyPreciseConfig();
+        OnSliderValueChangedDirectly(Hand.Left, SliderValueType.PositionY);
     }
 
     [UIAction("precise-left-pos-y-dec-on-click")]
@@ -228,7 +234,7 @@ internal partial class ModPanelUI {
     private void PreciseLeftPosYDecOnClick() {
         var newValue = StepDown(PreciseLeftPosY, _posSliderIncrement);
         PreciseLeftPosY = ClampPosSliderValue(newValue);
-        ApplyPreciseConfig();
+        OnSliderValueChangedDirectly(Hand.Left, SliderValueType.PositionY);
     }
 
     #endregion
@@ -252,10 +258,10 @@ internal partial class ModPanelUI {
     private void PreciseLeftPosZOnChange(float value) {
         if (_smoothingEnabled) {
             _preciseLeftPosZTarget = value;
-            OnSmoothValueChanged(Hand.Left, SmoothValueType.Position);
+            OnSliderTargetChanged(Hand.Left, SliderValueType.PositionZ);
         } else {
             _preciseLeftPosZ = value;
-            ApplyPreciseConfig();
+            OnSliderValueChangedDirectly(Hand.Left, SliderValueType.PositionZ);
         }
     }
 
@@ -264,7 +270,7 @@ internal partial class ModPanelUI {
     private void PreciseLeftPosZIncOnClick() {
         var newValue = StepUp(PreciseLeftPosZ, _posSliderIncrement);
         PreciseLeftPosZ = ClampPosSliderValue(newValue);
-        ApplyPreciseConfig();
+        OnSliderValueChangedDirectly(Hand.Left, SliderValueType.PositionZ);
     }
 
     [UIAction("precise-left-pos-z-dec-on-click")]
@@ -272,7 +278,7 @@ internal partial class ModPanelUI {
     private void PreciseLeftPosZDecOnClick() {
         var newValue = StepDown(PreciseLeftPosZ, _posSliderIncrement);
         PreciseLeftPosZ = ClampPosSliderValue(newValue);
-        ApplyPreciseConfig();
+        OnSliderValueChangedDirectly(Hand.Left, SliderValueType.PositionZ);
     }
 
     #endregion
@@ -296,11 +302,11 @@ internal partial class ModPanelUI {
     private void PreciseLeftRotXOnChange(float value) {
         if (_smoothingEnabled) {
             _preciseLeftRotXTarget = value;
-            OnSmoothValueChanged(Hand.Left, SmoothValueType.Rotation);
+            OnSliderTargetChanged(Hand.Left, SliderValueType.RotationX);
         } else {
             _preciseLeftRotX = value;
             CalculateReferenceSpaceRotations();
-            ApplyPreciseConfig();
+            OnSliderValueChangedDirectly(Hand.Left, SliderValueType.RotationX);
         }
     }
 
@@ -310,7 +316,7 @@ internal partial class ModPanelUI {
         var newValue = StepUp(PreciseLeftRotX, _rotSliderIncrement);
         PreciseLeftRotX = ClampRot90SliderValue(newValue);
         CalculateReferenceSpaceRotations();
-        ApplyPreciseConfig();
+        OnSliderValueChangedDirectly(Hand.Left, SliderValueType.RotationX);
     }
 
     [UIAction("precise-left-rot-x-dec-on-click")]
@@ -319,7 +325,7 @@ internal partial class ModPanelUI {
         var newValue = StepDown(PreciseLeftRotX, _rotSliderIncrement);
         PreciseLeftRotX = ClampRot90SliderValue(newValue);
         CalculateReferenceSpaceRotations();
-        ApplyPreciseConfig();
+        OnSliderValueChangedDirectly(Hand.Left, SliderValueType.RotationX);
     }
 
     #endregion
@@ -343,11 +349,11 @@ internal partial class ModPanelUI {
     private void PreciseLeftRotYOnChange(float value) {
         if (_smoothingEnabled) {
             _preciseLeftRotYTarget = value;
-            OnSmoothValueChanged(Hand.Left, SmoothValueType.Rotation);
+            OnSliderTargetChanged(Hand.Left, SliderValueType.RotationY);
         } else {
             _preciseLeftRotY = value;
             CalculateReferenceSpaceRotations();
-            ApplyPreciseConfig();
+            OnSliderValueChangedDirectly(Hand.Left, SliderValueType.RotationY);
         }
     }
 
@@ -357,7 +363,7 @@ internal partial class ModPanelUI {
         var newValue = StepUp(PreciseLeftRotY, _rotSliderIncrement);
         PreciseLeftRotY = ClampRot180SliderValue(newValue);
         CalculateReferenceSpaceRotations();
-        ApplyPreciseConfig();
+        OnSliderValueChangedDirectly(Hand.Left, SliderValueType.RotationY);
     }
 
     [UIAction("precise-left-rot-y-dec-on-click")]
@@ -366,7 +372,7 @@ internal partial class ModPanelUI {
         var newValue = StepDown(PreciseLeftRotY, _rotSliderIncrement);
         PreciseLeftRotY = ClampRot180SliderValue(newValue);
         CalculateReferenceSpaceRotations();
-        ApplyPreciseConfig();
+        OnSliderValueChangedDirectly(Hand.Left, SliderValueType.RotationY);
     }
 
     #endregion
@@ -390,11 +396,11 @@ internal partial class ModPanelUI {
     private void PreciseLeftRotZOnChange(float value) {
         if (_smoothingEnabled) {
             _preciseLeftRotZTarget = value;
-            OnSmoothValueChanged(Hand.Left, SmoothValueType.Rotation);
+            OnSliderTargetChanged(Hand.Left, SliderValueType.RotationZ);
         } else {
             _preciseLeftRotZ = value;
             CalculateReferenceSpaceRotations();
-            ApplyPreciseConfig();
+            OnSliderValueChangedDirectly(Hand.Left, SliderValueType.RotationZ);
         }
     }
 
@@ -404,7 +410,7 @@ internal partial class ModPanelUI {
         var newValue = StepUp(PreciseLeftRotZ, _rotSliderIncrement);
         PreciseLeftRotZ = ClampRot180SliderValue(newValue);
         CalculateReferenceSpaceRotations();
-        ApplyPreciseConfig();
+        OnSliderValueChangedDirectly(Hand.Left, SliderValueType.RotationZ);
     }
 
     [UIAction("precise-left-rot-z-dec-on-click")]
@@ -413,12 +419,12 @@ internal partial class ModPanelUI {
         var newValue = StepDown(PreciseLeftRotZ, _rotSliderIncrement);
         PreciseLeftRotZ = ClampRot180SliderValue(newValue);
         CalculateReferenceSpaceRotations();
-        ApplyPreciseConfig();
+        OnSliderValueChangedDirectly(Hand.Left, SliderValueType.RotationZ);
     }
 
     #endregion
 
-    #region RotationHor
+    #region Curve
 
     private float _preciseLeftRotHor;
 
@@ -437,35 +443,35 @@ internal partial class ModPanelUI {
     private void PreciseLeftRotHorOnChange(float value) {
         if (_smoothingEnabled) {
             _preciseLeftRotHorTarget = value;
-            OnSmoothValueChanged(Hand.Left, SmoothValueType.RotationReference);
+            OnSliderTargetChanged(Hand.Left, SliderValueType.Curve);
         } else {
             _preciseLeftRotHor = value;
             CalculateControllerSpaceRotations();
-            ApplyPreciseConfig();
+            OnSliderValueChangedDirectly(Hand.Left, SliderValueType.Curve);
         }
     }
 
     [UIAction("precise-left-rot-hor-inc-on-click")]
     [UsedImplicitly]
     private void PreciseLeftRotHorIncOnClick() {
-        var newValue = StepUp(PreciseLeftRotHor, _rotSliderIncrement);
+        var newValue = PreciseLeftRotHor + _rotSliderIncrement;
         PreciseLeftRotHor = ClampRot180SliderValue(newValue);
         CalculateControllerSpaceRotations();
-        ApplyPreciseConfig();
+        OnSliderValueChangedDirectly(Hand.Left, SliderValueType.Curve);
     }
 
     [UIAction("precise-left-rot-hor-dec-on-click")]
     [UsedImplicitly]
     private void PreciseLeftRotHorDecOnClick() {
-        var newValue = StepDown(PreciseLeftRotHor, _rotSliderIncrement);
+        var newValue = PreciseLeftRotHor - _rotSliderIncrement;
         PreciseLeftRotHor = ClampRot180SliderValue(newValue);
         CalculateControllerSpaceRotations();
-        ApplyPreciseConfig();
+        OnSliderValueChangedDirectly(Hand.Left, SliderValueType.Curve);
     }
 
     #endregion
 
-    #region RotationVert
+    #region Balance
 
     private float _preciseLeftRotVert;
 
@@ -484,30 +490,30 @@ internal partial class ModPanelUI {
     private void PreciseLeftRotVertOnChange(float value) {
         if (_smoothingEnabled) {
             _preciseLeftRotVertTarget = value;
-            OnSmoothValueChanged(Hand.Left, SmoothValueType.RotationReference);
+            OnSliderTargetChanged(Hand.Left, SliderValueType.Balance);
         } else {
             _preciseLeftRotVert = value;
             CalculateControllerSpaceRotations();
-            ApplyPreciseConfig();
+            OnSliderValueChangedDirectly(Hand.Left, SliderValueType.Balance);
         }
     }
 
     [UIAction("precise-left-rot-vert-inc-on-click")]
     [UsedImplicitly]
     private void PreciseLeftRotVertIncOnClick() {
-        var newValue = StepUp(PreciseLeftRotVert, _rotSliderIncrement);
+        var newValue = PreciseLeftRotVert + _rotSliderIncrement;
         PreciseLeftRotVert = ClampRot90SliderValue(newValue);
         CalculateControllerSpaceRotations();
-        ApplyPreciseConfig();
+        OnSliderValueChangedDirectly(Hand.Left, SliderValueType.Balance);
     }
 
     [UIAction("precise-left-rot-vert-dec-on-click")]
     [UsedImplicitly]
     private void PreciseLeftRotVertDecOnClick() {
-        var newValue = StepDown(PreciseLeftRotVert, _rotSliderIncrement);
+        var newValue = PreciseLeftRotVert - _rotSliderIncrement;
         PreciseLeftRotVert = ClampRot90SliderValue(newValue);
         CalculateControllerSpaceRotations();
-        ApplyPreciseConfig();
+        OnSliderValueChangedDirectly(Hand.Left, SliderValueType.Balance);
     }
 
     #endregion
