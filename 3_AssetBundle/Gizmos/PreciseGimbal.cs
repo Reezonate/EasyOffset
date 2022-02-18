@@ -4,7 +4,6 @@ namespace EasyOffset {
     public class PreciseGimbal : MonoBehaviour {
         #region Serialized
 
-        [SerializeField] private Transform arrowsTransform;
         [SerializeField] private Transform gimbalRingXTransform;
         [SerializeField] private Transform gimbalRingYTransform;
         [SerializeField] private Material gimbalRingXMaterial;
@@ -52,17 +51,15 @@ namespace EasyOffset {
 
         #region Interaction
 
-        public void SetValues(
-            Vector3 originPosition,
-            float xRingRotation,
-            float yRingRotation
-        ) {
+        public void SetValues(Vector3 originPosition, Quaternion saberRotation) {
+            var rotationEuler = saberRotation.eulerAngles;
+            
             transform.localPosition = originPosition;
-            gimbalRingYTransform.localRotation = Quaternion.Euler(0.0f, yRingRotation, 0.0f);
-            gimbalRingXTransform.localRotation = Quaternion.Euler(xRingRotation, 0.0f, 0.0f);
+            gimbalRingYTransform.localRotation = Quaternion.Euler(0.0f, rotationEuler.y, 0.0f);
+            gimbalRingXTransform.localRotation = Quaternion.Euler(rotationEuler.x, 0.0f, 0.0f);
 
-            _xAngleOffset = -xRingRotation * Mathf.Deg2Rad;
-            _yAngleOffset = yRingRotation * Mathf.Deg2Rad;
+            _xAngleOffset = -rotationEuler.x * Mathf.Deg2Rad;
+            _yAngleOffset = rotationEuler.y * Mathf.Deg2Rad;
             UpdateMaterials();
         }
 

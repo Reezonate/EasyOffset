@@ -94,7 +94,9 @@ internal partial class ModPanelUI {
 
     #endregion
 
-    #region Combined Rotation Euler
+    #region Combined Rotation
+    
+    private Quaternion PreciseRightRotation => TransformUtils.RotationFromEuler(PreciseRightRotationEuler);
 
     private Vector3 PreciseRightRotationEuler {
         get => new(PreciseRightRotX, PreciseRightRotY, PreciseRightRotZ);

@@ -8,19 +8,21 @@ namespace EasyOffset {
         [SerializeField] private Material material;
         [SerializeField] private MeshRenderer meshRenderer;
         [SerializeField] private Transform sphereTransform;
-        [SerializeField] private TextMeshPro textMesh;
+
         [SerializeField] private Transform textRoot;
+        [SerializeField] private TextMeshPro xText;
+        [SerializeField] private TextMeshPro yText;
+        [SerializeField] private TextMeshPro balanceText;
+        [SerializeField] private TextMeshPro curveText;
 
         #endregion
 
         #region ShaderProperties
 
-        private static readonly int SphericalCoordinatesPropertyId = Shader.PropertyToID("_SphericalCoordinates");
         private static readonly int OrthoDirectionPropertyId = Shader.PropertyToID("_OrthoDirection");
-
-        private static readonly int UpDownPlanePropertyId = Shader.PropertyToID("_UpDownPlane");
-        private static readonly int LeftRightPlanePropertyId = Shader.PropertyToID("_LeftRightPlane");
-        private static readonly int PlanesMultiplierPropertyId = Shader.PropertyToID("_PlanesMultiplier");
+        private static readonly int PreviousOrthoDirectionPropertyId = Shader.PropertyToID("_PreviousOrthoDirection");
+        private static readonly int PointerPlanePropertyId = Shader.PropertyToID("_PointerPlane");
+        private static readonly int PreviousPointerMultiplierPropertyId = Shader.PropertyToID("_PreviousPointerMultiplier");
 
         private static readonly int StraightSwingVerticalPlanePropertyId = Shader.PropertyToID("_StraightSwingVerticalPlane");
         private static readonly int StraightSwingHorizontalPlanePropertyId = Shader.PropertyToID("_StraightSwingHorizontalPlane");
@@ -32,26 +34,31 @@ namespace EasyOffset {
 
         #endregion
 
+        #region Lerp Ranges & Variables
+
+        private float _currentFocus, _targetFocus;
+        private float _currentScale, _targetScale;
+        private float _xRotationOffset, _yRotationOffset;
+
+        private static readonly Range TextOffsetXRange = new Range(2.5f, 6.0f);
+        private static readonly Range TextOffsetYRange = new Range(5.0f, 7.0f);
+        private static readonly Range AlphaRange = new Range(0.2f, 1.0f);
+        private static readonly Range FadeRadiusRange = new Range(20 * Mathf.Deg2Rad, 50 * Mathf.Deg2Rad);
+
+        #endregion
+
         #region Start
 
         private Material _materialInstance;
         private bool _isReady;
 
-        private float _currentFadeRadius;
-        private float _targetFadeRadius;
-
-        private float _currentAlpha;
-        private float _targetAlpha;
-
-        private float _currentScale;
-        private float _targetScale;
-
         private void Start() {
             _materialInstance = Instantiate(material);
             meshRenderer.material = _materialInstance;
             _currentScale = _targetScale = 1.0f;
-            _currentAlpha = _targetAlpha = NoFocusAlpha;
-            _currentFadeRadius = _targetFadeRadius = NoFocusFadeRadius;
+            _currentFocus = _targetFocus = 0.0f;
+            _xRotationOffset = TextOffsetXRange.Start;
+            _yRotationOffset = TextOffsetYRange.Start;
             _isReady = true;
             UpdateMaterial();
         }
@@ -60,34 +67,31 @@ namespace EasyOffset {
 
         #region UpdateMaterials
 
+        private float _alpha, _fadeRadius;
+
         private Vector4 _straightSwingVerticalPlane;
         private Vector4 _straightSwingHorizontalPlane;
         private bool _straightSwingPlaneVisible;
 
-        private Vector4 _upDownPlaneVector;
-        private Vector4 _leftRightPlaneVector;
-        private bool _previousDirectionVisible;
-
         private Vector3 _orthoDirection = Vector3.forward;
-        private Vector2 _sphericalCoordinates;
+        private Vector3 _previousOrthoDirection = Vector3.forward;
+        private Vector4 _pointerPlaneVector;
 
         private void UpdateMaterial() {
             if (!_isReady) return;
 
-            _materialInstance.SetFloat(AlphaPropertyId, _currentAlpha);
+            _materialInstance.SetFloat(AlphaPropertyId, _alpha);
             _materialInstance.SetFloat(ScalePropertyId, _currentScale);
-            _materialInstance.SetFloat(FadeRadiusPropertyId, _currentFadeRadius);
+            _materialInstance.SetFloat(FadeRadiusPropertyId, _fadeRadius);
 
             _materialInstance.SetVector(StraightSwingVerticalPlanePropertyId, _straightSwingVerticalPlane);
             _materialInstance.SetVector(StraightSwingHorizontalPlanePropertyId, _straightSwingHorizontalPlane);
             _materialInstance.SetFloat(StraightSwingPlaneMultiplierPropertyId, _straightSwingPlaneVisible ? 1f : 0f);
 
-            _materialInstance.SetVector(UpDownPlanePropertyId, _upDownPlaneVector);
-            _materialInstance.SetVector(LeftRightPlanePropertyId, _leftRightPlaneVector);
-            _materialInstance.SetFloat(PlanesMultiplierPropertyId, _previousDirectionVisible ? 1f : 0f);
-
-            _materialInstance.SetVector(SphericalCoordinatesPropertyId, _sphericalCoordinates);
             _materialInstance.SetVector(OrthoDirectionPropertyId, _orthoDirection);
+            _materialInstance.SetVector(PreviousOrthoDirectionPropertyId, _previousOrthoDirection);
+            _materialInstance.SetVector(PointerPlanePropertyId, _pointerPlaneVector);
+            _materialInstance.SetFloat(PreviousPointerMultiplierPropertyId, _focused ? 1f : 0f);
         }
 
         #endregion
@@ -96,65 +100,51 @@ namespace EasyOffset {
 
         private void LateUpdate() {
             var t = Time.deltaTime * 10;
-            _currentAlpha = Mathf.Lerp(_currentAlpha, _targetAlpha, t);
+
+            _currentFocus = Mathf.Lerp(_currentFocus, _targetFocus, t);
+            _alpha = AlphaRange.SlideBy(_currentFocus);
+            _fadeRadius = FadeRadiusRange.SlideBy(_currentFocus);
+            _xRotationOffset = TextOffsetXRange.SlideBy(_currentFocus);
+            _yRotationOffset = TextOffsetYRange.SlideBy(_currentFocus);
+
             _currentScale = Mathf.Lerp(_currentScale, _targetScale, t);
-            _currentFadeRadius = Mathf.Lerp(_currentFadeRadius, _targetFadeRadius, t);
             sphereTransform.localPosition = -_orthoDirection * (_currentScale - 1.0f);
             sphereTransform.localScale = new Vector3(_currentScale, _currentScale, _currentScale);
+
+            UpdateAllTextTransforms();
             UpdateMaterial();
         }
 
         #endregion
 
-        #region SetRotation
+        #region SetHand
 
-        public void SetRotation(Quaternion rotation) {
+        private Hand _hand;
+
+        public void SetHand(Hand hand) {
+            _hand = hand;
+        }
+
+        #endregion
+
+        #region SetRotations
+
+        public void SetRotations(
+            Quaternion rotation,
+            bool hasReference,
+            Quaternion referenceRotation
+        ) {
             _orthoDirection = rotation * Vector3.forward;
-            _sphericalCoordinates = TransformUtils.OrthoToSphericalDirection(_orthoDirection);
 
-            UpdateTextString(_sphericalCoordinates);
-            UpdateTextPosition(_orthoDirection);
-            UpdateMaterial();
-        }
-
-        #endregion
-
-        #region SetPreviousRotation
-
-        public void SetPreviousRotation(Quaternion previousRotation, bool visible, Quaternion? referenceRotation) {
-            var orthoDirection = previousRotation * Vector3.forward;
-
-            Vector3 localUp;
-
-            if (referenceRotation.HasValue) {
-                localUp = referenceRotation.Value * Vector3.up;
-            } else {
-                localUp = transform.InverseTransformDirection(Vector3.up);
-            }
-
-            var lookFromCenter = Quaternion.LookRotation(orthoDirection, localUp);
-
-            var upDownPlane = new Plane(lookFromCenter * Vector3.right, orthoDirection);
-            _upDownPlaneVector = upDownPlane.normal;
-            _upDownPlaneVector.w = upDownPlane.distance;
-
-            var leftRightPlane = new Plane(lookFromCenter * Vector3.up, orthoDirection);
-            _leftRightPlaneVector = leftRightPlane.normal;
-            _leftRightPlaneVector.w = leftRightPlane.distance;
-
-            _previousDirectionVisible = visible;
-
-            UpdateMaterial();
-        }
-
-        #endregion
-
-        #region SetReferenceRotation
-
-        public void SetReferenceRotation(bool hasReference, Quaternion referenceRotation) {
             _straightSwingPlaneVisible = hasReference;
             _straightSwingVerticalPlane = referenceRotation * Vector3.left;
             _straightSwingHorizontalPlane = referenceRotation * Vector3.up;
+
+            var sphericalRadians = TransformUtils.OrthoToSphericalDirection(_orthoDirection);
+            TransformUtils.ToReferenceSpace(rotation, referenceRotation, out var curve, out var balance);
+            UpdateAllTextStrings(sphericalRadians.x * Mathf.Rad2Deg, sphericalRadians.y * Mathf.Rad2Deg, balance, curve);
+
+            UpdatePointerPlane();
             UpdateMaterial();
         }
 
@@ -162,15 +152,21 @@ namespace EasyOffset {
 
         #region Focus
 
-        private const float NoFocusAlpha = 0.2f;
-        private const float FocusAlpha = 1.0f;
-
-        private const float NoFocusFadeRadius = 20 * Mathf.Deg2Rad;
-        private const float FocusFadeRadius = 50 * Mathf.Deg2Rad;
+        private bool _focused;
 
         public void SetFocus(bool value) {
-            _targetAlpha = value ? FocusAlpha : NoFocusAlpha;
-            _targetFadeRadius = value ? FocusFadeRadius : NoFocusFadeRadius;
+            if (_focused == value) return;
+
+            _previousOrthoDirection = _orthoDirection;
+            UpdatePointerPlane();
+            UpdateMaterial();
+
+            _focused = value;
+            _targetFocus = value ? 1.0f : 0.0f;
+        }
+
+        private void UpdatePointerPlane() {
+            _pointerPlaneVector = new Plane(Vector3.zero, _orthoDirection, _previousOrthoDirection).normal;
         }
 
         #endregion
@@ -187,39 +183,40 @@ namespace EasyOffset {
 
         public void SetVisible(bool value) {
             gameObject.SetActive(value);
-
-            if (!value) return;
-            _currentAlpha = _targetAlpha;
-            _currentScale = _targetScale;
-            _currentFadeRadius = _targetFadeRadius;
-        }
-
-        #endregion
-
-        #region SetTextLookAt
-
-        public void SetTextLookAt(Vector3 lookAt) {
-            UpdateTextRotation(lookAt);
         }
 
         #endregion
 
         #region Text
 
-        private void UpdateTextString(Vector2 sphericalRadians) {
-            var xString = (sphericalRadians.x * Mathf.Rad2Deg).ToString("0.00");
-            var yString = (sphericalRadians.y * Mathf.Rad2Deg).ToString("0.00");
-
-            textMesh.text = $"<mspace=0.5em><color=red>X:{xString}°</color>\n<color=green>Y:{yString}°</color></mspace>";
-            textMesh.alignment = TextAlignmentOptions.Midline;
+        private void UpdateAllTextStrings(float x, float y, float balance, float curve) {
+            UpdateTextString(xText, "X", x);
+            UpdateTextString(yText, "Y", y);
+            UpdateTextString(balanceText, "B", balance);
+            UpdateTextString(curveText, "C", _hand == Hand.Right ? curve : -curve);
         }
 
-        private void UpdateTextPosition(Vector3 orthoDirection) {
-            textRoot.localPosition = orthoDirection;
+        private void UpdateAllTextTransforms() {
+            var localUp = transform.InverseTransformVector(Vector3.up);
+            textRoot.localRotation = Quaternion.LookRotation(_orthoDirection, localUp);
+
+            UpdateTextLocalTransform(xText, -_xRotationOffset, -_yRotationOffset);
+            UpdateTextLocalTransform(yText, -_xRotationOffset, _yRotationOffset);
+            UpdateTextLocalTransform(balanceText, _xRotationOffset, -_yRotationOffset);
+            UpdateTextLocalTransform(curveText, _xRotationOffset, _yRotationOffset);
         }
 
-        private void UpdateTextRotation(Vector3 lookAt) {
-            textRoot.LookAt(lookAt, Vector3.up);
+        private static void UpdateTextString(TMP_Text text, string prefix, float angleDegrees) {
+            text.alignment = TextAlignmentOptions.Midline;
+            text.text = $"{prefix}: <mspace=0.5em>{angleDegrees:F2}°";
+        }
+
+        private static void UpdateTextLocalTransform(Component text, float xRotationOffset, float yRotationOffset) {
+            var textTransform = text.transform;
+
+            var rotation = Quaternion.Euler(xRotationOffset, yRotationOffset, 0.0f);
+            textTransform.localPosition = rotation * Vector3.forward;
+            textTransform.localRotation = rotation;
         }
 
         #endregion

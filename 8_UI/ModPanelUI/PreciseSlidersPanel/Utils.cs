@@ -40,39 +40,4 @@ internal partial class ModPanelUI {
     }
 
     #endregion
-
-    #region RotationConversions
-
-    private static void ToReferenceSpace(
-        Vector3 originalRotationEuler,
-        Quaternion rotationReference,
-        out float horizontal,
-        out float vertical
-    ) {
-        var originalRotation = TransformUtils.RotationFromEuler(originalRotationEuler);
-        var rotationDifference = Quaternion.Inverse(rotationReference) * originalRotation;
-        var differenceDirection = TransformUtils.DirectionFromRotation(rotationDifference);
-        var resultEulerRad = TransformUtils.OrthoToSphericalDirection(differenceDirection);
-
-        horizontal = -resultEulerRad.y * Mathf.Rad2Deg;
-        vertical = resultEulerRad.x * Mathf.Rad2Deg;
-    }
-
-    private static Vector3 FromReferenceSpace(
-        Vector3 originalRotationEuler,
-        Quaternion rotationReference,
-        float horizontal,
-        float vertical
-    ) {
-        var originalRotation = TransformUtils.RotationFromEuler(originalRotationEuler);
-        var originalDirection = TransformUtils.DirectionFromEuler(originalRotationEuler);
-        var additionalRotation = Quaternion.Euler(vertical, -horizontal, 0.0f);
-        var resultRotation = rotationReference * additionalRotation;
-        var resultDirection = TransformUtils.DirectionFromRotation(resultRotation);
-        var rotationDifference = Quaternion.FromToRotation(originalDirection, resultDirection);
-        var finalRotation = rotationDifference * originalRotation;
-        return TransformUtils.EulerFromRotation(finalRotation);
-    }
-
-    #endregion
 }

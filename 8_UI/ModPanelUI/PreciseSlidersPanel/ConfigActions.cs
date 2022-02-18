@@ -94,35 +94,40 @@ internal partial class ModPanelUI {
 
     private void CalculateControllerSpaceRotations() {
         if (PluginConfig.LeftSaberHasReference) {
-            var leftCoordinates = FromReferenceSpace(
-                PreciseLeftRotationEuler,
+            var leftCoordinates = TransformUtils.FromReferenceSpace(
+                PreciseLeftRotation,
                 PluginConfig.LeftSaberReferenceRotation,
                 PreciseLeftRotHor,
                 PreciseLeftRotVert
             );
 
-            PreciseLeftRotX = _preciseLeftRotXCurrent = _preciseLeftRotXTarget = leftCoordinates.x;
-            PreciseLeftRotY = _preciseLeftRotYCurrent = _preciseLeftRotYTarget = leftCoordinates.y;
-            PreciseLeftRotZ = _preciseLeftRotZCurrent = _preciseLeftRotZTarget = leftCoordinates.z;
+            PreciseLeftRotX = leftCoordinates.x;
+            PreciseLeftRotY = leftCoordinates.y;
+            PreciseLeftRotZ = leftCoordinates.z;
         }
-        
+
         if (PluginConfig.RightSaberHasReference) {
-            var rightCoordinates = FromReferenceSpace(
-                PreciseRightRotationEuler,
+            var rightCoordinates = TransformUtils.FromReferenceSpace(
+                PreciseRightRotation,
                 PluginConfig.RightSaberReferenceRotation,
                 PreciseRightRotHor,
                 PreciseRightRotVert
             );
 
-            PreciseRightRotX = _preciseRightRotXCurrent = _preciseRightRotXTarget = rightCoordinates.x;
-            PreciseRightRotY = _preciseRightRotYCurrent = _preciseRightRotYTarget = rightCoordinates.y;
-            PreciseRightRotZ = _preciseRightRotZCurrent = _preciseRightRotZTarget = rightCoordinates.z;
+            PreciseRightRotX = rightCoordinates.x;
+            PreciseRightRotY = rightCoordinates.y;
+            PreciseRightRotZ = rightCoordinates.z;
         }
     }
 
     private void CalculateReferenceSpaceRotations() {
         if (PluginConfig.LeftSaberHasReference) {
-            ToReferenceSpace(PreciseLeftRotationEuler, PluginConfig.LeftSaberReferenceRotation, out var leftHorizontal, out var leftVertical);
+            TransformUtils.ToReferenceSpace(
+                PreciseLeftRotation,
+                PluginConfig.LeftSaberReferenceRotation,
+                out var leftHorizontal,
+                out var leftVertical
+            );
             PreciseLeftRotHor = leftHorizontal;
             PreciseLeftRotVert = leftVertical;
         } else {
@@ -131,7 +136,12 @@ internal partial class ModPanelUI {
         }
 
         if (PluginConfig.RightSaberHasReference) {
-            ToReferenceSpace(PreciseRightRotationEuler, PluginConfig.RightSaberReferenceRotation, out var rightHorizontal, out var rightVertical);
+            TransformUtils.ToReferenceSpace(
+                PreciseRightRotation,
+                PluginConfig.RightSaberReferenceRotation,
+                out var rightHorizontal,
+                out var rightVertical
+            );
             PreciseRightRotHor = rightHorizontal;
             PreciseRightRotVert = rightVertical;
         } else {

@@ -220,7 +220,7 @@ public static class TransformUtils {
 
     #endregion
 
-    #region EulerUtils
+    #region ClampEulerAngles
 
     public static Vector3 ClampEulerAngles(Vector3 eulerAngles) {
         return new Vector3(
@@ -236,6 +236,39 @@ public static class TransformUtils {
             < -180 => 360 - value,
             _ => value
         };
+    }
+
+    #endregion
+    
+    #region Original <-> Reference
+
+    public static void ToReferenceSpace(
+        Quaternion originalRotation,
+        Quaternion rotationReference,
+        out float horizontal,
+        out float vertical
+    ) {
+        var rotationDifference = Quaternion.Inverse(rotationReference) * originalRotation;
+        var differenceDirection = DirectionFromRotation(rotationDifference);
+        var resultEulerRad = OrthoToSphericalDirection(differenceDirection);
+
+        horizontal = -resultEulerRad.y * Mathf.Rad2Deg;
+        vertical = resultEulerRad.x * Mathf.Rad2Deg;
+    }
+
+    public static Vector3 FromReferenceSpace(
+        Quaternion originalRotation,
+        Quaternion rotationReference,
+        float horizontal,
+        float vertical
+    ) {
+        var originalDirection = DirectionFromRotation(originalRotation);
+        var additionalRotation = Quaternion.Euler(vertical, -horizontal, 0.0f);
+        var resultRotation = rotationReference * additionalRotation;
+        var resultDirection = DirectionFromRotation(resultRotation);
+        var rotationDifference = Quaternion.FromToRotation(originalDirection, resultDirection);
+        var finalRotation = rotationDifference * originalRotation;
+        return EulerFromRotation(finalRotation);
     }
 
     #endregion
