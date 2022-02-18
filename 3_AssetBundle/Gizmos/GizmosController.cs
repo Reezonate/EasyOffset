@@ -88,7 +88,6 @@ namespace EasyOffset {
 
         public void SetControllerTransform(Vector3 position, Quaternion rotation) {
             controllerTransform.SetPositionAndRotation(position, rotation);
-            sphericalBasis.SetTextLookAt(position);
         }
 
         #endregion
@@ -108,6 +107,7 @@ namespace EasyOffset {
         #region SetCameraPosition
 
         public void SetCameraPosition(Vector3 cameraWorldPosition) {
+            sphericalBasis.SetTextLookAt(cameraWorldPosition);
             orthonormalBasis.SetTextLookAt(cameraWorldPosition);
             swingPreview.SetLookAt(cameraWorldPosition);
             pivot.SetLookAt(cameraWorldPosition);
@@ -117,8 +117,8 @@ namespace EasyOffset {
 
         #region SetPreviousRotation
 
-        public void SetPreviousRotation(Quaternion previousRotation, bool visible) {
-            sphericalBasis.SetPreviousRotation(previousRotation, visible);
+        public void SetPreviousRotation(Quaternion previousRotation, bool visible, Quaternion? referenceRotation = null) {
+            sphericalBasis.SetPreviousRotation(previousRotation, visible, referenceRotation);
         }
 
         #endregion

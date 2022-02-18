@@ -154,6 +154,8 @@
     <Compile Include="1_Config\PluginConfig\Utilities.cs" />
     <Compile Include="1_Config\PluginConfig\ControllerOffsets.cs" />
     <Compile Include="1_Config\PluginConfig\UserPreferences.cs" />
+    <Compile Include="1_Config\Utils\CachedVariable.cs" />
+    <Compile Include="1_Config\Utils\ConfigFileQuaternion.cs" />
     <Compile Include="2_Core\Installers\OnAppInstaller.cs" />
     <Compile Include="2_Core\Installers\OnMenuInstaller.cs" />
     <Compile Include="2_Core\Managers\Abomination\Abomination.cs" />
@@ -186,7 +188,6 @@
     <Compile Include="0_Harmony\VRHelpersPatches\DevicelessVRHelperAdjustControllerTransform.cs" />
     <Compile Include="0_Harmony\VRHelpersPatches\OculusVRHelperAdjustControllerTransform.cs" />
     <Compile Include="0_Harmony\VRHelpersPatches\OpenVRHelperAdjustControllerTransform.cs" />
-    <Compile Include="1_Config\CachedVariable.cs" />
     <Compile Include="1_Config\ConfigFileData.cs" />
     <Compile Include="1_Config\ConfigMigration\ConfigConversions.cs" />
     <Compile Include="1_Config\ConfigMigration\ConfigExportResult.cs" />

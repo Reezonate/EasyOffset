@@ -121,10 +121,17 @@ namespace EasyOffset {
 
         #region SetPreviousRotation
 
-        public void SetPreviousRotation(Quaternion previousRotation, bool visible) {
+        public void SetPreviousRotation(Quaternion previousRotation, bool visible, Quaternion? referenceRotation) {
             var orthoDirection = previousRotation * Vector3.forward;
 
-            var localUp = transform.InverseTransformDirection(Vector3.up);
+            Vector3 localUp;
+
+            if (referenceRotation.HasValue) {
+                localUp = referenceRotation.Value * Vector3.up;
+            } else {
+                localUp = transform.InverseTransformDirection(Vector3.up);
+            }
+
             var lookFromCenter = Quaternion.LookRotation(orthoDirection, localUp);
 
             var upDownPlane = new Plane(lookFromCenter * Vector3.right, orthoDirection);

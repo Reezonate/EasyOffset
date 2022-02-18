@@ -26,15 +26,19 @@ internal partial class ModPanelUI {
 
     private void OnRoomCenterChanged() {
         var tmp = _roomCenterSO.value;
-        RoomXText = $"Room X: <mspace=0.45em>{(tmp.x * 100):F1}</mspace> cm";
-        RoomYText = $"Room Y: <mspace=0.45em>{(tmp.y * 100):F1}</mspace> cm";
-        RoomZText = $"Room Z: <mspace=0.45em>{(tmp.z * 100):F1}</mspace> cm";
+        RoomXText = BuildRoomOffsetValueString("Room X", tmp.x, 40);
+        RoomYText = BuildRoomOffsetValueString("Room Y", tmp.y, 40);
+        RoomZText = BuildRoomOffsetValueString("Room Z", tmp.z, 40);
     }
 
     private void OnHmdPositionChange(Vector3 position) {
-        HmdXText = $"HMD X: <mspace=0.45em>{(position.x * 100):F1}</mspace> cm";
-        HmdYText = $"HMD Y: <mspace=0.45em>{(position.y * 100):F1}</mspace> cm";
-        HmdZText = $"HMD Z: <mspace=0.45em>{(position.z * 100):F1}</mspace> cm";
+        HmdXText = BuildRoomOffsetValueString("HMD X", position.x, 35);
+        HmdYText = BuildRoomOffsetValueString("HMD Y", position.y, 35);
+        HmdZText = BuildRoomOffsetValueString("HMD Z", position.z, 35);
+    }
+
+    private static string BuildRoomOffsetValueString(string prefix, float value, int offsetPercent) {
+        return $"{prefix} <pos={offsetPercent}%><mspace=0.43em>{((value >= 0) ? " " : "")}{(value * 100):F1}</mspace> cm";
     }
 
     #endregion

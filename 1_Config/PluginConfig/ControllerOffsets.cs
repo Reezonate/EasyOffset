@@ -103,16 +103,25 @@ internal static partial class PluginConfig {
 
     #endregion
 
-    #region ReferenceRotation
+    #region HasReference
 
     public static bool LeftSaberHasReference {
         get => ConfigFileData.Instance.LeftSaberHasReference;
         private set => ConfigFileData.Instance.LeftSaberHasReference = value;
     }
 
+    #endregion
+
+    #region ReferenceRotation
+
+    private static Quaternion _leftSaberReferenceRotation = ConfigFileData.Instance.LeftSaberReference.ToUnityQuaternion();
+
     public static Quaternion LeftSaberReferenceRotation {
-        get => ConfigFileData.Instance.LeftSaberReferenceRotation;
-        private set => ConfigFileData.Instance.LeftSaberReferenceRotation = value;
+        get => _leftSaberReferenceRotation;
+        private set {
+            _leftSaberReferenceRotation = value;
+            ConfigFileData.Instance.LeftSaberReference = ConfigFileQuaternion.FromUnityQuaternion(value);
+        }
     }
 
     #endregion
@@ -197,16 +206,25 @@ internal static partial class PluginConfig {
 
     #endregion
 
-    #region ReferenceRotation
+    #region HasReference
 
     public static bool RightSaberHasReference {
         get => ConfigFileData.Instance.RightSaberHasReference;
         private set => ConfigFileData.Instance.RightSaberHasReference = value;
     }
 
+    #endregion
+
+    #region ReferenceRotation
+
+    private static Quaternion _rightSaberReferenceRotation = ConfigFileData.Instance.RightSaberReference.ToUnityQuaternion();
+
     public static Quaternion RightSaberReferenceRotation {
-        get => ConfigFileData.Instance.RightSaberReferenceRotation;
-        private set => ConfigFileData.Instance.RightSaberReferenceRotation = value;
+        get => _rightSaberReferenceRotation;
+        private set {
+            _rightSaberReferenceRotation = value;
+            ConfigFileData.Instance.RightSaberReference = ConfigFileQuaternion.FromUnityQuaternion(value);
+        }
     }
 
     #endregion
@@ -313,9 +331,14 @@ internal static partial class PluginConfig {
         LeftSaberPivotPosition = preset.LeftSaberPivotPosition;
         LeftSaberRotation = preset.LeftSaberRotation;
         LeftSaberZOffset = preset.LeftSaberZOffset;
+        LeftSaberHasReference = preset.LeftSaberHasReference;
+        LeftSaberReferenceRotation = preset.LeftSaberReferenceRotation;
+
         RightSaberPivotPosition = preset.RightSaberPivotPosition;
         RightSaberRotation = preset.RightSaberRotation;
         RightSaberZOffset = preset.RightSaberZOffset;
+        RightSaberHasReference = preset.RightSaberHasReference;
+        RightSaberReferenceRotation = preset.RightSaberReferenceRotation;
 
         EnableConfigChangeEvent();
         NotifyConfigWasChanged();
@@ -328,9 +351,13 @@ internal static partial class PluginConfig {
             LeftSaberPivotPosition,
             LeftSaberRotationEuler,
             LeftSaberZOffset,
+            LeftSaberHasReference,
+            LeftSaberReferenceRotation,
             RightSaberPivotPosition,
             RightSaberRotationEuler,
-            RightSaberZOffset
+            RightSaberZOffset,
+            RightSaberHasReference,
+            RightSaberReferenceRotation
         );
     }
 

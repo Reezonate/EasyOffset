@@ -189,11 +189,12 @@
                                         on-click="precise-left-rot-z-dec-on-click" preferred-width="~precise-slider-button-width"/>
                                 <!--    ROT REFERENCE    -->
                                 <horizontal active="~precise-rotation-reference-active" preferred-height="~precise-group-spacing"/>
-                                <button active="~precise-rotation-reference-active" text="~l-arrow" face-color="~precise-hor-color"
-                                        on-click="precise-left-rot-hor-dec-on-click" interactable="~precise-left-rotation-reference-interactable"
-                                        preffered-height="~precise-slider-button-height" preferred-width="~precise-slider-button-width"/>
                                 <button active="~precise-rotation-reference-active" text="~down-text" face-color="~precise-vert-color"
                                         on-click="precise-left-rot-vert-dec-on-click" interactable="~precise-left-rotation-reference-interactable"
+                                        preffered-height="~precise-slider-button-height" preferred-width="~precise-slider-button-width"/>
+                                <horizontal active="~precise-rotation-reference-active" preferred-height="~precise-group-spacing"/>
+                                <button active="~precise-rotation-reference-active" text="~l-arrow" face-color="~precise-hor-color"
+                                        on-click="precise-left-rot-hor-dec-on-click" interactable="~precise-left-rotation-reference-interactable"
                                         preffered-height="~precise-slider-button-height" preferred-width="~precise-slider-button-width"/>
                             </vertical>
 
@@ -235,13 +236,14 @@
                                 <!--    ROT REFERENCE    -->
                                 <horizontal active="~precise-rotation-reference-active" preferred-height="~precise-group-spacing"/>
                                 <slider-setting active="~precise-rotation-reference-active" text="" apply-on-change="true" bind-value="true"
-                                                value="precise-left-rot-hor-value" on-change="precise-left-rot-hor-on-change"
-                                                min="~rot-180-slider-min" max="~rot-180-slider-max" increment="~rot-slider-increment"
-                                                formatter="rot-curve-left-slider-formatter" interactable="~precise-left-rotation-reference-interactable"/>
-                                <slider-setting active="~precise-rotation-reference-active" text="" apply-on-change="true" bind-value="true"
                                                 value="precise-left-rot-vert-value" on-change="precise-left-rot-vert-on-change"
                                                 min="~rot-90-slider-min" max="~rot-90-slider-max" increment="~rot-slider-increment"
                                                 formatter="rot-slider-formatter" interactable="~precise-left-rotation-reference-interactable"/>
+                                <horizontal active="~precise-rotation-reference-active" preferred-height="~precise-group-spacing"/>
+                                <slider-setting active="~precise-rotation-reference-active" text="" apply-on-change="true" bind-value="true"
+                                                value="precise-left-rot-hor-value" on-change="precise-left-rot-hor-on-change"
+                                                min="~rot-180-slider-min" max="~rot-180-slider-max" increment="~rot-slider-increment"
+                                                formatter="rot-curve-left-slider-formatter" interactable="~precise-left-rotation-reference-interactable"/>
                             </vertical>
 
                             <!--    INCREMENT BUTTONS    -->
@@ -267,11 +269,12 @@
                                         on-click="precise-left-rot-z-inc-on-click" preferred-width="~precise-slider-button-width"/>
                                 <!--    ROT REFERENCE    -->
                                 <horizontal active="~precise-rotation-reference-active" preferred-height="~precise-group-spacing"/>
-                                <button active="~precise-rotation-reference-active" text="~r-arrow" face-color="~precise-hor-color"
-                                        on-click="precise-left-rot-hor-inc-on-click" interactable="~precise-left-rotation-reference-interactable"
-                                        preferred-width="~precise-slider-button-width"/>
                                 <button active="~precise-rotation-reference-active" text="~up-text" face-color="~precise-vert-color"
                                         on-click="precise-left-rot-vert-inc-on-click" interactable="~precise-left-rotation-reference-interactable"
+                                        preferred-width="~precise-slider-button-width"/>
+                                <horizontal active="~precise-rotation-reference-active" preferred-height="~precise-group-spacing"/>
+                                <button active="~precise-rotation-reference-active" text="~r-arrow" face-color="~precise-hor-color"
+                                        on-click="precise-left-rot-hor-inc-on-click" interactable="~precise-left-rotation-reference-interactable"
                                         preferred-width="~precise-slider-button-width"/>
                             </vertical>
                         </horizontal>
@@ -294,8 +297,9 @@
                         <text active="~precise-rotation-active" text="Rot Z" font-color="~precise-z-color" align="Midline"/>
                         <!--    ROT REFERENCE    -->
                         <horizontal active="~precise-rotation-reference-active" preferred-height="~precise-group-spacing"/>
-                        <text active="~precise-rotation-reference-active" text="Curve" font-color="~precise-hor-color" align="Midline"/>
                         <text active="~precise-rotation-reference-active" text="Balance" font-color="~precise-vert-color" align="Midline"/>
+                        <horizontal active="~precise-rotation-reference-active" preferred-height="~precise-group-spacing"/>
+                        <text active="~precise-rotation-reference-active" text="Curve" font-color="~precise-hor-color" align="Midline"/>
                     </vertical>
 
                     <!--    RIGHT HAND    -->
@@ -338,11 +342,12 @@
                                         on-click="precise-right-rot-z-dec-on-click" preferred-width="~precise-slider-button-width"/>
                                 <!--    ROT REFERENCE    -->
                                 <horizontal active="~precise-rotation-reference-active" preferred-height="~precise-group-spacing"/>
-                                <button active="~precise-rotation-reference-active" text="~l-arrow" face-color="~precise-hor-color"
-                                        on-click="precise-right-rot-hor-dec-on-click" interactable="~precise-right-rotation-reference-interactable"
-                                        preferred-width="~precise-slider-button-width"/>
                                 <button active="~precise-rotation-reference-active" text="~down-text" face-color="~precise-vert-color"
                                         on-click="precise-right-rot-vert-dec-on-click" interactable="~precise-right-rotation-reference-interactable"
+                                        preferred-width="~precise-slider-button-width"/>
+                                <horizontal active="~precise-rotation-reference-active" preferred-height="~precise-group-spacing"/>
+                                <button active="~precise-rotation-reference-active" text="~l-arrow" face-color="~precise-hor-color"
+                                        on-click="precise-right-rot-hor-dec-on-click" interactable="~precise-right-rotation-reference-interactable"
                                         preferred-width="~precise-slider-button-width"/>
                             </vertical>
 
@@ -384,13 +389,14 @@
                                 <!--    ROT REFERENCE    -->
                                 <horizontal active="~precise-rotation-reference-active" preferred-height="~precise-group-spacing"/>
                                 <slider-setting active="~precise-rotation-reference-active" text="" apply-on-change="true" bind-value="true"
-                                                value="precise-right-rot-hor-value" on-change="precise-right-rot-hor-on-change"
-                                                min="~rot-180-slider-min" max="~rot-180-slider-max" increment="~rot-slider-increment"
-                                                formatter="rot-curve-right-slider-formatter" interactable="~precise-right-rotation-reference-interactable"/>
-                                <slider-setting active="~precise-rotation-reference-active" text="" apply-on-change="true" bind-value="true"
                                                 value="precise-right-rot-vert-value" on-change="precise-right-rot-vert-on-change"
                                                 min="~rot-90-slider-min" max="~rot-90-slider-max" increment="~rot-slider-increment"
                                                 formatter="rot-slider-formatter" interactable="~precise-right-rotation-reference-interactable"/>
+                                <horizontal active="~precise-rotation-reference-active" preferred-height="~precise-group-spacing"/>
+                                <slider-setting active="~precise-rotation-reference-active" text="" apply-on-change="true" bind-value="true"
+                                                value="precise-right-rot-hor-value" on-change="precise-right-rot-hor-on-change"
+                                                min="~rot-180-slider-min" max="~rot-180-slider-max" increment="~rot-slider-increment"
+                                                formatter="rot-curve-right-slider-formatter" interactable="~precise-right-rotation-reference-interactable"/>
                             </vertical>
 
                             <!--    INCREMENT BUTTONS    -->
@@ -416,11 +422,12 @@
                                         on-click="precise-right-rot-z-inc-on-click" preferred-width="~precise-slider-button-width"/>
                                 <!--    ROT REFERENCE    -->
                                 <horizontal active="~precise-rotation-reference-active" preferred-height="~precise-group-spacing"/>
-                                <button active="~precise-rotation-reference-active" text="~r-arrow" face-color="~precise-hor-color"
-                                        on-click="precise-right-rot-hor-inc-on-click" interactable="~precise-right-rotation-reference-interactable"
-                                        preferred-width="~precise-slider-button-width"/>
                                 <button active="~precise-rotation-reference-active" text="~up-text" face-color="~precise-vert-color"
                                         on-click="precise-right-rot-vert-inc-on-click" interactable="~precise-right-rotation-reference-interactable"
+                                        preferred-width="~precise-slider-button-width"/>
+                                <horizontal active="~precise-rotation-reference-active" preferred-height="~precise-group-spacing"/>
+                                <button active="~precise-rotation-reference-active" text="~r-arrow" face-color="~precise-hor-color"
+                                        on-click="precise-right-rot-hor-inc-on-click" interactable="~precise-right-rotation-reference-interactable"
                                         preferred-width="~precise-slider-button-width"/>
                             </vertical>
                         </horizontal>
@@ -435,19 +442,22 @@
             <vertical>
                 <horizontal preferred-height="20">
                     <vertical preferred-width="30" child-control-width="true" child-expand-width="true">
-                        <text text="~hmd-x-text" hover-hint="Headset X coordinate" align="Center"/>
-                        <text text="~hmd-y-text" hover-hint="Headset Y coordinate" align="Center"/>
-                        <text text="~hmd-z-text" hover-hint="Headset Z coordinate" align="Center"/>
+                        <text text="~hmd-x-text" hover-hint="Headset X coordinate" align="Left"/>
+                        <text text="~hmd-y-text" hover-hint="Headset Y coordinate" align="Left"/>
+                        <text text="~hmd-z-text" hover-hint="Headset Z coordinate" align="Left"/>
                     </vertical>
                     <vertical preferred-width="30" child-control-width="true" child-expand-width="true">
-                        <text text="~room-x-text" hover-hint="Room X offset" align="Center"/>
-                        <text text="~room-y-text" hover-hint="Room Y offset" align="Center"/>
-                        <text text="~room-z-text" hover-hint="Room Z offset" align="Center"/>
+                        <text text="~room-x-text" hover-hint="Room X offset" align="Left"/>
+                        <text text="~room-y-text" hover-hint="Room Y offset" align="Left"/>
+                        <text text="~room-z-text" hover-hint="Room Z offset" align="Left"/>
                     </vertical>
                     <vertical preferred-width="20">
-                        <toggle-setting text="" value="room-x-toggle-value" on-change="room-x-toggle-on-change" hover-hint="Allow X offset change"/>
-                        <toggle-setting text="" value="room-y-toggle-value" on-change="room-y-toggle-on-change" hover-hint="Allow Y offset change"/>
-                        <toggle-setting text="" value="room-z-toggle-value" on-change="room-z-toggle-on-change" hover-hint="Allow Z offset change"/>
+                        <toggle-setting text="" value="room-x-toggle-value" on-change="room-x-toggle-on-change" 
+                                        hover-hint="Allow X offset change (Left/Right)"/>
+                        <toggle-setting text="" value="room-y-toggle-value" on-change="room-y-toggle-on-change" 
+                                        hover-hint="Allow Y offset change (Up/Down)"/>
+                        <toggle-setting text="" value="room-z-toggle-value" on-change="room-z-toggle-on-change" 
+                                        hover-hint="Allow Z offset change (Forward/Back)"/>
                     </vertical>
                     <vertical preferred-width="20" child-control-width="true" child-expand-width="true">
                         <button text="Reset" on-click="room-x-reset-on-click" hover-hint="Set X offset to 0"/>

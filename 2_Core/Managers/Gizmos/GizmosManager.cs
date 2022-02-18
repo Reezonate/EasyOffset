@@ -71,10 +71,12 @@ namespace EasyOffset {
                 case Hand.Left:
                     LeftHandGizmosController.SetOrthonormalBasisFocus(true);
                     LeftHandGizmosController.SetSphericalBasisFocus(true);
+                    LeftHandGizmosController.SetPreviousRotation(PluginConfig.LeftSaberRotation, true, PluginConfig.LeftSaberReferenceRotation);
                     break;
                 case Hand.Right:
                     RightHandGizmosController.SetOrthonormalBasisFocus(true);
                     RightHandGizmosController.SetSphericalBasisFocus(true);
+                    RightHandGizmosController.SetPreviousRotation(PluginConfig.RightSaberRotation, true, PluginConfig.RightSaberReferenceRotation);
                     break;
                 case null: return;
                 default: throw new ArgumentOutOfRangeException(nameof(hand), hand, null);
@@ -84,8 +86,11 @@ namespace EasyOffset {
         private void OnPreciseChangeFinished(Hand? hand) {
             LeftHandGizmosController.SetOrthonormalBasisFocus(false);
             LeftHandGizmosController.SetSphericalBasisFocus(false);
+            LeftHandGizmosController.SetPreviousRotation(Quaternion.identity, false);
+
             RightHandGizmosController.SetOrthonormalBasisFocus(false);
             RightHandGizmosController.SetSphericalBasisFocus(false);
+            RightHandGizmosController.SetPreviousRotation(Quaternion.identity, false);
         }
 
         private void OnConfigWasChanged() {

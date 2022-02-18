@@ -62,7 +62,7 @@ internal partial class ModPanelUI {
                 PrecisePositionActive = false;
                 PreciseRotationActive = false;
                 PreciseRotationReferenceActive = true;
-                PreciseSlidersHeight = 13.0f;
+                PreciseSlidersHeight = 14.0f;
                 PreciseFillerHeight = 0.0f;
                 ApplySlidersScale(0.82f);
                 break;

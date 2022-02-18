@@ -13,7 +13,8 @@ namespace EasyOffset {
 
         #region ConfigVersion
 
-        public string ConfigVersion = CurrentConfigVersion;
+        [UsedImplicitly]
+        public virtual string ConfigVersion { get; set; } = CurrentConfigVersion;
 
         #endregion
 
@@ -107,10 +108,15 @@ namespace EasyOffset {
 
         #endregion
 
-        #region LeftSaberReferenceRotation
+        #region LeftSaberHasReference
 
         public bool LeftSaberHasReference = ConfigDefaults.LeftSaberHasReference;
-        public Quaternion LeftSaberReferenceRotation = ConfigDefaults.LeftSaberReferenceRotation;
+
+        #endregion
+
+        #region LeftSaberReferenceEuler
+
+        public ConfigFileQuaternion LeftSaberReference = ConfigFileQuaternion.FromUnityQuaternion(ConfigDefaults.LeftSaberReferenceRotation);
 
         #endregion
 
@@ -148,21 +154,28 @@ namespace EasyOffset {
 
         #endregion
 
-        #region RightSaberReferenceRotation
+        #region RightSaberHasReference
 
         public bool RightSaberHasReference = ConfigDefaults.RightSaberHasReference;
-        public Quaternion RightSaberReferenceRotation = ConfigDefaults.RightSaberReferenceRotation;
 
         #endregion
 
-        #region Generic IPA stuff
+        #region RightSaberReferenceEuler
 
-        /// <summary>
-        /// This is called whenever BSIPA reads the config from disk (including when file changes are detected).
-        /// </summary>
+        public ConfigFileQuaternion RightSaberReference = ConfigFileQuaternion.FromUnityQuaternion(ConfigDefaults.RightSaberReferenceRotation);
+
+        #endregion
+
+        #region OnReload
+
+        [UsedImplicitly]
         public virtual void OnReload() {
-            // Do stuff after config is read from disk.
+            if (ConfigVersion != CurrentConfigVersion) ConfigVersion = CurrentConfigVersion;
         }
+
+        #endregion
+
+        #region Changed
 
         /// <summary>
         /// Call this to force BSIPA to update the config file. This is also called by BSIPA if it detects the file was modified.
@@ -170,6 +183,10 @@ namespace EasyOffset {
         public virtual void Changed() {
             // Do stuff when the config is changed.
         }
+
+        #endregion
+
+        #region CopyFrom
 
         /// <summary>
         /// Call this to have BSIPA copy the values from <paramref name="other"/> into this config.

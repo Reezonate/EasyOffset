@@ -22,9 +22,13 @@ namespace EasyOffset {
         public Vector3 LeftSaberPivotPosition { get; }
         public Quaternion LeftSaberRotation => TransformUtils.RotationFromDirection(_leftSaberDirection);
         public float LeftSaberZOffset { get; }
+        public bool LeftSaberHasReference => false;
+        public Quaternion LeftSaberReferenceRotation => Quaternion.identity;
         public Vector3 RightSaberPivotPosition { get; }
         public Quaternion RightSaberRotation => TransformUtils.RotationFromDirection(_rightSaberDirection);
         public float RightSaberZOffset { get; }
+        public bool RightSaberHasReference => false;
+        public Quaternion RightSaberReferenceRotation => Quaternion.identity;
 
         #endregion
 
