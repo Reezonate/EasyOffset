@@ -548,6 +548,40 @@ internal partial class ModPanelUI {
 
     #endregion
 
+    #region Help Active
+
+    private bool _preciseLeftHelpActive;
+
+    [UIValue("precise-left-help-active")]
+    [UsedImplicitly]
+    private bool PreciseLeftHelpActive {
+        get => _preciseLeftHelpActive;
+        set {
+            if (_preciseLeftHelpActive.Equals(value)) return;
+            _preciseLeftHelpActive = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    #endregion
+
+    #region Buttons Active
+
+    private bool _preciseLeftButtonsActive;
+
+    [UIValue("precise-left-buttons-active")]
+    [UsedImplicitly]
+    private bool PreciseLeftButtonsActive {
+        get => _preciseLeftButtonsActive;
+        set {
+            if (_preciseLeftButtonsActive.Equals(value)) return;
+            _preciseLeftButtonsActive = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    #endregion
+
     #region UpdateReference button
 
     [UIAction("precise-left-update-reference-on-click")]

@@ -147,7 +147,7 @@
             <macro.define name="inc-text" value="+"/>
             <!--    /STYLE    -->
 
-            <vertical spacing="3">
+            <vertical spacing="2">
                 <!--    SLIDER CONTROLS    -->
                 <horizontal preferred-height="~precise-sliders-section-height">
                     <vertical spacing="1">
@@ -448,22 +448,41 @@
                 </horizontal>
 
                 <!--    REFERENCE CONTROLS    -->
-                <horizontal active="~precise-rotation-reference-active" preferred-height="6" spacing="2">
-                    <button preferred-width="30" pad-left="10" face-color="#ff9999" text="Clear"
-                            on-click="precise-left-clear-reference-on-click"
-                            interactable="~precise-left-rotation-reference-interactable"/>
-                    <button preferred-width="20" text="Update"
-                            on-click="precise-left-update-reference-on-click"
-                            interactable="~precise-left-rotation-reference-interactable"/>
+                <horizontal active="~precise-rotation-reference-active" preferred-height="6">
+                    <vertical preferred-width="52" pad-left="10">
+                        <!--    LEFT HELP    -->
+                        <button text="?" preferred-width="10" active="~precise-left-help-active"
+                                hover-hint="Create reference in the 'Swing Benchmark' mode to use sliders"/>
+
+                        <horizontal active="~precise-left-buttons-active" spacing="2">
+                            <!--    LEFT CLEAR    -->
+                            <button preferred-width="20" face-color="#ff9999" text="Clear"
+                                    on-click="precise-left-clear-reference-on-click"
+                                    hover-hint="Remove left hand reference"/>
+                            <!--    LEFT UPDATE    -->
+                            <button preferred-width="20" text="Update" on-click="precise-left-update-reference-on-click"
+                                    hover-hint="Use current saber rotation as reference"/>
+                        </horizontal>
+                    </vertical>
+                    <!--    LABEL    -->
                     <vertical preferred-width="24">
                         <text text="Reference" align="Midline"/>
                     </vertical>
-                    <button preferred-width="20" text="Update"
-                            on-click="precise-right-update-reference-on-click"
-                            interactable="~precise-right-rotation-reference-interactable"/>
-                    <button preferred-width="30" pad-right="10" face-color="#ff9999" text="Clear"
-                            on-click="precise-right-clear-reference-on-click"
-                            interactable="~precise-right-rotation-reference-interactable"/>
+                    <vertical preferred-width="52" pad-right="10">
+                        <!--    RIGHT HELP    -->
+                        <button text="?" preferred-width="10" active="~precise-right-help-active"
+                                hover-hint="Set reference in the 'Swing Benchmark' mode to use sliders"/>
+
+                        <horizontal active="~precise-right-buttons-active" spacing="2">
+                            <!--    RIGHT UPDATE    -->
+                            <button preferred-width="20" text="Update" on-click="precise-right-update-reference-on-click"
+                                    hover-hint="Use current saber rotation as reference"/>
+                            <!--    RIGHT CLEAR    -->
+                            <button preferred-width="20" face-color="#ff9999" text="Clear"
+                                    on-click="precise-right-clear-reference-on-click"
+                                    hover-hint="Remove right hand reference"/>
+                        </horizontal>
+                    </vertical>
                 </horizontal>
             </vertical>
         </horizontal>

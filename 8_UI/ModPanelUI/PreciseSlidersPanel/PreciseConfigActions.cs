@@ -22,11 +22,15 @@ internal partial class ModPanelUI {
         PreciseLeftRotationEuler = PluginConfig.LeftSaberRotationEuler;
         PreciseLeftZOffset = PluginConfig.LeftSaberZOffset;
         PreciseLeftRotationReferenceInteractable = PluginConfig.LeftSaberHasReference;
+        PreciseLeftButtonsActive = PluginConfig.LeftSaberHasReference;
+        PreciseLeftHelpActive = !PluginConfig.LeftSaberHasReference;
 
         PreciseRightPivotPosition = PluginConfig.RightSaberPivotPosition;
         PreciseRightRotationEuler = PluginConfig.RightSaberRotationEuler;
         PreciseRightZOffset = PluginConfig.RightSaberZOffset;
         PreciseRightRotationReferenceInteractable = PluginConfig.RightSaberHasReference;
+        PreciseRightButtonsActive = PluginConfig.RightSaberHasReference;
+        PreciseRightHelpActive = !PluginConfig.RightSaberHasReference;
 
         RecalculateReferenceSpaceRotations();
     }

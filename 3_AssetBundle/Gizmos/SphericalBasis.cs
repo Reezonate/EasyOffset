@@ -68,10 +68,10 @@ namespace EasyOffset {
         #region UpdateMaterials
 
         private float _alpha, _fadeRadius;
+        private bool _hasReference;
 
         private Vector4 _straightSwingVerticalPlane;
         private Vector4 _straightSwingHorizontalPlane;
-        private bool _straightSwingPlaneVisible;
 
         private Vector3 _orthoDirection = Vector3.forward;
         private Vector3 _previousOrthoDirection = Vector3.forward;
@@ -86,7 +86,7 @@ namespace EasyOffset {
 
             _materialInstance.SetVector(StraightSwingVerticalPlanePropertyId, _straightSwingVerticalPlane);
             _materialInstance.SetVector(StraightSwingHorizontalPlanePropertyId, _straightSwingHorizontalPlane);
-            _materialInstance.SetFloat(StraightSwingPlaneMultiplierPropertyId, _straightSwingPlaneVisible ? 1f : 0f);
+            _materialInstance.SetFloat(StraightSwingPlaneMultiplierPropertyId, _hasReference ? 1f : 0f);
 
             _materialInstance.SetVector(OrthoDirectionPropertyId, _orthoDirection);
             _materialInstance.SetVector(PreviousOrthoDirectionPropertyId, _previousOrthoDirection);
@@ -135,8 +135,8 @@ namespace EasyOffset {
             Quaternion referenceRotation
         ) {
             _orthoDirection = rotation * Vector3.forward;
+            _hasReference = hasReference;
 
-            _straightSwingPlaneVisible = hasReference;
             _straightSwingVerticalPlane = referenceRotation * Vector3.left;
             _straightSwingHorizontalPlane = referenceRotation * Vector3.up;
 
@@ -144,6 +144,7 @@ namespace EasyOffset {
             TransformUtils.ToReferenceSpace(rotation, referenceRotation, out var curve, out var balance);
             UpdateAllTextStrings(sphericalRadians.x * Mathf.Rad2Deg, sphericalRadians.y * Mathf.Rad2Deg, balance, curve);
 
+            UpdateTextVisibility();
             UpdatePointerPlane();
             UpdateMaterial();
         }
@@ -188,6 +189,11 @@ namespace EasyOffset {
         #endregion
 
         #region Text
+
+        private void UpdateTextVisibility() {
+            balanceText.gameObject.SetActive(_hasReference);
+            curveText.gameObject.SetActive(_hasReference);
+        }
 
         private void UpdateAllTextStrings(float x, float y, float balance, float curve) {
             UpdateTextString(xText, "X", x);
