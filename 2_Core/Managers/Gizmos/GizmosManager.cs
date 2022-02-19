@@ -25,8 +25,8 @@ namespace EasyOffset {
             PluginConfig.ControllerTypeChangedEvent += OnControllerTypeChanged;
             Abomination.TransformsUpdatedEvent += OnControllerTransformsChanged;
             PluginConfig.ConfigWasChangedEvent += OnConfigWasChanged;
-            ModPanelUI.PreciseChangeStartedEvent += OnPreciseChangeStarted;
-            ModPanelUI.PreciseChangeFinishedEvent += OnPreciseChangeFinished;
+            ModPanelUI.DirectChangeStartedEvent += OnDirectChangeStarted;
+            ModPanelUI.DirectChangeFinishedEvent += OnDirectChangeFinished;
 
             OnControllerTypeChanged(PluginConfig.SelectedControllerType);
             OnConfigWasChanged();
@@ -40,8 +40,8 @@ namespace EasyOffset {
             PluginConfig.ConfigWasChangedEvent -= OnConfigWasChanged;
             PluginConfig.IsModPanelVisibleChangedEvent -= OnModPanelVisibleChanged;
 
-            ModPanelUI.PreciseChangeStartedEvent -= OnPreciseChangeStarted;
-            ModPanelUI.PreciseChangeFinishedEvent -= OnPreciseChangeFinished;
+            ModPanelUI.DirectChangeStartedEvent -= OnDirectChangeStarted;
+            ModPanelUI.DirectChangeFinishedEvent -= OnDirectChangeFinished;
 
             Abomination.TransformsUpdatedEvent -= OnControllerTransformsChanged;
         }
@@ -69,7 +69,7 @@ namespace EasyOffset {
 
         #region Events
 
-        private void OnPreciseChangeStarted(Hand? hand) {
+        private void OnDirectChangeStarted(Hand? hand) {
             switch (hand) {
                 case Hand.Left:
                     LeftHandGizmosController.SetOrthonormalBasisFocus(true);
@@ -84,7 +84,7 @@ namespace EasyOffset {
             }
         }
 
-        private void OnPreciseChangeFinished(Hand? hand) {
+        private void OnDirectChangeFinished(Hand? hand) {
             LeftHandGizmosController.SetOrthonormalBasisFocus(false);
             LeftHandGizmosController.SetSphericalBasisFocus(false);
 
@@ -235,7 +235,7 @@ namespace EasyOffset {
                     isLegacyGimbalVisible = false;
                     isReferenceRotationVisible = true;
                     break;
-                case AdjustmentMode.Precise:
+                case AdjustmentMode.Direct:
                     isPivotVisible = false;
                     isOrthonormalBasisVisible = PluginConfig.SelectedControllerType == ControllerType.None;
                     isOrthonormalBasisPointerVisible = false;

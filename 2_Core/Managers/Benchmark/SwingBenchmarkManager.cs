@@ -210,7 +210,7 @@ namespace EasyOffset {
                 AdjustmentMode.None => false,
                 AdjustmentMode.Basic => false,
                 AdjustmentMode.Position => false,
-                AdjustmentMode.Precise => false,
+                AdjustmentMode.Direct => false,
                 AdjustmentMode.RoomOffset => false,
                 _ => throw new ArgumentOutOfRangeException()
             };

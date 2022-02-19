@@ -59,7 +59,7 @@ namespace EasyOffset {
         }
 
         private void UpdateSwingPreviewVisibility() {
-            swingPreview.SetVisible(_isSwingPreviewVisible && !_focused);
+            swingPreview.SetVisible(_isSwingPreviewVisible && !(_orthoFocused || _sphericalFocused));
         }
 
         private void UpdateReferenceVisibility() {
@@ -104,19 +104,20 @@ namespace EasyOffset {
 
         #region SetFocus
 
-        private bool _focused;
+        private bool _orthoFocused;
+        private bool _sphericalFocused;
 
         public void SetOrthonormalBasisFocus(bool value) {
-            if (_focused == value) return;
-            _focused = value;
+            if (_orthoFocused == value) return;
+            _orthoFocused = value;
 
             orthonormalBasis.SetFocus(value);
             UpdateSwingPreviewVisibility();
         }
 
         public void SetSphericalBasisFocus(bool value) {
-            if (_focused == value) return;
-            _focused = value;
+            if (_sphericalFocused == value) return;
+            _sphericalFocused = value;
 
             sphericalBasis.SetFocus(value);
             UpdateSwingPreviewVisibility();

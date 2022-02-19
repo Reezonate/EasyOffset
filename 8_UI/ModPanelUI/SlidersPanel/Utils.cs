@@ -20,7 +20,7 @@ internal partial class ModPanelUI {
     #region SlidersClamping
 
     private float ClampZOffsetSliderValue(float value) {
-        return Mathf.Clamp(value, _preciseZOffsetSliderMin, _preciseZOffsetSliderMax);
+        return Mathf.Clamp(value, _directZOffsetSliderMin, _directZOffsetSliderMax);
     }
 
     private float ClampPosSliderValue(float value) {

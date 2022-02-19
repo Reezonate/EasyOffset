@@ -116,6 +116,26 @@ public static class TransformUtils {
 
     #endregion
 
+    #region Clamp
+
+    public static Vector3 ClampEulerAngles(Vector3 eulerAngles) {
+        return new Vector3(
+            ClampRotation(eulerAngles.x),
+            ClampRotation(eulerAngles.y),
+            ClampRotation(eulerAngles.z)
+        );
+    }
+
+    private static float ClampRotation(float value) {
+        return value switch {
+            > 180 => -360 + value,
+            < -180 => 360 - value,
+            _ => value
+        };
+    }
+
+    #endregion
+
     #region Rotation <-> Direction
 
     public static Vector3 DirectionFromRotation(Quaternion rotation) {
@@ -220,26 +240,6 @@ public static class TransformUtils {
 
     #endregion
 
-    #region ClampEulerAngles
-
-    public static Vector3 ClampEulerAngles(Vector3 eulerAngles) {
-        return new Vector3(
-            ClampRotation(eulerAngles.x),
-            ClampRotation(eulerAngles.y),
-            ClampRotation(eulerAngles.z)
-        );
-    }
-
-    private static float ClampRotation(float value) {
-        return value switch {
-            > 180 => -360 + value,
-            < -180 => 360 - value,
-            _ => value
-        };
-    }
-
-    #endregion
-
     #region Controller <-> Reference
 
     public static void ToReferenceSpace(
@@ -262,13 +262,10 @@ public static class TransformUtils {
         float horizontal,
         float vertical
     ) {
-        var originalDirection = DirectionFromRotation(originalRotation);
         var additionalRotation = Quaternion.Euler(vertical, -horizontal, 0.0f);
         var resultRotation = rotationReference * additionalRotation;
-        var resultDirection = DirectionFromRotation(resultRotation);
-        var rotationDifference = Quaternion.FromToRotation(originalDirection, resultDirection);
-        var finalRotation = rotationDifference * originalRotation;
-        return EulerFromRotation(finalRotation);
+        var alignedRotation = AlignForwardVectors(originalRotation, resultRotation);
+        return EulerFromRotation(alignedRotation);
     }
 
     #endregion

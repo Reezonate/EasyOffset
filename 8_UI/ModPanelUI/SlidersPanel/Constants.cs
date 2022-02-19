@@ -7,17 +7,17 @@ internal partial class ModPanelUI {
     #region ZOffsetSliderSettings
 
     [UIValue("z-offset-slider-min")] [UsedImplicitly]
-    private float _preciseZOffsetSliderMin = -0.2f;
+    private float _directZOffsetSliderMin = -0.2f;
 
     [UIValue("z-offset-slider-max")] [UsedImplicitly]
-    private float _preciseZOffsetSliderMax = 0.25f;
+    private float _directZOffsetSliderMax = 0.25f;
 
     [UIValue("z-offset-slider-increment")] [UsedImplicitly]
-    private float _preciseZOffsetSliderIncrement = 0.001f;
+    private float _directZOffsetSliderIncrement = 0.001f;
 
     [UIAction("z-offset-slider-formatter")]
     [UsedImplicitly]
-    private string PreciseZOffsetSliderFormatter(float value) => $"{value * 100f:F1} cm";
+    private string DirectZOffsetSliderFormatter(float value) => $"{value * 100f:F1} cm";
 
     #endregion
 

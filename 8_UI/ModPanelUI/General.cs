@@ -15,7 +15,7 @@ internal partial class ModPanelUI : NotifiableSingleton<ModPanelUI> {
         SubscribeToRoomOffsetEvents();
         SubscribeToWarningEvents();
         SubscribeToSmoothingEvents();
-        SubscribeToPrecisePanelEvents();
+        SubscribeToDirectPanelEvents();
         SubscribeToBottomPanelEvents();
         GoToMainPage();
     }
@@ -64,7 +64,7 @@ internal partial class ModPanelUI : NotifiableSingleton<ModPanelUI> {
                 BenchmarkPanelActive = false;
                 RoomOffsetPanelActive = false;
                 UndoRedoButtonsActive = false;
-                SetPrecisePanelState(PrecisePanelState.Hidden);
+                SetDirectPanelState(DirectPanelState.Hidden);
                 break;
             case AdjustmentMode.Basic:
                 UseFreeHandActive = true;
@@ -72,7 +72,7 @@ internal partial class ModPanelUI : NotifiableSingleton<ModPanelUI> {
                 BenchmarkPanelActive = false;
                 RoomOffsetPanelActive = false;
                 UndoRedoButtonsActive = true;
-                SetPrecisePanelState(PrecisePanelState.ZOffsetOnly);
+                SetDirectPanelState(DirectPanelState.ZOffsetOnly);
                 break;
             case AdjustmentMode.Position:
                 UseFreeHandActive = true;
@@ -80,7 +80,7 @@ internal partial class ModPanelUI : NotifiableSingleton<ModPanelUI> {
                 BenchmarkPanelActive = false;
                 RoomOffsetPanelActive = false;
                 UndoRedoButtonsActive = true;
-                SetPrecisePanelState(PrecisePanelState.PositionOnly);
+                SetDirectPanelState(DirectPanelState.PositionOnly);
                 break;
             case AdjustmentMode.Rotation:
             case AdjustmentMode.RotationAuto:
@@ -89,7 +89,7 @@ internal partial class ModPanelUI : NotifiableSingleton<ModPanelUI> {
                 BenchmarkPanelActive = false;
                 RoomOffsetPanelActive = false;
                 UndoRedoButtonsActive = true;
-                SetPrecisePanelState(PrecisePanelState.RotationOnly);
+                SetDirectPanelState(DirectPanelState.RotationOnly);
                 break;
             case AdjustmentMode.SwingBenchmark:
                 UseFreeHandActive = true;
@@ -97,15 +97,15 @@ internal partial class ModPanelUI : NotifiableSingleton<ModPanelUI> {
                 BenchmarkPanelActive = true;
                 RoomOffsetPanelActive = false;
                 UndoRedoButtonsActive = true;
-                SetPrecisePanelState(PrecisePanelState.Hidden);
+                SetDirectPanelState(DirectPanelState.Hidden);
                 break;
-            case AdjustmentMode.Precise:
+            case AdjustmentMode.Direct:
                 UseFreeHandActive = false;
                 NonePanelActive = false;
                 BenchmarkPanelActive = false;
                 RoomOffsetPanelActive = false;
                 UndoRedoButtonsActive = true;
-                SetPrecisePanelState(PrecisePanelState.Full);
+                SetDirectPanelState(DirectPanelState.Full);
                 break;
             case AdjustmentMode.RoomOffset:
                 UseFreeHandActive = true;
@@ -113,7 +113,7 @@ internal partial class ModPanelUI : NotifiableSingleton<ModPanelUI> {
                 BenchmarkPanelActive = false;
                 RoomOffsetPanelActive = true;
                 UndoRedoButtonsActive = false;
-                SetPrecisePanelState(PrecisePanelState.Hidden);
+                SetDirectPanelState(DirectPanelState.Hidden);
                 break;
             default: throw new ArgumentOutOfRangeException();
         }
