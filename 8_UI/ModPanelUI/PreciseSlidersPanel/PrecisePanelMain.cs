@@ -42,9 +42,9 @@ internal partial class ModPanelUI {
                 PrecisePositionActive = false;
                 PreciseRotationActive = false;
                 PreciseRotationReferenceActive = false;
-                PreciseSlidersHeight = 8.0f;
+                PreciseSlidersHeight = 15.0f;
                 PreciseFillerHeight = 0.0f;
-                ApplySlidersScale(0.82f);
+                ApplyPrecisePanelTransform(0.8f);
                 break;
             case PrecisePanelState.PositionOnly:
                 PrecisePanelActive = true;
@@ -52,9 +52,9 @@ internal partial class ModPanelUI {
                 PrecisePositionActive = true;
                 PreciseRotationActive = false;
                 PreciseRotationReferenceActive = false;
-                PreciseSlidersHeight = 27.0f;
+                PreciseSlidersHeight = 37.0f;
                 PreciseFillerHeight = 0.0f;
-                ApplySlidersScale(0.82f);
+                ApplyPrecisePanelTransform(0.8f);
                 break;
             case PrecisePanelState.RotationOnly:
                 PrecisePanelActive = true;
@@ -62,9 +62,9 @@ internal partial class ModPanelUI {
                 PrecisePositionActive = false;
                 PreciseRotationActive = false;
                 PreciseRotationReferenceActive = true;
-                PreciseSlidersHeight = 14.0f;
+                PreciseSlidersHeight = 22.0f;
                 PreciseFillerHeight = 0.0f;
-                ApplySlidersScale(0.82f);
+                ApplyPrecisePanelTransform(0.8f);
                 break;
             case PrecisePanelState.Full:
                 PrecisePanelActive = true;
@@ -72,9 +72,9 @@ internal partial class ModPanelUI {
                 PrecisePositionActive = true;
                 PreciseRotationActive = true;
                 PreciseRotationReferenceActive = false;
-                PreciseSlidersHeight = 44.0f;
-                PreciseFillerHeight = 22.0f;
-                ApplySlidersScale(0.8f);
+                PreciseSlidersHeight = 64.0f;
+                PreciseFillerHeight = 10.0f;
+                ApplyPrecisePanelTransform(0.78f);
                 break;
             default: throw new ArgumentOutOfRangeException();
         }
@@ -214,8 +214,8 @@ internal partial class ModPanelUI {
     [UIComponent("precise-panel-component")] [UsedImplicitly]
     private RectTransform _precisePanelComponent;
 
-    private void ApplySlidersScale(float scale) {
-        _precisePanelComponent.localScale = Vector3.one * scale;
+    private void ApplyPrecisePanelTransform(float scale) {
+        _precisePanelComponent.localScale = new Vector3(scale, scale, scale);
     }
 
     [UIValue("precise-sliders-section-pad")] [UsedImplicitly]

@@ -29,7 +29,7 @@ internal partial class ModPanelUI {
             ResetLeftResetButton();
         } else {
             this.ReInvokeWithDelay(ref _leftResetButtonResetCoroutine, ResetLeftResetButton, ButtonPromptDelaySeconds);
-            PreciseLeftResetText = ResetButtonPromptText;
+            PreciseLeftResetText = ButtonPromptText;
             _preciseLeftResetClickedOnce = true;
         }
     }
@@ -67,7 +67,7 @@ internal partial class ModPanelUI {
             ResetLeftMirrorButton();
         } else {
             this.ReInvokeWithDelay(ref _leftMirrorButtonResetCoroutine, ResetLeftMirrorButton, ButtonPromptDelaySeconds);
-            PreciseLeftMirrorText = LeftMirrorButtonPromptText;
+            PreciseLeftMirrorText = ButtonPromptText;
             _preciseLeftMirrorClickedOnce = true;
         }
     }

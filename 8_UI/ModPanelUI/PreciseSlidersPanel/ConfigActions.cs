@@ -101,9 +101,9 @@ internal partial class ModPanelUI {
                 PreciseLeftRotVert
             );
 
-            PreciseLeftRotX = leftCoordinates.x;
-            PreciseLeftRotY = leftCoordinates.y;
-            PreciseLeftRotZ = leftCoordinates.z;
+            PreciseLeftRotX = _preciseLeftRotXCurrent = _preciseLeftRotXTarget = leftCoordinates.x;
+            PreciseLeftRotY = _preciseLeftRotYCurrent = _preciseLeftRotYTarget = leftCoordinates.y;
+            PreciseLeftRotZ = _preciseLeftRotZCurrent = _preciseLeftRotZTarget = leftCoordinates.z;
         }
 
         if (PluginConfig.RightSaberHasReference) {
@@ -114,9 +114,9 @@ internal partial class ModPanelUI {
                 PreciseRightRotVert
             );
 
-            PreciseRightRotX = rightCoordinates.x;
-            PreciseRightRotY = rightCoordinates.y;
-            PreciseRightRotZ = rightCoordinates.z;
+            PreciseRightRotX = _preciseRightRotXCurrent = _preciseRightRotXTarget = rightCoordinates.x;
+            PreciseRightRotY = _preciseRightRotYCurrent = _preciseRightRotYTarget = rightCoordinates.y;
+            PreciseRightRotZ = _preciseRightRotZCurrent = _preciseRightRotZTarget = rightCoordinates.z;
         }
     }
 

@@ -29,7 +29,7 @@ internal partial class ModPanelUI {
             ResetRightResetButton();
         } else {
             this.ReInvokeWithDelay(ref _rightResetButtonResetCoroutine, ResetRightResetButton, ButtonPromptDelaySeconds);
-            PreciseRightResetText = ResetButtonPromptText;
+            PreciseRightResetText = ButtonPromptText;
             _preciseRightResetClickedOnce = true;
         }
     }
@@ -67,7 +67,7 @@ internal partial class ModPanelUI {
             ResetRightMirrorButton();
         } else {
             this.ReInvokeWithDelay(ref _rightMirrorButtonResetCoroutine, ResetRightMirrorButton, ButtonPromptDelaySeconds);
-            PreciseRightMirrorText = RightMirrorButtonPromptText;
+            PreciseRightMirrorText = ButtonPromptText;
             _preciseRightMirrorClickedOnce = true;
         }
     }
@@ -95,7 +95,7 @@ internal partial class ModPanelUI {
     #endregion
 
     #region Combined Rotation
-    
+
     private Quaternion PreciseRightRotation => TransformUtils.RotationFromEuler(PreciseRightRotationEuler);
 
     private Vector3 PreciseRightRotationEuler {

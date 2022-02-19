@@ -72,15 +72,11 @@ internal partial class ModPanelUI {
     #region ButtonsSettings
 
     private const float ButtonPromptDelaySeconds = 2.0f;
+    private const string ButtonPromptText = "<color=#ff5555>Sure?</color>";
 
     private const string ResetButtonIdleText = "Reset";
-    private const string ResetButtonPromptText = "<color=#ff5555>Sure?</color>";
-
-    private const string LeftMirrorButtonIdleText = "- Mirror to Right >";
-    private const string LeftMirrorButtonPromptText = "<color=#ff5555>-<mspace=1.9em> </mspace>Sure?<mspace=1.9em> </mspace>></color>";
-
-    private const string RightMirrorButtonIdleText = "< Mirror to Left -";
-    private const string RightMirrorButtonPromptText = "<color=#ff5555><<mspace=1.67em> </mspace>Sure?<mspace=1.67em> </mspace>-</color>";
+    private const string LeftMirrorButtonIdleText = "Mirror to Right ►";
+    private const string RightMirrorButtonIdleText = "<pos=-0.4em>◄ Mirror to Left";
 
     #endregion
 }
