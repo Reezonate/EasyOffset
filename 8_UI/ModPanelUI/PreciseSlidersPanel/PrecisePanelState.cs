@@ -27,7 +27,7 @@ internal partial class ModPanelUI {
 
     #endregion
 
-    #region State
+    #region SetPrecisePanelState
 
     private PrecisePanelState _precisePanelState = PrecisePanelState.Hidden;
 
@@ -44,7 +44,7 @@ internal partial class ModPanelUI {
                 PreciseRotationReferenceActive = false;
                 PreciseSlidersHeight = 15.0f;
                 PreciseFillerHeight = 0.0f;
-                ApplyPrecisePanelTransform(0.8f);
+                SetPrecisePanelScale(0.8f);
                 break;
             case PrecisePanelState.PositionOnly:
                 PrecisePanelActive = true;
@@ -54,7 +54,7 @@ internal partial class ModPanelUI {
                 PreciseRotationReferenceActive = false;
                 PreciseSlidersHeight = 37.0f;
                 PreciseFillerHeight = 0.0f;
-                ApplyPrecisePanelTransform(0.8f);
+                SetPrecisePanelScale(0.8f);
                 break;
             case PrecisePanelState.RotationOnly:
                 PrecisePanelActive = true;
@@ -64,7 +64,7 @@ internal partial class ModPanelUI {
                 PreciseRotationReferenceActive = true;
                 PreciseSlidersHeight = 22.0f;
                 PreciseFillerHeight = 0.0f;
-                ApplyPrecisePanelTransform(0.8f);
+                SetPrecisePanelScale(0.8f);
                 break;
             case PrecisePanelState.Full:
                 PrecisePanelActive = true;
@@ -74,7 +74,7 @@ internal partial class ModPanelUI {
                 PreciseRotationReferenceActive = false;
                 PreciseSlidersHeight = 64.0f;
                 PreciseFillerHeight = 10.0f;
-                ApplyPrecisePanelTransform(0.78f);
+                SetPrecisePanelScale(0.78f);
                 break;
             default: throw new ArgumentOutOfRangeException();
         }
@@ -102,6 +102,7 @@ internal partial class ModPanelUI {
     private bool PrecisePanelActive {
         get => _precisePanelActive;
         set {
+            if (_precisePanelActive.Equals(value)) return;
             _precisePanelActive = value;
             NotifyPropertyChanged();
         }
@@ -114,6 +115,7 @@ internal partial class ModPanelUI {
     private bool PreciseZOffsetActive {
         get => _preciseZOffsetActive;
         set {
+            if (_preciseZOffsetActive.Equals(value)) return;
             _preciseZOffsetActive = value;
             NotifyPropertyChanged();
         }
@@ -126,6 +128,7 @@ internal partial class ModPanelUI {
     private bool PrecisePositionActive {
         get => _precisePositionActive;
         set {
+            if (_precisePositionActive.Equals(value)) return;
             _precisePositionActive = value;
             NotifyPropertyChanged();
         }
@@ -138,6 +141,7 @@ internal partial class ModPanelUI {
     private bool PreciseRotationActive {
         get => _preciseRotationActive;
         set {
+            if (_preciseRotationActive.Equals(value)) return;
             _preciseRotationActive = value;
             NotifyPropertyChanged();
         }
@@ -150,6 +154,7 @@ internal partial class ModPanelUI {
     private bool PreciseRotationReferenceActive {
         get => _preciseRotationReferenceActive;
         set {
+            if (_preciseRotationReferenceActive.Equals(value)) return;
             _preciseRotationReferenceActive = value;
             NotifyPropertyChanged();
         }
@@ -157,35 +162,18 @@ internal partial class ModPanelUI {
 
     #endregion
 
-    #region Interactable
+    #region Scale
 
-    private bool _preciseLeftRotationReferenceInteractable = PluginConfig.LeftSaberHasReference;
+    [UIComponent("precise-panel-component")] [UsedImplicitly]
+    private RectTransform _precisePanelComponent;
 
-    [UIValue("precise-left-rotation-reference-interactable")]
-    [UsedImplicitly]
-    private bool PreciseLeftRotationReferenceInteractable {
-        get => _preciseLeftRotationReferenceInteractable;
-        set {
-            _preciseLeftRotationReferenceInteractable = value;
-            NotifyPropertyChanged();
-        }
-    }
-
-    private bool _preciseRightRotationReferenceInteractable = PluginConfig.RightSaberHasReference;
-
-    [UIValue("precise-right-rotation-reference-interactable")]
-    [UsedImplicitly]
-    private bool PreciseRightRotationReferenceInteractable {
-        get => _preciseRightRotationReferenceInteractable;
-        set {
-            _preciseRightRotationReferenceInteractable = value;
-            NotifyPropertyChanged();
-        }
+    private void SetPrecisePanelScale(float scale) {
+        _precisePanelComponent.localScale = new Vector3(scale, scale, scale);
     }
 
     #endregion
 
-    #region Filler, Height, Scale
+    #region Dynamic style variables
 
     private float _preciseFillerHeight;
 
@@ -194,6 +182,7 @@ internal partial class ModPanelUI {
     private float PreciseFillerHeight {
         get => _preciseFillerHeight;
         set {
+            if (_preciseFillerHeight.Equals(value)) return;
             _preciseFillerHeight = value;
             NotifyPropertyChanged();
         }
@@ -206,20 +195,14 @@ internal partial class ModPanelUI {
     private float PreciseSlidersHeight {
         get => _preciseSlidersHeight;
         set {
+            if (_preciseSlidersHeight.Equals(value)) return;
             _preciseSlidersHeight = value;
             NotifyPropertyChanged();
         }
     }
 
-    [UIComponent("precise-panel-component")] [UsedImplicitly]
-    private RectTransform _precisePanelComponent;
-
-    private void ApplyPrecisePanelTransform(float scale) {
-        _precisePanelComponent.localScale = new Vector3(scale, scale, scale);
-    }
-
     [UIValue("precise-sliders-section-pad")] [UsedImplicitly]
-    private float _precisePanelSlidersWidth = UnityGame.GameVersion.ToString() switch {
+    private float _preciseSlidersSectionPad = UnityGame.GameVersion.ToString() switch {
         "1.18.3" => 0.0f,
         _ => 1.0f
     };

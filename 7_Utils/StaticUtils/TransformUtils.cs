@@ -239,8 +239,8 @@ public static class TransformUtils {
     }
 
     #endregion
-    
-    #region Original <-> Reference
+
+    #region Controller <-> Reference
 
     public static void ToReferenceSpace(
         Quaternion originalRotation,
@@ -269,6 +269,17 @@ public static class TransformUtils {
         var rotationDifference = Quaternion.FromToRotation(originalDirection, resultDirection);
         var finalRotation = rotationDifference * originalRotation;
         return EulerFromRotation(finalRotation);
+    }
+
+    #endregion
+
+    #region AlignForwardVectors
+
+    public static Quaternion AlignForwardVectors(Quaternion sourceRotation, Quaternion targetRotation) {
+        var sourceDirection = DirectionFromRotation(sourceRotation);
+        var targetDirection = DirectionFromRotation(targetRotation);
+        var relativeRotation = Quaternion.FromToRotation(sourceDirection, targetDirection);
+        return relativeRotation * sourceRotation;
     }
 
     #endregion

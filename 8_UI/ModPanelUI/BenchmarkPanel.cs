@@ -209,6 +209,17 @@ internal partial class ModPanelUI {
 
     #endregion
 
+    #region SetAsReference button
+
+    [UIAction("benchmark-set-as-reference-on-click")]
+    [UsedImplicitly]
+    private void BenchmarkSetAsReferenceOnClick() {
+        SwingBenchmarkHelper.InvokeSetAsReference();
+        SetBenchmarkStatusText("Done!");
+    }
+
+    #endregion
+
     #region ResetButton
 
     [UIAction("benchmark-reset-on-click")]

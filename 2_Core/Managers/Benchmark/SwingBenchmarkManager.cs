@@ -24,6 +24,9 @@ namespace EasyOffset {
         private bool _hasAnyResults;
         private float _swingCurveAngleDeg;
 
+        private Quaternion _leftReferenceRotation = Quaternion.identity;
+        private Quaternion _rightReferenceRotation = Quaternion.identity;
+
         #endregion
 
         #region Constructor
@@ -113,31 +116,16 @@ namespace EasyOffset {
             _swingBenchmarkController.StopTracking();
 
             var averageNormal = _swingAnalyzer.GetAverageLocalPlaneNormal();
-            Quaternion referenceRotation;
 
             switch (_selectedHand) {
                 case Hand.Left:
-                    CalculateReferenceRotation(averageNormal, PluginConfig.LeftSaberRotation,
-                        out referenceRotation,
-                        out _leftWristRotationAxis
-                    );
-
-                    PluginConfig.CreateUndoStep("Left Benchmark");
-                    PluginConfig.SetLeftSaberReference(_isSwingGood, referenceRotation);
+                    _leftReferenceRotation = CalculateReferenceRotation(averageNormal, PluginConfig.LeftSaberRotation);
                     break;
                 case Hand.Right:
-                    CalculateReferenceRotation(averageNormal, PluginConfig.RightSaberRotation,
-                        out referenceRotation,
-                        out _rightWristRotationAxis
-                    );
-
-                    PluginConfig.CreateUndoStep("Right Benchmark");
-                    PluginConfig.SetRightSaberReference(_isSwingGood, referenceRotation);
+                    _rightReferenceRotation = CalculateReferenceRotation(averageNormal, PluginConfig.RightSaberRotation);
                     break;
                 default: throw new ArgumentOutOfRangeException();
             }
-
-            UpdateVisibility();
 
             if (_isSwingGood) {
                 SwingBenchmarkHelper.InvokeSuccess();
@@ -146,17 +134,15 @@ namespace EasyOffset {
             }
         }
 
-        private void CalculateReferenceRotation(
+        private Quaternion CalculateReferenceRotation(
             Vector3 averageNormal,
-            Quaternion currentLocalRotation,
-            out Quaternion referenceRotation,
-            out Vector3 wristRotationAxis
+            Quaternion currentLocalRotation
         ) {
             var currentLocalDirection = TransformUtils.DirectionFromRotation(currentLocalRotation);
-            referenceRotation = Quaternion.LookRotation(currentLocalDirection, averageNormal);
+            var referenceRotation = Quaternion.LookRotation(currentLocalDirection, averageNormal);
             referenceRotation *= Quaternion.Euler(-_swingCurveAngleDeg, 0.0f, 0.0f);
             referenceRotation *= Quaternion.Euler(0.0f, 0.0f, 90.0f);
-            wristRotationAxis = referenceRotation * Vector3.left;
+            return referenceRotation;
         }
 
         private static Quaternion CalculateReferenceRotationDep(Vector3 straightSwingPlaneNormal, Quaternion currentLocalRotation) {
@@ -170,27 +156,43 @@ namespace EasyOffset {
 
         #region AutoFix
 
-        private Vector3 _leftWristRotationAxis = Vector3.forward;
-        private Vector3 _rightWristRotationAxis = Vector3.forward;
-
         private void ApplyAutoFix() {
             if (!_hasAnyResults || !_isSwingGood) return;
-
-            Vector3 directionToFix;
-            Vector3 fixedDirection;
 
             switch (_selectedHand) {
                 case Hand.Left:
                     PluginConfig.CreateUndoStep("Left Auto-fix");
-                    directionToFix = TransformUtils.DirectionFromRotation(PluginConfig.LeftSaberRotation);
-                    fixedDirection = new Plane(_leftWristRotationAxis, 0f).ClosestPointOnPlane(directionToFix);
-                    PluginConfig.LeftSaberRotation = Quaternion.FromToRotation(directionToFix, fixedDirection) * PluginConfig.LeftSaberRotation;
+                    PluginConfig.LeftSaberRotation = TransformUtils.AlignForwardVectors(
+                        PluginConfig.LeftSaberRotation,
+                        _leftReferenceRotation
+                    );
                     break;
                 case Hand.Right:
                     PluginConfig.CreateUndoStep("Right Auto-fix");
-                    directionToFix = TransformUtils.DirectionFromRotation(PluginConfig.RightSaberRotation);
-                    fixedDirection = new Plane(_rightWristRotationAxis, 0f).ClosestPointOnPlane(directionToFix);
-                    PluginConfig.RightSaberRotation = Quaternion.FromToRotation(directionToFix, fixedDirection) * PluginConfig.RightSaberRotation;
+                    PluginConfig.RightSaberRotation = TransformUtils.AlignForwardVectors(
+                        PluginConfig.RightSaberRotation,
+                        _rightReferenceRotation
+                    );
+                    break;
+                default: throw new ArgumentOutOfRangeException(nameof(_selectedHand), _selectedHand, null);
+            }
+        }
+
+        #endregion
+
+        #region OnSetAsReference
+
+        private void OnSetAsReference() {
+            if (!_hasAnyResults || !_isSwingGood) return;
+
+            switch (_selectedHand) {
+                case Hand.Left:
+                    PluginConfig.CreateUndoStep("Set Left Reference");
+                    PluginConfig.SetLeftSaberReference(true, _leftReferenceRotation);
+                    break;
+                case Hand.Right:
+                    PluginConfig.CreateUndoStep("Set Right Reference");
+                    PluginConfig.SetRightSaberReference(true, _rightReferenceRotation);
                     break;
                 default: throw new ArgumentOutOfRangeException(nameof(_selectedHand), _selectedHand, null);
             }
@@ -264,12 +266,14 @@ namespace EasyOffset {
             PluginConfig.AdjustmentModeChangedEvent += OnAdjustmentModeChanged;
             SwingBenchmarkHelper.OnResetEvent += OnReset;
             SwingBenchmarkHelper.OnAutoFixEvent += ApplyAutoFix;
+            SwingBenchmarkHelper.OnSetAsReferenceEvent += OnSetAsReference;
         }
 
         private void UnSubscribe() {
             PluginConfig.AdjustmentModeChangedEvent -= OnAdjustmentModeChanged;
             SwingBenchmarkHelper.OnResetEvent -= OnReset;
             SwingBenchmarkHelper.OnAutoFixEvent -= ApplyAutoFix;
+            SwingBenchmarkHelper.OnSetAsReferenceEvent -= OnSetAsReference;
         }
 
         #endregion

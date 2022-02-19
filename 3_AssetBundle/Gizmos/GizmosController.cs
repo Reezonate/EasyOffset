@@ -30,6 +30,7 @@ namespace EasyOffset {
 
         #region SetVisibility
 
+        private bool _isSwingPreviewVisible;
         private bool _isReferenceVisible;
         private bool _hasReference;
 
@@ -49,8 +50,16 @@ namespace EasyOffset {
             controllerModel.SetVisible(isControllerModelVisible);
             swingPreview.SetVisible(isSwingPreviewVisible);
             preciseGimbal.SetVisible(isPreciseGimbalVisible);
+
+            _isSwingPreviewVisible = isSwingPreviewVisible;
+            UpdateSwingPreviewVisibility();
+
             _isReferenceVisible = isReferenceVisible;
             UpdateReferenceVisibility();
+        }
+
+        private void UpdateSwingPreviewVisibility() {
+            swingPreview.SetVisible(_isSwingPreviewVisible && !_focused);
         }
 
         private void UpdateReferenceVisibility() {
@@ -95,12 +104,22 @@ namespace EasyOffset {
 
         #region SetFocus
 
+        private bool _focused;
+
         public void SetOrthonormalBasisFocus(bool value) {
+            if (_focused == value) return;
+            _focused = value;
+
             orthonormalBasis.SetFocus(value);
+            UpdateSwingPreviewVisibility();
         }
 
         public void SetSphericalBasisFocus(bool value) {
+            if (_focused == value) return;
+            _focused = value;
+
             sphericalBasis.SetFocus(value);
+            UpdateSwingPreviewVisibility();
         }
 
         #endregion

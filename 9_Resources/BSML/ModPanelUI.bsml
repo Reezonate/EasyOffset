@@ -5,7 +5,7 @@
         <macro.define name="options-section-height" value="20"/>
         <macro.define name="middle-section-height" value="35"/>
         <macro.define name="bottom-section-height" value="10"/>
-        
+
         <macro.define name="l-arrow" value="&lt;pos=-0.4em&gt;◄"/>
         <macro.define name="r-arrow" value="►"/>
 
@@ -105,27 +105,31 @@
             </vertical>
 
             <!--    CONTROLS    -->
-            <vertical preferred-width="40">
-                <horizontal preferred-height="4"/>
-                <horizontal preferred-height="7">
-                    <button text="Apply rotation fix" interactable="~benchmark-results-active" on-click="benchmark-auto-fix-on-click"
+            <vertical preferred-width="40" pad-top="4" pad-bottom="4">
+                <horizontal preferred-height="6">
+                    <button text="Apply rotation fix" interactable="~benchmark-results-active" preferred-width="30"
+                            on-click="benchmark-auto-fix-on-click"
                             hover-hint="Align saber with the calculated straight swing plane"/>
                 </horizontal>
-                <horizontal preferred-height="8">
+                <horizontal preferred-height="6">
+                    <button text="Set as reference" interactable="~benchmark-results-active" preferred-width="30"
+                            on-click="benchmark-set-as-reference-on-click"
+                            hover-hint="Use the calculated wrist rotation axis as a reference for the 'Rotation' mode"/>
+                </horizontal>
+                <horizontal preferred-height="6">
                     <text text="~benchmark-status-text" align="Center"/>
                 </horizontal>
-                <horizontal preferred-height="7">
-                    <button text="Reset" on-click="benchmark-reset-on-click"/>
+                <horizontal preferred-height="6">
+                    <button text="Reset" preferred-width="30" on-click="benchmark-reset-on-click"/>
                 </horizontal>
-                <horizontal preferred-height="4"/>
             </vertical>
         </horizontal>
 
         <!--    PRECISE PANEL    -->
         <horizontal active="~precise-panel-active" preferred-height="~middle-section-height" id="precise-panel-component">
             <!--    STYLE    -->
-            <macro.define name="precise-reset-width" value="10"/>
-            <macro.define name="precise-hand-width" value="20"/>
+            <macro.define name="precise-reset-width" value="12"/>
+            <macro.define name="precise-hand-width" value="18"/>
             <macro.define name="precise-mirror-width" value="28"/>
 
             <macro.define name="precise-slider-label-width" value="12"/>
@@ -442,52 +446,52 @@
                         <horizontal preferred-height="~precise-filler-height"/>
                     </vertical>
                 </horizontal>
-                
+
                 <!--    REFERENCE CONTROLS    -->
                 <horizontal active="~precise-rotation-reference-active" preferred-height="6" spacing="2">
-                    <button preferred-width="30" pad-left="10" face-color="#ff9999" text="Clear" 
-                            interactable="~precise-left-rotation-reference-interactable" bg="round-rect-panel"/>
+                    <button preferred-width="30" pad-left="10" face-color="#ff9999" text="Clear"
+                            on-click="precise-left-clear-reference-on-click"
+                            interactable="~precise-left-rotation-reference-interactable"/>
                     <button preferred-width="20" text="Update"
+                            on-click="precise-left-update-reference-on-click"
                             interactable="~precise-left-rotation-reference-interactable"/>
                     <vertical preferred-width="24">
                         <text text="Reference" align="Midline"/>
                     </vertical>
                     <button preferred-width="20" text="Update"
+                            on-click="precise-right-update-reference-on-click"
                             interactable="~precise-right-rotation-reference-interactable"/>
                     <button preferred-width="30" pad-right="10" face-color="#ff9999" text="Clear"
-                            interactable="~precise-right-rotation-reference-interactable" bg="round-rect-panel"/>
+                            on-click="precise-right-clear-reference-on-click"
+                            interactable="~precise-right-rotation-reference-interactable"/>
                 </horizontal>
             </vertical>
         </horizontal>
 
         <!--    ROOM OFFSET PANEL    -->
-        <horizontal active="~room-offset-panel-active" preferred-height="~middle-section-height">
-            <vertical>
-                <horizontal preferred-height="20">
-                    <vertical preferred-width="30" child-control-width="true" child-expand-width="true">
-                        <text text="~hmd-x-text" hover-hint="Headset X coordinate" align="Left"/>
-                        <text text="~hmd-y-text" hover-hint="Headset Y coordinate" align="Left"/>
-                        <text text="~hmd-z-text" hover-hint="Headset Z coordinate" align="Left"/>
-                    </vertical>
-                    <vertical preferred-width="30" child-control-width="true" child-expand-width="true">
-                        <text text="~room-x-text" hover-hint="Room X offset" align="Left"/>
-                        <text text="~room-y-text" hover-hint="Room Y offset" align="Left"/>
-                        <text text="~room-z-text" hover-hint="Room Z offset" align="Left"/>
-                    </vertical>
-                    <vertical preferred-width="20">
-                        <toggle-setting text="" value="room-x-toggle-value" on-change="room-x-toggle-on-change"
-                                        hover-hint="Allow X offset change (Left/Right)"/>
-                        <toggle-setting text="" value="room-y-toggle-value" on-change="room-y-toggle-on-change"
-                                        hover-hint="Allow Y offset change (Up/Down)"/>
-                        <toggle-setting text="" value="room-z-toggle-value" on-change="room-z-toggle-on-change"
-                                        hover-hint="Allow Z offset change (Forward/Back)"/>
-                    </vertical>
-                    <vertical preferred-width="20" child-control-width="true" child-expand-width="true">
-                        <button text="Reset" on-click="room-x-reset-on-click" hover-hint="Set X offset to 0"/>
-                        <button text="Reset" on-click="room-y-reset-on-click" hover-hint="Set Y offset to 0"/>
-                        <button text="Reset" on-click="room-z-reset-on-click" hover-hint="Set Z offset to 0"/>
-                    </vertical>
-                </horizontal>
+        <horizontal active="~room-offset-panel-active" preferred-height="~middle-section-height" pad-top="8" pad-bottom="8">
+            <vertical preferred-width="30" child-control-width="true" child-expand-width="true">
+                <text text="~hmd-x-text" hover-hint="Headset X coordinate" align="Left"/>
+                <text text="~hmd-y-text" hover-hint="Headset Y coordinate" align="Left"/>
+                <text text="~hmd-z-text" hover-hint="Headset Z coordinate" align="Left"/>
+            </vertical>
+            <vertical preferred-width="30" child-control-width="true" child-expand-width="true">
+                <text text="~room-x-text" hover-hint="Room X offset" align="Left"/>
+                <text text="~room-y-text" hover-hint="Room Y offset" align="Left"/>
+                <text text="~room-z-text" hover-hint="Room Z offset" align="Left"/>
+            </vertical>
+            <vertical preferred-width="20">
+                <toggle-setting text="" value="room-x-toggle-value" on-change="room-x-toggle-on-change"
+                                hover-hint="Allow X offset change (Left/Right)"/>
+                <toggle-setting text="" value="room-y-toggle-value" on-change="room-y-toggle-on-change"
+                                hover-hint="Allow Y offset change (Up/Down)"/>
+                <toggle-setting text="" value="room-z-toggle-value" on-change="room-z-toggle-on-change"
+                                hover-hint="Allow Z offset change (Forward/Back)"/>
+            </vertical>
+            <vertical preferred-width="20" child-control-width="true" child-expand-width="true">
+                <button text="Reset" on-click="room-x-reset-on-click" hover-hint="Set X offset to 0"/>
+                <button text="Reset" on-click="room-y-reset-on-click" hover-hint="Set Y offset to 0"/>
+                <button text="Reset" on-click="room-z-reset-on-click" hover-hint="Set Z offset to 0"/>
             </vertical>
         </horizontal>
 

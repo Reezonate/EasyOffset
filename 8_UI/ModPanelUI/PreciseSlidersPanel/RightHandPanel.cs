@@ -15,6 +15,7 @@ internal partial class ModPanelUI {
     private string PreciseRightResetText {
         get => _preciseRightResetText;
         set {
+            if (_preciseRightResetText.Equals(value)) return;
             _preciseRightResetText = value;
             NotifyPropertyChanged();
         }
@@ -25,7 +26,7 @@ internal partial class ModPanelUI {
     private void PreciseRightResetOnClick() {
         if (_preciseRightResetClickedOnce) {
             PluginConfig.CreateUndoStep("Reset Right");
-            PreciseReset(Hand.Right);
+            OnResetButtonPressed(Hand.Right);
             ResetRightResetButton();
         } else {
             this.ReInvokeWithDelay(ref _rightResetButtonResetCoroutine, ResetRightResetButton, ButtonPromptDelaySeconds);
@@ -53,6 +54,7 @@ internal partial class ModPanelUI {
     private string PreciseRightMirrorText {
         get => _preciseRightMirrorText;
         set {
+            if (_preciseRightMirrorText.Equals(value)) return;
             _preciseRightMirrorText = value;
             NotifyPropertyChanged();
         }
@@ -63,7 +65,7 @@ internal partial class ModPanelUI {
     private void PreciseRightMirrorOnClick() {
         if (_preciseRightMirrorClickedOnce) {
             PluginConfig.CreateUndoStep("Mirror Right");
-            PreciseMirror(Hand.Right);
+            OnMirrorButtonPressed(Hand.Right);
             ResetRightMirrorButton();
         } else {
             this.ReInvokeWithDelay(ref _rightMirrorButtonResetCoroutine, ResetRightMirrorButton, ButtonPromptDelaySeconds);
@@ -118,6 +120,7 @@ internal partial class ModPanelUI {
     private float PreciseRightZOffset {
         get => _preciseRightZOffset;
         set {
+            if (_preciseRightZOffset.Equals(value)) return;
             _preciseRightZOffset = value;
             NotifyPropertyChanged();
         }
@@ -162,6 +165,7 @@ internal partial class ModPanelUI {
     private float PreciseRightPosX {
         get => _preciseRightPosX;
         set {
+            if (_preciseRightPosX.Equals(value)) return;
             _preciseRightPosX = value;
             NotifyPropertyChanged();
         }
@@ -206,6 +210,7 @@ internal partial class ModPanelUI {
     private float PreciseRightPosY {
         get => _preciseRightPosY;
         set {
+            if (_preciseRightPosY.Equals(value)) return;
             _preciseRightPosY = value;
             NotifyPropertyChanged();
         }
@@ -250,6 +255,7 @@ internal partial class ModPanelUI {
     private float PreciseRightPosZ {
         get => _preciseRightPosZ;
         set {
+            if (_preciseRightPosZ.Equals(value)) return;
             _preciseRightPosZ = value;
             NotifyPropertyChanged();
         }
@@ -294,6 +300,7 @@ internal partial class ModPanelUI {
     private float PreciseRightRotX {
         get => _preciseRightRotX;
         set {
+            if (_preciseRightRotX.Equals(value)) return;
             _preciseRightRotX = value;
             NotifyPropertyChanged();
         }
@@ -307,7 +314,7 @@ internal partial class ModPanelUI {
             OnSliderTargetChanged(Hand.Right, SliderValueType.RotationX);
         } else {
             _preciseRightRotX = value;
-            CalculateReferenceSpaceRotations();
+            RecalculateReferenceSpaceRotations();
             OnSliderValueChangedDirectly(Hand.Right, SliderValueType.RotationX);
         }
     }
@@ -317,7 +324,7 @@ internal partial class ModPanelUI {
     private void PreciseRightRotXIncOnClick() {
         var newValue = StepUp(PreciseRightRotX, _rotSliderIncrement);
         PreciseRightRotX = ClampRot90SliderValue(newValue);
-        CalculateReferenceSpaceRotations();
+        RecalculateReferenceSpaceRotations();
         OnSliderValueChangedDirectly(Hand.Right, SliderValueType.RotationX);
     }
 
@@ -326,7 +333,7 @@ internal partial class ModPanelUI {
     private void PreciseRightRotXDecOnClick() {
         var newValue = StepDown(PreciseRightRotX, _rotSliderIncrement);
         PreciseRightRotX = ClampRot90SliderValue(newValue);
-        CalculateReferenceSpaceRotations();
+        RecalculateReferenceSpaceRotations();
         OnSliderValueChangedDirectly(Hand.Right, SliderValueType.RotationX);
     }
 
@@ -341,6 +348,7 @@ internal partial class ModPanelUI {
     private float PreciseRightRotY {
         get => _preciseRightRotY;
         set {
+            if (_preciseRightRotY.Equals(value)) return;
             _preciseRightRotY = value;
             NotifyPropertyChanged();
         }
@@ -354,7 +362,7 @@ internal partial class ModPanelUI {
             OnSliderTargetChanged(Hand.Right, SliderValueType.RotationY);
         } else {
             _preciseRightRotY = value;
-            CalculateReferenceSpaceRotations();
+            RecalculateReferenceSpaceRotations();
             OnSliderValueChangedDirectly(Hand.Right, SliderValueType.RotationY);
         }
     }
@@ -364,7 +372,7 @@ internal partial class ModPanelUI {
     private void PreciseRightRotYIncOnClick() {
         var newValue = StepUp(PreciseRightRotY, _rotSliderIncrement);
         PreciseRightRotY = ClampRot180SliderValue(newValue);
-        CalculateReferenceSpaceRotations();
+        RecalculateReferenceSpaceRotations();
         OnSliderValueChangedDirectly(Hand.Right, SliderValueType.RotationY);
     }
 
@@ -373,7 +381,7 @@ internal partial class ModPanelUI {
     private void PreciseRightRotYDecOnClick() {
         var newValue = StepDown(PreciseRightRotY, _rotSliderIncrement);
         PreciseRightRotY = ClampRot180SliderValue(newValue);
-        CalculateReferenceSpaceRotations();
+        RecalculateReferenceSpaceRotations();
         OnSliderValueChangedDirectly(Hand.Right, SliderValueType.RotationY);
     }
 
@@ -388,6 +396,7 @@ internal partial class ModPanelUI {
     private float PreciseRightRotZ {
         get => _preciseRightRotZ;
         set {
+            if (_preciseRightRotZ.Equals(value)) return;
             _preciseRightRotZ = value;
             NotifyPropertyChanged();
         }
@@ -401,7 +410,7 @@ internal partial class ModPanelUI {
             OnSliderTargetChanged(Hand.Right, SliderValueType.RotationZ);
         } else {
             _preciseRightRotZ = value;
-            CalculateReferenceSpaceRotations();
+            RecalculateReferenceSpaceRotations();
             OnSliderValueChangedDirectly(Hand.Right, SliderValueType.RotationZ);
         }
     }
@@ -411,7 +420,7 @@ internal partial class ModPanelUI {
     private void PreciseRightRotZIncOnClick() {
         var newValue = StepUp(PreciseRightRotZ, _rotSliderIncrement);
         PreciseRightRotZ = ClampRot180SliderValue(newValue);
-        CalculateReferenceSpaceRotations();
+        RecalculateReferenceSpaceRotations();
         OnSliderValueChangedDirectly(Hand.Right, SliderValueType.RotationZ);
     }
 
@@ -420,7 +429,7 @@ internal partial class ModPanelUI {
     private void PreciseRightRotZDecOnClick() {
         var newValue = StepDown(PreciseRightRotZ, _rotSliderIncrement);
         PreciseRightRotZ = ClampRot180SliderValue(newValue);
-        CalculateReferenceSpaceRotations();
+        RecalculateReferenceSpaceRotations();
         OnSliderValueChangedDirectly(Hand.Right, SliderValueType.RotationZ);
     }
 
@@ -435,6 +444,7 @@ internal partial class ModPanelUI {
     private float PreciseRightRotHor {
         get => _preciseRightRotHor;
         set {
+            if (_preciseRightRotHor.Equals(value)) return;
             _preciseRightRotHor = value;
             NotifyPropertyChanged();
         }
@@ -448,7 +458,7 @@ internal partial class ModPanelUI {
             OnSliderTargetChanged(Hand.Right, SliderValueType.Curve);
         } else {
             _preciseRightRotHor = value;
-            CalculateControllerSpaceRotations();
+            RecalculateControllerSpaceRotations();
             OnSliderValueChangedDirectly(Hand.Right, SliderValueType.Curve);
         }
     }
@@ -458,7 +468,7 @@ internal partial class ModPanelUI {
     private void PreciseRightRotHorIncOnClick() {
         var newValue = PreciseRightRotHor + _rotSliderIncrement;
         PreciseRightRotHor = ClampRot180SliderValue(newValue);
-        CalculateControllerSpaceRotations();
+        RecalculateControllerSpaceRotations();
         OnSliderValueChangedDirectly(Hand.Right, SliderValueType.Curve);
     }
 
@@ -467,7 +477,7 @@ internal partial class ModPanelUI {
     private void PreciseRightRotHorDecOnClick() {
         var newValue = PreciseRightRotHor - _rotSliderIncrement;
         PreciseRightRotHor = ClampRot180SliderValue(newValue);
-        CalculateControllerSpaceRotations();
+        RecalculateControllerSpaceRotations();
         OnSliderValueChangedDirectly(Hand.Right, SliderValueType.Curve);
     }
 
@@ -482,6 +492,7 @@ internal partial class ModPanelUI {
     private float PreciseRightRotVert {
         get => _preciseRightRotVert;
         set {
+            if (_preciseRightRotVert.Equals(value)) return;
             _preciseRightRotVert = value;
             NotifyPropertyChanged();
         }
@@ -495,7 +506,7 @@ internal partial class ModPanelUI {
             OnSliderTargetChanged(Hand.Right, SliderValueType.Balance);
         } else {
             _preciseRightRotVert = value;
-            CalculateControllerSpaceRotations();
+            RecalculateControllerSpaceRotations();
             OnSliderValueChangedDirectly(Hand.Right, SliderValueType.Balance);
         }
     }
@@ -505,7 +516,7 @@ internal partial class ModPanelUI {
     private void PreciseRightRotVertIncOnClick() {
         var newValue = PreciseRightRotVert + _rotSliderIncrement;
         PreciseRightRotVert = ClampRot90SliderValue(newValue);
-        CalculateControllerSpaceRotations();
+        RecalculateControllerSpaceRotations();
         OnSliderValueChangedDirectly(Hand.Right, SliderValueType.Balance);
     }
 
@@ -514,8 +525,47 @@ internal partial class ModPanelUI {
     private void PreciseRightRotVertDecOnClick() {
         var newValue = PreciseRightRotVert - _rotSliderIncrement;
         PreciseRightRotVert = ClampRot90SliderValue(newValue);
-        CalculateControllerSpaceRotations();
+        RecalculateControllerSpaceRotations();
         OnSliderValueChangedDirectly(Hand.Right, SliderValueType.Balance);
+    }
+
+    #endregion
+
+    #region Interactable
+
+    private bool _preciseRightRotationReferenceInteractable = PluginConfig.RightSaberHasReference;
+
+    [UIValue("precise-right-rotation-reference-interactable")]
+    [UsedImplicitly]
+    private bool PreciseRightRotationReferenceInteractable {
+        get => _preciseRightRotationReferenceInteractable;
+        set {
+            if (_preciseRightRotationReferenceInteractable.Equals(value)) return;
+            _preciseRightRotationReferenceInteractable = value;
+            NotifyPropertyChanged();
+        }
+    }
+
+    #endregion
+
+    #region UpdateReference button
+
+    [UIAction("precise-right-update-reference-on-click")]
+    [UsedImplicitly]
+    private void PreciseRightUpdateReferenceOnClick() {
+        PluginConfig.CreateUndoStep("Update right reference");
+        PluginConfig.AlignRightReferenceToCurrent();
+    }
+
+    #endregion
+
+    #region ClearReference button
+
+    [UIAction("precise-right-clear-reference-on-click")]
+    [UsedImplicitly]
+    private void PreciseRightClearReferenceOnClick() {
+        PluginConfig.CreateUndoStep("Clear right reference");
+        PluginConfig.ResetRightSaberReference();
     }
 
     #endregion

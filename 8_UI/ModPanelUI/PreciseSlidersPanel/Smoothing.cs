@@ -85,7 +85,7 @@ internal partial class ModPanelUI {
         PreciseRightRotY = _preciseRightRotYCurrent = Mathf.Lerp(_preciseRightRotYCurrent, _preciseRightRotYTarget, t);
         PreciseRightRotZ = _preciseRightRotZCurrent = Mathf.Lerp(_preciseRightRotZCurrent, _preciseRightRotZTarget, t);
 
-        CalculateReferenceSpaceRotations();
+        RecalculateReferenceSpaceRotations();
     }
 
     private void LerpRotationsReference(float t) {
@@ -95,7 +95,7 @@ internal partial class ModPanelUI {
         PreciseRightRotHor = _preciseRightRotHorCurrent = Mathf.Lerp(_preciseRightRotHorCurrent, _preciseRightRotHorTarget, t);
         PreciseRightRotVert = _preciseRightRotVertCurrent = Mathf.Lerp(_preciseRightRotVertCurrent, _preciseRightRotVertTarget, t);
 
-        CalculateControllerSpaceRotations();
+        RecalculateControllerSpaceRotations();
     }
 
     private void LerpPositions(float t) {

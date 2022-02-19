@@ -81,5 +81,15 @@ namespace EasyOffset {
         }
 
         #endregion
+
+        #region OnSetAsReference
+
+        public static event Action OnSetAsReferenceEvent;
+
+        public static void InvokeSetAsReference() {
+            OnSetAsReferenceEvent?.Invoke();
+        }
+
+        #endregion
     }
 }

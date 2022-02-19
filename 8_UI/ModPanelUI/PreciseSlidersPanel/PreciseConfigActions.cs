@@ -28,29 +28,29 @@ internal partial class ModPanelUI {
         PreciseRightZOffset = PluginConfig.RightSaberZOffset;
         PreciseRightRotationReferenceInteractable = PluginConfig.RightSaberHasReference;
 
-        CalculateReferenceSpaceRotations();
+        RecalculateReferenceSpaceRotations();
     }
 
     #endregion
 
-    #region Apply
+    #region ApplyPreciseConfig
 
     private void ApplyPreciseConfig() {
-        PluginConfig.ApplyPreciseModeValues(
+        PluginConfig.SetSaberOffsets(
             PreciseLeftPivotPosition,
-            PreciseLeftRotationEuler,
+            PreciseLeftRotation,
             PreciseLeftZOffset,
             PreciseRightPivotPosition,
-            PreciseRightRotationEuler,
+            PreciseRightRotation,
             PreciseRightZOffset
         );
     }
 
     #endregion
 
-    #region Reset
+    #region OnResetButtonPressed
 
-    private void PreciseReset(Hand hand) {
+    private void OnResetButtonPressed(Hand hand) {
         switch (_precisePanelState) {
             case PrecisePanelState.Hidden: return;
             case PrecisePanelState.PositionOnly:
@@ -69,9 +69,9 @@ internal partial class ModPanelUI {
 
     #endregion
 
-    #region Mirror
+    #region OnMirrorButtonPressed
 
-    private void PreciseMirror(Hand mirrorSource) {
+    private void OnMirrorButtonPressed(Hand mirrorSource) {
         switch (_precisePanelState) {
             case PrecisePanelState.Hidden: return;
             case PrecisePanelState.PositionOnly:
@@ -90,9 +90,9 @@ internal partial class ModPanelUI {
 
     #endregion
 
-    #region RecalculateRotations
+    #region RecalculateControllerSpaceRotations
 
-    private void CalculateControllerSpaceRotations() {
+    private void RecalculateControllerSpaceRotations() {
         if (PluginConfig.LeftSaberHasReference) {
             var leftCoordinates = TransformUtils.FromReferenceSpace(
                 PreciseLeftRotation,
@@ -120,7 +120,11 @@ internal partial class ModPanelUI {
         }
     }
 
-    private void CalculateReferenceSpaceRotations() {
+    #endregion
+
+    #region RecalculateReferenceSpaceRotations
+
+    private void RecalculateReferenceSpaceRotations() {
         if (PluginConfig.LeftSaberHasReference) {
             TransformUtils.ToReferenceSpace(
                 PreciseLeftRotation,
