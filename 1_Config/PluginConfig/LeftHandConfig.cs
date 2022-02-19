@@ -38,14 +38,18 @@ internal partial class PluginConfig {
 
     #region SaberPivotPosition
 
-    private static Vector3 _leftSaberPivotPosition = ConfigFileData.Instance.GetLeftSaberPivotPositionInMeters();
+    private static Vector3 _leftSaberPivotPosition = Vector3.ClampMagnitude(
+        ConfigFileData.Instance.GetLeftSaberPivotPositionInMeters(),
+        ConfigDefaults.MaximalPositionOffset
+    );
 
     public static Vector3 LeftSaberPivotPosition {
         get => _leftSaberPivotPosition;
         set {
-            if (_leftSaberPivotPosition.Equals(value)) return;
-            _leftSaberPivotPosition = value;
-            ConfigFileData.Instance.SetLeftSaberPivotPositionInMeters(value);
+            var clamped = Vector3.ClampMagnitude(value, ConfigDefaults.MaximalPositionOffset);
+            if (_leftSaberPivotPosition.Equals(clamped)) return;
+            _leftSaberPivotPosition = clamped;
+            ConfigFileData.Instance.SetLeftSaberPivotPositionInMeters(clamped);
             UpdateLeftSaberTranslation();
             NotifyConfigWasChanged();
         }

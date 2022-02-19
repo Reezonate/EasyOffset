@@ -35,17 +35,21 @@ internal partial class PluginConfig {
     }
 
     #endregion
-
+    
     #region SaberPivotPosition
 
-    private static Vector3 _rightSaberPivotPosition = ConfigFileData.Instance.GetRightSaberPivotPositionInMeters();
+    private static Vector3 _rightSaberPivotPosition = Vector3.ClampMagnitude(
+        ConfigFileData.Instance.GetRightSaberPivotPositionInMeters(),
+        ConfigDefaults.MaximalPositionOffset
+    );
 
     public static Vector3 RightSaberPivotPosition {
         get => _rightSaberPivotPosition;
         set {
-            if (_rightSaberPivotPosition.Equals(value)) return;
-            _rightSaberPivotPosition = value;
-            ConfigFileData.Instance.SetRightSaberPivotPositionInMeters(value);
+            var clamped = Vector3.ClampMagnitude(value, ConfigDefaults.MaximalPositionOffset);
+            if (_rightSaberPivotPosition.Equals(clamped)) return;
+            _rightSaberPivotPosition = clamped;
+            ConfigFileData.Instance.SetRightSaberPivotPositionInMeters(clamped);
             UpdateRightSaberTranslation();
             NotifyConfigWasChanged();
         }

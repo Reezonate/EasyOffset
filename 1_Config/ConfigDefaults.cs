@@ -54,6 +54,8 @@ namespace EasyOffset {
 
         #region SaberOffsets
 
+        public const float MaximalPositionOffset = 0.4f;
+
         public const float ZOffset = 0.11f;
 
         public static readonly Vector3 LeftSaberPivotPosition = new(0.0f, 0.0f, -ZOffset);
