@@ -170,7 +170,7 @@ Note that due to swing inconsistencies, the suggested "Auto-fix" may not be perf
 
 Calculation error mostly depends on a `Tip wobble` (smaller is better) and `Angle` (higher is better). The more repeatable your swings are, the more precise result you'll get
 
-After the successful test, the calculated wrist rotation axis and straight swing reference plane will appear on your hand.
+After the successful test, you can use the calculated straight swing plane as a reference for the `Rotation` mode
 
 ![Benchmark mode preview](media/Benchmark.png)
 
