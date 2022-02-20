@@ -183,7 +183,7 @@ Indicates how straight your swing is
 
 How to improve:
 
-- You can reduce it manually in the `Rotation` mode (A special reference line will appear after the test)
+- You can reduce it manually in the `Rotation` mode
 - You can reduce it automatically by pressing the `Apply rotation fix` button. This action will change your config, backup if you're not sure!
 - Straight swing requires fairly wide hand placement, which may feel uncomfortable at first if you had a big outward curve
 
