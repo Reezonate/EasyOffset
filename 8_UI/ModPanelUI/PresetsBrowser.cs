@@ -16,6 +16,7 @@ internal partial class ModPanelUI {
     private bool PresetsBrowserActive {
         get => _presetsBrowserActive;
         set {
+            if (_presetsBrowserActive.Equals(value)) return;
             _presetsBrowserActive = value;
             NotifyPropertyChanged();
         }
@@ -32,6 +33,7 @@ internal partial class ModPanelUI {
     private string PresetFileName {
         get => _presetFileName;
         set {
+            if (_presetFileName.Equals(value)) return;
             _presetFileName = value;
             NotifyPropertyChanged();
         }
@@ -112,6 +114,7 @@ internal partial class ModPanelUI {
     private bool PresetsBrowserSaveActive {
         get => _presetsBrowserSaveActive;
         set {
+            if (_presetsBrowserSaveActive.Equals(value)) return;
             _presetsBrowserSaveActive = value;
             NotifyPropertyChanged();
         }
@@ -140,6 +143,7 @@ internal partial class ModPanelUI {
     private bool PresetsBrowserLoadActive {
         get => _presetsBrowserLoadActive;
         set {
+            if (_presetsBrowserLoadActive.Equals(value)) return;
             _presetsBrowserLoadActive = value;
             NotifyPropertyChanged();
         }

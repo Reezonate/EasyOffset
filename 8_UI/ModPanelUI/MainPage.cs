@@ -18,6 +18,7 @@ internal partial class ModPanelUI {
     private bool MainPageActive {
         get => _mainPageActive;
         set {
+            if (_mainPageActive.Equals(value)) return;
             _mainPageActive = value;
             NotifyPropertyChanged();
         }
@@ -32,8 +33,8 @@ internal partial class ModPanelUI {
     [UIValue("am-hint")] [UsedImplicitly] private string _adjustmentModeHint = "Basic - Drag and drop adjustment mode" +
                                                                                "\nPosition - Pivot position only" +
                                                                                "\nRotation - Saber rotation only" +
-                                                                               "\nPrecise - Direct config values change" +
                                                                                "\nSwing Benchmark - Swing analysis" +
+                                                                               "\nDirect - Raw config values change" +
                                                                                "\nRotation Auto - Automatic rotation" +
                                                                                "\nRoom Offset - World pulling locomotion";
 
@@ -47,6 +48,7 @@ internal partial class ModPanelUI {
     private string AdjustmentModeChoice {
         get => _adjustmentModeChoice;
         set {
+            if (_adjustmentModeChoice.Equals(value)) return;
             _adjustmentModeChoice = value;
             NotifyPropertyChanged();
         }
@@ -74,12 +76,13 @@ internal partial class ModPanelUI {
         OnControllerTypeChanged(controllerType, true);
     }
 
-    private void OnControllerTypeChanged(ControllerType controllerType, bool forceChoices) {
+    private void OnControllerTypeChanged(ControllerType controllerType, bool forceUpdate) {
         _buttonAliasDictionary = ControllerButtonUtils.GetAvailableOptions(controllerType);
         _assignedButtonChoices = _buttonAliasDictionary.Keys.Cast<object>().ToList();
 
-        if (!forceChoices) return;
+        if (!forceUpdate) return;
         _assignedButtonComponent.values = _assignedButtonChoices;
+        _assignedButtonComponent.Value = PluginConfig.AssignedButton;
         _assignedButtonComponent.UpdateChoices();
     }
 
@@ -112,17 +115,17 @@ internal partial class ModPanelUI {
 
     #endregion
 
-    #region Display Controller
+    #region Controller Type
 
-    [UIValue("dc-choices")] [UsedImplicitly]
-    private List<object> _displayControllerOptions = ControllerTypeUtils.AllNamesObjects.ToList();
+    [UIValue("controller-type-choices")] [UsedImplicitly]
+    private List<object> _controllerTypeOptions = ControllerTypeUtils.AllNamesObjects.ToList();
 
-    [UIValue("dc-choice")] [UsedImplicitly]
-    private string _displayControllerValue = ControllerTypeUtils.TypeToName(PluginConfig.SelectedControllerType);
+    [UIValue("controller-type-choice")] [UsedImplicitly]
+    private string _controllerTypeValue = ControllerTypeUtils.TypeToName(PluginConfig.SelectedControllerType);
 
-    [UIAction("dc-on-change")]
+    [UIAction("controller-type-on-change")]
     [UsedImplicitly]
-    private void OnDisplayControllerChange(string selectedValue) {
+    private void ControllerTypeOnChange(string selectedValue) {
         PluginConfig.SelectedControllerType = ControllerTypeUtils.NameToType(selectedValue);
     }
 
@@ -137,6 +140,7 @@ internal partial class ModPanelUI {
     private bool UseFreeHandActive {
         get => _useFreeHandActive;
         set {
+            if (_useFreeHandActive.Equals(value)) return;
             _useFreeHandActive = value;
             NotifyPropertyChanged();
         }
@@ -185,7 +189,7 @@ internal partial class ModPanelUI {
     #region Scale
 
     private static readonly Vector3 BottomElementsScale = Vector3.one * 0.85f;
-            
+
     private void ApplyBottomPanelScale() {
         _undoRedoButtonsContainer.localScale = BottomElementsScale;
         _uiLockContainer.localScale = BottomElementsScale;
@@ -229,6 +233,7 @@ internal partial class ModPanelUI {
     private bool WarningActive {
         get => _warningActive;
         set {
+            if (_warningActive.Equals(value)) return;
             _warningActive = value;
             NotifyPropertyChanged();
         }
@@ -241,6 +246,7 @@ internal partial class ModPanelUI {
     private string WarningColor {
         get => _warningColor;
         set {
+            if (_warningColor.Equals(value)) return;
             _warningColor = value;
             NotifyPropertyChanged();
         }
@@ -253,6 +259,7 @@ internal partial class ModPanelUI {
     private string WarningHint {
         get => _warningHint;
         set {
+            if (_warningHint.Equals(value)) return;
             _warningHint = value;
             NotifyPropertyChanged();
         }
@@ -336,6 +343,7 @@ internal partial class ModPanelUI {
     private bool UndoRedoButtonsActive {
         get => _undoRedoButtonsActive;
         set {
+            if (_undoRedoButtonsActive.Equals(value)) return;
             _undoRedoButtonsActive = value;
             NotifyPropertyChanged();
         }
@@ -359,6 +367,7 @@ internal partial class ModPanelUI {
     private bool UndoButtonInteractable {
         get => _undoButtonInteractable;
         set {
+            if (_undoButtonInteractable.Equals(value)) return;
             _undoButtonInteractable = value;
             NotifyPropertyChanged();
         }
@@ -393,6 +402,7 @@ internal partial class ModPanelUI {
     private bool RedoButtonInteractable {
         get => _redoButtonInteractable;
         set {
+            if (_redoButtonInteractable.Equals(value)) return;
             _redoButtonInteractable = value;
             NotifyPropertyChanged();
         }

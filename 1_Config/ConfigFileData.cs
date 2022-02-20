@@ -56,9 +56,9 @@ namespace EasyOffset {
 
         #endregion
 
-        #region DisplayControllerType
+        #region ControllerType
 
-        public string DisplayControllerType = ConfigDefaults.DisplayControllerType;
+        public string ControllerType = ConfigDefaults.ControllerType;
 
         #endregion
 
@@ -114,7 +114,7 @@ namespace EasyOffset {
 
         #endregion
 
-        #region LeftSaberReferenceEuler
+        #region LeftSaberReference
 
         public ConfigFileQuaternion LeftSaberReference = ConfigFileQuaternion.FromUnityQuaternion(ConfigDefaults.LeftSaberReferenceRotation);
 
@@ -160,7 +160,7 @@ namespace EasyOffset {
 
         #endregion
 
-        #region RightSaberReferenceEuler
+        #region LeftSaberReference
 
         public ConfigFileQuaternion RightSaberReference = ConfigFileQuaternion.FromUnityQuaternion(ConfigDefaults.RightSaberReferenceRotation);
 

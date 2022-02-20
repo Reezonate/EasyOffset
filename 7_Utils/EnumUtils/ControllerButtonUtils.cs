@@ -28,7 +28,6 @@ namespace EasyOffset {
         };
 
         private static readonly Dictionary<ControllerButton, string> ValveIndexButtons = new() {
-            [ControllerButton.GripButton] = "Grip",
             [ControllerButton.PrimaryButton] = "System button",
             [ControllerButton.SecondaryButton] = "B button",
             [ControllerButton.Primary2DAxisClick] = "Joystick click"

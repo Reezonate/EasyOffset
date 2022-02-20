@@ -96,22 +96,6 @@ internal static partial class PluginConfig {
 
     #endregion
 
-    #region AssignedButton
-
-    private static readonly CachedVariable<ControllerButton> CachedAssignedButton = new(
-        () => ControllerButtonUtils.NameToTypeOrDefault(SelectedControllerType, ConfigFileData.Instance.AssignedButton)
-    );
-
-    public static ControllerButton AssignedButton {
-        get => CachedAssignedButton.Value;
-        set {
-            CachedAssignedButton.Value = value;
-            ConfigFileData.Instance.AssignedButton = ControllerButtonUtils.TypeToName(value);
-        }
-    }
-
-    #endregion
-
     #region AdjustmentMode
 
     public static event Action<AdjustmentMode> AdjustmentModeChangedEvent;
@@ -132,17 +116,44 @@ internal static partial class PluginConfig {
 
     public static event Action<ControllerType> ControllerTypeChangedEvent;
 
-    private static readonly CachedVariable<ControllerType> CachedSelectedControllerType = new(
-        () => ControllerTypeUtils.NameToTypeOrDefault(ConfigFileData.Instance.DisplayControllerType)
-    );
+    private static ControllerType _selectedControllerType = ControllerTypeUtils.NameToTypeOrDefault(ConfigFileData.Instance.ControllerType);
 
     public static ControllerType SelectedControllerType {
-        get => CachedSelectedControllerType.Value;
+        get => _selectedControllerType;
         set {
-            CachedSelectedControllerType.Value = value;
-            ConfigFileData.Instance.DisplayControllerType = ControllerTypeUtils.TypeToName(value);
+            if (_selectedControllerType.Equals(value)) return;
+            _selectedControllerType = value;
+            ConfigFileData.Instance.ControllerType = ControllerTypeUtils.TypeToName(value);
+            ChangeButtonIfNeeded();
             ControllerTypeChangedEvent?.Invoke(value);
         }
+    }
+
+    private static void ChangeButtonIfNeeded() {
+        var options = ControllerButtonUtils.GetAvailableOptions(SelectedControllerType);
+        if (options.ContainsKey(AssignedButton)) return;
+        AssignedButton = ControllerButtonUtils.GetDefaultButton(SelectedControllerType);
+    }
+
+    #endregion
+
+    #region AssignedButton
+
+    private static ControllerButton _assignedButton = GetInitialButtonValue();
+
+    public static ControllerButton AssignedButton {
+        get => _assignedButton;
+        set {
+            if (_assignedButton.Equals(value)) return;
+            _assignedButton = value;
+            ConfigFileData.Instance.AssignedButton = ControllerButtonUtils.TypeToName(value);
+        }
+    }
+
+    private static ControllerButton GetInitialButtonValue() {
+        var stored = ControllerButtonUtils.NameToTypeOrDefault(SelectedControllerType, ConfigFileData.Instance.AssignedButton);
+        var options = ControllerButtonUtils.GetAvailableOptions(SelectedControllerType);
+        return options.ContainsKey(stored) ? stored : ControllerButtonUtils.GetDefaultButton(SelectedControllerType);
     }
 
     #endregion

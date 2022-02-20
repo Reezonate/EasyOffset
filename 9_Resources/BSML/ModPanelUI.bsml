@@ -28,8 +28,8 @@
                         <horizontal preferred-height="~options-label-height">
                             <text text="Controller type" font-size="~options-label-font-size" font-color="~options-label-color" align="Midline"/>
                         </horizontal>
-                        <dropdown-list-setting interactable="~interactable" text="" hover-hint="Controller reference model"
-                                               value="dc-choice" choices="dc-choices" on-change="dc-on-change" apply-on-change="true"/>
+                        <dropdown-list-setting text="" interactable="~interactable" apply-on-change="true"
+                                               value="controller-type-choice" choices="controller-type-choices" on-change="controller-type-on-change"/>
                     </vertical>
 
                     <!--    ADJUSTMENT MODE    -->
@@ -46,8 +46,8 @@
                         <horizontal preferred-height="~options-label-height">
                             <text text="Button" font-size="~options-label-font-size" font-color="~options-label-color" align="Midline"/>
                         </horizontal>
-                        <dropdown-list-setting id="ab-component" interactable="~interactable" text="" hover-hint="Controller button"
-                                               value="ab-choice" choices="ab-choices" apply-on-change="true" formatter="ab-formatter"/>
+                        <dropdown-list-setting text="" id="ab-component" interactable="~interactable" apply-on-change="true"
+                                               value="ab-choice" choices="ab-choices" formatter="ab-formatter"/>
                     </vertical>
                 </horizontal>
 
@@ -136,7 +136,7 @@
             <macro.define name="direct-slider-button-width" value="8"/>
             <macro.define name="direct-slider-width" value="40"/>
 
-            <macro.define name="direct-hand-color" value="#888888"/>
+            <macro.define name="direct-hand-color" value="#aaaaaa"/>
             <macro.define name="direct-x-color" value="#ff8888"/>
             <macro.define name="direct-y-color" value="#88ff88"/>
             <macro.define name="direct-z-color" value="#8888ff"/>

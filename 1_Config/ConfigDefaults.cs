@@ -36,13 +36,13 @@ namespace EasyOffset {
 
         #region AssignedButton
 
-        public static readonly string AssignedButton = ControllerButtonUtils.TypeToName(ControllerButtonUtils.GetDefaultButton(ControllerType.None));
+        public static readonly string AssignedButton = ControllerButtonUtils.TypeToName(ControllerButtonUtils.GetDefaultButton(EasyOffset.ControllerType.None));
 
         #endregion
 
-        #region DisplayControllerType
+        #region ControllerType
 
-        public static readonly string DisplayControllerType = ControllerTypeUtils.TypeToName(ControllerType.None);
+        public static readonly string ControllerType = ControllerTypeUtils.TypeToName(EasyOffset.ControllerType.None);
 
         #endregion
 

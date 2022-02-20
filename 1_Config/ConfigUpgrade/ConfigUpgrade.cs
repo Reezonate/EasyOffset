@@ -19,7 +19,7 @@ internal static class ConfigUpgrade {
     public static void TryUpgrade() {
         try {
             if (!File.Exists(ConfigFilePath)) return;
-            
+
             var jsonObject = JObject.Parse(File.ReadAllText(ConfigFilePath));
             if (!jsonObject.DoUpgradeCycle()) return;
 
@@ -57,6 +57,8 @@ internal static class ConfigUpgrade {
 
     private static string Upgrade1_0To2_0(this JObject source) {
         //Conversion
+        var controllerTypeName = source.GetValue("DisplayControllerType", StringComparison.OrdinalIgnoreCase)!.Value<string>();
+
         var leftSaberPivotPosition = ParseVectorV1_0(source, "LeftHandPivot");
         var leftSaberDirection = ParseVectorV1_0(source, "LeftHandSaberDirection");
         var leftSaberRotationEuler = TransformUtils.EulerFromDirection(leftSaberDirection);
@@ -70,14 +72,22 @@ internal static class ConfigUpgrade {
         //New Values
         const string newVersion = "2.0";
         source["ConfigVersion"] = newVersion;
+        source["ControllerType"] = controllerTypeName;
+
         source["LeftSaberPivotPosition"] = SerializeVector3(leftSaberPivotPosition / V2PositionUnitScale);
         source["LeftSaberRotationEuler"] = SerializeVector3(leftSaberRotationEuler);
         source["LeftSaberZOffset"] = leftSaberZOffset / V2PositionUnitScale;
+        source["LeftSaberHasReference"] = false;
+        source["LeftSaberReference"] = SerializeQuaternion(Quaternion.identity);
+
         source["RightSaberPivotPosition"] = SerializeVector3(rightSaberPivotPosition / V2PositionUnitScale);
         source["RightSaberRotationEuler"] = SerializeVector3(rightSaberRotationEuler);
         source["RightSaberZOffset"] = rightSaberZOffset / V2PositionUnitScale;
+        source["RightSaberHasReference"] = false;
+        source["RightSaberReference"] = SerializeQuaternion(Quaternion.identity);
 
         //Cleanup
+        source.Remove("DisplayControllerType");
         source.Remove("LeftHandPivotPositionX");
         source.Remove("LeftHandPivotPositionY");
         source.Remove("LeftHandPivotPositionZ");
@@ -94,6 +104,15 @@ internal static class ConfigUpgrade {
         source.Remove("RightHandZOffset");
 
         return newVersion;
+    }
+
+    private static JToken SerializeQuaternion(Quaternion quaternion) {
+        return new JObject {
+            ["x"] = quaternion.x,
+            ["y"] = quaternion.y,
+            ["z"] = quaternion.z,
+            ["w"] = quaternion.w,
+        };
     }
 
     private static JToken SerializeVector3(Vector3 vector) {
