@@ -75,7 +75,8 @@ Beat Saber mod for intuitive controller offset adjustments. Suitable for both be
 - `Saber Rotation` - saber rotation euler angles
 - `ZOffset` - saber position offset along its axis
 
-Config values are different from the base game settings, SaberTailor, etc. Use the [Config Migration](#config-migration) to plug these values in
+Config values are different from the base game settings, SaberTailor, etc. 
+Use the [Config Migration](#config-migration) settings to plug these values in
 
 ### First steps:
 - Select your controller model in the `Controller Type` list
@@ -89,13 +90,13 @@ Before trying to find your best config, spend some time in different adjustment 
 - `Pivot point` should be stable as the wrist rotates. In other words - it should be aligned with your actual wrist pivot point as much as possible
 - Saber trail shouldn't move in a huge circle while you pointing forward and rolling your wrist comfortably. The smaller the radius, the better
 
-To help you achieve these goals, there are five main adjustment modes:
+To help you achieve these goals, there are four main adjustment modes:
 
 - [Basic](#basic-adjustment-mode)
 - [Position](#position-adjustment-mode)
 - [Rotation](#rotation-adjustment-mode)
-- [Precise](#precise-adjustment-mode)
 - [Swing Benchmark](#swing-benchmark-adjustment-mode)
+- [Direct](#direct-adjustment-mode)
 
 ## `Basic` adjustment mode:
 ``` diff
@@ -119,7 +120,6 @@ Allows you to change the `Pivot point` without changing `Saber Rotation`
 
 - Select `Position` in the `Adjustment Mode` list
 - Align the `Pivot point` with your wrist pivot point. You can see where it is relative to the controller IRL
-
 - You can move the saber along its axis using the `ZOffset` slider 
 
 World-aligned 3D grid serves as a stationary reference to track `Pivot point` movement. Keeping it in one cell regardless of wrist rotation is good enough
@@ -135,27 +135,21 @@ Rotation only adjustment mode. Displays `Saber Rotation` on a spherical grid. Be
 Allows you to change the `Saber Rotation` without changing the `Pivot point`
 
 - Select `Rotation` in the `Adjustment Mode` list
-- Point forward with your palm facing down and press the button
-- Rotate controller left or right for the curved swing correction (use the horizontal yellow line as a guide)
-- Rotate controller up or down for the underswing correction (use the vertical yellow line as a guide)
-- Additional straight swing reference line will appear after the benchmark test
+- Change your controller orientation while holding the button 
+- You can raise your free hand to zoom in for greater precision
 
-You can raise/lower your free hand to zoom in/out
+### To use `Rotation` mode to its full potential, you need to first set a `Reference`
+
+Setting a `Reference` gives you ability to independently change your `Curve` and `Balance` values (Horizontal / Vertical rotation)
+
+- Go to the [Swing Benchmark](#swing-benchmark-adjustment-mode) mode, perform swing test and press the `Set as Reference` button (for each hand)
+- After that you'll be able to use `Balance` and `Curve` sliders
+- Changing the `Balance` value will point your saber Up or Down
+- Changing the `Curve` value will point your saber Inward or Outward
+
+By default `Reference` is aligned with the calculated straight swing plane. You can then align it with your current settings by pressing the `Update` button
 
 ![Rotation mode preview](media/Rotation.png)
-
-## `Precise` adjustment mode:
-``` diff
-- Expert: Deep understanding of each config value is required
-```
-Mode for final tweaks that allows independent control over all config values with extreme precision
-
-- Select `Precise` in the `Adjustment Mode` list
-- Click on slider and hold the trigger to change its value (The longer you hold it, the faster the value changes)
-- Use the opposite hand to see the changes in real time, otherwise the changes will only be applied when the trigger is released
-- Use increment/decrement buttons for the tiny adjustments
-
-![Precise mode preview](media/Precise.png)
 
 ## `Swing Benchmark` adjustment mode:
 ``` diff
@@ -168,6 +162,7 @@ Results will gradually change from vertical to horizontal swing. Optimize your c
 - Select `Swing Benchmark` in the `Adjustment Mode` list
 - Repeat one exact swing several times while holding the button
 - Stand still, look forward, and swing exactly as you do in-game
+- Do **NOT** swing in front of you, put your hand to the side as you do in-game
 - Swing angle of at least 140° is required
 
 
@@ -224,6 +219,23 @@ How to improve:
 
 - If you are constantly under-swinging a certain direction, change the forehand/backhand angle balance by rotating the saber up/down in the `Rotation` mode
 - Regular stretching will help increase the range of motion in your wrist
+
+## `Direct` adjustment mode:
+``` diff
+- Expert: Deep understanding of each config value is required
+- It is not recommended to use someone else's settings
+```
+Mode for changing raw config values directly
+
+Values are different from the base game settings, SaberTailor, etc.
+Use the [Config Migration](#config-migration) settings to plug these values in
+
+- Select `Direct` in the `Adjustment Mode` list
+- Click on slider and hold the trigger to change its value (The longer you hold it, the faster the value changes)
+- Use the opposite hand to see the changes in real time, otherwise the change will only be applied when the trigger is released
+- Use increment/decrement buttons for the tiny adjustments
+
+![Direct mode preview](media/Direct.png)
 
 # Extra features
 
