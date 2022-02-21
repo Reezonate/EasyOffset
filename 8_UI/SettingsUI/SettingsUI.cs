@@ -4,6 +4,7 @@ using System.Linq;
 using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.Components;
 using JetBrains.Annotations;
+using UnityEngine;
 
 namespace EasyOffset {
     public class SettingsUI : NotifiableSingleton<SettingsUI> {
@@ -24,7 +25,7 @@ namespace EasyOffset {
         }
 
         #region Minimal warning level
-        
+
         [UIValue("warnings-choices")] [UsedImplicitly]
         private List<object> _minimalWarningLevelChoices = WarningLevelUtils.AllNamesObjects.ToList();
 
@@ -167,12 +168,12 @@ namespace EasyOffset {
             }
         }
 
-        private readonly DelayedAction _statusTextResetAction = new();
-
         private void SetStatusText(string value) {
             StatusText = value;
-            _statusTextResetAction.InvokeLater(3000, ResetStatusText);
+            this.ReInvokeWithDelay(ref _statusResetCoroutine, ResetStatusText, 3.0f);
         }
+
+        private Coroutine _statusResetCoroutine;
 
         private void ResetStatusText() {
             StatusText = "";

@@ -8,12 +8,16 @@ namespace EasyOffset {
         public long UnixTimestamp { get; }
         public ControllerType ControllerType { get; }
 
-        public Vector3 RightHandPivotPosition { get; }
-        public Vector3 RightHandSaberDirection { get; }
-        public float RightHandZOffset { get; }
+        public Vector3 LeftSaberPivotPosition { get; }
+        public Quaternion LeftSaberRotation { get; }
+        public float LeftSaberZOffset { get; }
+        public bool LeftSaberHasReference { get; }
+        public Quaternion LeftSaberReferenceRotation { get; }
 
-        public Vector3 LeftHandPivotPosition { get; }
-        public Vector3 LeftHandSaberDirection { get; }
-        public float LeftHandZOffset { get; }
+        public Vector3 RightSaberPivotPosition { get; }
+        public Quaternion RightSaberRotation { get; }
+        public float RightSaberZOffset { get; }
+        public bool RightSaberHasReference { get; }
+        public Quaternion RightSaberReferenceRotation { get; }
     }
 }

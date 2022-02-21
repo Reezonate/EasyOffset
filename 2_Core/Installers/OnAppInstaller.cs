@@ -13,7 +13,6 @@ namespace EasyOffset.Installers {
 
         private void BindInputManagers() {
             Container.BindInterfacesAndSelfTo<ReeInputManager>().AsSingle();
-            Container.BindInterfacesAndSelfTo<AbominationInputManager>().AsSingle();
         }
 
         private void BindGizmosManager() {

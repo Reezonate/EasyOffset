@@ -4,7 +4,6 @@ namespace EasyOffset {
     public class SwingPreview : MonoBehaviour {
         #region Serialized
 
-        [SerializeField] private GameObject visuals;
         [SerializeField] private SimpleTrail closeTrail;
         [SerializeField] private SimpleTrail farTrail;
 
@@ -17,12 +16,8 @@ namespace EasyOffset {
             farTrail.SetLookAt(lookAt);
         }
 
-        public void SetSaberRotation(Quaternion rotation) {
-            transform.localRotation = rotation;
-        }
-
         public void SetVisible(bool value) {
-            visuals.gameObject.SetActive(value);
+            gameObject.SetActive(value);
         }
 
         #endregion

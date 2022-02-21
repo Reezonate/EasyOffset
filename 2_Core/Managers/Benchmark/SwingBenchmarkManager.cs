@@ -16,26 +16,22 @@ namespace EasyOffset {
 
         #region Variables
 
-        private readonly GizmosManager _gizmosManager;
-
         private readonly SwingAnalyzer _swingAnalyzer;
         private readonly SwingBenchmarkController _swingBenchmarkController;
 
-        private bool _isSwingGood;
         private Hand _selectedHand = Hand.Left;
-
+        private bool _isSwingGood;
         private bool _hasAnyResults;
-        private bool _leftHandVisible;
-        private bool _rightHandVisible;
+        private float _swingCurveAngleDeg;
+
+        private Quaternion _leftReferenceRotation = Quaternion.identity;
+        private Quaternion _rightReferenceRotation = Quaternion.identity;
 
         #endregion
 
         #region Constructor
 
-        public SwingBenchmarkManager(
-            GizmosManager gizmosManager
-        ) {
-            _gizmosManager = gizmosManager;
+        public SwingBenchmarkManager() {
             _swingAnalyzer = new SwingAnalyzer(MaximalCapacity);
 
             var gameObject = Object.Instantiate(BundleLoader.SwingBenchmarkController);
@@ -52,16 +48,6 @@ namespace EasyOffset {
 
             _swingAnalyzer.Reset();
             _swingBenchmarkController.StartTracking();
-
-            switch (hand) {
-                case Hand.Left:
-                    _leftHandVisible = false;
-                    break;
-                case Hand.Right:
-                    _rightHandVisible = false;
-                    break;
-                default: throw new ArgumentOutOfRangeException(nameof(hand), hand, null);
-            }
 
             UpdateVisibility();
             SwingBenchmarkHelper.InvokeStart();
@@ -99,6 +85,7 @@ namespace EasyOffset {
             var fullSwingAngle = maximalSwingAngle - minimalSwingAngle;
 
             _isSwingGood = fullSwingAngle > FullSwingAngleRequirement;
+            _swingCurveAngleDeg = swingCurveAngle * Mathf.Rad2Deg;
 
             _swingBenchmarkController.SetValues(
                 isLeft,
@@ -128,27 +115,41 @@ namespace EasyOffset {
         public void Finish() {
             _swingBenchmarkController.StopTracking();
 
+            var averageNormal = _swingAnalyzer.GetAverageLocalPlaneNormal();
+
             switch (_selectedHand) {
                 case Hand.Left:
-                    _leftHandVisible = _isSwingGood;
-                    _leftWristRotationAxis = _swingAnalyzer.GetWristRotationAxis();
-                    _leftHandLocalRotation = Quaternion.LookRotation(_leftWristRotationAxis, Vector3.up);
+                    _leftReferenceRotation = CalculateReferenceRotation(averageNormal, PluginConfig.LeftSaberRotation);
                     break;
                 case Hand.Right:
-                    _rightHandVisible = _isSwingGood;
-                    _rightWristRotationAxis = _swingAnalyzer.GetWristRotationAxis();
-                    _rightHandLocalRotation = Quaternion.LookRotation(_rightWristRotationAxis, Vector3.up);
+                    _rightReferenceRotation = CalculateReferenceRotation(averageNormal, PluginConfig.RightSaberRotation);
                     break;
                 default: throw new ArgumentOutOfRangeException();
             }
-
-            UpdateVisibility();
 
             if (_isSwingGood) {
                 SwingBenchmarkHelper.InvokeSuccess();
             } else {
                 SwingBenchmarkHelper.InvokeFail();
             }
+        }
+
+        private Quaternion CalculateReferenceRotation(
+            Vector3 averageNormal,
+            Quaternion currentLocalRotation
+        ) {
+            var currentLocalDirection = TransformUtils.DirectionFromRotation(currentLocalRotation);
+            var referenceRotation = Quaternion.LookRotation(currentLocalDirection, averageNormal);
+            referenceRotation *= Quaternion.Euler(-_swingCurveAngleDeg, 0.0f, 0.0f);
+            referenceRotation *= Quaternion.Euler(0.0f, 0.0f, 90.0f);
+            return referenceRotation;
+        }
+
+        private static Quaternion CalculateReferenceRotationDep(Vector3 straightSwingPlaneNormal, Quaternion currentLocalRotation) {
+            var currentLocalDirection = TransformUtils.DirectionFromRotation(currentLocalRotation);
+            var projectedDirection = new Plane(straightSwingPlaneNormal, 0.0f).ClosestPointOnPlane(currentLocalDirection);
+            var lookRotation = Quaternion.LookRotation(projectedDirection, straightSwingPlaneNormal);
+            return lookRotation * Quaternion.Euler(0.0f, 0.0f, 90.0f);
         }
 
         #endregion
@@ -158,19 +159,20 @@ namespace EasyOffset {
         private void ApplyAutoFix() {
             if (!_hasAnyResults || !_isSwingGood) return;
 
-            Vector3 saberLocalDirection;
-            Plane localPlane;
-
             switch (_selectedHand) {
                 case Hand.Left:
-                    saberLocalDirection = PluginConfig.LeftHandSaberDirection;
-                    localPlane = new Plane(_leftWristRotationAxis, 0f);
-                    PluginConfig.LeftHandSaberDirection = localPlane.ClosestPointOnPlane(saberLocalDirection);
+                    PluginConfig.CreateUndoStep("Left Auto-fix");
+                    PluginConfig.LeftSaberRotation = TransformUtils.AlignForwardVectors(
+                        PluginConfig.LeftSaberRotation,
+                        _leftReferenceRotation
+                    );
                     break;
                 case Hand.Right:
-                    saberLocalDirection = PluginConfig.RightHandSaberDirection;
-                    localPlane = new Plane(_rightWristRotationAxis, 0f);
-                    PluginConfig.RightHandSaberDirection = localPlane.ClosestPointOnPlane(saberLocalDirection);
+                    PluginConfig.CreateUndoStep("Right Auto-fix");
+                    PluginConfig.RightSaberRotation = TransformUtils.AlignForwardVectors(
+                        PluginConfig.RightSaberRotation,
+                        _rightReferenceRotation
+                    );
                     break;
                 default: throw new ArgumentOutOfRangeException(nameof(_selectedHand), _selectedHand, null);
             }
@@ -178,28 +180,22 @@ namespace EasyOffset {
 
         #endregion
 
-        #region HandTransform
+        #region OnSetAsReference
 
-        private Vector3 _leftWristRotationAxis = Vector3.forward;
-        private Vector3 _rightWristRotationAxis = Vector3.forward;
-        private Quaternion _leftHandLocalRotation = Quaternion.identity;
-        private Quaternion _rightHandLocalRotation = Quaternion.identity;
+        private void OnSetAsReference() {
+            if (!_hasAnyResults || !_isSwingGood) return;
 
-        private void OnControllerTransformsUpdated(ReeTransform leftControllerTransform, ReeTransform rightControllerTransform) {
-            var leftHandWorldPosition = leftControllerTransform.LocalToWorldPosition(PluginConfig.LeftHandPivotPosition);
-            var leftHandWorldRotation = leftControllerTransform.LocalToWorldRotation(_leftHandLocalRotation);
-            var rightHandWorldPosition = rightControllerTransform.LocalToWorldPosition(PluginConfig.RightHandPivotPosition);
-            var rightHandWorldRotation = rightControllerTransform.LocalToWorldRotation(_rightHandLocalRotation);
-
-            TransformUtils.ApplyRoomOffset(ref leftHandWorldPosition, ref leftHandWorldRotation);
-            TransformUtils.ApplyRoomOffset(ref rightHandWorldPosition, ref rightHandWorldRotation);
-
-            _swingBenchmarkController.UpdateHandTransforms(
-                leftHandWorldPosition,
-                leftHandWorldRotation,
-                rightHandWorldPosition,
-                rightHandWorldRotation
-            );
+            switch (_selectedHand) {
+                case Hand.Left:
+                    PluginConfig.CreateUndoStep("Set Left Reference");
+                    PluginConfig.SetLeftSaberReference(true, _leftReferenceRotation);
+                    break;
+                case Hand.Right:
+                    PluginConfig.CreateUndoStep("Set Right Reference");
+                    PluginConfig.SetRightSaberReference(true, _rightReferenceRotation);
+                    break;
+                default: throw new ArgumentOutOfRangeException(nameof(_selectedHand), _selectedHand, null);
+            }
         }
 
         #endregion
@@ -207,36 +203,19 @@ namespace EasyOffset {
         #region Visibility
 
         private void UpdateVisibility() {
-            bool swingVisible, handsVisible;
+            var swingVisible = PluginConfig.AdjustmentMode switch {
+                AdjustmentMode.SwingBenchmark => _hasAnyResults,
+                AdjustmentMode.Rotation => false,
+                AdjustmentMode.RotationAuto => false,
+                AdjustmentMode.None => false,
+                AdjustmentMode.Basic => false,
+                AdjustmentMode.Position => false,
+                AdjustmentMode.Direct => false,
+                AdjustmentMode.RoomOffset => false,
+                _ => throw new ArgumentOutOfRangeException()
+            };
 
-            switch (PluginConfig.AdjustmentMode) {
-                case AdjustmentMode.SwingBenchmark:
-                    swingVisible = true;
-                    handsVisible = true;
-                    break;
-                case AdjustmentMode.Rotation:
-                    swingVisible = false;
-                    handsVisible = true;
-                    break;
-                case AdjustmentMode.RotationAuto:
-                case AdjustmentMode.None:
-                case AdjustmentMode.Basic:
-                case AdjustmentMode.Position:
-                case AdjustmentMode.RoomOffset:
-                    swingVisible = false;
-                    handsVisible = false;
-                    break;
-                default: throw new ArgumentOutOfRangeException();
-            }
-
-            _gizmosManager.LeftHandGizmosController.SetWristValues(_leftWristRotationAxis, _leftHandVisible);
-            _gizmosManager.RightHandGizmosController.SetWristValues(_rightWristRotationAxis, _rightHandVisible);
-
-            _swingBenchmarkController.UpdateVisibility(
-                swingVisible && _hasAnyResults,
-                handsVisible && _leftHandVisible,
-                handsVisible && _rightHandVisible
-            );
+            _swingBenchmarkController.UpdateVisibility(swingVisible);
         }
 
         #endregion
@@ -276,8 +255,6 @@ namespace EasyOffset {
 
         private void OnReset() {
             _hasAnyResults = false;
-            _leftHandVisible = false;
-            _rightHandVisible = false;
             UpdateVisibility();
         }
 
@@ -287,16 +264,16 @@ namespace EasyOffset {
 
         private void Subscribe() {
             PluginConfig.AdjustmentModeChangedEvent += OnAdjustmentModeChanged;
-            Abomination.TransformsUpdatedEvent += OnControllerTransformsUpdated;
             SwingBenchmarkHelper.OnResetEvent += OnReset;
             SwingBenchmarkHelper.OnAutoFixEvent += ApplyAutoFix;
+            SwingBenchmarkHelper.OnSetAsReferenceEvent += OnSetAsReference;
         }
 
         private void UnSubscribe() {
             PluginConfig.AdjustmentModeChangedEvent -= OnAdjustmentModeChanged;
-            Abomination.TransformsUpdatedEvent -= OnControllerTransformsUpdated;
             SwingBenchmarkHelper.OnResetEvent -= OnReset;
             SwingBenchmarkHelper.OnAutoFixEvent -= ApplyAutoFix;
+            SwingBenchmarkHelper.OnSetAsReferenceEvent -= OnSetAsReference;
         }
 
         #endregion

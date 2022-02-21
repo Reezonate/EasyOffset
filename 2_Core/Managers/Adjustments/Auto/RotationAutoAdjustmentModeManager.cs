@@ -61,6 +61,9 @@ namespace EasyOffset {
 
         #region Adjustment logic
 
+        private Quaternion _grabLocalRotation;
+        private Vector3 _grabLocalDirection;
+
         protected override void OnGrabStarted(
             Hand adjustmentHand,
             ReeTransform adjustmentHandTransform,
@@ -68,17 +71,19 @@ namespace EasyOffset {
         ) {
             switch (adjustmentHand) {
                 case Hand.Left:
+                    _grabLocalRotation = PluginConfig.LeftSaberRotation;
                     _gizmosManager.LeftHandGizmosController.SetSphericalBasisFocus(true);
-                    _gizmosManager.LeftHandGizmosController.SetPreviousDirection(PluginConfig.LeftHandSaberDirection, true);
                     break;
                 case Hand.Right:
+                    _grabLocalRotation = PluginConfig.RightSaberRotation;
                     _gizmosManager.RightHandGizmosController.SetSphericalBasisFocus(true);
-                    _gizmosManager.RightHandGizmosController.SetPreviousDirection(PluginConfig.RightHandSaberDirection, true);
                     break;
                 default: throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null);
             }
 
+            _grabLocalDirection = TransformUtils.DirectionFromRotation(_grabLocalRotation);
             Reset(adjustmentHandTransform);
+            PluginConfig.CreateUndoStep($"Auto {adjustmentHand} Rotation");
         }
 
         protected override void OnGrabUpdated(
@@ -89,13 +94,14 @@ namespace EasyOffset {
             if (!Update(adjustmentHandTransform)) return;
 
             var localSaberDirection = GetLocalAxis().normalized;
+            var finalRotation = Quaternion.FromToRotation(_grabLocalDirection, localSaberDirection) * _grabLocalRotation;
 
             switch (adjustmentHand) {
                 case Hand.Left:
-                    PluginConfig.LeftHandSaberDirection = localSaberDirection;
+                    PluginConfig.LeftSaberRotation = finalRotation;
                     break;
                 case Hand.Right:
-                    PluginConfig.RightHandSaberDirection = localSaberDirection;
+                    PluginConfig.RightSaberRotation = finalRotation;
                     break;
                 default: throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null);
             }
@@ -109,11 +115,9 @@ namespace EasyOffset {
             switch (adjustmentHand) {
                 case Hand.Left:
                     _gizmosManager.LeftHandGizmosController.SetSphericalBasisFocus(false);
-                    _gizmosManager.LeftHandGizmosController.SetPreviousDirection(PluginConfig.LeftHandSaberDirection, false);
                     break;
                 case Hand.Right:
                     _gizmosManager.RightHandGizmosController.SetSphericalBasisFocus(false);
-                    _gizmosManager.RightHandGizmosController.SetPreviousDirection(PluginConfig.RightHandSaberDirection, false);
                     break;
                 default: throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null);
             }

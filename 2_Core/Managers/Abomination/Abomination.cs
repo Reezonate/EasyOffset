@@ -33,16 +33,22 @@ namespace EasyOffset {
 
         #endregion
 
-        #region AssignedButtonEvents
+        #region ButtonEvents
 
+        public static event Action<Hand, ControllerButton> ButtonPressedEvent;
+        public static event Action<Hand, ControllerButton> ButtonReleasedEvent;
         public static event Action<Hand> AssignedButtonPressedEvent;
         public static event Action<Hand> AssignedButtonReleasedEvent;
 
-        public static void OnAssignedButtonPressed(Hand hand) {
+        public static void OnButtonPressed(Hand hand, ControllerButton controllerButton) {
+            ButtonPressedEvent?.Invoke(hand, controllerButton);
+            if (controllerButton != PluginConfig.AssignedButton) return;
             AssignedButtonPressedEvent?.Invoke(hand);
         }
 
-        public static void OnAssignedButtonReleased(Hand hand) {
+        public static void OnButtonReleased(Hand hand, ControllerButton controllerButton) {
+            ButtonReleasedEvent?.Invoke(hand, controllerButton);
+            if (controllerButton != PluginConfig.AssignedButton) return;
             AssignedButtonReleasedEvent?.Invoke(hand);
         }
 

@@ -90,7 +90,10 @@ namespace EasyOffset {
         }
 
         private void OnAdjustmentModeChanged(AdjustmentMode value) {
-            if (value == _adjustmentMode) return;
+            ForceRelease();
+        }
+        
+        private void OnAssignedButtonChanged(ControllerButton value) {
             ForceRelease();
         }
 
@@ -160,6 +163,7 @@ namespace EasyOffset {
             Abomination.AssignedButtonReleasedEvent += OnAssignedButtonReleased;
             Abomination.TransformsUpdatedEvent += OnTransformsUpdated;
             PluginConfig.AdjustmentModeChangedEvent += OnAdjustmentModeChanged;
+            PluginConfig.AssignedButtonChangedEvent += OnAssignedButtonChanged;
         }
 
         public void Dispose() {
@@ -169,6 +173,7 @@ namespace EasyOffset {
             Abomination.AssignedButtonReleasedEvent -= OnAssignedButtonReleased;
             Abomination.TransformsUpdatedEvent -= OnTransformsUpdated;
             PluginConfig.AdjustmentModeChangedEvent -= OnAdjustmentModeChanged;
+            PluginConfig.AssignedButtonChangedEvent -= OnAssignedButtonChanged;
         }
 
         #endregion

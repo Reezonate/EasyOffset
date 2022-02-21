@@ -20,6 +20,7 @@ namespace EasyOffset {
         #region InitializeConfig
 
         private static void InitializeConfig(Config config) {
+            ConfigUpgrade.TryUpgrade();
             ConfigFileData.Instance = config.Generated<ConfigFileData>();
         }
 

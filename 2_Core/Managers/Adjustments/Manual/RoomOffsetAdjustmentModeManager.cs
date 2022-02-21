@@ -1,16 +1,38 @@
+using System;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.XR;
+using Zenject;
 
 namespace EasyOffset {
     [UsedImplicitly]
-    public class RoomOffsetAdjustmentModeManager : AbstractAdjustmentModeManager {
+    public class RoomOffsetAdjustmentModeManager : AbstractAdjustmentModeManager, ITickable {
         #region Constructor
 
-        public RoomOffsetAdjustmentModeManager() : base(
+        private readonly IVRPlatformHelper _vrPlatformHelper;
+
+        public RoomOffsetAdjustmentModeManager(
+            IVRPlatformHelper vrPlatformHelper
+        ) : base(
             AdjustmentMode.RoomOffset,
             6f,
             6f
-        ) { }
+        ) {
+            _vrPlatformHelper = vrPlatformHelper;
+        }
+
+        #endregion
+
+        #region HMD position tracking
+
+        public static event Action<Vector3> OnHmdPositionChangedEvent;
+
+        public void Tick() {
+            if (PluginConfig.AdjustmentMode != AdjustmentMode.RoomOffset) return;
+            if (!_vrPlatformHelper.GetNodePose(XRNode.Head, 0, out var headPos, out _)) return;
+            TransformUtils.ApplyRoomOffsetToVector(ref headPos);
+            OnHmdPositionChangedEvent?.Invoke(headPos);
+        }
 
         #endregion
 

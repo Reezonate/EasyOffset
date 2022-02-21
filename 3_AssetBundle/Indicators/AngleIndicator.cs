@@ -38,25 +38,40 @@ namespace EasyOffset {
             _materialInstance.SetFloat(ArmThicknessPropertyId, armThickness);
             _materialInstance.SetFloat(LineOffsetPropertyId, lineRadius);
             _isReady = true;
+            UpdateMaterial();
+        }
+
+        #endregion
+
+        #region UpdateMaterial
+
+        private float _angleRadians;
+        private float _angleOffset;
+
+        private void UpdateMaterial() {
+            if (!_isReady) return;
+            _materialInstance.SetFloat(LineOffsetPropertyId, lineRadius);
+            _materialInstance.SetFloat(AnglePropertyId, _angleRadians);
+            _materialInstance.SetFloat(AngleOffsetPropertyId, _angleOffset);
         }
 
         #endregion
 
         #region Interaction
 
-        public void SetTransform(
-            Vector3 position,
-            Quaternion rotation
-        ) {
+        public void SetLocalTransform(Vector3 position, Quaternion rotation) {
+            planeTransform.localPosition = position;
+            planeTransform.localRotation = rotation;
+        }
+
+        public void SetTransform(Vector3 position, Quaternion rotation) {
             planeTransform.position = position;
             planeTransform.rotation = rotation;
         }
 
-        public void SetRadius(
-            float value
-        ) {
+        public void SetRadius(float value) {
             lineRadius = value;
-            _materialInstance.SetFloat(LineOffsetPropertyId, lineRadius);
+            UpdateMaterial();
         }
 
         public void SetValues(
@@ -64,10 +79,9 @@ namespace EasyOffset {
             float angleOffset,
             string text
         ) {
-            if (!_isReady) return;
-
-            _materialInstance.SetFloat(AnglePropertyId, angleRadians);
-            _materialInstance.SetFloat(AngleOffsetPropertyId, angleOffset);
+            _angleRadians = angleRadians;
+            _angleOffset = angleOffset;
+            UpdateMaterial();
 
             var textPointerAngle = angleRadians / 2 + angleOffset;
             var textLocalPosition = new Vector3(
@@ -80,15 +94,11 @@ namespace EasyOffset {
             indicatorText.SetText(text);
         }
 
-        public void SetTextOffset(
-            Vector2 value
-        ) {
+        public void SetTextOffset(Vector2 value) {
             indicatorText.SetOffset(value);
         }
 
-        public void SetLookAt(
-            Vector3 lookAt
-        ) {
+        public void SetLookAt(Vector3 lookAt) {
             indicatorText.SetLookAt(lookAt);
         }
 

@@ -1,107 +1,181 @@
 using System.Runtime.CompilerServices;
 using IPA.Config.Stores;
 using JetBrains.Annotations;
+using UnityEngine;
 
 [assembly: InternalsVisibleTo(GeneratedStore.AssemblyVisibilityTarget)]
 
 namespace EasyOffset {
     [UsedImplicitly]
-    public class ConfigFileData {
-        private const string CurrentConfigVersion = "1.0";
+    internal class ConfigFileData {
+        public const string CurrentConfigVersion = "2.0";
         public static ConfigFileData Instance { get; set; }
 
         #region ConfigVersion
 
-        public string ConfigVersion = CurrentConfigVersion;
+        [UsedImplicitly]
+        public virtual string ConfigVersion { get; set; } = CurrentConfigVersion;
 
         #endregion
 
         #region Enabled
 
-        public bool Enabled = Defaults.Enabled;
+        public bool Enabled = ConfigDefaults.Enabled;
 
         #endregion
 
         #region HideControllers
 
-        public bool HideControllers = Defaults.HideControllers;
+        public bool HideControllers = ConfigDefaults.HideControllers;
 
         #endregion
 
         #region MinimalWarningLevel
 
-        public string MinimalWarningLevel = Defaults.MinimalWarningLevel;
+        public string MinimalWarningLevel = ConfigDefaults.MinimalWarningLevel;
 
         #endregion
 
         #region RoomOffset
 
-        public bool AllowRoomXChange = Defaults.AllowRoomXChange;
-        public bool AllowRoomYChange = Defaults.AllowRoomYChange;
-        public bool AllowRoomZChange = Defaults.AllowRoomZChange;
+        public bool AllowRoomXChange = ConfigDefaults.AllowRoomXChange;
+        public bool AllowRoomYChange = ConfigDefaults.AllowRoomYChange;
+        public bool AllowRoomZChange = ConfigDefaults.AllowRoomZChange;
 
         #endregion
 
         #region UI Lock
 
-        public bool UILock = Defaults.UILock;
+        public bool UILock = ConfigDefaults.UILock;
 
         #endregion
 
         #region AssignedButton
 
-        public string AssignedButton = Defaults.AssignedButton;
+        public string AssignedButton = ConfigDefaults.AssignedButton;
 
         #endregion
 
-        #region DisplayControllerType
+        #region ControllerType
 
-        public string DisplayControllerType = Defaults.DisplayControllerType;
+        public string ControllerType = ConfigDefaults.ControllerType;
 
         #endregion
 
         #region UseFreeHand
 
-        public bool UseFreeHand = Defaults.UseFreeHand;
+        public bool UseFreeHand = ConfigDefaults.UseFreeHand;
 
         #endregion
 
-        #region RightHand
+        #region ScaleConstants
 
-        public float RightHandPivotX = Defaults.PivotX;
-        public float RightHandPivotY = Defaults.PivotY;
-        public float RightHandPivotZ = Defaults.PivotZ;
-
-        public float RightHandSaberDirectionX = Defaults.SaberDirectionX;
-        public float RightHandSaberDirectionY = Defaults.SaberDirectionY;
-        public float RightHandSaberDirectionZ = Defaults.SaberDirectionZ;
-
-        public float RightHandZOffset = Defaults.ZOffset;
+        private const float PositionUnitScale = 0.01f;
 
         #endregion
 
-        #region LeftHand
+        #region LeftSaberPivotPosition
 
-        public float LeftHandPivotX = Defaults.PivotX;
-        public float LeftHandPivotY = Defaults.PivotY;
-        public float LeftHandPivotZ = Defaults.PivotZ;
+        [UsedImplicitly] public Vector3 LeftSaberPivotPosition = ConfigDefaults.LeftSaberPivotPosition / PositionUnitScale;
 
-        public float LeftHandSaberDirectionX = Defaults.SaberDirectionX;
-        public float LeftHandSaberDirectionY = Defaults.SaberDirectionY;
-        public float LeftHandSaberDirectionZ = Defaults.SaberDirectionZ;
-
-        public float LeftHandZOffset = Defaults.ZOffset;
-
-        #endregion
-
-        #region Generic IPA stuff
-
-        /// <summary>
-        /// This is called whenever BSIPA reads the config from disk (including when file changes are detected).
-        /// </summary>
-        public virtual void OnReload() {
-            // Do stuff after config is read from disk.
+        public Vector3 GetLeftSaberPivotPositionInMeters() {
+            return LeftSaberPivotPosition * PositionUnitScale;
         }
+
+        public void SetLeftSaberPivotPositionInMeters(Vector3 value) {
+            LeftSaberPivotPosition = value / PositionUnitScale;
+        }
+
+        #endregion
+
+        #region LeftSaberRotationEuler
+
+        public Vector3 LeftSaberRotationEuler = TransformUtils.EulerFromRotation(ConfigDefaults.LeftSaberRotation);
+
+        #endregion
+
+        #region LeftSaberZOffset
+
+        [UsedImplicitly] public float LeftSaberZOffset = ConfigDefaults.ZOffset / PositionUnitScale;
+
+        public float GetLeftSaberZOffsetInMeters() {
+            return LeftSaberZOffset * PositionUnitScale;
+        }
+
+        public void SetLeftSaberZOffsetInMeters(float value) {
+            LeftSaberZOffset = value / PositionUnitScale;
+        }
+
+        #endregion
+
+        #region LeftSaberHasReference
+
+        public bool LeftSaberHasReference = ConfigDefaults.LeftSaberHasReference;
+
+        #endregion
+
+        #region LeftSaberReference
+
+        public ConfigFileQuaternion LeftSaberReference = ConfigFileQuaternion.FromUnityQuaternion(ConfigDefaults.LeftSaberReferenceRotation);
+
+        #endregion
+
+        #region RightSaberPivotPosition
+
+        [UsedImplicitly] public Vector3 RightSaberPivotPosition = ConfigDefaults.RightSaberPivotPosition / PositionUnitScale;
+
+        public Vector3 GetRightSaberPivotPositionInMeters() {
+            return RightSaberPivotPosition * PositionUnitScale;
+        }
+
+        public void SetRightSaberPivotPositionInMeters(Vector3 value) {
+            RightSaberPivotPosition = value / PositionUnitScale;
+        }
+
+        #endregion
+
+        #region RightSaberRotationEuler
+
+        public Vector3 RightSaberRotationEuler = TransformUtils.EulerFromRotation(ConfigDefaults.RightSaberRotation);
+
+        #endregion
+
+        #region RightSaberZOffset
+
+        [UsedImplicitly] public float RightSaberZOffset = ConfigDefaults.ZOffset / PositionUnitScale;
+
+        public float GetRightSaberZOffsetInMeters() {
+            return RightSaberZOffset * PositionUnitScale;
+        }
+
+        public void SetRightSaberZOffsetInMeters(float value) {
+            RightSaberZOffset = value / PositionUnitScale;
+        }
+
+        #endregion
+
+        #region RightSaberHasReference
+
+        public bool RightSaberHasReference = ConfigDefaults.RightSaberHasReference;
+
+        #endregion
+
+        #region LeftSaberReference
+
+        public ConfigFileQuaternion RightSaberReference = ConfigFileQuaternion.FromUnityQuaternion(ConfigDefaults.RightSaberReferenceRotation);
+
+        #endregion
+
+        #region OnReload
+
+        [UsedImplicitly]
+        public virtual void OnReload() {
+            if (ConfigVersion != CurrentConfigVersion) ConfigVersion = CurrentConfigVersion;
+        }
+
+        #endregion
+
+        #region Changed
 
         /// <summary>
         /// Call this to force BSIPA to update the config file. This is also called by BSIPA if it detects the file was modified.
@@ -109,6 +183,10 @@ namespace EasyOffset {
         public virtual void Changed() {
             // Do stuff when the config is changed.
         }
+
+        #endregion
+
+        #region CopyFrom
 
         /// <summary>
         /// Call this to have BSIPA copy the values from <paramref name="other"/> into this config.

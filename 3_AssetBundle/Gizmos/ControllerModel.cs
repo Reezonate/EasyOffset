@@ -21,8 +21,6 @@ namespace EasyOffset {
         [SerializeField] private GameObject viveTracker3;
         [SerializeField] private GameObject vive;
 
-        [SerializeField] private GameObject visuals;
-
         #endregion
 
         #region Instance
@@ -35,7 +33,7 @@ namespace EasyOffset {
             GameObject prefab
         ) {
             DestroyInstance();
-            _instance = Instantiate(prefab, visuals.transform, false);
+            _instance = Instantiate(prefab, transform, false);
             _spawned = true;
         }
 
@@ -46,27 +44,34 @@ namespace EasyOffset {
         }
 
         #endregion
+        
+        #region SetHand
+
+        private Hand _hand;
+
+        public void SetHand(Hand hand) {
+            _hand = hand;
+        }
+
+        #endregion
 
         #region Interaction
 
-        public void SetControllerType(
-            ControllerType controllerType,
-            Hand hand
-        ) {
+        public void SetControllerType(ControllerType controllerType) {
             if (controllerType == _currentType) return;
             _currentType = controllerType;
 
             bool notNull;
             GameObject prefab;
 
-            switch (hand) {
+            switch (_hand) {
                 case Hand.Left:
                     notNull = GetLeftPrefab(controllerType, out prefab);
                     break;
                 case Hand.Right:
                     notNull = GetRightPrefab(controllerType, out prefab);
                     break;
-                default: throw new ArgumentOutOfRangeException(nameof(hand), hand, null);
+                default: throw new ArgumentOutOfRangeException(nameof(_hand), _hand, null);
             }
 
             if (notNull) {
@@ -77,7 +82,7 @@ namespace EasyOffset {
         }
 
         public void SetVisible(bool value) {
-            visuals.SetActive(value);
+            gameObject.SetActive(value);
         }
 
         #endregion

@@ -1,8 +1,22 @@
 ﻿<horizontal preferred-height="80">
-    <vertical preferred-width="100">
+    <!--    STYLE    -->
+    <macro.define name="settings-pad-right" value="10"/>
+    <macro.define name="bottom-spacer-height" value="10"/>
+    <macro.define name="right-spacer-width" value="10"/>
+    
+    <vertical preferred-width="100" pad-bottom="~bottom-spacer-height">
+        <!--    WHERE CONFIG?    -->
+        <horizontal preferred-height="6">
+            <vertical pad-right="~settings-pad-right">
+                <text text="!Controller settings are on the song selection screen!" 
+                      font-size="5" font-color="#ff4444" align="Center"/>
+            </vertical>
+        </horizontal>
+
         <!--    GLOBAL SETTINGS    -->
-        <horizontal preferred-height="27">
-            <vertical>
+        <horizontal preferred-height="26">
+            <vertical pad-right="~settings-pad-right">
+                <text text="Mod Settings" font-size="4" font-color="#aaaaaa" align="Center"/>
                 <toggle-setting text="Enabled" value="enabled-value" hover-hint="Enable plugin"/>
                 <toggle-setting text="Hide controllers" value="hide-controllers-value" apply-on-change="true"
                                 hover-hint="Don't show controllers when the mod settings tab is not visible"/>
@@ -12,39 +26,38 @@
         </horizontal>
 
         <!--    CONFIG MIGRATION    -->
-        <horizontal preferred-height="14">
-            <vertical>
-                <text text="Config Migration" align="Center"/>
+        <horizontal preferred-height="32">
+            <vertical pad-right="~settings-pad-right">
+                <text text="Config Migration" font-size="4" font-color="#aaaaaa" align="Center"/>
                 <slider-setting text="Import Z Offset" min="~zo-min" max="~zo-max" increment="~zo-increment" value="zo-value"
                                 apply-on-change="true" hover-hint="~zo-hint"/>
+
+                <!--    IMPORT / EXPORT   -->
+                <horizontal preferred-height="14" spacing="5">
+                    <!--    IMPORT    -->
+                    <vertical>
+                        <button text="Import from settings" on-click="import-from-settings-on-click"
+                                hover-hint="Import offsets from the base game controller settings"/>
+                        <button text="Import from SaberTailor" on-click="import-from-tailor-on-click"
+                                hover-hint="Import offsets from the UserData/SaberTailor.json file"/>
+                    </vertical>
+                    <!--    EXPORT    -->
+                    <vertical>
+                        <button text="Export to settings" on-click="export-to-settings-on-click"
+                                hover-hint="Export right hand offsets to the base game controller settings"/>
+                        <button text="Export to SaberTailor" on-click="export-to-tailor-on-click"
+                                hover-hint="Create SaberTailor config profile from current offsets"/>
+                    </vertical>
+                </horizontal>
+
+                <!--    STATUS    -->
+                <horizontal preferred-height="6">
+                    <vertical>
+                        <text text="~status-text" align="Center"/>
+                    </vertical>
+                </horizontal>
             </vertical>
         </horizontal>
-
-        <horizontal preferred-height="14">
-            <!--    IMPORT    -->
-            <vertical preferred-width="50">
-                <button text="Import from settings" on-click="import-from-settings-on-click"
-                        hover-hint="Import offsets from the base game controller settings"/>
-                <button text="Import from SaberTailor" on-click="import-from-tailor-on-click"
-                        hover-hint="Import offsets from the UserData/SaberTailor.json file"/>
-            </vertical>
-            <!--    EXPORT    -->
-            <vertical preferred-width="50">
-                <button text="Export to settings" on-click="export-to-settings-on-click"
-                        hover-hint="Export right hand offsets to the base game controller settings"/>
-                <button text="Export to SaberTailor" on-click="export-to-tailor-on-click"
-                        hover-hint="Create SaberTailor config profile from current offsets"/>
-            </vertical>
-        </horizontal>
-
-        <!--    STATUS    -->
-        <horizontal preferred-height="6">
-            <vertical>
-                <text text="~status-text" align="Center"/>
-            </vertical>
-        </horizontal>
-
-        <!--    SPACER    -->
-        <horizontal preferred-height="14"/>
     </vertical>
+    <vertical preferred-width="~right-spacer-width"/>
 </horizontal>

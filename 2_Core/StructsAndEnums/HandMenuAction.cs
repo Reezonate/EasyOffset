@@ -5,8 +5,8 @@ namespace EasyOffset {
         LeftMirrorAll,
         RightMirrorAll,
         
-        MirrorPivot,
-        MirrorDirection,
+        MirrorPivotPosition,
+        MirrorRotation,
         MirrorZOffset,
         Reset
     }

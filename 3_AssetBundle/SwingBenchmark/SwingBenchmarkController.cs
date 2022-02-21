@@ -8,21 +8,15 @@ namespace EasyOffset {
         [SerializeField] private SwingIndicators swingIndicators;
 
         [SerializeField] private GameObject swingVisuals;
-        [SerializeField] private HandVisuals leftHandVisuals;
-        [SerializeField] private HandVisuals rightHandVisuals;
 
         #endregion
 
         #region Visibility
 
         public void UpdateVisibility(
-            bool isSwingVisible,
-            bool isLeftHandVisible,
-            bool isRightHandVisible
+            bool isSwingVisible
         ) {
             swingVisuals.SetActive(isSwingVisible);
-            leftHandVisuals.gameObject.SetActive(isLeftHandVisible);
-            rightHandVisuals.gameObject.SetActive(isRightHandVisible);
         }
 
         #endregion
@@ -56,16 +50,6 @@ namespace EasyOffset {
         public void UpdateCameraPosition(Vector3 position) {
             benchmarkTrails.SetLookAt(position);
             swingIndicators.SetLookAt(position);
-        }
-
-        public void UpdateHandTransforms(
-            Vector3 leftPosition,
-            Quaternion leftRotation,
-            Vector3 rightPosition,
-            Quaternion rightRotation
-        ) {
-            leftHandVisuals.UpdateTransform(leftPosition, leftRotation);
-            rightHandVisuals.UpdateTransform(rightPosition, rightRotation);
         }
 
         public void UpdateSaberTransform(Vector3 position, Quaternion rotation) {

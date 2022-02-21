@@ -61,9 +61,6 @@ namespace EasyOffset {
 
         #region Update
 
-        private const float NoFocusAlpha = 0.2f;
-        private const float FocusAlpha = 1.0f;
-
         private float _targetAlpha;
         private float _currentAlpha;
 
@@ -79,19 +76,20 @@ namespace EasyOffset {
 
         #endregion
 
-        #region Interaction
+        #region SetFocus
+
+        private const float NoFocusAlpha = 0.2f;
+        private const float FocusAlpha = 1.0f;
 
         public void SetFocus(bool value) {
             _targetAlpha = value ? FocusAlpha : NoFocusAlpha;
         }
 
-        public void SetTextLookAt(Vector3 worldPosition) {
-            UpdateTextLookAt(worldPosition);
-        }
+        #endregion
 
-        public void SetCoordinates(
-            Vector3 coordinates
-        ) {
+        #region SetCoordinates
+
+        public void SetCoordinates(Vector3 coordinates) {
             if (!_isReady) return;
             _pointerMaterialInstance.SetVector(ScalePropertyId, coordinates);
             pointerTransform.localScale = coordinates;
@@ -100,10 +98,11 @@ namespace EasyOffset {
             UpdateTextPosition(coordinates);
         }
 
-        public void SetVisible(
-            bool isBasisVisible,
-            bool isPointerVisible
-        ) {
+        #endregion
+
+        #region SetVisible
+
+        public void SetVisible(bool isBasisVisible, bool isPointerVisible) {
             axlesVisuals.SetActive(isBasisVisible);
             pointerVisuals.SetActive(isPointerVisible);
         }
@@ -111,6 +110,10 @@ namespace EasyOffset {
         #endregion
 
         #region Text
+
+        public void SetTextLookAt(Vector3 worldPosition) {
+            textMesh.transform.LookAt(worldPosition, Vector3.up);
+        }
 
         private void UpdateTextString(Vector3 coordinates) {
             var xString = (coordinates.x * 100.0).ToString("0.0");
@@ -123,10 +126,6 @@ namespace EasyOffset {
 
         private void UpdateTextPosition(Vector3 coordinates) {
             textRoot.localPosition = coordinates;
-        }
-
-        private void UpdateTextLookAt(Vector3 lookAt) {
-            textMesh.transform.LookAt(lookAt, Vector3.up);
         }
 
         #endregion
