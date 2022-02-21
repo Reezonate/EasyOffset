@@ -138,6 +138,8 @@ internal static partial class PluginConfig {
     #endregion
 
     #region AssignedButton
+    
+    public static event Action<ControllerButton> AssignedButtonChangedEvent;
 
     private static ControllerButton _assignedButton = GetInitialButtonValue();
 
@@ -147,6 +149,7 @@ internal static partial class PluginConfig {
             if (_assignedButton.Equals(value)) return;
             _assignedButton = value;
             ConfigFileData.Instance.AssignedButton = ControllerButtonUtils.TypeToName(value);
+            AssignedButtonChangedEvent?.Invoke(value);
         }
     }
 

@@ -69,7 +69,12 @@ internal partial class ModPanelUI {
 
     private void SubscribeToAssignedButtonEvents() {
         PluginConfig.ControllerTypeChangedEvent += OnControllerTypeChanged;
+        PluginConfig.IsModPanelVisibleChangedEvent += IsPanelVisibleChanged;
         OnControllerTypeChanged(PluginConfig.SelectedControllerType, false);
+    }
+
+    private void IsPanelVisibleChanged(bool value) {
+        OnControllerTypeChanged(PluginConfig.SelectedControllerType, true);
     }
 
     private void OnControllerTypeChanged(ControllerType controllerType) {
@@ -432,6 +437,8 @@ internal partial class ModPanelUI {
 
     #region UI Lock
 
+    private AdjustmentMode _previousAdjustmentMode;
+
     [UIComponent("ui-lock-container")] [UsedImplicitly]
     private RectTransform _uiLockContainer;
 
@@ -443,10 +450,14 @@ internal partial class ModPanelUI {
             PluginConfig.UILock = !value;
 
             if (!value) {
+                _previousAdjustmentMode = PluginConfig.AdjustmentMode;
                 PluginConfig.AdjustmentMode = AdjustmentMode.None;
-                AdjustmentModeChoice = AdjustmentModeUtils.TypeToName(AdjustmentMode.None);
-                GoToMainPage();
+            } else {
+                PluginConfig.AdjustmentMode = _previousAdjustmentMode;
             }
+
+            AdjustmentModeChoice = AdjustmentModeUtils.TypeToName(PluginConfig.AdjustmentMode);
+            GoToMainPage();
 
             NotifyPropertyChanged();
         }
