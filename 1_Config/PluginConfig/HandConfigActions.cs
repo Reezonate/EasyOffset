@@ -27,31 +27,23 @@ internal static partial class PluginConfig {
 
     #region Mirror
 
-    public static void Mirror(Hand mirrorSource, bool mirrorPosition, bool mirrorRotation) {
+    public static void Mirror(Hand mirrorSource) {
         DisableConfigChangeEvent();
 
         switch (mirrorSource) {
             case Hand.Left:
-                if (mirrorPosition) {
-                    RightSaberPivotPosition = TransformUtils.MirrorVector(LeftSaberPivotPosition);
-                    RightSaberZOffset = LeftSaberZOffset;
-                }
-
-                if (mirrorRotation) {
-                    RightSaberRotation = TransformUtils.MirrorRotation(LeftSaberRotation);
-                }
-
+                RightSaberPivotPosition = TransformUtils.MirrorVector(LeftSaberPivotPosition);
+                RightSaberZOffset = LeftSaberZOffset;
+                RightSaberRotation = TransformUtils.MirrorRotation(LeftSaberRotation);
+                RightSaberHasReference = LeftSaberHasReference;
+                RightSaberReferenceRotation = TransformUtils.MirrorRotation(LeftSaberReferenceRotation);
                 break;
             case Hand.Right:
-                if (mirrorPosition) {
-                    LeftSaberPivotPosition = TransformUtils.MirrorVector(RightSaberPivotPosition);
-                    LeftSaberZOffset = RightSaberZOffset;
-                }
-
-                if (mirrorRotation) {
-                    LeftSaberRotation = TransformUtils.MirrorRotation(RightSaberRotation);
-                }
-
+                LeftSaberPivotPosition = TransformUtils.MirrorVector(RightSaberPivotPosition);
+                LeftSaberZOffset = RightSaberZOffset;
+                LeftSaberRotation = TransformUtils.MirrorRotation(RightSaberRotation);
+                LeftSaberHasReference = RightSaberHasReference;
+                LeftSaberReferenceRotation = TransformUtils.MirrorRotation(RightSaberReferenceRotation);
                 break;
             default: throw new ArgumentOutOfRangeException(nameof(mirrorSource), mirrorSource, null);
         }

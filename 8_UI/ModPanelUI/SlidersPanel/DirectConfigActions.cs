@@ -75,21 +75,8 @@ internal partial class ModPanelUI {
 
     #region OnMirrorButtonPressed
 
-    private void OnMirrorButtonPressed(Hand mirrorSource) {
-        switch (_directPanelState) {
-            case DirectPanelState.Hidden: return;
-            case DirectPanelState.PositionOnly:
-                PluginConfig.Mirror(mirrorSource, true, false);
-                break;
-            case DirectPanelState.RotationOnly:
-                PluginConfig.Mirror(mirrorSource, false, true);
-                break;
-            case DirectPanelState.ZOffsetOnly:
-            case DirectPanelState.Full:
-                PluginConfig.Mirror(mirrorSource, true, true);
-                break;
-            default: throw new ArgumentOutOfRangeException();
-        }
+    private static void OnMirrorButtonPressed(Hand mirrorSource) {
+        PluginConfig.Mirror(mirrorSource);
     }
 
     #endregion

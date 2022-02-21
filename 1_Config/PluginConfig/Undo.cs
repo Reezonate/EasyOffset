@@ -9,7 +9,7 @@ namespace EasyOffset;
 internal partial class PluginConfig {
     #region Logic
 
-    private const int MaxUndoStepsCount = 20;
+    private const int MaxUndoStepsCount = 30;
 
     public static event Action<bool, string> UndoAvailableChangedEvent;
     public static event Action<bool, string> RedoAvailableChangedEvent;

@@ -64,7 +64,7 @@ internal partial class ModPanelUI {
     [UsedImplicitly]
     private void DirectRightMirrorOnClick() {
         if (_directRightMirrorClickedOnce) {
-            PluginConfig.CreateUndoStep("Mirror Right");
+            PluginConfig.CreateUndoStep("Mirror to Left");
             OnMirrorButtonPressed(Hand.Right);
             ResetRightMirrorButton();
         } else {
