@@ -35,9 +35,7 @@ namespace EasyOffset {
         };
 
         private static readonly Dictionary<ControllerButton, string> ValveIndexButtons = new() {
-            [ControllerButton.PrimaryButton] = "System button",
-            [ControllerButton.SecondaryButton] = "B button",
-            [ControllerButton.Primary2DAxisClick] = "Joystick click"
+            [ControllerButton.PrimaryButton] = "B button"
         };
 
         private static readonly Dictionary<ControllerButton, string> ViveButtons = new() {
@@ -60,7 +58,7 @@ namespace EasyOffset {
         public static ControllerButton GetDefaultButton(ControllerType controllerType) {
             switch (controllerType) {
                 case ControllerType.ValveIndex:
-                    return ControllerButton.SecondaryButton;
+                    return ControllerButton.PrimaryButton;
 
                 case ControllerType.None:
                 case ControllerType.OculusQuest2:
