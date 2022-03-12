@@ -95,8 +95,10 @@ internal static class ConfigConversions {
         out Vector3 gripPosition,
         out Vector3 gripRotation
     ) {
+        var direction = TransformUtils.DirectionFromRotation(saberRotation);
+        
         gripPosition = saberTranslation;
-        gripRotation = TransformUtils.EulerFromRotation(saberRotation);
+        gripRotation = TransformUtils.EulerFromDirection(direction);
 
         if (useBaseGameAdjustmentMode) {
             gripPosition = Quaternion.Inverse(saberRotation) * gripPosition;
