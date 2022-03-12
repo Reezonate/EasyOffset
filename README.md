@@ -90,7 +90,7 @@ Before trying to find your best config, spend some time in different adjustment 
 - `Pivot point` should be stable as the wrist rotates. In other words - it should be aligned with your actual wrist pivot point as much as possible
 - Saber trail shouldn't move in a huge circle while you pointing forward and rolling your wrist comfortably. The smaller the radius, the better
 
-To help you achieve these goals, there are four main adjustment modes:
+To help you achieve these goals, there are five main adjustment modes:
 
 - [Basic](#basic-adjustment-mode)
 - [Position](#position-adjustment-mode)
