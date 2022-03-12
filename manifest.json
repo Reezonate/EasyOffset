@@ -3,7 +3,7 @@
   "id": "EasyOffset",
   "name": "EasyOffset",
   "author": "Reezonate",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Easy controller offset adjustment tool",
   "gameVersion": "1.19.0",
   "dependsOn": {

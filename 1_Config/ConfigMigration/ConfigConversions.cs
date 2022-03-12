@@ -96,12 +96,13 @@ internal static class ConfigConversions {
         out Vector3 gripRotation
     ) {
         var direction = TransformUtils.DirectionFromRotation(saberRotation);
+        var zeroZRotation = TransformUtils.RotationFromDirection(direction);
         
         gripPosition = saberTranslation;
-        gripRotation = TransformUtils.EulerFromDirection(direction);
+        gripRotation = TransformUtils.EulerFromRotation(zeroZRotation);
 
         if (useBaseGameAdjustmentMode) {
-            gripPosition = Quaternion.Inverse(saberRotation) * gripPosition;
+            gripPosition = Quaternion.Inverse(zeroZRotation) * gripPosition;
         }
 
         RemoveBuiltInOffsets(isValveController, isVRModeOculus, ref gripPosition, ref gripRotation);
