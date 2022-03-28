@@ -129,7 +129,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.XRModule">
-      <HintPath>$(BeatSaberDir)\Managed\UnityEngine.XRModule.dll</HintPath>
+      <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\UnityEngine.XRModule.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
@@ -228,6 +228,7 @@
     <Compile Include="7_Utils\EnumUtils\WarningLevelUtils.cs" />
     <Compile Include="7_Utils\StaticUtils\AsyncUtils.cs" />
     <Compile Include="7_Utils\StaticUtils\CompatibilityUtils.cs" />
+    <Compile Include="7_Utils\StaticUtils\JsonUtils.cs" />
     <Compile Include="8_UI\ModPanelUI\BenchmarkPanel.cs" />
     <Compile Include="8_UI\ModPanelUI\General.cs" />
     <Compile Include="8_UI\ModPanelUI\MainPage.cs" />

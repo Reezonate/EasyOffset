@@ -83,17 +83,17 @@ namespace EasyOffset {
         }
 
         public static ConfigPresetV1 Deserialize(JObject jObject) {
-            var unixTimestamp = jObject.GetValue("unixTimestamp", StringComparison.OrdinalIgnoreCase)!.Value<long>();
-            var controllerName = jObject.GetValue("controllerType", StringComparison.OrdinalIgnoreCase)!.Value<string>();
+            var unixTimestamp = jObject.GetValueUnsafe<long>("unixTimestamp");
+            var controllerName = jObject.GetValueUnsafe<string>("controllerType");
             var controllerType = ControllerTypeUtils.NameToTypeOrDefault(controllerName);
 
             var leftHandPivotPosition = ParseVector(jObject, "leftHandPivotPosition");
             var leftHandSaberDirection = ParseVector(jObject, "leftHandSaberDirection");
-            var leftHandZOffset = jObject.GetValue("leftHandZOffset", StringComparison.OrdinalIgnoreCase)!.Value<float>();
+            var leftHandZOffset = jObject.GetValueUnsafe<float>("leftHandZOffset");
 
             var rightHandPivotPosition = ParseVector(jObject, "rightHandPivotPosition");
             var rightHandSaberDirection = ParseVector(jObject, "rightHandSaberDirection");
-            var rightHandZOffset = jObject.GetValue("rightHandZOffset", StringComparison.OrdinalIgnoreCase)!.Value<float>();
+            var rightHandZOffset = jObject.GetValueUnsafe<float>("rightHandZOffset");
 
             return new ConfigPresetV1(
                 unixTimestamp,
@@ -109,9 +109,9 @@ namespace EasyOffset {
 
         private static Vector3 ParseVector(JObject jObject, string key) {
             return new Vector3(
-                jObject.GetValue($"{key}X", StringComparison.OrdinalIgnoreCase)!.Value<float>(),
-                jObject.GetValue($"{key}Y", StringComparison.OrdinalIgnoreCase)!.Value<float>(),
-                jObject.GetValue($"{key}Z", StringComparison.OrdinalIgnoreCase)!.Value<float>()
+                jObject.GetValueUnsafe<float>($"{key}X"),
+                jObject.GetValueUnsafe<float>($"{key}Y"),
+                jObject.GetValueUnsafe<float>($"{key}Z")
             );
         }
 

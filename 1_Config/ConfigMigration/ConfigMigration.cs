@@ -225,7 +225,7 @@ namespace EasyOffset {
                 var rawFileString = File.ReadAllText(TailorConfigPath);
                 var jObject = JObject.Parse(rawFileString);
 
-                useBaseGameAdjustmentMode = jObject.GetValue("UseBaseGameAdjustmentMode", StringComparison.OrdinalIgnoreCase)!.Value<bool>();
+                useBaseGameAdjustmentMode = jObject.GetValueUnsafe<bool>("UseBaseGameAdjustmentMode");
                 gripLeftPosition = VectorFromJObject(jObject, "GripLeftPosition") * UnitScale;
                 gripRightPosition = VectorFromJObject(jObject, "GripRightPosition") * UnitScale;
                 gripLeftRotation = VectorFromJObject(jObject, "GripLeftRotation");
@@ -285,11 +285,11 @@ namespace EasyOffset {
         }
 
         private static Vector3 VectorFromJObject(JObject jObject, string key) {
-            var vectorObject = jObject[key]!.Value<JObject>();
+            var vectorObject = jObject.GetValueUnsafe<JObject>(key);
             return new Vector3(
-                vectorObject.GetValue("x", StringComparison.OrdinalIgnoreCase)!.Value<float>(),
-                vectorObject.GetValue("y", StringComparison.OrdinalIgnoreCase)!.Value<float>(),
-                vectorObject.GetValue("z", StringComparison.OrdinalIgnoreCase)!.Value<float>()
+                vectorObject.GetValueUnsafe<float>("x"),
+                vectorObject.GetValueUnsafe<float>("y"),
+                vectorObject.GetValueUnsafe<float>("z")
             );
         }
 

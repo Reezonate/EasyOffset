@@ -32,7 +32,7 @@ internal static class ConfigUpgrade {
     }
 
     private static bool DoUpgradeCycle(this JObject source) {
-        var currentVersion = source.GetValue("ConfigVersion", StringComparison.OrdinalIgnoreCase)!.Value<string>();
+        var currentVersion = source.GetValueUnsafe<string>("ConfigVersion");
         var changed = false;
 
         while (currentVersion != ConfigFileData.CurrentConfigVersion) {
@@ -57,17 +57,17 @@ internal static class ConfigUpgrade {
 
     private static string Upgrade1_0To2_0(this JObject source) {
         //Conversion
-        var controllerTypeName = source.GetValue("DisplayControllerType", StringComparison.OrdinalIgnoreCase)!.Value<string>();
+        var controllerTypeName = source.GetValueUnsafe<string>("DisplayControllerType");
 
         var leftSaberPivotPosition = ParseVectorV1_0(source, "LeftHandPivot");
         var leftSaberDirection = ParseVectorV1_0(source, "LeftHandSaberDirection");
         var leftSaberRotationEuler = TransformUtils.EulerFromDirection(leftSaberDirection);
-        var leftSaberZOffset = source.GetValue("LeftHandZOffset", StringComparison.OrdinalIgnoreCase)!.Value<float>();
+        var leftSaberZOffset = source.GetValueUnsafe<float>("LeftHandZOffset");
 
         var rightSaberPivotPosition = ParseVectorV1_0(source, "RightHandPivot");
         var rightSaberDirection = ParseVectorV1_0(source, "RightHandSaberDirection");
         var rightSaberRotationEuler = TransformUtils.EulerFromDirection(rightSaberDirection);
-        var rightSaberZOffset = source.GetValue("RightHandZOffset", StringComparison.OrdinalIgnoreCase)!.Value<float>();
+        var rightSaberZOffset = source.GetValueUnsafe<float>("RightHandZOffset");
 
         //New Values
         const string newVersion = "2.0";
@@ -125,9 +125,9 @@ internal static class ConfigUpgrade {
 
     private static Vector3 ParseVectorV1_0(JObject jObject, string key) {
         return new Vector3(
-            jObject.GetValue($"{key}X", StringComparison.OrdinalIgnoreCase)!.Value<float>(),
-            jObject.GetValue($"{key}Y", StringComparison.OrdinalIgnoreCase)!.Value<float>(),
-            jObject.GetValue($"{key}Z", StringComparison.OrdinalIgnoreCase)!.Value<float>()
+            jObject.GetValueUnsafe<float>($"{key}X"),
+            jObject.GetValueUnsafe<float>($"{key}Y"),
+            jObject.GetValueUnsafe<float>($"{key}Z")
         );
     }
 

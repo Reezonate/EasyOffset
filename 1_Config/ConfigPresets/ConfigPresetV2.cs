@@ -96,7 +96,7 @@ namespace EasyOffset {
             Quaternion leftSaberReferenceRotation, rightSaberReferenceRotation;
 
             try {
-                leftSaberHasReference = jObject.GetValue("LeftSaberHasReference", StringComparison.OrdinalIgnoreCase)!.Value<bool>();
+                leftSaberHasReference = jObject.GetValueUnsafe<bool>("LeftSaberHasReference");
                 leftSaberReferenceRotation = ParseQuaternion(jObject, "LeftSaberReference");
             } catch (Exception) {
                 leftSaberHasReference = false;
@@ -104,7 +104,7 @@ namespace EasyOffset {
             }
 
             try {
-                rightSaberHasReference = jObject.GetValue("RightSaberHasReference", StringComparison.OrdinalIgnoreCase)!.Value<bool>();
+                rightSaberHasReference = jObject.GetValueUnsafe<bool>("RightSaberHasReference");
                 rightSaberReferenceRotation = ParseQuaternion(jObject, "RightSaberReference");
             } catch (Exception) {
                 rightSaberHasReference = false;
@@ -112,16 +112,16 @@ namespace EasyOffset {
             }
 
             return new ConfigPresetV2(
-                jObject.GetValue("unixTimestamp", StringComparison.OrdinalIgnoreCase)!.Value<long>(),
-                ControllerTypeUtils.NameToTypeOrDefault(jObject.GetValue("controllerType", StringComparison.OrdinalIgnoreCase)!.Value<string>()),
+                jObject.GetValueUnsafe<long>("unixTimestamp"),
+                ControllerTypeUtils.NameToTypeOrDefault(jObject.GetValueUnsafe<string>("controllerType")),
                 ParseVector(jObject, "LeftSaberPivotPosition") * PositionUnitScale,
                 ParseVector(jObject, "LeftSaberRotationEuler"),
-                jObject.GetValue("LeftSaberZOffset", StringComparison.OrdinalIgnoreCase)!.Value<float>() * PositionUnitScale,
+                jObject.GetValueUnsafe<float>("LeftSaberZOffset") * PositionUnitScale,
                 leftSaberHasReference,
                 leftSaberReferenceRotation,
                 ParseVector(jObject, "RightSaberPivotPosition") * PositionUnitScale,
                 ParseVector(jObject, "RightSaberRotationEuler"),
-                jObject.GetValue("RightSaberZOffset", StringComparison.OrdinalIgnoreCase)!.Value<float>() * PositionUnitScale,
+                jObject.GetValueUnsafe<float>("RightSaberZOffset") * PositionUnitScale,
                 rightSaberHasReference,
                 rightSaberReferenceRotation
             );
@@ -137,12 +137,12 @@ namespace EasyOffset {
         }
 
         private static Quaternion ParseQuaternion(JObject jObject, string key) {
-            var tmp = jObject.GetValue(key, StringComparison.OrdinalIgnoreCase)!.Value<JObject>();
+            var tmp = jObject.GetValueUnsafe<JObject>(key);
             return new Quaternion(
-                tmp.GetValue("x", StringComparison.OrdinalIgnoreCase)!.Value<float>(),
-                tmp.GetValue("y", StringComparison.OrdinalIgnoreCase)!.Value<float>(),
-                tmp.GetValue("z", StringComparison.OrdinalIgnoreCase)!.Value<float>(),
-                tmp.GetValue("w", StringComparison.OrdinalIgnoreCase)!.Value<float>()
+                tmp.GetValueUnsafe<float>("x"),
+                tmp.GetValueUnsafe<float>("y"),
+                tmp.GetValueUnsafe<float>("z"),
+                tmp.GetValueUnsafe<float>("w")
             );
         }
 
@@ -155,11 +155,11 @@ namespace EasyOffset {
         }
 
         private static Vector3 ParseVector(JObject jObject, string key) {
-            var tmp = jObject.GetValue(key, StringComparison.OrdinalIgnoreCase)!.Value<JObject>();
+            var tmp = jObject.GetValueUnsafe<JObject>(key);
             return new Vector3(
-                tmp.GetValue("x", StringComparison.OrdinalIgnoreCase)!.Value<float>(),
-                tmp.GetValue("y", StringComparison.OrdinalIgnoreCase)!.Value<float>(),
-                tmp.GetValue("z", StringComparison.OrdinalIgnoreCase)!.Value<float>()
+                tmp.GetValueUnsafe<float>("x"),
+                tmp.GetValueUnsafe<float>("y"),
+                tmp.GetValueUnsafe<float>("z")
             );
         }
 
