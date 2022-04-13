@@ -56,7 +56,7 @@ namespace EasyOffset {
 
         public const float MaximalPositionOffset = 0.4f;
 
-        public const float ZOffset = 0.11f;
+        public const float ZOffset = 0.155f;
 
         public static readonly Vector3 LeftSaberPivotPosition = new(0.0f, 0.0f, -ZOffset);
         public static readonly Quaternion LeftSaberRotation = Quaternion.identity;

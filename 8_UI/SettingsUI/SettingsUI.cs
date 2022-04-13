@@ -8,6 +8,19 @@ using UnityEngine;
 
 namespace EasyOffset {
     public class SettingsUI : NotifiableSingleton<SettingsUI> {
+        #region Initialize
+
+        private void Start() {
+            PluginConfig.OnEnabledChange += OnEnabledChanged;
+            OnEnabledChanged(PluginConfig.Enabled);
+        }
+
+        private void OnEnabledChanged(bool value) {
+            UniversalImportInteractable = !value;
+        }
+
+        #endregion
+        
         #region Global Settings
 
         [UIValue("enabled-value")]
@@ -54,7 +67,7 @@ namespace EasyOffset {
         [UIValue("zo-max")] [UsedImplicitly] private float _zOffsetSliderMax = 25f;
 
         [UIValue("zo-increment")] [UsedImplicitly]
-        private float _zOffsetSliderIncrement = 1f;
+        private float _zOffsetSliderIncrement = 0.5f;
 
 
         [UIValue("zo-value")]
@@ -67,6 +80,30 @@ namespace EasyOffset {
         #endregion
 
         #region Import
+
+        #region Universal import
+
+        private bool _universalImportInteractable;
+
+        [UIValue("universal-import-interactable")]
+        [UsedImplicitly]
+        private bool UniversalImportInteractable {
+            get => _universalImportInteractable;
+            set {
+                if (_universalImportInteractable.Equals(value)) return;
+                _universalImportInteractable = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        [UIAction("universal-import-on-click")]
+        [UsedImplicitly]
+        private void UniversalImportOnClick() {
+            var result = ConfigMigration.UniversalImport();
+            SetImportStatus(result);
+        }
+
+        #endregion
 
         #region Import from settings
 
@@ -95,12 +132,14 @@ namespace EasyOffset {
         private const string SuccessfulImportText = "<color=green>Imported</color>";
         private const string DevicelessImportFailText = "<color=red>Import failed!</color> Unknown VR device";
         private const string ParseImportFailText = "<color=red>Import failed!</color> SaberTailor.json file read error";
+        private const string InternalErrorText = "<color=red>Import failed!</color> Internal error";
 
         private void SetImportStatus(ConfigImportResult configImportResult) {
             SetStatusText(configImportResult switch {
                 ConfigImportResult.Success => SuccessfulImportText,
                 ConfigImportResult.DevicelessFail => DevicelessImportFailText,
                 ConfigImportResult.ParseFail => ParseImportFailText,
+                ConfigImportResult.InternalError => InternalErrorText,
                 _ => throw new ArgumentOutOfRangeException()
             });
         }
@@ -111,12 +150,23 @@ namespace EasyOffset {
 
         #region Export
 
-        #region Export to settings
+        #region Export to settings right
 
-        [UIAction("export-to-settings-on-click")]
+        [UIAction("export-to-settings-right-on-click")]
         [UsedImplicitly]
-        private void ExportToSettingsOnClick() {
-            var result = ConfigMigration.ExportToSettings();
+        private void ExportToSettingsRightOnClick() {
+            var result = ConfigMigration.ExportToSettings(Hand.Right);
+            SetExportStatus(result);
+        }
+
+        #endregion
+
+        #region Export to settings left
+
+        [UIAction("export-to-settings-left-on-click")]
+        [UsedImplicitly]
+        private void ExportToSettingsLeftOnClick() {
+            var result = ConfigMigration.ExportToSettings(Hand.Left);
             SetExportStatus(result);
         }
 

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <BeatSaberVersion>1.20.0</BeatSaberVersion>
+    <BeatSaberVersion>1.21.0</BeatSaberVersion>
     <BeatSaberDir>D:\Games\Steam\steamapps\common\Beat Saber v$(BeatSaberVersion)</BeatSaberDir>
     <ReferencePath>$(BeatSaberDir)\Libs;$(BeatSaberDir)\Plugins;$(BeatSaberDir)\Beat Saber_Data\Managed;</ReferencePath>
   </PropertyGroup>

@@ -110,6 +110,25 @@ internal static class ConfigConversions {
 
     #endregion
 
+    #region Universal
+
+    public static void Universal(
+        Vector3 controllerWorldPosition,
+        Quaternion controllerWorldRotation,
+        Vector3 saberWorldPosition,
+        Quaternion saberWorldRotation,
+        float zOffset,
+        out Vector3 pivotPosition,
+        out Quaternion saberRotation
+    ) {
+        var controllerTransform = new ReeTransform(controllerWorldPosition, controllerWorldRotation);
+        saberRotation = controllerTransform.WorldToLocalRotation(saberWorldRotation);
+        pivotPosition = controllerTransform.WorldToLocalPosition(saberWorldPosition);
+        pivotPosition += saberRotation * new Vector3(0, 0, -zOffset);
+    }
+
+    #endregion
+
     #region FromBaseGame
 
     public static void FromBaseGame(

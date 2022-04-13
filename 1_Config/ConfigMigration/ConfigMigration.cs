@@ -4,6 +4,7 @@ using System.Reflection;
 using IPA.Utilities;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace EasyOffset {
     internal static class ConfigMigration {
@@ -153,16 +154,89 @@ namespace EasyOffset {
 
         #endregion
 
+        #region UniversalImport
+
+        public static ConfigImportResult UniversalImport() {
+            if (!IsMigrationPossible) return ConfigImportResult.DevicelessFail;
+
+            var menuPlayerController = Object.FindObjectOfType<MenuPlayerController>();
+            if (menuPlayerController == null) return ConfigImportResult.InternalError;
+
+            if (!ImportFromVRController(menuPlayerController.leftController, out var leftPivotPosition, out var leftSaberRotation)) {
+                return ConfigImportResult.InternalError;
+            };
+            
+            if (!ImportFromVRController(menuPlayerController.rightController, out var rightPivotPosition, out var rightSaberRotation)) {
+                return ConfigImportResult.InternalError;
+            };
+            
+            PluginConfig.LeftSaberZOffset = ZOffset;
+            PluginConfig.LeftSaberPivotPosition = leftPivotPosition;
+            PluginConfig.LeftSaberRotation = leftSaberRotation;
+
+            PluginConfig.RightSaberZOffset = ZOffset;
+            PluginConfig.RightSaberPivotPosition = rightPivotPosition;
+            PluginConfig.RightSaberRotation = rightSaberRotation;
+
+            return ConfigImportResult.Success;
+        }
+
+        private static bool ImportFromVRController(
+            VRController vrController, 
+            out Vector3 pivotPosition,
+            out Quaternion saberRotation
+        ) {
+            var handlePosition = vrController.position;
+            var handleRotation = vrController.rotation;
+
+            if (!PluginConfig.VRPlatformHelper.GetNodePose(vrController.node, vrController.nodeIdx, out var controllerPosition, out var controllerRotation)) {
+                pivotPosition = Vector3.zero;
+                saberRotation = Quaternion.identity;
+                return false;
+            }
+            
+            TransformUtils.ApplyRoomOffset(ref controllerPosition, ref controllerRotation);
+            
+            ConfigConversions.Universal(
+                controllerPosition, 
+                controllerRotation,
+                handlePosition, 
+                handleRotation,
+                ZOffset,
+                out pivotPosition,
+                out saberRotation
+            );
+
+            return true;
+        }
+
+        #endregion
+
         #region ExportToSettings
 
-        public static ConfigExportResult ExportToSettings() {
+        public static ConfigExportResult ExportToSettings(Hand hand) {
             if (!IsMigrationPossible) return ConfigExportResult.DevicelessFail;
+
+            Vector3 translation;
+            Quaternion rotation;
+
+            switch (hand) {
+                case Hand.Left:
+                    translation = TransformUtils.MirrorVector(PluginConfig.LeftSaberTranslation);
+                    rotation = TransformUtils.MirrorRotation(PluginConfig.LeftSaberRotation);
+                    break;
+                case Hand.Right:
+                    translation = PluginConfig.RightSaberTranslation;
+                    rotation = PluginConfig.RightSaberRotation;
+                    break;
+                default: throw new ArgumentOutOfRangeException(nameof(hand), hand, null);
+            }
 
             ConfigConversions.ToBaseGame(
                 IsValveController,
                 IsVRModeOculus,
-                PluginConfig.RightSaberTranslation,
-                PluginConfig.RightSaberRotation,
+                translation,
+                rotation,
                 out var position,
                 out var rotationEuler
             );

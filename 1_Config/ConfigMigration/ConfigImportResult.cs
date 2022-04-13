@@ -2,6 +2,7 @@ namespace EasyOffset {
     public enum ConfigImportResult {
         Success,
         DevicelessFail,
-        ParseFail
+        ParseFail,
+        InternalError
     }
 }
