@@ -188,7 +188,7 @@ namespace EasyOffset {
 
             var tipTrailLength = Mathf.Cos(swingCurveAngle);
             var offset = planeRotation * Vector3.right * tipTrailLength;
-
+            
             swingCurveAngleIndicator.SetTransform(planePosition + offset, planeRotation * Quaternion.Euler(-90, 180, 0));
             swingCurveAngleIndicator.SetRadius(tipTrailLength);
             swingCurveAngleIndicator.SetValues(

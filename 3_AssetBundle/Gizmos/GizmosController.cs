@@ -129,8 +129,6 @@ namespace EasyOffset {
 
         public void SetCameraPosition(Vector3 cameraWorldPosition) {
             orthonormalBasis.SetTextLookAt(cameraWorldPosition);
-            swingPreview.SetLookAt(cameraWorldPosition);
-            pivot.SetLookAt(cameraWorldPosition);
         }
 
         #endregion

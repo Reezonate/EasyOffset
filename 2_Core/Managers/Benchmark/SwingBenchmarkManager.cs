@@ -1,6 +1,7 @@
 using System;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.XR;
 using Zenject;
 using Object = UnityEngine.Object;
 
@@ -9,7 +10,9 @@ namespace EasyOffset {
     public class SwingBenchmarkManager : IInitializable, IDisposable, ITickable {
         #region Constants
 
-        private const int MaximalCapacity = 200;
+        private const int MinimalCapacity = 60;
+        private const int MaximalCapacity = 300;
+        private const float ProbeTime = 2.0f;
         private const float FullSwingAngleRequirement = 140 * Mathf.Deg2Rad;
 
         #endregion
@@ -32,10 +35,12 @@ namespace EasyOffset {
         #region Constructor
 
         public SwingBenchmarkManager() {
-            _swingAnalyzer = new SwingAnalyzer(MaximalCapacity);
+            var capacity = (int) Mathf.Clamp(XRDevice.refreshRate * ProbeTime, MinimalCapacity, MaximalCapacity);
 
             var gameObject = Object.Instantiate(BundleLoader.SwingBenchmarkController);
             _swingBenchmarkController = gameObject.GetComponent<SwingBenchmarkController>();
+            _swingBenchmarkController.SetTrailLifetime(capacity);
+            _swingAnalyzer = new SwingAnalyzer(capacity);
         }
 
         #endregion

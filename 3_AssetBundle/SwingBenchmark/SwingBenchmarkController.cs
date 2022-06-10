@@ -4,19 +4,15 @@ namespace EasyOffset {
     public class SwingBenchmarkController : MonoBehaviour {
         #region Serialized
 
-        [SerializeField] private BenchmarkTrails benchmarkTrails;
+        [SerializeField] private ReeTrail trail;
         [SerializeField] private SwingIndicators swingIndicators;
-
-        [SerializeField] private GameObject swingVisuals;
 
         #endregion
 
         #region Visibility
 
-        public void UpdateVisibility(
-            bool isSwingVisible
-        ) {
-            swingVisuals.SetActive(isSwingVisible);
+        public void UpdateVisibility(bool isSwingVisible) {
+            gameObject.SetActive(isSwingVisible);
         }
 
         #endregion
@@ -48,20 +44,23 @@ namespace EasyOffset {
         }
 
         public void UpdateCameraPosition(Vector3 position) {
-            benchmarkTrails.SetLookAt(position);
             swingIndicators.SetLookAt(position);
         }
 
         public void UpdateSaberTransform(Vector3 position, Quaternion rotation) {
-            benchmarkTrails.UpdateSaberTransform(position, rotation);
+            trail.transform.SetPositionAndRotation(position, rotation);
+        }
+
+        public void SetTrailLifetime(int frames) {
+            trail.SetLifetime(frames);
         }
 
         public void StartTracking() {
-            benchmarkTrails.StartTracking();
+            trail.StartTracking();
         }
 
         public void StopTracking() {
-            benchmarkTrails.StopTracking();
+            trail.StopTracking();
         }
 
         #endregion
