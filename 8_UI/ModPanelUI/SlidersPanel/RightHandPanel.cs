@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace EasyOffset;
 
-internal partial class ModPanelUI {
+internal partial class SlidersPanel {
     #region Reset Button
 
     private string _directRightResetText = ResetButtonIdleText;

@@ -2,7 +2,7 @@ using System;
 
 namespace EasyOffset;
 
-internal partial class ModPanelUI {
+internal partial class SlidersPanel {
     #region Synchronization
 
     private int _syncCount;

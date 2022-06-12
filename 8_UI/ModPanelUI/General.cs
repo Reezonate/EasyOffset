@@ -6,38 +6,80 @@ using UnityEngine;
 
 namespace EasyOffset;
 
-internal partial class ModPanelUI : NotifiableSingleton<ModPanelUI> {
-    #region Constructor
+internal class ModPanelUI : NotifiableSingleton<ModPanelUI> {
+    #region static
 
-    public ModPanelUI() {
-        SubscribeToAssignedButtonEvents();
-        SubscribeToBenchmarkEvents();
-        SubscribeToRoomOffsetEvents();
-        SubscribeToWarningEvents();
-        SubscribeToSmoothingEvents();
-        SubscribeToDirectPanelEvents();
-        SubscribeToBottomPanelEvents();
-        GoToMainPage();
+    private static event Action GoToMainPageEvent;
+    private static event Action<bool, bool> GoToBrowserPageEvent;
+
+    public static void OpenMainPage() {
+        GoToMainPageEvent?.Invoke();
+    }
+
+    public static void OpenBrowserPage(bool allowSave, bool allowLoad) {
+        GoToBrowserPageEvent?.Invoke(allowSave, allowLoad);
     }
 
     #endregion
 
-    #region Updates
+    #region Constructor
+
+    public ModPanelUI() {
+        GoToMainPage();
+
+        GoToMainPageEvent += GoToMainPage;
+        GoToBrowserPageEvent += GoToBrowserPage;
+    }
+
+    #endregion
+
+    #region Components
+
+    [UIValue("top-panel"), UsedImplicitly]
+    private TopPanel _topPanel = ReeUIComponentV2.InstantiateOnSceneRoot<TopPanel>(false);
+
+    [UIValue("none-panel"), UsedImplicitly]
+    private NonePanel _nonePanel = ReeUIComponentV2.InstantiateOnSceneRoot<NonePanel>(false);
+
+    [UIValue("sliders-panel"), UsedImplicitly]
+    private SlidersPanel _slidersPanel = ReeUIComponentV2.InstantiateOnSceneRoot<SlidersPanel>(false);
+
+    [UIValue("swing-benchmark-panel"), UsedImplicitly]
+    private SwingBenchmarkPanel _swingBenchmarkPanel = ReeUIComponentV2.InstantiateOnSceneRoot<SwingBenchmarkPanel>(false);
+
+    [UIValue("room-offset-panel"), UsedImplicitly]
+    private RoomOffsetPanel _roomOffsetPanel = ReeUIComponentV2.InstantiateOnSceneRoot<RoomOffsetPanel>(false);
+
+    [UIValue("bottom-panel"), UsedImplicitly]
+    private BottomPanel _bottomPanel = ReeUIComponentV2.InstantiateOnSceneRoot<BottomPanel>(false);
+
+    [UIValue("presets-browser-panel"), UsedImplicitly]
+    private PresetsBrowserPanel _presetsBrowserPanel = ReeUIComponentV2.InstantiateOnSceneRoot<PresetsBrowserPanel>(false);
+
+    private void Awake() {
+        _topPanel.SetParent(transform);
+        _nonePanel.SetParent(transform);
+        _slidersPanel.SetParent(transform);
+        _swingBenchmarkPanel.SetParent(transform);
+        _roomOffsetPanel.SetParent(transform);
+        _bottomPanel.SetParent(transform);
+        _presetsBrowserPanel.SetParent(transform);
+    }
+
+    #endregion
+
+    #region Update
 
     private void Update() {
         UpdatePanelVisibility();
-        SmoothingUpdate();
-    }
-
-    private void LateUpdate() {
-        SynchronizationUpdate();
     }
 
     #endregion
 
     #region Visibility
 
-    [UIObject("root")] [UsedImplicitly] private GameObject _root;
+    [UIObject("root")] [UsedImplicitly]
+    private GameObject _root;
 
     private void UpdatePanelVisibility() {
         var isVisible = (_root != null) && _root.activeInHierarchy;
@@ -48,82 +90,31 @@ internal partial class ModPanelUI : NotifiableSingleton<ModPanelUI> {
 
     #region Flow
 
-    private void UpdateBenchmarkPanel(bool hasResults) {
-        BenchmarkGuideActive = !hasResults;
-        BenchmarkResultsActive = hasResults;
-    }
-
     private void GoToMainPage() {
         MainPageActive = true;
-        PresetsBrowserActive = false;
-
-        switch (PluginConfig.AdjustmentMode) {
-            case AdjustmentMode.None:
-                UseFreeHandActive = false;
-                NonePanelActive = true;
-                BenchmarkPanelActive = false;
-                RoomOffsetPanelActive = false;
-                UndoRedoButtonsActive = false;
-                SetDirectPanelState(DirectPanelState.Hidden);
-                break;
-            case AdjustmentMode.Basic:
-                UseFreeHandActive = true;
-                NonePanelActive = false;
-                BenchmarkPanelActive = false;
-                RoomOffsetPanelActive = false;
-                UndoRedoButtonsActive = true;
-                SetDirectPanelState(DirectPanelState.ZOffsetOnly);
-                break;
-            case AdjustmentMode.Position:
-                UseFreeHandActive = true;
-                NonePanelActive = false;
-                BenchmarkPanelActive = false;
-                RoomOffsetPanelActive = false;
-                UndoRedoButtonsActive = true;
-                SetDirectPanelState(DirectPanelState.PositionOnly);
-                break;
-            case AdjustmentMode.Rotation:
-            case AdjustmentMode.RotationAuto:
-                UseFreeHandActive = true;
-                NonePanelActive = false;
-                BenchmarkPanelActive = false;
-                RoomOffsetPanelActive = false;
-                UndoRedoButtonsActive = true;
-                SetDirectPanelState(DirectPanelState.RotationOnly);
-                break;
-            case AdjustmentMode.SwingBenchmark:
-                UseFreeHandActive = true;
-                NonePanelActive = false;
-                BenchmarkPanelActive = true;
-                RoomOffsetPanelActive = false;
-                UndoRedoButtonsActive = true;
-                SetDirectPanelState(DirectPanelState.Hidden);
-                break;
-            case AdjustmentMode.Direct:
-                UseFreeHandActive = false;
-                NonePanelActive = false;
-                BenchmarkPanelActive = false;
-                RoomOffsetPanelActive = false;
-                UndoRedoButtonsActive = true;
-                SetDirectPanelState(DirectPanelState.Full);
-                break;
-            case AdjustmentMode.RoomOffset:
-                UseFreeHandActive = true;
-                NonePanelActive = false;
-                BenchmarkPanelActive = false;
-                RoomOffsetPanelActive = true;
-                UndoRedoButtonsActive = false;
-                SetDirectPanelState(DirectPanelState.Hidden);
-                break;
-            default: throw new ArgumentOutOfRangeException();
-        }
+        _presetsBrowserPanel.Deactivate();
     }
 
     private void GoToBrowserPage(bool allowSave, bool allowLoad) {
         MainPageActive = false;
-        PresetsBrowserActive = true;
-        PresetsBrowserSaveActive = allowSave;
-        PresetsBrowserLoadActive = allowLoad;
+        _presetsBrowserPanel.Activate(allowSave, allowLoad);
+    }
+
+    #endregion
+
+    #region MainPageActive
+
+    private bool _mainPageActive = true;
+
+    [UIValue("main-page-active")]
+    [UsedImplicitly]
+    private bool MainPageActive {
+        get => _mainPageActive;
+        set {
+            if (_mainPageActive.Equals(value)) return;
+            _mainPageActive = value;
+            NotifyPropertyChanged();
+        }
     }
 
     #endregion

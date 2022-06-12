@@ -1,0 +1,25 @@
+<horizontal active="~room-offset-panel-active" pad-top="8" pad-bottom="8">
+    <vertical preferred-width="30" child-control-width="true" child-expand-width="true">
+        <text text="~hmd-x-text" hover-hint="Headset X coordinate" align="Left"/>
+        <text text="~hmd-y-text" hover-hint="Headset Y coordinate" align="Left"/>
+        <text text="~hmd-z-text" hover-hint="Headset Z coordinate" align="Left"/>
+    </vertical>
+    <vertical preferred-width="30" child-control-width="true" child-expand-width="true">
+        <text text="~room-x-text" hover-hint="Room X offset" align="Left"/>
+        <text text="~room-y-text" hover-hint="Room Y offset" align="Left"/>
+        <text text="~room-z-text" hover-hint="Room Z offset" align="Left"/>
+    </vertical>
+    <vertical preferred-width="20">
+        <toggle-setting text="" value="room-x-toggle-value" on-change="room-x-toggle-on-change"
+                        hover-hint="Allow X offset change (Left/Right)"/>
+        <toggle-setting text="" value="room-y-toggle-value" on-change="room-y-toggle-on-change"
+                        hover-hint="Allow Y offset change (Up/Down)"/>
+        <toggle-setting text="" value="room-z-toggle-value" on-change="room-z-toggle-on-change"
+                        hover-hint="Allow Z offset change (Forward/Back)"/>
+    </vertical>
+    <vertical preferred-width="20" child-control-width="true" child-expand-width="true">
+        <button text="Reset" on-click="room-x-reset-on-click" hover-hint="Set X offset to 0"/>
+        <button text="Reset" on-click="room-y-reset-on-click" hover-hint="Set Y offset to 0"/>
+        <button text="Reset" on-click="room-z-reset-on-click" hover-hint="Set Z offset to 0"/>
+    </vertical>
+</horizontal>

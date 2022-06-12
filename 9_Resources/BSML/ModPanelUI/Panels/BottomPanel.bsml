@@ -1,0 +1,32 @@
+<horizontal spacing="1">
+    <macro.define name="l-arrow" value="&lt;pos=-0.4em&gt;◄"/>
+    <macro.define name="r-arrow" value="►"/>
+    
+    <vertical preferred-width="40">
+        <horizontal>
+            <button preferred-width="20" text="Save" interactable="~interactable" on-click="bp-save-on-click" hover-hint="Save current preset"/>
+            <button preferred-width="20" text="Load" interactable="~interactable" on-click="bp-load-on-click" hover-hint="Load config preset"/>
+        </horizontal>
+    </vertical>
+
+    <vertical preferred-width="10" pad="2">
+        <image source="EasyOffset._9_Resources.Icons.Warning.png" preserve-aspect="true"
+               active="~warning-active" image-color="~warning-color" hover-hint="~warning-hint"/>
+    </vertical>
+
+    <vertical preferred-width="30" pad-left="10">
+        <horizontal id="undo-redo-buttons-container" active="~undo-redo-buttons-active">
+            <button preferred-width="10" text="~l-arrow" interactable="~undo-button-interactable"
+                    on-click="undo-button-on-click" hover-hint="~undo-button-hover-hint"/>
+            <button preferred-width="10" text="~r-arrow" interactable="~redo-button-interactable"
+                    on-click="redo-button-on-click" hover-hint="~redo-button-hover-hint"/>
+        </horizontal>
+    </vertical>
+
+    <vertical preferred-width="30">
+        <horizontal id="ui-lock-container">
+            <toggle-setting text="UI Lock" value="lock-value" on-change="lock-on-change" apply-on-change="true"
+                            hover-hint="Disable UI interaction to prevent accidental changes"/>
+        </horizontal>
+    </vertical>
+</horizontal>

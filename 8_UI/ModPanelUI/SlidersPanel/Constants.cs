@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 
 namespace EasyOffset;
 
-internal partial class ModPanelUI {
+internal partial class SlidersPanel {
     #region ZOffsetSliderSettings
 
     [UIValue("z-offset-slider-min")] [UsedImplicitly]

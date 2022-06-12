@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.Components;
@@ -6,13 +7,29 @@ using JetBrains.Annotations;
 
 namespace EasyOffset;
 
-internal partial class ModPanelUI {
+internal class PresetsBrowserPanel : ReeUIComponentV2 {
+    #region Events
+
+    public void Activate(bool allowSave, bool allowLoad) {
+        UpdatePresetsBrowserList();
+        PresetsBrowserActive = true;
+        PresetsBrowserSaveActive = allowSave;
+        PresetsBrowserLoadActive = allowLoad;
+    }
+
+    public void Deactivate() {
+        if (!PresetsBrowserActive) return;
+        PresetsBrowserActive = false;
+        ModPanelUI.OpenMainPage();
+    }
+
+    #endregion
+
     #region Active
 
     private bool _presetsBrowserActive;
 
-    [UIValue("pb-active")]
-    [UsedImplicitly]
+    [UIValue("pb-active"), UsedImplicitly]
     private bool PresetsBrowserActive {
         get => _presetsBrowserActive;
         set {
@@ -28,8 +45,7 @@ internal partial class ModPanelUI {
 
     private string _presetFileName = "NewPreset";
 
-    [UIValue("pb-name-value")]
-    [UsedImplicitly]
+    [UIValue("pb-name-value"), UsedImplicitly]
     private string PresetFileName {
         get => _presetFileName;
         set {
@@ -39,8 +55,7 @@ internal partial class ModPanelUI {
         }
     }
 
-    [UIAction("pb-name-on-change")]
-    [UsedImplicitly]
+    [UIAction("pb-name-on-change"), UsedImplicitly]
     private void PresetFilenameOnChange(string value) {
         for (var i = 0; i < _storedConfigPresets.Count; i++) {
             if (_storedConfigPresets[i].Name != value) continue;
@@ -57,19 +72,17 @@ internal partial class ModPanelUI {
 
     private List<StoredConfigPreset> _storedConfigPresets = new();
 
-    [UIComponent("pb-list")] [UsedImplicitly]
+    [UIComponent("pb-list"), UsedImplicitly]
     private CustomListTableData _presetsBrowserList;
 
-    [UIAction("pb-list-select-cell")]
-    [UsedImplicitly]
+    [UIAction("pb-list-select-cell"), UsedImplicitly]
     private void PresetsBrowserListSelectCell(TableView tableView, int row) {
         if (row >= _storedConfigPresets.Count) return;
         var selectedConfig = _storedConfigPresets[row];
         PresetFileName = selectedConfig.Name;
     }
 
-    [UIAction("pb-refresh-on-click")]
-    [UsedImplicitly]
+    [UIAction("pb-refresh-on-click"), UsedImplicitly]
     private void PresetsBrowserRefreshOnClick() {
         UpdatePresetsBrowserList();
     }
@@ -80,8 +93,9 @@ internal partial class ModPanelUI {
 
         foreach (var storedConfigPreset in _storedConfigPresets) {
             _presetsBrowserList.data.Add(new CustomListTableData.CustomCellInfo(
-                PresetUtils.GetPresetCellString(storedConfigPreset)
-            ));
+                    PresetUtils.GetPresetCellString(storedConfigPreset)
+                )
+            );
         }
 
         _presetsBrowserList.tableView.ReloadData();
@@ -92,25 +106,23 @@ internal partial class ModPanelUI {
 
     #region Cancel button
 
-    [UIAction("pb-cancel-on-click")]
-    [UsedImplicitly]
+    [UIAction("pb-cancel-on-click"), UsedImplicitly]
     private void PresetsBrowserCancelOnClick() {
-        GoToMainPage();
+        Deactivate();
     }
 
     #endregion
 
     #region Save button
 
-    [UIValue("pb-save-hint")] [UsedImplicitly]
+    [UIValue("pb-save-hint"), UsedImplicitly]
     private string _presetsBrowserSaveHint = "Save current preset to file" +
                                              "\n" +
                                              "\n<color=red>This action will overwrite existing files</color>";
 
     private bool _presetsBrowserSaveActive;
 
-    [UIValue("pb-save-active")]
-    [UsedImplicitly]
+    [UIValue("pb-save-active"), UsedImplicitly]
     private bool PresetsBrowserSaveActive {
         get => _presetsBrowserSaveActive;
         set {
@@ -120,11 +132,10 @@ internal partial class ModPanelUI {
         }
     }
 
-    [UIAction("pb-save-on-click")]
-    [UsedImplicitly]
+    [UIAction("pb-save-on-click"), UsedImplicitly]
     private void PresetsBrowserSaveOnClick() {
         if (!ConfigPresetsStorage.SaveCurrentPreset(PresetFileName)) return;
-        GoToMainPage();
+        Deactivate();
     }
 
     #endregion
@@ -133,13 +144,12 @@ internal partial class ModPanelUI {
 
     private bool _presetsBrowserLoadActive;
 
-    [UIValue("pb-load-hint")] [UsedImplicitly]
+    [UIValue("pb-load-hint"), UsedImplicitly]
     private string _presetsBrowserLoadHint = "Load preset from file" +
                                              "\n" +
                                              "\n<color=red>Any unsaved changes will be lost</color>";
 
-    [UIValue("pb-load-active")]
-    [UsedImplicitly]
+    [UIValue("pb-load-active"), UsedImplicitly]
     private bool PresetsBrowserLoadActive {
         get => _presetsBrowserLoadActive;
         set {
@@ -149,12 +159,11 @@ internal partial class ModPanelUI {
         }
     }
 
-    [UIAction("pb-load-on-click")]
-    [UsedImplicitly]
+    [UIAction("pb-load-on-click"), UsedImplicitly]
     private void PresetsBrowserLoadOnClick() {
         PluginConfig.CreateUndoStep($"Load preset: {PresetFileName}");
         if (!ConfigPresetsStorage.LoadPreset(PresetFileName)) return;
-        GoToMainPage();
+        Deactivate();
     }
 
     #endregion

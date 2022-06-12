@@ -4,14 +4,26 @@ using UnityEngine;
 
 namespace EasyOffset;
 
-internal partial class ModPanelUI {
+internal class RoomOffsetPanel : ReeUIComponentV2 {
+    #region Initialize
+
+    protected override void OnInitialize() {
+        PluginConfig.AdjustmentModeChangedEvent += OnAdjustmentModeChanged;
+        PluginConfig.MainSettingsModelChangedEvent += OnMainSettingsModelChanged;
+        RoomOffsetAdjustmentModeManager.OnHmdPositionChangedEvent += OnHmdPositionChanged;
+        OnMainSettingsModelChanged(PluginConfig.MainSettingsModel);
+        OnAdjustmentModeChanged(PluginConfig.AdjustmentMode);
+        OnHmdPositionChanged(Vector3.zero);
+    }
+
+    #endregion
+
     #region Events
 
     private Vector3SO _roomCenterSO;
 
-    private void SubscribeToRoomOffsetEvents() {
-        PluginConfig.MainSettingsModelChangedEvent += OnMainSettingsModelChanged;
-        RoomOffsetAdjustmentModeManager.OnHmdPositionChangedEvent += OnHmdPositionChange;
+    private void OnAdjustmentModeChanged(AdjustmentMode adjustmentMode) {
+        RoomOffsetPanelActive = adjustmentMode == AdjustmentMode.RoomOffset;
     }
 
     private void OnMainSettingsModelChanged(MainSettingsModelSO mainSettingsModel) {
@@ -31,7 +43,7 @@ internal partial class ModPanelUI {
         RoomZText = BuildRoomOffsetValueString("Room Z", tmp.z, 40);
     }
 
-    private void OnHmdPositionChange(Vector3 position) {
+    private void OnHmdPositionChanged(Vector3 position) {
         HmdXText = BuildRoomOffsetValueString("HMD X", position.x, 35);
         HmdYText = BuildRoomOffsetValueString("HMD Y", position.y, 35);
         HmdZText = BuildRoomOffsetValueString("HMD Z", position.z, 35);

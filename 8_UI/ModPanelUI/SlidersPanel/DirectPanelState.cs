@@ -6,14 +6,8 @@ using UnityEngine;
 
 namespace EasyOffset;
 
-internal partial class ModPanelUI {
+internal partial class SlidersPanel {
     #region Events
-
-    private void SubscribeToDirectPanelEvents() {
-        PluginConfig.ConfigWasChangedEvent += OnConfigWasChanged;
-        PluginConfig.IsModPanelVisibleChangedEvent += OnIsModPanelVisibleChanged;
-        OnConfigWasChanged();
-    }
 
     private void OnConfigWasChanged() {
         if (_smoothingEnabled) return;

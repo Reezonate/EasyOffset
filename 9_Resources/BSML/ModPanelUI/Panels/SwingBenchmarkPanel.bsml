@@ -1,0 +1,52 @@
+<horizontal active="~benchmark-panel-active">
+    <!--    GUIDE    -->
+    <vertical active="~benchmark-guide-active" preferred-width="60">
+        <horizontal preferred-height="24">
+            <text text="~benchmark-guide" align="Center"/>
+        </horizontal>
+    </vertical>
+
+    <!--    RESULTS    -->
+    <vertical active="~benchmark-results-active" preferred-width="60">
+        <horizontal preferred-height="24">
+            <vertical preferred-width="8">
+                <button text="?" hover-hint="~benchmark-curve-hint"/>
+                <button text="?" hover-hint="~benchmark-tip-wobble-hint"/>
+                <button text="?" hover-hint="~benchmark-arm-usage-hint"/>
+                <button text="?" hover-hint="~benchmark-angle-hint"/>
+            </vertical>
+            <vertical preferred-width="22">
+                <text text="Swing curve" align="Center"/>
+                <text text="Tip wobble" align="Center"/>
+                <text text="Arm usage" align="Center"/>
+                <text text="Angle" align="Center"/>
+            </vertical>
+            <vertical preferred-width="30">
+                <text text="~benchmark-curve-text" align="Left"/>
+                <text text="~benchmark-tip-wobble-text" align="Left"/>
+                <text text="~benchmark-arm-usage-text" align="Left"/>
+                <text text="~benchmark-angle-text" align="Left"/>
+            </vertical>
+        </horizontal>
+    </vertical>
+
+    <!--    CONTROLS    -->
+    <vertical preferred-width="40" pad-top="4" pad-bottom="4">
+        <horizontal preferred-height="6">
+            <button text="Apply rotation fix" interactable="~benchmark-results-active" preferred-width="30"
+                    on-click="benchmark-auto-fix-on-click"
+                    hover-hint="Align saber with the calculated straight swing plane"/>
+        </horizontal>
+        <horizontal preferred-height="6">
+            <button text="Set as reference" interactable="~benchmark-results-active" preferred-width="30"
+                    on-click="benchmark-set-as-reference-on-click"
+                    hover-hint="Use the calculated wrist rotation axis as a reference for the 'Rotation' mode"/>
+        </horizontal>
+        <horizontal preferred-height="6">
+            <text text="~benchmark-status-text" align="Center"/>
+        </horizontal>
+        <horizontal preferred-height="6">
+            <button text="Reset" preferred-width="30" on-click="benchmark-reset-on-click"/>
+        </horizontal>
+    </vertical>
+</horizontal>

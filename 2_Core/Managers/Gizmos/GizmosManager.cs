@@ -25,8 +25,8 @@ namespace EasyOffset {
             PluginConfig.ControllerTypeChangedEvent += OnControllerTypeChanged;
             Abomination.TransformsUpdatedEvent += OnControllerTransformsChanged;
             PluginConfig.ConfigWasChangedEvent += OnConfigWasChanged;
-            ModPanelUI.DirectChangeStartedEvent += OnDirectChangeStarted;
-            ModPanelUI.DirectChangeFinishedEvent += OnDirectChangeFinished;
+            DirectAdjustmentModeManager.DirectChangeStartedEvent += OnDirectChangeStarted;
+            DirectAdjustmentModeManager.DirectChangeFinishedEvent += OnDirectChangeFinished;
 
             OnControllerTypeChanged(PluginConfig.SelectedControllerType);
             OnConfigWasChanged();
@@ -40,8 +40,8 @@ namespace EasyOffset {
             PluginConfig.ConfigWasChangedEvent -= OnConfigWasChanged;
             PluginConfig.IsModPanelVisibleChangedEvent -= OnModPanelVisibleChanged;
 
-            ModPanelUI.DirectChangeStartedEvent -= OnDirectChangeStarted;
-            ModPanelUI.DirectChangeFinishedEvent -= OnDirectChangeFinished;
+            DirectAdjustmentModeManager.DirectChangeStartedEvent -= OnDirectChangeStarted;
+            DirectAdjustmentModeManager.DirectChangeFinishedEvent -= OnDirectChangeFinished;
 
             Abomination.TransformsUpdatedEvent -= OnControllerTransformsChanged;
         }

@@ -17,6 +17,9 @@ namespace EasyOffset {
         [SerializeField] private GameObject valveIndexLeft;
         [SerializeField] private GameObject valveIndexRight;
 
+        [SerializeField] private GameObject piMaxSwordLeft;
+        [SerializeField] private GameObject piMaxSwordRight;
+
         [SerializeField] private GameObject viveTracker2;
         [SerializeField] private GameObject viveTracker3;
         [SerializeField] private GameObject vive;
@@ -109,6 +112,9 @@ namespace EasyOffset {
                 case ControllerType.HtcVive:
                     prefab = vive;
                     break;
+                case ControllerType.PiMaxSword:
+                    prefab = piMaxSwordLeft;
+                    break;
                 case ControllerType.ViveTracker2:
                     prefab = viveTracker2;
                     break;
@@ -140,6 +146,9 @@ namespace EasyOffset {
                     break;
                 case ControllerType.HtcVive:
                     prefab = vive;
+                    break;
+                case ControllerType.PiMaxSword:
+                    prefab = piMaxSwordRight;
                     break;
                 case ControllerType.ViveTracker2:
                     prefab = viveTracker2;

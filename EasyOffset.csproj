@@ -167,6 +167,7 @@
     <Compile Include="2_Core\Managers\Adjustments\Auto\SwingBenchmarkAdjustmentModeManager.cs" />
     <Compile Include="2_Core\Managers\Adjustments\AdjustmentBlockManager.cs" />
     <Compile Include="2_Core\Managers\Adjustments\Manual\BasicAdjustmentModeManager.cs" />
+    <Compile Include="2_Core\Managers\Adjustments\Manual\DirectAdjustmentModeManager.cs" />
     <Compile Include="2_Core\Managers\Adjustments\Manual\RotationAdjustmentModeManager.cs" />
     <Compile Include="2_Core\Managers\Adjustments\Manual\PositionAdjustmentModeManager.cs" />
     <Compile Include="2_Core\Managers\Adjustments\Manual\RoomOffsetAdjustmentModeManager.cs" />
@@ -227,20 +228,23 @@
     <Compile Include="7_Utils\StaticUtils\CompatibilityUtils.cs" />
     <Compile Include="7_Utils\StaticUtils\JsonUtils.cs" />
     <Compile Include="7_Utils\StaticUtils\VFXUtils.cs" />
-    <Compile Include="8_UI\ModPanelUI\BenchmarkPanel.cs" />
     <Compile Include="8_UI\ModPanelUI\General.cs" />
-    <Compile Include="8_UI\ModPanelUI\MainPage.cs" />
     <Compile Include="8_UI\ModPanelUI\ModPanelUIHelper.cs" />
-    <Compile Include="8_UI\ModPanelUI\NonePanel.cs" />
+    <Compile Include="8_UI\ModPanelUI\Panels\BottomPanel.cs" />
+    <Compile Include="8_UI\ModPanelUI\Panels\NonePanel.cs" />
+    <Compile Include="8_UI\ModPanelUI\Panels\PresetsBrowserPanel.cs" />
+    <Compile Include="8_UI\ModPanelUI\Panels\RoomOffsetPanel.cs" />
+    <Compile Include="8_UI\ModPanelUI\Panels\SwingBenchmarkPanel.cs" />
+    <Compile Include="8_UI\ModPanelUI\Panels\TopPanel.cs" />
     <Compile Include="8_UI\ModPanelUI\SlidersPanel\DirectConfigActions.cs" />
     <Compile Include="8_UI\ModPanelUI\SlidersPanel\Constants.cs" />
     <Compile Include="8_UI\ModPanelUI\SlidersPanel\LeftHandPanel.cs" />
     <Compile Include="8_UI\ModPanelUI\SlidersPanel\DirectPanelState.cs" />
     <Compile Include="8_UI\ModPanelUI\SlidersPanel\RightHandPanel.cs" />
+    <Compile Include="8_UI\ModPanelUI\SlidersPanel\SlidersPanel.cs" />
     <Compile Include="8_UI\ModPanelUI\SlidersPanel\Smoothing.cs" />
     <Compile Include="8_UI\ModPanelUI\SlidersPanel\Utils.cs" />
-    <Compile Include="8_UI\ModPanelUI\PresetsBrowser.cs" />
-    <Compile Include="8_UI\ModPanelUI\RoomOffsetPanel.cs" />
+    <Compile Include="8_UI\ReeUIComponentV2.cs" />
     <Compile Include="8_UI\SettingsUI\SettingsUI.cs" />
     <Compile Include="8_UI\SettingsUI\SettingsUIHelper.cs" />
     <Compile Include="Plugin.cs" />
@@ -263,6 +267,13 @@
     <Compile Include="7_Utils\UtilityClasses\WeightedList.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\Panels\BottomPanel.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\Panels\NonePanel.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\Panels\PresetsBrowserPanel.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\Panels\RoomOffsetPanel.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\Panels\SlidersPanel.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\Panels\SwingBenchmarkPanel.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\Panels\TopPanel.bsml" />
     <EmbeddedResource Include="manifest.json" />
     <EmbeddedResource Include="9_Resources\BSML\ModPanelUI.bsml" />
     <EmbeddedResource Include="9_Resources\BSML\SettingsUI.bsml" />

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace EasyOffset;
 
-internal partial class ModPanelUI {
+internal partial class SlidersPanel {
     #region Step Up/Down
 
     private static float StepUp(float currentValue, float stepSize) {

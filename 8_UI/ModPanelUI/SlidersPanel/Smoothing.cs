@@ -3,16 +3,8 @@ using UnityEngine;
 
 namespace EasyOffset;
 
-internal partial class ModPanelUI {
+internal partial class SlidersPanel {
     #region Events
-
-    public static event Action<Hand?> DirectChangeStartedEvent;
-    public static event Action<Hand?> DirectChangeFinishedEvent;
-
-    private void SubscribeToSmoothingEvents() {
-        ReeInputManager.PointerDownAction += OnPointerDown;
-        ReeInputManager.PointerUpAction += OnPointerUp;
-    }
 
     private void OnPointerDown(ReeTriggerState triggerState) {
         OnSomethingWasPressed(triggerState);
@@ -195,7 +187,7 @@ internal partial class ModPanelUI {
         _sliderValueWasChanged = false;
         SmoothingFinalize();
         ApplyDirectConfig();
-        DirectChangeFinishedEvent?.Invoke(_changeHand);
+        DirectAdjustmentModeManager.NotifyDirectChangeFinished(_changeHand);
     }
 
     private void OnSliderTargetChanged(Hand hand, SliderValueType sliderValueType) {
@@ -216,7 +208,7 @@ internal partial class ModPanelUI {
         };
 
         SmoothingReset();
-        DirectChangeStartedEvent?.Invoke(_changeHand);
+        DirectAdjustmentModeManager.NotifyDirectChangeStarted(_changeHand);
     }
 
     private void OnSliderValueChangedDirectly(Hand hand, SliderValueType sliderValueType) {

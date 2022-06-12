@@ -1,182 +1,48 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using BeatSaberMarkupLanguage.Attributes;
-using BeatSaberMarkupLanguage.Components.Settings;
 using JetBrains.Annotations;
 using UnityEngine;
 
 namespace EasyOffset;
 
-internal partial class ModPanelUI {
-    #region Active
+internal class BottomPanel : ReeUIComponentV2 {
+    #region Initialize & Dispose
 
-    private bool _mainPageActive = true;
-
-    [UIValue("main-page-active")]
-    [UsedImplicitly]
-    private bool MainPageActive {
-        get => _mainPageActive;
-        set {
-            if (_mainPageActive.Equals(value)) return;
-            _mainPageActive = value;
-            NotifyPropertyChanged();
-        }
+    protected override void OnInitialize() {
+        PluginConfig.AdjustmentModeChangedEvent += OnAdjustmentModeChanged;
+        InitializeUndoRedo();
+        InitializeScale();
+        InitializeWarnings();
     }
 
     #endregion
 
-    #region Options panel
+    #region OnAdjustmentModeChanged
 
-    #region AdjustmentMode
-
-    [UIValue("am-hint")] [UsedImplicitly] private string _adjustmentModeHint = "Basic - Drag and drop adjustment mode" +
-                                                                               "\nPosition - Pivot position only" +
-                                                                               "\nRotation - Saber rotation only" +
-                                                                               "\nSwing Benchmark - Swing analysis" +
-                                                                               "\nDirect - Raw config values change" +
-                                                                               "\nRotation Auto - Automatic rotation" +
-                                                                               "\nRoom Offset - World pulling locomotion";
-
-    [UIValue("am-choices")] [UsedImplicitly]
-    private List<object> _adjustmentModeChoices = AdjustmentModeUtils.AllNamesObjects.ToList();
-
-    private string _adjustmentModeChoice = AdjustmentModeUtils.TypeToName(PluginConfig.AdjustmentMode);
-
-    [UIValue("am-choice")]
-    [UsedImplicitly]
-    private string AdjustmentModeChoice {
-        get => _adjustmentModeChoice;
-        set {
-            if (_adjustmentModeChoice.Equals(value)) return;
-            _adjustmentModeChoice = value;
-            NotifyPropertyChanged();
-        }
-    }
-
-    [UIAction("am-on-change")]
-    [UsedImplicitly]
-    private void AdjustmentModeOnChange(string selectedValue) {
-        PluginConfig.AdjustmentMode = AdjustmentModeUtils.NameToType(selectedValue);
-        GoToMainPage();
+    private void OnAdjustmentModeChanged(AdjustmentMode adjustmentMode) {
+        UndoRedoButtonsActive = adjustmentMode switch {
+            AdjustmentMode.None => false,
+            AdjustmentMode.Basic => true,
+            AdjustmentMode.Position => true,
+            AdjustmentMode.Rotation => true,
+            AdjustmentMode.SwingBenchmark => true,
+            AdjustmentMode.Direct => true,
+            AdjustmentMode.RotationAuto => true,
+            AdjustmentMode.RoomOffset => false,
+            _ => throw new ArgumentOutOfRangeException(nameof(adjustmentMode), adjustmentMode, null)
+        };
     }
 
     #endregion
 
-    #region AssignedButton
+    #region Undo & Redo
 
-    #region Events
-
-    private void SubscribeToAssignedButtonEvents() {
-        PluginConfig.ControllerTypeChangedEvent += OnControllerTypeChanged;
-        PluginConfig.IsModPanelVisibleChangedEvent += IsPanelVisibleChanged;
-        OnControllerTypeChanged(PluginConfig.SelectedControllerType, false);
-    }
-
-    private void IsPanelVisibleChanged(bool value) {
-        OnControllerTypeChanged(PluginConfig.SelectedControllerType, true);
-    }
-
-    private void OnControllerTypeChanged(ControllerType controllerType) {
-        OnControllerTypeChanged(controllerType, true);
-    }
-
-    private void OnControllerTypeChanged(ControllerType controllerType, bool forceUpdate) {
-        _buttonAliasDictionary = ControllerButtonUtils.GetAvailableOptions(controllerType);
-        _assignedButtonChoices = _buttonAliasDictionary.Keys.Cast<object>().ToList();
-
-        if (!forceUpdate) return;
-        _assignedButtonComponent.values = _assignedButtonChoices;
-        _assignedButtonComponent.Value = PluginConfig.AssignedButton;
-        _assignedButtonComponent.UpdateChoices();
-    }
-
-    #endregion
-
-    #region Formatter
-
-    private Dictionary<ControllerButton, string> _buttonAliasDictionary;
-
-    [UIAction("ab-formatter")]
-    [UsedImplicitly]
-    private string AssignedButtonFormatter(ControllerButton controllerButton) {
-        return _buttonAliasDictionary.ContainsKey(controllerButton) ? _buttonAliasDictionary[controllerButton] : "None";
-    }
-
-    #endregion
-
-    [UIComponent("ab-component")] [UsedImplicitly]
-    private DropDownListSetting _assignedButtonComponent;
-
-    [UIValue("ab-choices")] [UsedImplicitly]
-    private List<object> _assignedButtonChoices;
-
-    [UIValue("ab-choice")]
-    [UsedImplicitly]
-    private ControllerButton AssignedButtonChoice {
-        get => PluginConfig.AssignedButton;
-        set => PluginConfig.AssignedButton = value;
-    }
-
-    #endregion
-
-    #region Controller Type
-
-    [UIValue("controller-type-choices")] [UsedImplicitly]
-    private List<object> _controllerTypeOptions = ControllerTypeUtils.AllNamesObjects.ToList();
-
-    [UIValue("controller-type-choice")] [UsedImplicitly]
-    private string _controllerTypeValue = ControllerTypeUtils.TypeToName(PluginConfig.SelectedControllerType);
-
-    [UIAction("controller-type-on-change")]
-    [UsedImplicitly]
-    private void ControllerTypeOnChange(string selectedValue) {
-        PluginConfig.SelectedControllerType = ControllerTypeUtils.NameToType(selectedValue);
-    }
-
-    #endregion
-
-    #region UseFreeHand
-
-    private bool _useFreeHandActive = true;
-
-    [UIValue("ufh-active")]
-    [UsedImplicitly]
-    private bool UseFreeHandActive {
-        get => _useFreeHandActive;
-        set {
-            if (_useFreeHandActive.Equals(value)) return;
-            _useFreeHandActive = value;
-            NotifyPropertyChanged();
-        }
-    }
-
-    [UIValue("ufh-value")] [UsedImplicitly]
-    private bool _useFreeHandValue = PluginConfig.UseFreeHand;
-
-    [UIAction("ufh-on-change")]
-    [UsedImplicitly]
-    private void UseFreeHandOnChange(bool value) {
-        PluginConfig.UseFreeHand = value;
-    }
-
-    #endregion
-
-    #endregion
-
-    #region BottomPanel
-
-    #region Events
-
-    private void SubscribeToBottomPanelEvents() {
+    private void InitializeUndoRedo() {
         PluginConfig.UndoAvailableChangedEvent += OnUndoAvailableChanged;
         PluginConfig.RedoAvailableChangedEvent += OnRedoAvailableChanged;
-        PluginConfig.IsModPanelVisibleChangedEvent += BottomPanelOnVisibleChanged;
-    }
-
-    private void BottomPanelOnVisibleChanged(bool value) {
-        if (!value) return;
-        ApplyBottomPanelScale();
     }
 
     private void OnUndoAvailableChanged(bool isAvailable, string description) {
@@ -195,36 +61,38 @@ internal partial class ModPanelUI {
 
     private static readonly Vector3 BottomElementsScale = Vector3.one * 0.85f;
 
+    private void InitializeScale() {
+        PluginConfig.IsModPanelVisibleChangedEvent += BottomPanelOnVisibleChanged;
+        ApplyBottomPanelScale();
+    }
+
     private void ApplyBottomPanelScale() {
         _undoRedoButtonsContainer.localScale = BottomElementsScale;
         _uiLockContainer.localScale = BottomElementsScale;
     }
 
+    private void BottomPanelOnVisibleChanged(bool value) {
+        if (!value) return;
+        ApplyBottomPanelScale();
+    }
+
     #endregion
 
-    #region Save button
+    #region Save & Load buttons
 
-    [UIAction("bp-save-on-click")]
-    [UsedImplicitly]
+    [UIAction("bp-save-on-click"), UsedImplicitly]
     private void BottomPanelSaveOnClick() {
-        UpdatePresetsBrowserList();
-        GoToBrowserPage(true, false);
+        ModPanelUI.OpenBrowserPage(true, false);
     }
 
-    #endregion
-
-    #region Load button
-
-    [UIAction("bp-load-on-click")]
-    [UsedImplicitly]
+    [UIAction("bp-load-on-click"), UsedImplicitly]
     private void BottomPanelLoadOnClick() {
-        UpdatePresetsBrowserList();
-        GoToBrowserPage(false, true);
+        ModPanelUI.OpenBrowserPage(false, true);
     }
 
     #endregion
 
-    #region WarningIcon
+    #region Warnings
 
     private const string NonCriticalImageColor = "#FFFF00";
     private const string CriticalImageColor = "#FF0000";
@@ -270,7 +138,7 @@ internal partial class ModPanelUI {
         }
     }
 
-    private void SubscribeToWarningEvents() {
+    private void InitializeWarnings() {
         PluginConfig.MinimalWarningLevelChangedEvent += UpdateWarning;
         PluginConfig.IsModPanelVisibleChangedEvent += OnModPanelVisibleChanged;
         UpdateWarning(PluginConfig.MinimalWarningLevel);
@@ -442,8 +310,7 @@ internal partial class ModPanelUI {
     [UIComponent("ui-lock-container")] [UsedImplicitly]
     private RectTransform _uiLockContainer;
 
-    [UIValue("interactable")]
-    [UsedImplicitly]
+    [UIValue("interactable"), UsedImplicitly]
     private bool Interactable {
         get => !PluginConfig.UILock;
         set {
@@ -456,23 +323,18 @@ internal partial class ModPanelUI {
                 PluginConfig.AdjustmentMode = _previousAdjustmentMode;
             }
 
-            AdjustmentModeChoice = AdjustmentModeUtils.TypeToName(PluginConfig.AdjustmentMode);
-            GoToMainPage();
-
+            ModPanelUI.OpenMainPage();
             NotifyPropertyChanged();
         }
     }
 
-    [UIValue("lock-value")] [UsedImplicitly]
+    [UIValue("lock-value"), UsedImplicitly]
     private bool _lockValue = PluginConfig.UILock;
 
-    [UIAction("lock-on-change")]
-    [UsedImplicitly]
+    [UIAction("lock-on-change"), UsedImplicitly]
     private void LockOnChange(bool value) {
         Interactable = !value;
     }
-
-    #endregion
 
     #endregion
 }

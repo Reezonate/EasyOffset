@@ -1,0 +1,359 @@
+<vertical spacing="2" active="~direct-panel-active" id="direct-panel-component">
+    <!--    STYLE    -->
+    <macro.define name="direct-reset-width" value="12"/>
+    <macro.define name="direct-hand-width" value="18"/>
+    <macro.define name="direct-mirror-width" value="28"/>
+
+    <macro.define name="direct-slider-label-width" value="12"/>
+    <macro.define name="direct-slider-button-width" value="8"/>
+    <macro.define name="direct-slider-width" value="40"/>
+
+    <macro.define name="direct-hand-color" value="#aaaaaa"/>
+    <macro.define name="direct-x-color" value="#ff8888"/>
+    <macro.define name="direct-y-color" value="#88ff88"/>
+    <macro.define name="direct-z-color" value="#8888ff"/>
+    <macro.define name="direct-hor-color" value="#88ffff"/>
+    <macro.define name="direct-vert-color" value="#ff66ff"/>
+
+    <macro.define name="dec-text" value="-"/>
+    <macro.define name="inc-text" value="+"/>
+    <macro.define name="l-arrow" value="&lt;pos=-0.4em&gt;◄"/>
+    <macro.define name="r-arrow" value="►"/>
+
+    <!--    SLIDER CONTROLS    -->
+    <horizontal preferred-height="~direct-sliders-section-height">
+        <vertical spacing="1">
+            <!--    HEADER    -->
+            <horizontal preferred-height="6">
+                <!--    LEFT CONTROLS    -->
+                <button preferred-width="~direct-reset-width" text="~direct-left-reset-text" on-click="direct-left-reset-on-click"/>
+                <vertical preferred-width="~direct-hand-width">
+                    <text text="Left Hand" font-size="4" font-color="~direct-hand-color" align="Midline"/>
+                </vertical>
+                <button preferred-width="~direct-mirror-width" text="~direct-left-mirror-text" on-click="direct-left-mirror-on-click"/>
+
+                <!--    EMPTY LABEL    -->
+                <vertical preferred-width="~direct-slider-label-width"/>
+
+                <!--    RIGHT CONTROLS    -->
+                <button preferred-width="~direct-mirror-width" text="~direct-right-mirror-text" on-click="direct-right-mirror-on-click"/>
+                <vertical preferred-width="~direct-hand-width">
+                    <text text="Right Hand" font-size="4" font-color="~direct-hand-color" align="Midline"/>
+                </vertical>
+                <button preferred-width="~direct-reset-width" text="~direct-right-reset-text" on-click="direct-right-reset-on-click"/>
+            </horizontal>
+
+            <!--    Z OFFSET    -->
+            <horizontal preferred-height="8" pad-top="2" active="~direct-z-offset-active">
+                <!--    LEFT HAND    -->
+                <button text="~dec-text" face-color="~direct-z-color" on-click="direct-left-z-offset-dec-on-click"
+                        preferred-width="~direct-slider-button-width"/>
+                <vertical preferred-width="~direct-slider-width" pad-right="~direct-sliders-section-pad">
+                    <slider-setting text="" apply-on-change="true" bind-value="true" value="direct-left-z-offset-value"
+                                    on-change="direct-left-z-offset-on-change" min="~z-offset-slider-min" max="~z-offset-slider-max"
+                                    increment="~z-offset-slider-increment" formatter="z-offset-slider-formatter"/>
+                </vertical>
+                <button text="~inc-text" face-color="~direct-z-color" on-click="direct-left-z-offset-inc-on-click"
+                        preferred-width="~direct-slider-button-width"/>
+
+                <!--    LABEL    -->
+                <vertical preferred-width="~direct-slider-label-width">
+                    <text text="ZOffset" font-color="~direct-z-color" align="Midline"/>
+                </vertical>
+
+                <!--    RIGHT HAND    -->
+                <button text="~dec-text" face-color="~direct-z-color" on-click="direct-right-z-offset-dec-on-click"
+                        preferred-width="~direct-slider-button-width"/>
+                <vertical preferred-width="~direct-slider-width" pad-right="~direct-sliders-section-pad">
+                    <slider-setting text="" apply-on-change="true" bind-value="true" value="direct-right-z-offset-value"
+                                    on-change="direct-right-z-offset-on-change" min="~z-offset-slider-min" max="~z-offset-slider-max"
+                                    increment="~z-offset-slider-increment" formatter="z-offset-slider-formatter"/>
+                </vertical>
+                <button text="~inc-text" face-color="~direct-z-color" on-click="direct-right-z-offset-inc-on-click"
+                        preferred-width="~direct-slider-button-width"/>
+            </horizontal>
+
+            <!--    POSITION X    -->
+            <horizontal preferred-height="8" pad-top="2" active="~direct-position-active">
+                <!--    LEFT HAND    -->
+                <button text="~dec-text" face-color="~direct-x-color" on-click="direct-left-pos-x-dec-on-click"
+                        preferred-width="~direct-slider-button-width"/>
+                <vertical preferred-width="~direct-slider-width" pad-right="~direct-sliders-section-pad">
+                    <slider-setting text="" apply-on-change="true" bind-value="true" value="direct-left-pos-x-value"
+                                    on-change="direct-left-pos-x-on-change" min="~pos-slider-min" max="~pos-slider-max"
+                                    increment="~pos-slider-increment" formatter="pos-slider-formatter"/>
+                </vertical>
+                <button text="~inc-text" face-color="~direct-x-color" on-click="direct-left-pos-x-inc-on-click"
+                        preferred-width="~direct-slider-button-width"/>
+
+                <!--    LABEL    -->
+                <vertical preferred-width="~direct-slider-label-width">
+                    <text text="Pos X" font-color="~direct-x-color" align="Midline"/>
+                </vertical>
+
+                <!--    RIGHT HAND    -->
+                <button text="~dec-text" face-color="~direct-x-color" on-click="direct-right-pos-x-dec-on-click"
+                        preferred-width="~direct-slider-button-width"/>
+                <vertical preferred-width="~direct-slider-width" pad-right="~direct-sliders-section-pad">
+                    <slider-setting text="" apply-on-change="true" bind-value="true" value="direct-right-pos-x-value"
+                                    on-change="direct-right-pos-x-on-change" min="~pos-slider-min" max="~pos-slider-max"
+                                    increment="~pos-slider-increment" formatter="pos-slider-formatter"/>
+                </vertical>
+                <button text="~inc-text" face-color="~direct-x-color" on-click="direct-right-pos-x-inc-on-click"/>
+            </horizontal>
+
+            <!--    POSITION Y    -->
+            <horizontal preferred-height="6" active="~direct-position-active">
+                <!--    LEFT HAND    -->
+                <button text="~dec-text" face-color="~direct-y-color" on-click="direct-left-pos-y-dec-on-click"
+                        preferred-width="~direct-slider-button-width"/>
+                <vertical preferred-width="~direct-slider-width" pad-right="~direct-sliders-section-pad">
+                    <slider-setting text="" apply-on-change="true" bind-value="true" value="direct-left-pos-y-value"
+                                    on-change="direct-left-pos-y-on-change" min="~pos-slider-min" max="~pos-slider-max"
+                                    increment="~pos-slider-increment" formatter="pos-slider-formatter"/>
+                </vertical>
+                <button text="~inc-text" face-color="~direct-y-color" on-click="direct-left-pos-y-inc-on-click"
+                        preferred-width="~direct-slider-button-width"/>
+
+                <!--    LABEL    -->
+                <vertical preferred-width="~direct-slider-label-width">
+                    <text text="Pos Y" font-color="~direct-y-color" align="Midline"/>
+                </vertical>
+
+                <!--    RIGHT HAND    -->
+                <button text="~dec-text" face-color="~direct-y-color" on-click="direct-right-pos-y-dec-on-click"
+                        preferred-width="~direct-slider-button-width"/>
+                <vertical preferred-width="~direct-slider-width" pad-right="~direct-sliders-section-pad">
+                    <slider-setting text="" apply-on-change="true" bind-value="true" value="direct-right-pos-y-value"
+                                    on-change="direct-right-pos-y-on-change" min="~pos-slider-min" max="~pos-slider-max"
+                                    increment="~pos-slider-increment" formatter="pos-slider-formatter"/>
+                </vertical>
+                <button text="~inc-text" face-color="~direct-y-color" on-click="direct-right-pos-y-inc-on-click"/>
+            </horizontal>
+
+            <!--    POSITION Z    -->
+            <horizontal preferred-height="6" active="~direct-position-active">
+                <!--    LEFT HAND    -->
+                <button text="~dec-text" face-color="~direct-z-color" on-click="direct-left-pos-z-dec-on-click"
+                        preferred-width="~direct-slider-button-width"/>
+                <vertical preferred-width="~direct-slider-width" pad-right="~direct-sliders-section-pad">
+                    <slider-setting text="" apply-on-change="true" bind-value="true" value="direct-left-pos-z-value"
+                                    on-change="direct-left-pos-z-on-change" min="~pos-slider-min" max="~pos-slider-max"
+                                    increment="~pos-slider-increment" formatter="pos-slider-formatter"/>
+                </vertical>
+                <button text="~inc-text" face-color="~direct-z-color" on-click="direct-left-pos-z-inc-on-click"
+                        preferred-width="~direct-slider-button-width"/>
+
+                <!--    LABEL    -->
+                <vertical preferred-width="~direct-slider-label-width">
+                    <text text="Pos Z" font-color="~direct-z-color" align="Midline"/>
+                </vertical>
+
+                <!--    RIGHT HAND    -->
+                <button text="~dec-text" face-color="~direct-z-color" on-click="direct-right-pos-z-dec-on-click"
+                        preferred-width="~direct-slider-button-width"/>
+                <vertical preferred-width="~direct-slider-width" pad-right="~direct-sliders-section-pad">
+                    <slider-setting text="" apply-on-change="true" bind-value="true" value="direct-right-pos-z-value"
+                                    on-change="direct-right-pos-z-on-change" min="~pos-slider-min" max="~pos-slider-max"
+                                    increment="~pos-slider-increment" formatter="pos-slider-formatter"/>
+                </vertical>
+                <button text="~inc-text" face-color="~direct-z-color" on-click="direct-right-pos-z-inc-on-click"/>
+            </horizontal>
+
+            <!--    ROTATION X    -->
+            <horizontal preferred-height="8" pad-top="2" active="~direct-rotation-active">
+                <!--    LEFT HAND    -->
+                <button text="~dec-text" face-color="~direct-x-color" on-click="direct-left-rot-x-dec-on-click"
+                        preferred-width="~direct-slider-button-width"/>
+                <vertical preferred-width="~direct-slider-width" pad-right="~direct-sliders-section-pad">
+                    <slider-setting text="" apply-on-change="true" bind-value="true" value="direct-left-rot-x-value"
+                                    on-change="direct-left-rot-x-on-change" min="~rot-90-slider-min" max="~rot-90-slider-max"
+                                    increment="~rot-slider-increment" formatter="rot-slider-formatter"/>
+                </vertical>
+                <button text="~inc-text" face-color="~direct-x-color" on-click="direct-left-rot-x-inc-on-click"
+                        preferred-width="~direct-slider-button-width"/>
+
+                <!--    LABEL    -->
+                <vertical preferred-width="~direct-slider-label-width">
+                    <text text="Rot X" font-color="~direct-x-color" align="Midline"/>
+                </vertical>
+
+                <!--    RIGHT HAND    -->
+                <button text="~dec-text" face-color="~direct-x-color" on-click="direct-right-rot-x-dec-on-click"
+                        preferred-width="~direct-slider-button-width"/>
+                <vertical preferred-width="~direct-slider-width" pad-right="~direct-sliders-section-pad">
+                    <slider-setting text="" apply-on-change="true" bind-value="true" value="direct-right-rot-x-value"
+                                    on-change="direct-right-rot-x-on-change" min="~rot-90-slider-min" max="~rot-90-slider-max"
+                                    increment="~rot-slider-increment" formatter="rot-slider-formatter"/>
+                </vertical>
+                <button text="~inc-text" face-color="~direct-x-color" on-click="direct-right-rot-x-inc-on-click"/>
+            </horizontal>
+
+            <!--    ROTATION Y    -->
+            <horizontal preferred-height="6" active="~direct-rotation-active">
+                <!--    LEFT HAND    -->
+                <button text="~dec-text" face-color="~direct-y-color" on-click="direct-left-rot-y-dec-on-click"
+                        preferred-width="~direct-slider-button-width"/>
+                <vertical preferred-width="~direct-slider-width" pad-right="~direct-sliders-section-pad">
+                    <slider-setting text="" apply-on-change="true" bind-value="true" value="direct-left-rot-y-value"
+                                    on-change="direct-left-rot-y-on-change" min="~rot-180-slider-min" max="~rot-180-slider-max"
+                                    increment="~rot-slider-increment" formatter="rot-slider-formatter"/>
+                </vertical>
+                <button text="~inc-text" face-color="~direct-y-color" on-click="direct-left-rot-y-inc-on-click"
+                        preferred-width="~direct-slider-button-width"/>
+
+                <!--    LABEL    -->
+                <vertical preferred-width="~direct-slider-label-width">
+                    <text text="Rot Y" font-color="~direct-y-color" align="Midline"/>
+                </vertical>
+
+                <!--    RIGHT HAND    -->
+                <button text="~dec-text" face-color="~direct-y-color" on-click="direct-right-rot-y-dec-on-click"
+                        preferred-width="~direct-slider-button-width"/>
+                <vertical preferred-width="~direct-slider-width" pad-right="~direct-sliders-section-pad">
+                    <slider-setting text="" apply-on-change="true" bind-value="true" value="direct-right-rot-y-value"
+                                    on-change="direct-right-rot-y-on-change" min="~rot-180-slider-min" max="~rot-180-slider-max"
+                                    increment="~rot-slider-increment" formatter="rot-slider-formatter"/>
+                </vertical>
+                <button text="~inc-text" face-color="~direct-y-color" on-click="direct-right-rot-y-inc-on-click"/>
+            </horizontal>
+
+            <!--    ROTATION Z    -->
+            <horizontal preferred-height="6" active="~direct-rotation-active">
+                <!--    LEFT HAND    -->
+                <button text="~dec-text" face-color="~direct-z-color" on-click="direct-left-rot-z-dec-on-click"
+                        preferred-width="~direct-slider-button-width"/>
+                <vertical preferred-width="~direct-slider-width" pad-right="~direct-sliders-section-pad">
+                    <slider-setting text="" apply-on-change="true" bind-value="true" value="direct-left-rot-z-value"
+                                    on-change="direct-left-rot-z-on-change" min="~rot-180-slider-min" max="~rot-180-slider-max"
+                                    increment="~rot-slider-increment" formatter="rot-slider-formatter"/>
+                </vertical>
+                <button text="~inc-text" face-color="~direct-z-color" on-click="direct-left-rot-z-inc-on-click"
+                        preferred-width="~direct-slider-button-width"/>
+
+                <!--    LABEL    -->
+                <vertical preferred-width="~direct-slider-label-width">
+                    <text text="Rot Z" font-color="~direct-z-color" align="Midline"/>
+                </vertical>
+
+                <!--    RIGHT HAND    -->
+                <button text="~dec-text" face-color="~direct-z-color" on-click="direct-right-rot-z-dec-on-click"
+                        preferred-width="~direct-slider-button-width"/>
+                <vertical preferred-width="~direct-slider-width" pad-right="~direct-sliders-section-pad">
+                    <slider-setting text="" apply-on-change="true" bind-value="true" value="direct-right-rot-z-value"
+                                    on-change="direct-right-rot-z-on-change" min="~rot-180-slider-min" max="~rot-180-slider-max"
+                                    increment="~rot-slider-increment" formatter="rot-slider-formatter"/>
+                </vertical>
+                <button text="~inc-text" face-color="~direct-z-color" on-click="direct-right-rot-z-inc-on-click"/>
+            </horizontal>
+
+            <!--    BALANCE    -->
+            <horizontal preferred-height="8" pad-top="2" active="~direct-rotation-reference-active">
+                <!--    LEFT HAND    -->
+                <button text="~dec-text" face-color="~direct-vert-color" on-click="direct-left-rot-vert-dec-on-click"
+                        interactable="~direct-left-rotation-reference-interactable"
+                        preferred-width="~direct-slider-button-width"/>
+                <vertical preferred-width="~direct-slider-width" pad-right="~direct-sliders-section-pad">
+                    <slider-setting text="" apply-on-change="true" bind-value="true" value="direct-left-rot-vert-value"
+                                    on-change="direct-left-rot-vert-on-change" min="~rot-90-slider-min" max="~rot-90-slider-max"
+                                    increment="~rot-slider-increment" formatter="rot-slider-formatter"
+                                    interactable="~direct-left-rotation-reference-interactable"/>
+                </vertical>
+                <button text="~inc-text" face-color="~direct-vert-color" on-click="direct-left-rot-vert-inc-on-click"
+                        interactable="~direct-left-rotation-reference-interactable" preferred-width="~direct-slider-button-width"/>
+
+                <!--    LABEL    -->
+                <vertical preferred-width="~direct-slider-label-width">
+                    <text text="Balance" font-color="~direct-vert-color" align="Midline"/>
+                </vertical>
+
+                <!--    RIGHT HAND    -->
+                <button text="~dec-text" face-color="~direct-vert-color" on-click="direct-right-rot-vert-dec-on-click"
+                        interactable="~direct-right-rotation-reference-interactable" preferred-width="~direct-slider-button-width"/>
+                <vertical preferred-width="~direct-slider-width" pad-right="~direct-sliders-section-pad">
+                    <slider-setting text="" apply-on-change="true" bind-value="true" value="direct-right-rot-vert-value"
+                                    on-change="direct-right-rot-vert-on-change" min="~rot-90-slider-min" max="~rot-90-slider-max"
+                                    increment="~rot-slider-increment" formatter="rot-slider-formatter"
+                                    interactable="~direct-right-rotation-reference-interactable"/>
+                </vertical>
+                <button text="~inc-text" face-color="~direct-vert-color" on-click="direct-right-rot-vert-inc-on-click"
+                        interactable="~direct-right-rotation-reference-interactable" preferred-width="~direct-slider-button-width"/>
+            </horizontal>
+
+            <!--    CURVE    -->
+            <horizontal preferred-height="6" active="~direct-rotation-reference-active">
+                <!--    LEFT HAND    -->
+                <button text="~l-arrow" face-color="~direct-hor-color" on-click="direct-left-rot-hor-dec-on-click"
+                        interactable="~direct-left-rotation-reference-interactable"
+                        preferred-width="~direct-slider-button-width"/>
+                <vertical preferred-width="~direct-slider-width" pad-right="~direct-sliders-section-pad">
+                    <slider-setting text="" apply-on-change="true" bind-value="true" value="direct-left-rot-hor-value"
+                                    on-change="direct-left-rot-hor-on-change" min="~rot-180-slider-min" max="~rot-180-slider-max"
+                                    increment="~rot-slider-increment" formatter="rot-curve-left-slider-formatter"
+                                    interactable="~direct-left-rotation-reference-interactable"/>
+                </vertical>
+                <button text="~r-arrow" face-color="~direct-hor-color" on-click="direct-left-rot-hor-inc-on-click"
+                        interactable="~direct-left-rotation-reference-interactable" preferred-width="~direct-slider-button-width"/>
+
+                <!--    LABEL    -->
+                <vertical preferred-width="~direct-slider-label-width">
+                    <text text="Curve" font-color="~direct-hor-color" align="Midline"/>
+                </vertical>
+
+                <!--    RIGHT HAND    -->
+                <button text="~l-arrow" face-color="~direct-hor-color" on-click="direct-right-rot-hor-dec-on-click"
+                        interactable="~direct-right-rotation-reference-interactable" preferred-width="~direct-slider-button-width"/>
+                <vertical preferred-width="~direct-slider-width" pad-right="~direct-sliders-section-pad">
+                    <slider-setting text="" apply-on-change="true" bind-value="true" value="direct-right-rot-hor-value"
+                                    on-change="direct-right-rot-hor-on-change" min="~rot-180-slider-min" max="~rot-180-slider-max"
+                                    increment="~rot-slider-increment" formatter="rot-curve-right-slider-formatter"
+                                    interactable="~direct-right-rotation-reference-interactable"/>
+                </vertical>
+                <button text="~r-arrow" face-color="~direct-hor-color"
+                        on-click="direct-right-rot-hor-inc-on-click" interactable="~direct-right-rotation-reference-interactable"
+                        preferred-width="~direct-slider-button-width"/>
+            </horizontal>
+
+            <!--    FILLER    -->
+            <horizontal preferred-height="~direct-filler-height"/>
+        </vertical>
+    </horizontal>
+
+    <!--    REFERENCE CONTROLS    -->
+    <horizontal active="~direct-rotation-reference-active" preferred-height="6">
+        <vertical preferred-width="52" pad-left="10">
+            <!--    LEFT HELP    -->
+            <button text="?" preferred-width="10" active="~direct-left-help-active"
+                    hover-hint="Create reference in the 'Swing Benchmark' mode to use sliders"/>
+
+            <horizontal active="~direct-left-buttons-active" spacing="2">
+                <!--    LEFT CLEAR    -->
+                <button preferred-width="20" face-color="#ff9999" text="Clear"
+                        on-click="direct-left-clear-reference-on-click"
+                        hover-hint="Remove left hand reference"/>
+                <!--    LEFT UPDATE    -->
+                <button preferred-width="20" text="Update" on-click="direct-left-update-reference-on-click"
+                        hover-hint="Use current saber rotation as reference"/>
+            </horizontal>
+        </vertical>
+        <!--    LABEL    -->
+        <vertical preferred-width="24">
+            <text text="Reference" align="Midline"/>
+        </vertical>
+        <vertical preferred-width="52" pad-right="10">
+            <!--    RIGHT HELP    -->
+            <button text="?" preferred-width="10" active="~direct-right-help-active"
+                    hover-hint="Set reference in the 'Swing Benchmark' mode to use sliders"/>
+
+            <horizontal active="~direct-right-buttons-active" spacing="2">
+                <!--    RIGHT UPDATE    -->
+                <button preferred-width="20" text="Update" on-click="direct-right-update-reference-on-click"
+                        hover-hint="Use current saber rotation as reference"/>
+                <!--    RIGHT CLEAR    -->
+                <button preferred-width="20" face-color="#ff9999" text="Clear"
+                        on-click="direct-right-clear-reference-on-click"
+                        hover-hint="Remove right hand reference"/>
+            </horizontal>
+        </vertical>
+    </horizontal>
+</vertical>

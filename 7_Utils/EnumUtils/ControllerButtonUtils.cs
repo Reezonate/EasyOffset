@@ -65,6 +65,7 @@ namespace EasyOffset {
                 case ControllerType.OculusRiftS:
                 case ControllerType.OculusCV1:
                 case ControllerType.HtcVive:
+                case ControllerType.PiMaxSword:
                 case ControllerType.ViveTracker2:
                 case ControllerType.ViveTracker3:
                     return ControllerButton.GripButton;
@@ -86,6 +87,7 @@ namespace EasyOffset {
                 case ControllerType.OculusRiftS:
                 case ControllerType.OculusCV1: return ConfigMigration.IsVRModeOculus ? OculusButtonsVrmode : OculusButtonsSteam;
 
+                case ControllerType.PiMaxSword:
                 case ControllerType.HtcVive:
                 case ControllerType.ViveTracker2:
                 case ControllerType.ViveTracker3: return ViveButtons;

@@ -4,15 +4,24 @@ using UnityEngine;
 
 namespace EasyOffset;
 
-internal partial class ModPanelUI {
-    #region Events
+internal class SwingBenchmarkPanel : ReeUIComponentV2 {
+    #region Initialize
 
-    private void SubscribeToBenchmarkEvents() {
+    protected override void OnInitialize() {
+        PluginConfig.AdjustmentModeChangedEvent += OnAdjustmentModeChanged;
         SwingBenchmarkHelper.OnResetEvent += OnBenchmarkReset;
         SwingBenchmarkHelper.OnStartEvent += OnBenchmarkStart;
         SwingBenchmarkHelper.OnUpdateEvent += OnBenchmarkUpdate;
         SwingBenchmarkHelper.OnFailEvent += OnBenchmarkFail;
         SwingBenchmarkHelper.OnSuccessEvent += OnBenchmarkSuccess;
+    }
+
+    #endregion
+
+    #region Events
+
+    private void OnAdjustmentModeChanged(AdjustmentMode adjustmentMode) {
+        BenchmarkPanelActive = adjustmentMode == AdjustmentMode.SwingBenchmark;
     }
 
     private void OnBenchmarkReset() {
@@ -21,6 +30,14 @@ internal partial class ModPanelUI {
 
     private void OnBenchmarkStart() {
         UpdateBenchmarkPanel(false);
+    }
+
+    private void OnBenchmarkFail() {
+        UpdateBenchmarkPanel(false);
+    }
+
+    private void OnBenchmarkSuccess() {
+        UpdateBenchmarkPanel(true);
     }
 
     private void OnBenchmarkUpdate(
@@ -40,12 +57,9 @@ internal partial class ModPanelUI {
         BenchmarkAngleText = $"{full:F1}° ({max:F1}°/{-min:F1}°)";
     }
 
-    private void OnBenchmarkFail() {
-        UpdateBenchmarkPanel(false);
-    }
-
-    private void OnBenchmarkSuccess() {
-        UpdateBenchmarkPanel(true);
+    private void UpdateBenchmarkPanel(bool hasResults) {
+        BenchmarkGuideActive = !hasResults;
+        BenchmarkResultsActive = hasResults;
     }
 
     #endregion

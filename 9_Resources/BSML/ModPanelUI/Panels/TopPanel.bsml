@@ -1,0 +1,48 @@
+<vertical>
+    <!--    STYLE    -->
+    <macro.define name="options-section-column-width" value="36"/>
+    <macro.define name="options-row-height" value="11"/>
+    <macro.define name="options-label-height" value="4"/>
+    <macro.define name="options-label-color" value="#888888"/>
+    <macro.define name="options-label-font-size" value="3"/>
+    <macro.define name="free-hand-row-height" value="9"/>
+    <macro.define name="free-hand-row-width" value="40"/>
+
+    <horizontal preferred-height="~options-row-height">
+        <!--    CONTROLLER TYPE    -->
+        <vertical preferred-width="~options-section-column-width">
+            <horizontal preferred-height="~options-label-height">
+                <text text="Controller type" font-size="~options-label-font-size" font-color="~options-label-color" align="Midline"/>
+            </horizontal>
+            <dropdown-list-setting text="" interactable="~interactable" apply-on-change="true"
+                                   value="controller-type-choice" choices="controller-type-choices" on-change="controller-type-on-change"/>
+        </vertical>
+
+        <!--    ADJUSTMENT MODE    -->
+        <vertical preferred-width="~options-section-column-width">
+            <horizontal preferred-height="~options-label-height">
+                <text text="Adjustment mode" font-size="~options-label-font-size" font-color="~options-label-color" align="Midline"/>
+            </horizontal>
+            <dropdown-list-setting interactable="~interactable" text="" value="am-choice" choices="am-choices"
+                                   on-change="am-on-change" apply-on-change="true" bind-value="true" hover-hint="~am-hint"/>
+        </vertical>
+
+        <!--    ASSIGNED BUTTON    -->
+        <vertical preferred-width="~options-section-column-width">
+            <horizontal preferred-height="~options-label-height">
+                <text text="Button" font-size="~options-label-font-size" font-color="~options-label-color" align="Midline"/>
+            </horizontal>
+            <dropdown-list-setting text="" id="ab-component" interactable="~interactable" apply-on-change="true"
+                                   value="ab-choice" choices="ab-choices" formatter="ab-formatter"/>
+        </vertical>
+    </horizontal>
+
+    <!--    USE FREE HAND    -->
+    <horizontal preferred-height="~free-hand-row-height">
+        <vertical preferred-width="~free-hand-row-width">
+            <toggle-setting interactable="~interactable" text="Use free hand" active="~ufh-active"
+                            value="ufh-value" on-change="ufh-on-change" apply-on-change="true"
+                            hover-hint="Use Right controller button for Left hand adjustments and vice versa"/>
+        </vertical>
+    </horizontal>
+</vertical>
