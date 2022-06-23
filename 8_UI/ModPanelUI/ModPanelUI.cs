@@ -68,22 +68,14 @@ internal class ModPanelUI : NotifiableSingleton<ModPanelUI> {
 
     #endregion
 
-    #region Update
-
-    private void Update() {
-        UpdatePanelVisibility();
-    }
-
-    #endregion
-
     #region Visibility
 
-    [UIObject("root")] [UsedImplicitly]
+    [UIObject("root"), UsedImplicitly]
     private GameObject _root;
 
-    private void UpdatePanelVisibility() {
-        var isVisible = (_root != null) && _root.activeInHierarchy;
-        PluginConfig.IsModPanelVisible = isVisible;
+    [UIAction("#post-parse"), UsedImplicitly]
+    private void OnAfterParse() {
+        _root.AddComponent<VisibilityTracker>();
     }
 
     #endregion

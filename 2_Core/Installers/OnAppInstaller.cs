@@ -34,6 +34,7 @@ namespace EasyOffset.Installers {
             Container.BindInterfacesAndSelfTo<SwingBenchmarkAdjustmentModeManager>().AsSingle();
             Container.BindInterfacesAndSelfTo<RotationAutoAdjustmentModeManager>().AsSingle();
             Container.BindInterfacesAndSelfTo<RoomOffsetAdjustmentModeManager>().AsSingle();
+            Container.BindInterfacesAndSelfTo<DirectAdjustmentModeManager>().AsSingle();
         }
     }
 }

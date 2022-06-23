@@ -1,68 +1,100 @@
 using System;
+using BeatSaberMarkupLanguage.Attributes;
+using JetBrains.Annotations;
+using UnityEngine;
 
 namespace EasyOffset;
 
-internal partial class SlidersPanel : ReeUIComponentV2 {
-    #region OnInitialize OnDispose
+internal class SlidersPanel : ReeUIComponentV2 {
+    #region Components
 
-    protected override void OnInitialize() {
-        ReeInputManager.PointerDownAction += OnPointerDown;
-        ReeInputManager.PointerUpAction += OnPointerUp;
-        PluginConfig.AdjustmentModeChangedEvent += OnAdjustmentModeChanged;
-        PluginConfig.ConfigWasChangedEvent += OnConfigWasChanged;
-        PluginConfig.IsModPanelVisibleChangedEvent += OnIsModPanelVisibleChanged;
-        OnConfigWasChanged();
-    }
+    [UIValue("reset-and-mirror-controls"), UsedImplicitly]
+    private ResetAndMirrorControls _resetAndMirrorControls;
 
-    protected override void OnDispose() {
-        ReeInputManager.PointerDownAction -= OnPointerDown;
-        ReeInputManager.PointerUpAction -= OnPointerUp;
-        PluginConfig.ConfigWasChangedEvent -= OnConfigWasChanged;
-        PluginConfig.IsModPanelVisibleChangedEvent -= OnIsModPanelVisibleChanged;
+    [UIValue("direct-config-sliders"), UsedImplicitly]
+    private DirectConfigSliders _directConfigSliders;
+
+    [UIValue("reference-controls"), UsedImplicitly]
+    private ReferenceControls _referenceControls;
+
+    private void Awake() {
+        _resetAndMirrorControls = Instantiate<ResetAndMirrorControls>(transform);
+        _directConfigSliders = Instantiate<DirectConfigSliders>(transform);
+        _referenceControls = Instantiate<ReferenceControls>(transform);
     }
 
     #endregion
 
-    #region OnAdjustmentModeChanged
+    #region Initialize & Dispose
+
+    protected override void OnInitialize() {
+        PluginConfig.AdjustmentModeChangedEvent += OnAdjustmentModeChanged;
+        OnAdjustmentModeChanged(PluginConfig.AdjustmentMode);
+    }
+
+    protected override void OnDispose() {
+        PluginConfig.AdjustmentModeChangedEvent -= OnAdjustmentModeChanged;
+    }
+
+    #endregion
+
+    #region Events
 
     private void OnAdjustmentModeChanged(AdjustmentMode adjustmentMode) {
         switch (adjustmentMode) {
-            case AdjustmentMode.None:
-                SetDirectPanelState(DirectPanelState.Hidden);
-                break;
             case AdjustmentMode.Basic:
-                SetDirectPanelState(DirectPanelState.ZOffsetOnly);
-                break;
             case AdjustmentMode.Position:
-                SetDirectPanelState(DirectPanelState.PositionOnly);
-                break;
             case AdjustmentMode.Rotation:
             case AdjustmentMode.RotationAuto:
-                SetDirectPanelState(DirectPanelState.RotationOnly);
-                break;
-            case AdjustmentMode.SwingBenchmark:
-                SetDirectPanelState(DirectPanelState.Hidden);
+                IsActive = true;
+                SetScaleAndOffset(BigScale, BigOffset);
                 break;
             case AdjustmentMode.Direct:
-                SetDirectPanelState(DirectPanelState.Full);
+                IsActive = true;
+                SetScaleAndOffset(SmallScale, SmallOffset);
                 break;
+            case AdjustmentMode.None:
+            case AdjustmentMode.SwingBenchmark:
             case AdjustmentMode.RoomOffset:
-                SetDirectPanelState(DirectPanelState.Hidden);
+                IsActive = false;
                 break;
-            default: throw new ArgumentOutOfRangeException();
+            default: throw new ArgumentOutOfRangeException(nameof(adjustmentMode), adjustmentMode, null);
         }
     }
 
     #endregion
 
-    #region Update
+    #region Scale & Offset
 
-    private void Update() {
-        SmoothingUpdate();
+    private static Vector3 BigScale => new(1.0f, 1.0f, 1.0f);
+    private static Vector3 BigOffset => new(0.0f, 0.0f, 0.0f);
+
+    private static Vector3 SmallScale => new(0.84f, 0.84f, 0.84f);
+    private static Vector3 SmallOffset => new(0.0f, 3.8f, 0.0f);
+
+
+    [UIComponent("container"), UsedImplicitly]
+    private RectTransform _container;
+
+    private void SetScaleAndOffset(Vector3 scale, Vector3 offset) {
+        _container.localScale = scale;
+        _container.localPosition = offset;
     }
 
-    private void LateUpdate() {
-        SynchronizationUpdate();
+    #endregion
+
+    #region IsActive
+
+    private bool _isActive;
+
+    [UIValue("is-active"), UsedImplicitly]
+    private bool IsActive {
+        get => _isActive;
+        set {
+            if (_isActive.Equals(value)) return;
+            _isActive = value;
+            NotifyPropertyChanged();
+        }
     }
 
     #endregion

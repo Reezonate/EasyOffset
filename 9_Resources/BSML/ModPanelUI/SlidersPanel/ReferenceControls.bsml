@@ -1,0 +1,36 @@
+<horizontal active="~is-active" preferred-height="6">
+    <vertical preferred-width="52" pad-left="10">
+        <!--    LEFT HELP    -->
+        <button text="?" preferred-width="10" active="~direct-left-help-active"
+                hover-hint="Create reference in the 'Swing Benchmark' mode to use sliders"/>
+
+        <horizontal active="~direct-left-buttons-active" spacing="2">
+            <!--    LEFT CLEAR    -->
+            <button preferred-width="20" face-color="#ff9999" text="Clear"
+                    on-click="direct-left-clear-reference-on-click"
+                    hover-hint="Remove left hand reference"/>
+            <!--    LEFT UPDATE    -->
+            <button preferred-width="20" text="Update" on-click="direct-left-update-reference-on-click"
+                    hover-hint="Use current saber rotation as reference"/>
+        </horizontal>
+    </vertical>
+    <!--    LABEL    -->
+    <vertical preferred-width="24">
+        <text text="Reference" align="Midline"/>
+    </vertical>
+    <vertical preferred-width="52" pad-right="10">
+        <!--    RIGHT HELP    -->
+        <button text="?" preferred-width="10" active="~direct-right-help-active"
+                hover-hint="Set reference in the 'Swing Benchmark' mode to use sliders"/>
+
+        <horizontal active="~direct-right-buttons-active" spacing="2">
+            <!--    RIGHT UPDATE    -->
+            <button preferred-width="20" text="Update" on-click="direct-right-update-reference-on-click"
+                    hover-hint="Use current saber rotation as reference"/>
+            <!--    RIGHT CLEAR    -->
+            <button preferred-width="20" face-color="#ff9999" text="Clear"
+                    on-click="direct-right-clear-reference-on-click"
+                    hover-hint="Remove right hand reference"/>
+        </horizontal>
+    </vertical>
+</horizontal>

@@ -1,0 +1,6 @@
+<horizontal pref-height="7">
+    <vertical pref-width="52">
+        <slider-setting text="" id="slider-component" show-buttons="true" formatter="slider-formatter"
+                        interactable="~interactable" value="slider-value" apply-on-change="true"/>
+    </vertical>
+</horizontal>

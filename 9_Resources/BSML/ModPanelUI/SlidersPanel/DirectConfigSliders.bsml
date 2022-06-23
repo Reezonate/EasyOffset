@@ -1,0 +1,37 @@
+<vertical spacing="1" vertical-fit="PreferredSize">
+    <vertical active="~z-offset-active" vertical-fit="PreferredSize">
+        <macro.as-host host="z-offset-sliders-row">
+            <macro.reparent transform="ui-component"/>
+        </macro.as-host>
+    </vertical>
+    <vertical active="~position-active" vertical-fit="PreferredSize">
+        <macro.as-host host="pos-x-sliders-row">
+            <macro.reparent transform="ui-component"/>
+        </macro.as-host>
+        <macro.as-host host="pos-y-sliders-row">
+            <macro.reparent transform="ui-component"/>
+        </macro.as-host>
+        <macro.as-host host="pos-z-sliders-row">
+            <macro.reparent transform="ui-component"/>
+        </macro.as-host>
+    </vertical>
+    <vertical active="~rotation-active" vertical-fit="PreferredSize">
+        <macro.as-host host="rot-x-sliders-row">
+            <macro.reparent transform="ui-component"/>
+        </macro.as-host>
+        <macro.as-host host="rot-y-sliders-row">
+            <macro.reparent transform="ui-component"/>
+        </macro.as-host>
+        <macro.as-host host="rot-z-sliders-row">
+            <macro.reparent transform="ui-component"/>
+        </macro.as-host>
+    </vertical>
+    <vertical active="~reference-active" spacing="1" vertical-fit="PreferredSize">
+        <macro.as-host host="balance-sliders-row">
+            <macro.reparent transform="ui-component"/>
+        </macro.as-host>
+        <macro.as-host host="curve-sliders-row">
+            <macro.reparent transform="ui-component"/>
+        </macro.as-host>
+    </vertical>
+</vertical>

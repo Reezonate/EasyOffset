@@ -145,9 +145,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="0_Harmony\PermanentPatches\MenuInstallerPermanentPatch.cs" />
     <Compile Include="0_Harmony\SceneTransitionPatch.cs" />
     <Compile Include="0_Harmony\UIPatches\ModMenuOrderPatch.cs" />
-    <Compile Include="0_Harmony\UIPatches\SelectablePatches.cs" />
     <Compile Include="1_Config\ConfigPresets\ConfigPresetV2.cs" />
     <Compile Include="1_Config\ConfigUpgrade\ConfigUpgrade.cs" />
     <Compile Include="1_Config\PluginConfig\LeftHandConfig.cs" />
@@ -183,6 +183,7 @@
     <Compile Include="2_Core\StructsAndEnums\Hand.cs" />
     <Compile Include="2_Core\StructsAndEnums\HandMenuAction.cs" />
     <Compile Include="2_Core\StructsAndEnums\ReeTriggerState.cs" />
+    <Compile Include="2_Core\StructsAndEnums\SliderValueType.cs" />
     <Compile Include="2_Core\StructsAndEnums\VRControllers.cs" />
     <Compile Include="0_Harmony\HarmonyHelper.cs" />
     <Compile Include="0_Harmony\InstallersPatches\MenuInstallerPatch.cs" />
@@ -228,7 +229,11 @@
     <Compile Include="7_Utils\StaticUtils\CompatibilityUtils.cs" />
     <Compile Include="7_Utils\StaticUtils\JsonUtils.cs" />
     <Compile Include="7_Utils\StaticUtils\VFXUtils.cs" />
-    <Compile Include="8_UI\ModPanelUI\General.cs" />
+    <Compile Include="7_Utils\UtilityClasses\DirectModeVariable.cs" />
+    <Compile Include="8_UI\Components\LabeledSlidersRow.cs" />
+    <Compile Include="8_UI\Components\SmoothSlider.cs" />
+    <Compile Include="8_UI\Components\VisibilityTracker.cs" />
+    <Compile Include="8_UI\ModPanelUI\ModPanelUI.cs" />
     <Compile Include="8_UI\ModPanelUI\ModPanelUIHelper.cs" />
     <Compile Include="8_UI\ModPanelUI\Panels\BottomPanel.cs" />
     <Compile Include="8_UI\ModPanelUI\Panels\NonePanel.cs" />
@@ -236,14 +241,10 @@
     <Compile Include="8_UI\ModPanelUI\Panels\RoomOffsetPanel.cs" />
     <Compile Include="8_UI\ModPanelUI\Panels\SwingBenchmarkPanel.cs" />
     <Compile Include="8_UI\ModPanelUI\Panels\TopPanel.cs" />
-    <Compile Include="8_UI\ModPanelUI\SlidersPanel\DirectConfigActions.cs" />
-    <Compile Include="8_UI\ModPanelUI\SlidersPanel\Constants.cs" />
-    <Compile Include="8_UI\ModPanelUI\SlidersPanel\LeftHandPanel.cs" />
-    <Compile Include="8_UI\ModPanelUI\SlidersPanel\DirectPanelState.cs" />
-    <Compile Include="8_UI\ModPanelUI\SlidersPanel\RightHandPanel.cs" />
+    <Compile Include="8_UI\ModPanelUI\SlidersPanel\DirectConfigSliders.cs" />
+    <Compile Include="8_UI\ModPanelUI\SlidersPanel\ReferenceControls.cs" />
+    <Compile Include="8_UI\ModPanelUI\SlidersPanel\ResetAndMirrorControls.cs" />
     <Compile Include="8_UI\ModPanelUI\SlidersPanel\SlidersPanel.cs" />
-    <Compile Include="8_UI\ModPanelUI\SlidersPanel\Smoothing.cs" />
-    <Compile Include="8_UI\ModPanelUI\SlidersPanel\Utils.cs" />
     <Compile Include="8_UI\ReeUIComponentV2.cs" />
     <Compile Include="8_UI\SettingsUI\SettingsUI.cs" />
     <Compile Include="8_UI\SettingsUI\SettingsUIHelper.cs" />
@@ -263,17 +264,21 @@
     <Compile Include="7_Utils\UtilityClasses\Range.cs" />
     <Compile Include="7_Utils\UtilityClasses\ReeTransform.cs" />
     <Compile Include="7_Utils\UtilityClasses\RelativeRotationTracker.cs" />
-    <Compile Include="7_Utils\UtilityClasses\RotationPlaneTracker.cs" />
     <Compile Include="7_Utils\UtilityClasses\WeightedList.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="9_Resources\BSML\Components\LabeledSlidersRow.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\Components\SmoothSlider.bsml" />
     <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\Panels\BottomPanel.bsml" />
     <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\Panels\NonePanel.bsml" />
     <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\Panels\PresetsBrowserPanel.bsml" />
     <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\Panels\RoomOffsetPanel.bsml" />
-    <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\Panels\SlidersPanel.bsml" />
     <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\Panels\SwingBenchmarkPanel.bsml" />
     <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\Panels\TopPanel.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\SlidersPanel\DirectConfigSliders.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\SlidersPanel\ReferenceControls.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\SlidersPanel\ResetAndMirrorControls.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\SlidersPanel\SlidersPanel.bsml" />
     <EmbeddedResource Include="manifest.json" />
     <EmbeddedResource Include="9_Resources\BSML\ModPanelUI.bsml" />
     <EmbeddedResource Include="9_Resources\BSML\SettingsUI.bsml" />

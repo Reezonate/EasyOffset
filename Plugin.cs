@@ -34,20 +34,15 @@ namespace EasyOffset {
 
         #endregion
 
-        #region Enabled observing
+        #region InitializeUI
 
-        private static void SubscribeEnabled() {
-            PluginConfig.OnEnabledChange += EnabledChangeHandler;
-        }
+        private static bool _uiInitialized;
 
-        private static void EnabledChangeHandler(bool enabled) {
-            if (enabled) {
-                HarmonyHelper.ApplyRemovablePatches();
-                ModPanelUIHelper.AddTab();
-            } else {
-                HarmonyHelper.RemoveRemovablePatches();
-                ModPanelUIHelper.RemoveTab();
-            }
+        public static void InitializeUI() {
+            if (_uiInitialized) return;
+            ModPanelUIHelper.Initialize();
+            SettingsUIHelper.Initialize();
+            _uiInitialized = true;
         }
 
         #endregion
@@ -57,12 +52,7 @@ namespace EasyOffset {
         [OnStart]
         [UsedImplicitly]
         public void OnApplicationStart() {
-            HarmonyHelper.ApplyPermanentPatches();
-
-            SubscribeEnabled();
-            EnabledChangeHandler(PluginConfig.Enabled);
-
-            SettingsUIHelper.AddTab();
+            HarmonyHelper.Initialize();
         }
 
         #endregion

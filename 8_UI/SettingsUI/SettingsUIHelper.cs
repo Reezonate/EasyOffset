@@ -1,13 +1,25 @@
+using BeatSaberMarkupLanguage.Settings;
+
 namespace EasyOffset {
     internal static class SettingsUIHelper {
+        #region Initialize
+
+        public static void Initialize() {
+            AddTab();
+        }
+
+        #endregion
+
+        #region Tab Management
+
         private const string ResourcePath = "EasyOffset._9_Resources.BSML.SettingsUI.bsml";
         private const string TabName = "Easy Offset";
 
         private static bool _tabActive;
 
-        public static void AddTab() {
+        private static void AddTab() {
             if (_tabActive) return;
-            PersistentSingleton<BeatSaberMarkupLanguage.Settings.BSMLSettings>.instance.AddSettingsMenu(
+            PersistentSingleton<BSMLSettings>.instance.AddSettingsMenu(
                 TabName,
                 ResourcePath,
                 PersistentSingleton<SettingsUI>.instance
@@ -17,8 +29,10 @@ namespace EasyOffset {
 
         public static void RemoveTab() {
             if (!_tabActive) return;
-            PersistentSingleton<BeatSaberMarkupLanguage.Settings.BSMLSettings>.instance.RemoveSettingsMenu(TabName);
+            PersistentSingleton<BSMLSettings>.instance.RemoveSettingsMenu(TabName);
             _tabActive = false;
         }
+
+        #endregion
     }
 }

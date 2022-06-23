@@ -3,6 +3,27 @@ using HarmonyLib;
 
 namespace EasyOffset {
     public static class HarmonyHelper {
+        #region Initialize
+
+        public static void Initialize() {
+            ApplyPermanentPatches();
+
+            PluginConfig.OnEnabledChange += OnEnabledChanged;
+            OnEnabledChanged(PluginConfig.Enabled);
+        }
+
+        private static void OnEnabledChanged(bool enabled) {
+            if (enabled) {
+                ApplyRemovablePatches();
+            } else {
+                RemoveRemovablePatches();
+            }
+        }
+
+        #endregion
+
+        #region Patching
+
         private const string RemovableHarmonyID = "Reezonate.EasyOffset.Removable";
         private const string PermanentHarmonyID = "Reezonate.EasyOffset.Permanent";
 
@@ -18,19 +39,22 @@ namespace EasyOffset {
             _initialized = true;
         }
 
-        public static void ApplyPermanentPatches() {
+        private static void ApplyPermanentPatches() {
             LazyInit();
             AppInstallerPermanentPatch.ApplyPatch(_permanentHarmony);
+            MenuInstallerPermanentPatch.ApplyPatch(_permanentHarmony);
         }
 
-        public static void ApplyRemovablePatches() {
+        private static void ApplyRemovablePatches() {
             LazyInit();
             _removableHarmony.PatchAll(Assembly.GetExecutingAssembly());
         }
 
-        public static void RemoveRemovablePatches() {
+        private static void RemoveRemovablePatches() {
             if (!_initialized) return;
             _removableHarmony.UnpatchSelf();
         }
+
+        #endregion
     }
 }

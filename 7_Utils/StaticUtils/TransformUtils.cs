@@ -245,24 +245,24 @@ public static class TransformUtils {
     public static void ToReferenceSpace(
         Quaternion originalRotation,
         Quaternion rotationReference,
-        out float horizontal,
-        out float vertical
+        out float curve,
+        out float balance
     ) {
         var rotationDifference = Quaternion.Inverse(rotationReference) * originalRotation;
         var differenceDirection = DirectionFromRotation(rotationDifference);
         var resultEulerRad = OrthoToSphericalDirection(differenceDirection);
 
-        horizontal = -resultEulerRad.y * Mathf.Rad2Deg;
-        vertical = resultEulerRad.x * Mathf.Rad2Deg;
+        curve = -resultEulerRad.y * Mathf.Rad2Deg;
+        balance = resultEulerRad.x * Mathf.Rad2Deg;
     }
 
     public static Vector3 FromReferenceSpace(
         Quaternion originalRotation,
         Quaternion rotationReference,
-        float horizontal,
-        float vertical
+        float curve,
+        float balance
     ) {
-        var additionalRotation = Quaternion.Euler(vertical, -horizontal, 0.0f);
+        var additionalRotation = Quaternion.Euler(balance, -curve, 0.0f);
         var resultRotation = rotationReference * additionalRotation;
         var alignedRotation = AlignForwardVectors(originalRotation, resultRotation);
         return EulerFromRotation(alignedRotation);
