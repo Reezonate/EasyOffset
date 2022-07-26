@@ -66,7 +66,7 @@ internal class SlidersPanel : ReeUIComponentV2 {
 
     #region Scale & Offset
 
-    private static Vector3 BigScale => new(1.0f, 1.0f, 1.0f);
+    private static Vector3 BigScale => new(0.95f, 0.95f, 0.95f);
     private static Vector3 BigOffset => new(0.0f, 0.0f, 0.0f);
 
     private static Vector3 SmallScale => new(0.84f, 0.84f, 0.84f);

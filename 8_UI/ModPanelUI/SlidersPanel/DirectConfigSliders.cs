@@ -21,6 +21,9 @@ internal class DirectConfigSliders : ReeUIComponentV2 {
     private const string CurveLabel = "Curve";
     private const string BalanceLabel = "Balance";
 
+    private const string CurveDecLabel = "outward";
+    private const string CurveIncLabel = "inward";
+
     #endregion
 
     #region RangeDescriptors
@@ -55,7 +58,8 @@ internal class DirectConfigSliders : ReeUIComponentV2 {
 
     private static string RotationFormatter(float value) => $"{value:F1}°";
 
-    private static string NegativeRotationFormatter(float value) => $"{-value:F1}°";
+    private static string LeftCurveFormatter(float value) => (value >= 0) ? $"{value:F1}°<size=70%> in" : $"{-value:F1}°<size=70%> out";
+    private static string RightCurveFormatter(float value) => (value > 0) ? $"{value:F1}°<size=70%> out" : $"{-value:F1}°<size=70%> in";
 
     private static readonly SmoothSlider.AppearanceDescriptor ZOffsetAppearanceDescriptor = new(ZColor, PositionFormatter);
 
@@ -68,8 +72,8 @@ internal class DirectConfigSliders : ReeUIComponentV2 {
     private static readonly SmoothSlider.AppearanceDescriptor RotZAppearanceDescriptor = new(ZColor, RotationFormatter);
 
     private static readonly SmoothSlider.AppearanceDescriptor BalanceAppearanceDescriptor = new(BalanceColor, RotationFormatter);
-    private static readonly SmoothSlider.AppearanceDescriptor LeftCurveAppearanceDescriptor = new(CurveColor, NegativeRotationFormatter);
-    private static readonly SmoothSlider.AppearanceDescriptor RightCurveAppearanceDescriptor = new(CurveColor, RotationFormatter);
+    private static readonly SmoothSlider.AppearanceDescriptor LeftCurveAppearanceDescriptor = new(CurveColor, LeftCurveFormatter);
+    private static readonly SmoothSlider.AppearanceDescriptor RightCurveAppearanceDescriptor = new(CurveColor, RightCurveFormatter);
 
     #endregion
 
@@ -102,16 +106,24 @@ internal class DirectConfigSliders : ReeUIComponentV2 {
     [UIValue("curve-sliders-row"), UsedImplicitly]
     private LabeledSlidersRow _curveSlidersRow;
 
+    [UIValue("curve-row-annotations"), UsedImplicitly]
+    private SlidersRowAnnotations _curveRowAnnotations;
+
     private void Awake() {
         _zOffsetSlidersRow = Instantiate<LabeledSlidersRow>(transform);
+
         _posXSlidersRow = Instantiate<LabeledSlidersRow>(transform);
         _posYSlidersRow = Instantiate<LabeledSlidersRow>(transform);
         _posZSlidersRow = Instantiate<LabeledSlidersRow>(transform);
+
         _rotXSlidersRow = Instantiate<LabeledSlidersRow>(transform);
         _rotYSlidersRow = Instantiate<LabeledSlidersRow>(transform);
         _rotZSlidersRow = Instantiate<LabeledSlidersRow>(transform);
+
         _balanceSlidersRow = Instantiate<LabeledSlidersRow>(transform);
         _curveSlidersRow = Instantiate<LabeledSlidersRow>(transform);
+        
+        _curveRowAnnotations = Instantiate<SlidersRowAnnotations>(transform);
     }
 
     #endregion
@@ -140,6 +152,9 @@ internal class DirectConfigSliders : ReeUIComponentV2 {
 
         _curveSlidersRow.leftSlider.Interactable = PluginConfig.LeftSaberHasReference;
         _curveSlidersRow.rightSlider.Interactable = PluginConfig.RightSaberHasReference;
+        
+        _curveRowAnnotations.leftSliderAnnotations.IsActive = PluginConfig.LeftSaberHasReference;
+        _curveRowAnnotations.rightSliderAnnotations.IsActive = PluginConfig.RightSaberHasReference;
     }
 
     private void OnAdjustmentModeChanged(AdjustmentMode adjustmentMode) {
@@ -258,6 +273,8 @@ internal class DirectConfigSliders : ReeUIComponentV2 {
             DirectAdjustmentModeManager.LeftCurve,
             DirectAdjustmentModeManager.RightCurve
         );
+
+        _curveRowAnnotations.Setup(CurveColor, CurveDecLabel, CurveIncLabel, true);
     }
 
     #endregion

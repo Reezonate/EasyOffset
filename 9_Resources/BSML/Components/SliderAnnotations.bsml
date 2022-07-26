@@ -1,0 +1,15 @@
+<vertical pref-width="52">
+    <horizontal pref-height="4.0">
+        <horizontal active="~is-active" spacing="10" horizontal-fit="PreferredSize">
+            <vertical pref-width="20">
+                <text text="~left-text" font-size="3" font-color="~color" align="Right"/>
+            </vertical>
+            <vertical ignore-layout="true" pref-width="2" anchor-pos-y="0.3">
+                <text text="&lt;line-height=60%&gt;↑&#10;0" font-size="2" font-color="~color" align="Center"/>
+            </vertical>
+            <vertical pref-width="20">
+                <text text="~right-text" font-size="3" font-color="~color" align="Left"/>
+            </vertical>
+        </horizontal>
+    </horizontal>
+</vertical>

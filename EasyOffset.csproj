@@ -231,6 +231,8 @@
     <Compile Include="7_Utils\StaticUtils\VFXUtils.cs" />
     <Compile Include="7_Utils\UtilityClasses\DirectModeVariable.cs" />
     <Compile Include="8_UI\Components\LabeledSlidersRow.cs" />
+    <Compile Include="8_UI\Components\SliderAnnotations.cs" />
+    <Compile Include="8_UI\Components\SlidersRowAnnotations.cs" />
     <Compile Include="8_UI\Components\SmoothSlider.cs" />
     <Compile Include="8_UI\Components\VisibilityTracker.cs" />
     <Compile Include="8_UI\ModPanelUI\ModPanelUI.cs" />
@@ -268,6 +270,8 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="9_Resources\BSML\Components\LabeledSlidersRow.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\Components\SliderAnnotations.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\Components\SlidersRowAnnotations.bsml" />
     <EmbeddedResource Include="9_Resources\BSML\Components\SmoothSlider.bsml" />
     <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\Panels\BottomPanel.bsml" />
     <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\Panels\NonePanel.bsml" />
