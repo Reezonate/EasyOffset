@@ -253,6 +253,15 @@ namespace EasyOffset {
                     isLegacyGimbalVisible = false;
                     isReferenceRotationVisible = true;
                     break;
+                case AdjustmentMode.PositionAuto:
+                    isPivotVisible = true;
+                    isOrthonormalBasisVisible = true;
+                    isOrthonormalBasisPointerVisible = true;
+                    isSphericalBasisVisible = false;
+                    isSwingPreviewVisible = false;
+                    isLegacyGimbalVisible = false;
+                    isReferenceRotationVisible = false;
+                    break;
                 case AdjustmentMode.RotationAuto:
                     isPivotVisible = true;
                     isOrthonormalBasisVisible = false;

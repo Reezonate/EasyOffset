@@ -30,6 +30,7 @@ internal class BottomPanel : ReeUIComponentV2 {
             AdjustmentMode.Rotation => true,
             AdjustmentMode.SwingBenchmark => true,
             AdjustmentMode.Direct => true,
+            AdjustmentMode.PositionAuto => true,
             AdjustmentMode.RotationAuto => true,
             AdjustmentMode.RoomOffset => false,
             _ => throw new ArgumentOutOfRangeException(nameof(adjustmentMode), adjustmentMode, null)

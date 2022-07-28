@@ -212,6 +212,7 @@ namespace EasyOffset {
                 AdjustmentMode.SwingBenchmark => _hasAnyResults,
                 AdjustmentMode.Rotation => false,
                 AdjustmentMode.RotationAuto => false,
+                AdjustmentMode.PositionAuto => false,
                 AdjustmentMode.None => false,
                 AdjustmentMode.Basic => false,
                 AdjustmentMode.Position => false,

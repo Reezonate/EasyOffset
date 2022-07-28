@@ -35,6 +35,7 @@ internal class TopPanel : ReeUIComponentV2 {
             AdjustmentMode.Rotation => true,
             AdjustmentMode.SwingBenchmark => true,
             AdjustmentMode.Direct => false,
+            AdjustmentMode.PositionAuto => true,
             AdjustmentMode.RotationAuto => true,
             AdjustmentMode.RoomOffset => true,
             _ => throw new ArgumentOutOfRangeException(nameof(adjustmentMode), adjustmentMode, null)

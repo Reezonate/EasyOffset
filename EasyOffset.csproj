@@ -163,6 +163,7 @@
     <Compile Include="2_Core\Managers\Abomination\Abomination.cs" />
     <Compile Include="2_Core\Managers\Abomination\AbominationTransformManager.cs" />
     <Compile Include="2_Core\Managers\Adjustments\AbstractAdjustmentModeManager.cs" />
+    <Compile Include="2_Core\Managers\Adjustments\Auto\PositionAutoAdjustmentModeManager.cs" />
     <Compile Include="2_Core\Managers\Adjustments\Auto\RotationAutoAdjustmentModeManager.cs" />
     <Compile Include="2_Core\Managers\Adjustments\Auto\SwingBenchmarkAdjustmentModeManager.cs" />
     <Compile Include="2_Core\Managers\Adjustments\AdjustmentBlockManager.cs" />
@@ -230,6 +231,7 @@
     <Compile Include="7_Utils\StaticUtils\JsonUtils.cs" />
     <Compile Include="7_Utils\StaticUtils\VFXUtils.cs" />
     <Compile Include="7_Utils\UtilityClasses\DirectModeVariable.cs" />
+    <Compile Include="7_Utils\UtilityClasses\RotationPointTracker.cs" />
     <Compile Include="8_UI\Components\LabeledSlidersRow.cs" />
     <Compile Include="8_UI\Components\SliderAnnotations.cs" />
     <Compile Include="8_UI\Components\SlidersRowAnnotations.cs" />

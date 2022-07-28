@@ -26,6 +26,7 @@ internal class ResetAndMirrorControls : ReeUIComponentV2 {
             case AdjustmentMode.RoomOffset:
                 return;
             case AdjustmentMode.Position:
+            case AdjustmentMode.PositionAuto:
                 PluginConfig.ResetOffsets(hand, true, false, false);
                 break;
             case AdjustmentMode.Rotation:

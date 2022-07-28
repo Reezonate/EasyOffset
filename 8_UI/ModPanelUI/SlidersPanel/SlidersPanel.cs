@@ -45,6 +45,7 @@ internal class SlidersPanel : ReeUIComponentV2 {
             case AdjustmentMode.Basic:
             case AdjustmentMode.Position:
             case AdjustmentMode.Rotation:
+            case AdjustmentMode.PositionAuto:
             case AdjustmentMode.RotationAuto:
                 IsActive = true;
                 SetScaleAndOffset(BigScale, BigOffset);

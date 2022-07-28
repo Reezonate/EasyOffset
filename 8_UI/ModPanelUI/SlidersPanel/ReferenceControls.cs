@@ -31,7 +31,7 @@ internal class ReferenceControls : ReeUIComponentV2 {
     }
 
     private void OnAdjustmentModeChanged(AdjustmentMode adjustmentMode) {
-        IsActive = adjustmentMode is AdjustmentMode.Rotation;
+        IsActive = adjustmentMode is AdjustmentMode.Rotation or AdjustmentMode.RotationAuto;
     }
 
     #endregion
