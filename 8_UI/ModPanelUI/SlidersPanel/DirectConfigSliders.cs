@@ -29,19 +29,23 @@ internal class DirectConfigSliders : ReeUIComponentV2 {
     #region RangeDescriptors
 
     private static readonly SmoothSlider.RangeDescriptor ZOffsetRangeDescriptor = new(
-        -0.2f, 0.25f, 0.001f, 4f
+        -0.2f, 0.25f, 0.001f, 3f
     );
 
     private static readonly SmoothSlider.RangeDescriptor PositionRangeDescriptor = new(
-        -0.15f, 0.15f, 0.001f, 4f
+        -0.15f, 0.15f, 0.001f, 3f
     );
 
     private static readonly SmoothSlider.RangeDescriptor Rotation90RangeDescriptor = new(
-        -89.5f, 89.5f, 0.1f, 1.3f
+        -89.5f, 89.5f, 0.1f, 0.8f
     );
 
     private static readonly SmoothSlider.RangeDescriptor Rotation180RangeDescriptor = new(
-        -180.0f, 180.0f, 0.1f, 1.3f
+        -180.0f, 180.0f, 0.1f, 0.8f
+    );
+
+    private static readonly SmoothSlider.RangeDescriptor PreciseRotationRangeDescriptor = new(
+        -40.0f, 40.0f, 0.1f, 0.8f
     );
 
     #endregion
@@ -174,6 +178,7 @@ internal class DirectConfigSliders : ReeUIComponentV2 {
                 ReferenceActive = false;
                 break;
             case AdjustmentMode.Position:
+            case AdjustmentMode.PositionAuto:
                 ZOffsetActive = true;
                 PositionActive = true;
                 RotationActive = false;
@@ -259,7 +264,7 @@ internal class DirectConfigSliders : ReeUIComponentV2 {
 
         _balanceSlidersRow.Setup(
             BalanceLabel,
-            Rotation90RangeDescriptor,
+            PreciseRotationRangeDescriptor,
             BalanceAppearanceDescriptor,
             DirectAdjustmentModeManager.LeftBalance,
             DirectAdjustmentModeManager.RightBalance
@@ -267,7 +272,7 @@ internal class DirectConfigSliders : ReeUIComponentV2 {
 
         _curveSlidersRow.Setup(
             CurveLabel,
-            Rotation180RangeDescriptor,
+            PreciseRotationRangeDescriptor,
             LeftCurveAppearanceDescriptor,
             RightCurveAppearanceDescriptor,
             DirectAdjustmentModeManager.LeftCurve,
