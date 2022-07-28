@@ -59,11 +59,13 @@ namespace EasyOffset {
             switch (controllerType) {
                 case ControllerType.ValveIndex:
                     return ControllerButton.PrimaryButton;
-
-                case ControllerType.None:
+                
                 case ControllerType.OculusQuest2:
                 case ControllerType.OculusRiftS:
                 case ControllerType.OculusCV1:
+                    return ControllerButton.SecondaryButton;
+
+                case ControllerType.None:
                 case ControllerType.HtcVive:
                 case ControllerType.PiMaxSword:
                 case ControllerType.ViveTracker2:

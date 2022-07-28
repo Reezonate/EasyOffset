@@ -48,7 +48,7 @@ namespace EasyOffset {
 
         #region UseFreeHand
 
-        public const bool UseFreeHand = false;
+        public const bool UseFreeHand = true;
 
         #endregion
 
