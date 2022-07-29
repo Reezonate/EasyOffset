@@ -46,7 +46,25 @@ internal class ResetAndMirrorControls : ReeUIComponentV2 {
     #region OnMirrorButtonPressed
 
     private static void OnMirrorButtonPressed(Hand mirrorSource) {
-        PluginConfig.Mirror(mirrorSource);
+        switch (PluginConfig.AdjustmentMode) {
+            case AdjustmentMode.None:
+            case AdjustmentMode.SwingBenchmark:
+            case AdjustmentMode.RoomOffset:
+                return;
+            case AdjustmentMode.Position:
+            case AdjustmentMode.PositionAuto:
+                PluginConfig.Mirror(mirrorSource, true, false, false);
+                break;
+            case AdjustmentMode.Rotation:
+            case AdjustmentMode.RotationAuto:
+                PluginConfig.Mirror(mirrorSource, false, true, false);
+                break;
+            case AdjustmentMode.Basic:
+            case AdjustmentMode.Direct:
+                PluginConfig.Mirror(mirrorSource, true, true, false);
+                break;
+            default: throw new ArgumentOutOfRangeException();
+        }
     }
 
     #endregion
