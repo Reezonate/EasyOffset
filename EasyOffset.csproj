@@ -237,6 +237,7 @@
     <Compile Include="8_UI\Components\SlidersRowAnnotations.cs" />
     <Compile Include="8_UI\Components\SmoothSlider.cs" />
     <Compile Include="8_UI\Components\VisibilityTracker.cs" />
+    <Compile Include="8_UI\Modals\AdjustmentModeSelectorModal.cs" />
     <Compile Include="8_UI\ModPanelUI\ModPanelUI.cs" />
     <Compile Include="8_UI\ModPanelUI\ModPanelUIHelper.cs" />
     <Compile Include="8_UI\ModPanelUI\Panels\BottomPanel.cs" />
@@ -252,6 +253,7 @@
     <Compile Include="8_UI\ReeUIComponentV2.cs" />
     <Compile Include="8_UI\SettingsUI\SettingsUI.cs" />
     <Compile Include="8_UI\SettingsUI\SettingsUIHelper.cs" />
+    <Compile Include="8_UI\UIEvents.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="7_Utils\EnumUtils\AdjustmentModeUtils.cs" />
@@ -275,6 +277,7 @@
     <EmbeddedResource Include="9_Resources\BSML\Components\SliderAnnotations.bsml" />
     <EmbeddedResource Include="9_Resources\BSML\Components\SlidersRowAnnotations.bsml" />
     <EmbeddedResource Include="9_Resources\BSML\Components\SmoothSlider.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\Modals\AdjustmentModeSelectorModal.bsml" />
     <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\Panels\BottomPanel.bsml" />
     <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\Panels\NonePanel.bsml" />
     <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\Panels\PresetsBrowserPanel.bsml" />

@@ -23,8 +23,8 @@
             <horizontal preferred-height="~options-label-height">
                 <text text="Adjustment mode" font-size="~options-label-font-size" font-color="~options-label-color" align="Midline"/>
             </horizontal>
-            <dropdown-list-setting interactable="~interactable" text="" value="am-choice" choices="am-choices"
-                                   on-change="am-on-change" apply-on-change="true" bind-value="true" hover-hint="~am-hint"/>
+            <button pref-width="~options-section-column-width" interactable="~interactable"
+                    text="~am-button-text" on-click="am-button-on-click"/>
         </vertical>
 
         <!--    ASSIGNED BUTTON    -->

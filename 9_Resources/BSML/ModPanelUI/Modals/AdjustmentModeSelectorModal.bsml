@@ -1,0 +1,36 @@
+<horizontal ignore-layout="true" size-delta-x="100" size-delta-y="90">
+    <modal id="modal" click-off-closes="true" size-delta-x="100" size-delta-y="90">
+        <macro.define name="button-width" value="26"/>
+        <macro.define name="mid-button-width" value="30"/>
+
+        <horizontal spacing="4" horizontal-fit="PreferredSize">
+            <vertical id="left-panel" pad="2" spacing="1" vertical-fit="PreferredSize" bg="round-rect-panel">
+                <text text="Auto" align="Center"/>
+                <button pref-width="~button-width" on-click="position-auto-on-click" text="Position Auto"
+                        hover-hint="Automatic position&#10;&#10;&lt;size=80%&gt;Hold the button and rotate your wrist randomly"/>
+                <button pref-width="~button-width" on-click="rotation-auto-on-click" text="Rotation Auto"
+                        hover-hint="Automatic rotation&#10;&#10;&lt;size=80%&gt;Hold the button and rotate your wrist pointing in one direction"/>
+            </vertical>
+            <vertical id="middle-panel" pad="2" spacing="1" vertical-fit="PreferredSize" bg="round-rect-panel">
+                <text text="Manual" align="Center"/>
+                <button pref-width="~mid-button-width" on-click="basic-on-click" text="Basic" font-size="5"
+                        hover-hint="Drag and drop adjustment mode&#10;&#10;&lt;size=80%&gt;Hold the button and move your hand"/>
+                <button pref-width="~mid-button-width" on-click="position-on-click" text="Position" font-size="5"
+                        hover-hint="Pivot position only&#10;&#10;&lt;size=80%&gt;Hold the button and move your hand"/>
+                <button pref-width="~mid-button-width" on-click="rotation-on-click" text="Rotation" font-size="5"
+                        hover-hint="Saber rotation only&#10;&#10;&lt;size=80%&gt;Hold the button and move your hand"/>
+                <horizontal pref-height="2"/>
+                <button text="None" on-click="none-on-click"/>
+            </vertical>
+            <vertical id="right-panel" pad="2" spacing="1" vertical-fit="PreferredSize" bg="round-rect-panel">
+                <text text="Extras" align="Center"/>
+                <button pref-width="~button-width" on-click="swing-benchmark-on-click" text="Swing Benchmark" font-size="3.6"
+                        hover-hint="Swing analysis tool&#10;&#10;&lt;size=80%&gt;Hold the button and swing as you do in game"/>
+                <button pref-width="~button-width" on-click="direct-on-click" text="Direct"
+                        hover-hint="Raw config values"/>
+                <button pref-width="~button-width" on-click="room-offset-on-click" text="Room Offset"
+                        hover-hint="World pulling locomotion&#10;&#10;&lt;size=80%&gt;Hold the button and move your hand"/>
+            </vertical>
+        </horizontal>
+    </modal>
+</horizontal>

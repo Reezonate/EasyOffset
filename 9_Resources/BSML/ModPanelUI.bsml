@@ -1,4 +1,9 @@
 <horizontal id="root">
+    <!--    MODALS    -->
+    <macro.as-host host="adjustment-mode-selector-modal">
+        <macro.reparent transform="ui-component"/>
+    </macro.as-host>
+    
     <!--    MAIN PAGE    -->
     <vertical active="~main-page-active" preferred-width="100">
         <!--    TOP PANEL    -->

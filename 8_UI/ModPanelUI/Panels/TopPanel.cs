@@ -18,7 +18,6 @@ internal class TopPanel : ReeUIComponentV2 {
         SubscribeToAssignedButtonEvents();
         PluginConfig.UILockChangedEvent += OnUILockChanged;
         PluginConfig.AdjustmentModeChangedEvent += OnAdjustmentModeChanged;
-        AdjustmentModeChoice = AdjustmentModeUtils.TypeToName(PluginConfig.AdjustmentMode);
         OnAdjustmentModeChanged(PluginConfig.AdjustmentMode);
         OnUILockChanged(PluginConfig.UILock);
     }
@@ -28,6 +27,8 @@ internal class TopPanel : ReeUIComponentV2 {
     #region Events
 
     private void OnAdjustmentModeChanged(AdjustmentMode adjustmentMode) {
+        AdjustmentModeButtonText = AdjustmentModeUtils.TypeToName(adjustmentMode);
+        
         UseFreeHandActive = adjustmentMode switch {
             AdjustmentMode.None => false,
             AdjustmentMode.Basic => true,
@@ -64,38 +65,23 @@ internal class TopPanel : ReeUIComponentV2 {
 
     #endregion
 
-    #region AdjustmentMode
+    #region AdjustmentMode Button
 
-    [UIValue("am-hint")] [UsedImplicitly]
-    private string _adjustmentModeHint = "Basic - Drag and drop adjustment mode" +
-                                         "\nPosition - Pivot position only" +
-                                         "\nRotation - Saber rotation only" +
-                                         "\nSwing Benchmark - Swing analysis" +
-                                         "\nDirect - Raw config values change" +
-                                         "\nRotation Auto - Automatic rotation" +
-                                         "\nRoom Offset - World pulling locomotion";
+    private string _adjustmentModeButtonText = "";
 
-    [UIValue("am-choices")] [UsedImplicitly]
-    private List<object> _adjustmentModeChoices = AdjustmentModeUtils.AllNamesObjects.ToList();
-
-    private string _adjustmentModeChoice = AdjustmentModeUtils.TypeToName(PluginConfig.AdjustmentMode);
-
-    [UIValue("am-choice")]
-    [UsedImplicitly]
-    private string AdjustmentModeChoice {
-        get => _adjustmentModeChoice;
+    [UIValue("am-button-text"), UsedImplicitly]
+    private string AdjustmentModeButtonText {
+        get => _adjustmentModeButtonText;
         set {
-            if (_adjustmentModeChoice.Equals(value)) return;
-            _adjustmentModeChoice = value;
+            if (_adjustmentModeButtonText.Equals(value)) return;
+            _adjustmentModeButtonText = value;
             NotifyPropertyChanged();
         }
     }
 
-    [UIAction("am-on-change")]
-    [UsedImplicitly]
-    private void AdjustmentModeOnChange(string selectedValue) {
-        PluginConfig.AdjustmentMode = AdjustmentModeUtils.NameToType(selectedValue);
-        ModPanelUI.OpenMainPage();
+    [UIAction("am-button-on-click"), UsedImplicitly]
+    private void AdjustmentModeOnClick() {
+        UIEvents.NotifyAdjustmentModeButtonWasPressed();
     }
 
     #endregion

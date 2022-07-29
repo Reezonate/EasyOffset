@@ -35,6 +35,9 @@ internal class ModPanelUI : NotifiableSingleton<ModPanelUI> {
 
     #region Components
 
+    [UIValue("adjustment-mode-selector-modal"), UsedImplicitly]
+    private AdjustmentModeSelectorModal _adjustmentModeSelector;
+
     [UIValue("top-panel"), UsedImplicitly]
     private TopPanel _topPanel = ReeUIComponentV2.InstantiateOnSceneRoot<TopPanel>(false);
 
@@ -57,6 +60,7 @@ internal class ModPanelUI : NotifiableSingleton<ModPanelUI> {
     private PresetsBrowserPanel _presetsBrowserPanel = ReeUIComponentV2.InstantiateOnSceneRoot<PresetsBrowserPanel>(false);
 
     private void Awake() {
+        _adjustmentModeSelector = ReeUIComponentV2.Instantiate<AdjustmentModeSelectorModal>(transform, false);
         _topPanel.SetParent(transform);
         _nonePanel.SetParent(transform);
         _slidersPanel.SetParent(transform);
