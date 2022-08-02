@@ -61,7 +61,7 @@ namespace EasyOffset {
                 IsVRModeOculus = false;
             } else {
                 IsMigrationPossible = true;
-                IsValveController = (OpenVRHelper.VRControllerManufacturerName) manufacturerName == OpenVRHelper.VRControllerManufacturerName.Valve;
+                IsValveController = (OpenVRHelper.VRControllerManufacturerName)manufacturerName == OpenVRHelper.VRControllerManufacturerName.Valve;
             }
         }
 
@@ -112,48 +112,6 @@ namespace EasyOffset {
 
         #endregion
 
-        #region ImportFromSaberTailor
-
-        public static ConfigImportResult ImportFromSaberTailor() {
-            if (!IsMigrationPossible) return ConfigImportResult.DevicelessFail;
-
-            if (!ParseSaberTailorConfig(
-                    out var useBaseGameAdjustmentMode,
-                    out var gripLeftPosition,
-                    out var gripRightPosition,
-                    out var gripLeftRotation,
-                    out var gripRightRotation
-                )) return ConfigImportResult.ParseFail;
-
-            ConfigConversions.FromTailor(
-                useBaseGameAdjustmentMode,
-                IsValveController,
-                IsVRModeOculus,
-                ZOffset,
-                ZOffset,
-                gripLeftPosition,
-                gripRightPosition,
-                gripLeftRotation,
-                gripRightRotation,
-                out var leftPivotPosition,
-                out var rightPivotPosition,
-                out var leftSaberRotation,
-                out var rightSaberRotation
-            );
-
-            PluginConfig.LeftSaberZOffset = ZOffset;
-            PluginConfig.LeftSaberPivotPosition = leftPivotPosition;
-            PluginConfig.LeftSaberRotation = leftSaberRotation;
-
-            PluginConfig.RightSaberZOffset = ZOffset;
-            PluginConfig.RightSaberPivotPosition = rightPivotPosition;
-            PluginConfig.RightSaberRotation = rightSaberRotation;
-
-            return ConfigImportResult.Success;
-        }
-
-        #endregion
-
         #region UniversalImport
 
         public static ConfigImportResult UniversalImport() {
@@ -164,12 +122,12 @@ namespace EasyOffset {
 
             if (!ImportFromVRController(menuPlayerController.leftController, out var leftPivotPosition, out var leftSaberRotation)) {
                 return ConfigImportResult.InternalError;
-            };
-            
+            }
+
             if (!ImportFromVRController(menuPlayerController.rightController, out var rightPivotPosition, out var rightSaberRotation)) {
                 return ConfigImportResult.InternalError;
-            };
-            
+            }
+
             PluginConfig.LeftSaberZOffset = ZOffset;
             PluginConfig.LeftSaberPivotPosition = leftPivotPosition;
             PluginConfig.LeftSaberRotation = leftSaberRotation;
@@ -182,26 +140,27 @@ namespace EasyOffset {
         }
 
         private static bool ImportFromVRController(
-            VRController vrController, 
+            VRController vrController,
             out Vector3 pivotPosition,
             out Quaternion saberRotation
         ) {
-            var handlePosition = vrController.position;
-            var handleRotation = vrController.rotation;
+            var saberWorldPosition = vrController.position;
+            var saberWorldRotation = vrController.rotation;
 
-            if (!PluginConfig.VRPlatformHelper.GetNodePose(vrController.node, vrController.nodeIdx, out var controllerPosition, out var controllerRotation)) {
+            if (!PluginConfig.VRPlatformHelper.GetNodePose(vrController.node, vrController.nodeIdx, out var controllerWorldPosition, out var controllerWorldRotation)) {
                 pivotPosition = Vector3.zero;
                 saberRotation = Quaternion.identity;
                 return false;
             }
-            
-            TransformUtils.ApplyRoomOffset(ref controllerPosition, ref controllerRotation);
-            
+
+            TransformUtils.ApplyRoomOffset(ref controllerWorldPosition, ref controllerWorldRotation);
+
             ConfigConversions.Universal(
-                controllerPosition, 
-                controllerRotation,
-                handlePosition, 
-                handleRotation,
+                IsVRModeOculus,
+                controllerWorldPosition,
+                controllerWorldRotation,
+                saberWorldPosition,
+                saberWorldRotation,
                 ZOffset,
                 out pivotPosition,
                 out saberRotation
@@ -251,11 +210,10 @@ namespace EasyOffset {
 
         #region ExportToSaberTailor
 
-        public static ConfigExportResult ExportToSaberTailor(bool useBaseGameAdjustmentMode = true) {
+        public static ConfigExportResult ExportToSaberTailor() {
             if (!IsMigrationPossible) return ConfigExportResult.DevicelessFail;
 
             ConfigConversions.ToTailor(
-                useBaseGameAdjustmentMode,
                 IsValveController,
                 IsVRModeOculus,
                 PluginConfig.LeftSaberTranslation,
@@ -269,7 +227,6 @@ namespace EasyOffset {
             );
 
             var result = WriteSaberTailorConfig(
-                useBaseGameAdjustmentMode,
                 gripLeftPosition,
                 gripRightPosition,
                 gripLeftRotation,
@@ -283,41 +240,11 @@ namespace EasyOffset {
 
         #region SaberTailorConfig
 
-        private static readonly string TailorConfigPath = Path.Combine(UnityGame.UserDataPath, "SaberTailor.json");
         private static readonly string TailorExportConfigPath = Path.Combine(UnityGame.UserDataPath, "SaberTailor.EasyOffsetExported.json");
 
         private const float UnitScale = 0.001f;
 
-        private static bool ParseSaberTailorConfig(
-            out bool useBaseGameAdjustmentMode,
-            out Vector3 gripLeftPosition,
-            out Vector3 gripRightPosition,
-            out Vector3 gripLeftRotation,
-            out Vector3 gripRightRotation
-        ) {
-            try {
-                var rawFileString = File.ReadAllText(TailorConfigPath);
-                var jObject = JObject.Parse(rawFileString);
-
-                useBaseGameAdjustmentMode = jObject.GetValueUnsafe<bool>("UseBaseGameAdjustmentMode");
-                gripLeftPosition = VectorFromJObject(jObject, "GripLeftPosition") * UnitScale;
-                gripRightPosition = VectorFromJObject(jObject, "GripRightPosition") * UnitScale;
-                gripLeftRotation = VectorFromJObject(jObject, "GripLeftRotation");
-                gripRightRotation = VectorFromJObject(jObject, "GripRightRotation");
-
-                return true;
-            } catch (Exception) {
-                useBaseGameAdjustmentMode = false;
-                gripLeftPosition = Vector3.zero;
-                gripLeftRotation = Vector3.zero;
-                gripRightPosition = Vector3.zero;
-                gripRightRotation = Vector3.zero;
-                return false;
-            }
-        }
-
         private static bool WriteSaberTailorConfig(
-            bool useBaseGameAdjustmentMode,
             Vector3 gripLeftPosition,
             Vector3 gripRightPosition,
             Vector3 gripLeftRotation,
@@ -343,7 +270,7 @@ namespace EasyOffset {
                     ["GripLeftOffset"] = JObjectFromVector(Vector3.zero),
                     ["GripRightOffset"] = JObjectFromVector(Vector3.zero),
                     ["ModifyMenuHiltGrip"] = true,
-                    ["UseBaseGameAdjustmentMode"] = useBaseGameAdjustmentMode,
+                    ["UseBaseGameAdjustmentMode"] = true,
                     ["SaberPosIncrement"] = 10,
                     ["SaberPosIncValue"] = 1,
                     ["SaberRotIncrement"] = 5,

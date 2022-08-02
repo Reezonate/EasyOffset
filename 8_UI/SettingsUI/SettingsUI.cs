@@ -20,18 +20,16 @@ namespace EasyOffset {
         }
 
         #endregion
-        
+
         #region Global Settings
 
-        [UIValue("enabled-value")]
-        [UsedImplicitly]
+        [UIValue("enabled-value"), UsedImplicitly]
         private bool EnabledValue {
             get => PluginConfig.Enabled;
             set => PluginConfig.Enabled = value;
         }
 
-        [UIValue("hide-controllers-value")]
-        [UsedImplicitly]
+        [UIValue("hide-controllers-value"), UsedImplicitly]
         private bool HideControllersValue {
             get => PluginConfig.HideControllers;
             set => PluginConfig.HideControllers = value;
@@ -39,14 +37,11 @@ namespace EasyOffset {
 
         #region Minimal warning level
 
-        [UIValue("warnings-choices")] [UsedImplicitly]
-        private List<object> _minimalWarningLevelChoices = WarningLevelUtils.AllNamesObjects.ToList();
+        [UIValue("warnings-choices"), UsedImplicitly]  private List<object> _minimalWarningLevelChoices = WarningLevelUtils.AllNamesObjects.ToList();
 
-        [UIValue("warnings-choice")] [UsedImplicitly]
-        private string _minimalWarningLevelChoice = WarningLevelUtils.TypeToName(PluginConfig.MinimalWarningLevel);
+        [UIValue("warnings-choice"), UsedImplicitly]  private string _minimalWarningLevelChoice = WarningLevelUtils.TypeToName(PluginConfig.MinimalWarningLevel);
 
-        [UIAction("warnings-on-change")]
-        [UsedImplicitly]
+        [UIAction("warnings-on-change"), UsedImplicitly]
         private void MinimalWarningLevelOnChange(string selectedValue) {
             PluginConfig.MinimalWarningLevel = WarningLevelUtils.NameToType(selectedValue);
         }
@@ -59,19 +54,16 @@ namespace EasyOffset {
 
         #region ZOffset slider
 
-        [UIValue("zo-hint")] [UsedImplicitly]
-        private string _zOffsetSliderHint = "Pivot point offset along saber axis (cm)\n0 - top of the hilt, 17 - bottom of the hilt";
+        [UIValue("zo-hint"), UsedImplicitly]  private string _zOffsetSliderHint = "Pivot point offset along saber axis (cm)\n0 - top of the hilt, 17 - bottom of the hilt";
 
-        [UIValue("zo-min")] [UsedImplicitly] private float _zOffsetSliderMin = -15f;
+        [UIValue("zo-min"), UsedImplicitly]  private float _zOffsetSliderMin = -15f;
 
-        [UIValue("zo-max")] [UsedImplicitly] private float _zOffsetSliderMax = 25f;
+        [UIValue("zo-max"), UsedImplicitly]  private float _zOffsetSliderMax = 25f;
 
-        [UIValue("zo-increment")] [UsedImplicitly]
-        private float _zOffsetSliderIncrement = 0.5f;
+        [UIValue("zo-increment"), UsedImplicitly]  private float _zOffsetSliderIncrement = 0.5f;
 
 
-        [UIValue("zo-value")]
-        [UsedImplicitly]
+        [UIValue("zo-value"), UsedImplicitly]
         private float ZOffsetSliderValue {
             get => ConfigMigration.ZOffset * 100f;
             set => ConfigMigration.ZOffset = value / 100f;
@@ -85,8 +77,7 @@ namespace EasyOffset {
 
         private bool _universalImportInteractable;
 
-        [UIValue("universal-import-interactable")]
-        [UsedImplicitly]
+        [UIValue("universal-import-interactable"), UsedImplicitly]
         private bool UniversalImportInteractable {
             get => _universalImportInteractable;
             set {
@@ -96,8 +87,7 @@ namespace EasyOffset {
             }
         }
 
-        [UIAction("universal-import-on-click")]
-        [UsedImplicitly]
+        [UIAction("universal-import-on-click"), UsedImplicitly]
         private void UniversalImportOnClick() {
             var result = ConfigMigration.UniversalImport();
             SetImportStatus(result);
@@ -107,21 +97,9 @@ namespace EasyOffset {
 
         #region Import from settings
 
-        [UIAction("import-from-settings-on-click")]
-        [UsedImplicitly]
+        [UIAction("import-from-settings-on-click"), UsedImplicitly]
         private void ImportFromSettingsOnClick() {
             var result = ConfigMigration.ImportFromSettings();
-            SetImportStatus(result);
-        }
-
-        #endregion
-
-        #region Import from tailor
-
-        [UIAction("import-from-tailor-on-click")]
-        [UsedImplicitly]
-        private void ImportFromTailorOnClick() {
-            var result = ConfigMigration.ImportFromSaberTailor();
             SetImportStatus(result);
         }
 

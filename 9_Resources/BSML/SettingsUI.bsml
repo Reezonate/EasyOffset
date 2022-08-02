@@ -43,8 +43,6 @@
                                 interactable="~universal-import-interactable"/>
                         <button text="Import from settings" pref-width="~button-width" on-click="import-from-settings-on-click"
                                 hover-hint="Import offsets from the base game controller settings"/>
-                        <button text="Import from SaberTailor" pref-width="~button-width" on-click="import-from-tailor-on-click"
-                                hover-hint="Import offsets from the UserData/SaberTailor.json file"/>
                     </vertical>
                     <!--    EXPORT    -->
                     <vertical>

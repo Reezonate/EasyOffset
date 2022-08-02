@@ -5,68 +5,76 @@ namespace EasyOffset;
 internal static class ConfigConversions {
     #region Built-in offsets
 
-    private static readonly Vector3 ValvePositionOffset = new(0.0f, 0.022f, -0.01f);
-    private static readonly Vector3 ValveRotationOffset = new(-16.3f, 0.0f, 0.0f);
+    #region DefaultControllerOffsets
 
-    private static readonly Vector3 DefaultPositionOffset = new(0.0f, -0.008f, 0.0f);
-    private static readonly Vector3 DefaultRotationOffset = new(-4.3f, 0.0f, 0.0f);
+    private static readonly Vector3 DefaultPositionOffset = new Vector3(0.0f, -0.008f, 0.0f);
+    private static readonly Vector3 DefaultRotationOffset = new Vector3(-4.3f, 0.0f, 0.0f);
 
-    public static void GetBuiltInOffsets(
-        bool isValveController,
-        bool isVRModeOculus,
-        out Vector3 position,
-        out Vector3 rotation
+    private static readonly ReeTransform DefaultXRNodeOffset = new ReeTransform(
+        Vector3.zero,
+        Quaternion.identity
+    );
+
+    #endregion
+
+    #region ValveControllerOffsets
+
+    private static readonly Vector3 ValvePositionOffset = new Vector3(0.0f, 0.022f, -0.01f);
+    private static readonly Vector3 ValveRotationOffset = new Vector3(-16.3f, 0.0f, 0.0f);
+
+    private static readonly ReeTransform ValveXRNodeOffset = new ReeTransform(
+        Vector3.zero,
+        Quaternion.identity
+    );
+
+    #endregion
+
+    #region OculusOffsets
+
+    private static readonly Vector3 OculusPositionOffset = new Vector3(0.0f, 0.0f, 0.055f);
+    private static readonly Vector3 OculusRotationOffset = new Vector3(-40f, 0.0f, 0.0f);
+
+    private static readonly ReeTransform OculusXRNodeOffset = new ReeTransform(
+        OculusPositionOffset,
+        Quaternion.Euler(OculusRotationOffset)
+    );
+
+    #endregion
+
+    #region GetBuiltInOffsets
+
+    private static void GetBuiltInOffsets(
+        bool isValveController, bool isVRModeOculus,
+        out Vector3 positionOffset,
+        out Vector3 eulerOffset,
+        out ReeTransform xrNodeOffset
     ) {
         if (isVRModeOculus) {
-            position = Vector3.zero;
-            rotation = Vector3.zero;
-        } else if (isValveController) {
-            position = ValvePositionOffset;
-            rotation = ValveRotationOffset;
-        } else {
-            position = DefaultPositionOffset;
-            rotation = DefaultRotationOffset;
+            positionOffset = OculusPositionOffset;
+            eulerOffset = OculusRotationOffset;
+            xrNodeOffset = OculusXRNodeOffset;
+            return;
         }
+
+        if (isValveController) {
+            positionOffset = ValvePositionOffset;
+            eulerOffset = ValveRotationOffset;
+            xrNodeOffset = ValveXRNodeOffset;
+            return;
+        }
+
+        positionOffset = DefaultPositionOffset;
+        eulerOffset = DefaultRotationOffset;
+        xrNodeOffset = DefaultXRNodeOffset;
     }
 
-    public static void ApplyBuiltInOffsets(
-        bool isValveController,
-        bool isVRModeOculus,
-        ref Vector3 position,
-        ref Vector3 rotation
-    ) {
-        if (isVRModeOculus) return;
-        if (isValveController) {
-            position += ValvePositionOffset;
-            rotation += ValveRotationOffset;
-        } else {
-            position += DefaultPositionOffset;
-            rotation += DefaultRotationOffset;
-        }
-    }
-
-    public static void RemoveBuiltInOffsets(
-        bool isValveController,
-        bool isVRModeOculus,
-        ref Vector3 position,
-        ref Vector3 rotation
-    ) {
-        if (isVRModeOculus) return;
-        if (isValveController) {
-            position -= ValvePositionOffset;
-            rotation -= ValveRotationOffset;
-        } else {
-            position -= DefaultPositionOffset;
-            rotation -= DefaultRotationOffset;
-        }
-    }
+    #endregion
 
     #endregion
 
     #region OneHandConversion
 
     private static void OneHandConversion(
-        bool useBaseGameAdjustmentMode,
         bool isValveController,
         bool isVRModeOculus,
         float zOffset,
@@ -75,19 +83,20 @@ internal static class ConfigConversions {
         out Vector3 pivotPosition,
         out Quaternion saberRotation
     ) {
-        ApplyBuiltInOffsets(isValveController, isVRModeOculus, ref gripPosition, ref gripRotation);
-        saberRotation = Quaternion.Euler(gripRotation);
-        var offset = saberRotation * new Vector3(0, 0, zOffset);
+        GetBuiltInOffsets(isValveController, isVRModeOculus, out var positionOffset, out var eulerOffset, out var xrNodeOffset);
 
-        if (useBaseGameAdjustmentMode) {
-            pivotPosition = saberRotation * gripPosition - offset;
-        } else {
-            pivotPosition = gripPosition - offset;
-        }
+        gripRotation += eulerOffset;
+        saberRotation = Quaternion.Euler(gripRotation);
+        saberRotation = xrNodeOffset.WorldToLocalRotation(saberRotation);
+
+        gripPosition += positionOffset;
+        pivotPosition = saberRotation * gripPosition;
+
+        var offset = saberRotation * new Vector3(0, 0, zOffset);
+        pivotPosition -= offset + xrNodeOffset.Position;
     }
 
     private static void OneHandInverseConversion(
-        bool useBaseGameAdjustmentMode,
         bool isValveController,
         bool isVRModeOculus,
         Vector3 saberTranslation,
@@ -95,17 +104,17 @@ internal static class ConfigConversions {
         out Vector3 gripPosition,
         out Vector3 gripRotation
     ) {
+        GetBuiltInOffsets(isValveController, isVRModeOculus, out var positionOffset, out var eulerOffset, out var xrNodeOffset);
+
+        saberTranslation = xrNodeOffset.LocalToWorldDirection(saberTranslation + xrNodeOffset.Position);
+
+        saberRotation = xrNodeOffset.LocalToWorldRotation(saberRotation);
         var direction = TransformUtils.DirectionFromRotation(saberRotation);
         var zeroZRotation = TransformUtils.RotationFromDirection(direction);
-        
-        gripPosition = saberTranslation;
-        gripRotation = TransformUtils.EulerFromRotation(zeroZRotation);
+        gripRotation = TransformUtils.EulerFromRotation(zeroZRotation) - eulerOffset;
 
-        if (useBaseGameAdjustmentMode) {
-            gripPosition = Quaternion.Inverse(zeroZRotation) * gripPosition;
-        }
-
-        RemoveBuiltInOffsets(isValveController, isVRModeOculus, ref gripPosition, ref gripRotation);
+        gripPosition = Quaternion.Inverse(zeroZRotation) * saberTranslation;
+        gripPosition -= positionOffset;
     }
 
     #endregion
@@ -113,6 +122,7 @@ internal static class ConfigConversions {
     #region Universal
 
     public static void Universal(
+        bool isVRModeOculus,
         Vector3 controllerWorldPosition,
         Quaternion controllerWorldRotation,
         Vector3 saberWorldPosition,
@@ -121,6 +131,8 @@ internal static class ConfigConversions {
         out Vector3 pivotPosition,
         out Quaternion saberRotation
     ) {
+        if (isVRModeOculus) TransformUtils.RemoveOculusModeOffsets(ref controllerWorldPosition, ref controllerWorldRotation);
+
         var controllerTransform = new ReeTransform(controllerWorldPosition, controllerWorldRotation);
         saberRotation = controllerTransform.WorldToLocalRotation(saberWorldRotation);
         pivotPosition = controllerTransform.WorldToLocalPosition(saberWorldPosition);
@@ -143,7 +155,6 @@ internal static class ConfigConversions {
         out Quaternion rightSaberRotation
     ) {
         OneHandConversion(
-            true,
             isValveController,
             isVRModeOculus,
             zOffset,
@@ -159,48 +170,6 @@ internal static class ConfigConversions {
 
     #endregion
 
-    #region FromTailor
-
-    public static void FromTailor(
-        bool useBaseGameAdjustmentMode,
-        bool isValveController,
-        bool isVRModeOculus,
-        float leftZOffset,
-        float rightZOffset,
-        Vector3 gripLeftPosition,
-        Vector3 gripRightPosition,
-        Vector3 gripLeftRotation,
-        Vector3 gripRightRotation,
-        out Vector3 leftPivotPosition,
-        out Vector3 rightPivotPosition,
-        out Quaternion leftSaberRotation,
-        out Quaternion rightSaberRotation
-    ) {
-        OneHandConversion(
-            useBaseGameAdjustmentMode,
-            isValveController,
-            isVRModeOculus,
-            leftZOffset,
-            gripLeftPosition,
-            gripLeftRotation,
-            out leftPivotPosition,
-            out leftSaberRotation
-        );
-
-        OneHandConversion(
-            useBaseGameAdjustmentMode,
-            isValveController,
-            isVRModeOculus,
-            rightZOffset,
-            gripRightPosition,
-            gripRightRotation,
-            out rightPivotPosition,
-            out rightSaberRotation
-        );
-    }
-
-    #endregion
-
     #region ToBaseGame
 
     public static void ToBaseGame(
@@ -212,7 +181,6 @@ internal static class ConfigConversions {
         out Vector3 rotation
     ) {
         OneHandInverseConversion(
-            true,
             isValveController,
             isVRModeOculus,
             saberTranslation,
@@ -223,11 +191,10 @@ internal static class ConfigConversions {
     }
 
     #endregion
-
+    
     #region ToTailor
 
     public static void ToTailor(
-        bool useBaseGameAdjustmentMode,
         bool isValveController,
         bool isVRModeOculus,
         Vector3 leftSaberTranslation,
@@ -240,7 +207,6 @@ internal static class ConfigConversions {
         out Vector3 gripRightRotation
     ) {
         OneHandInverseConversion(
-            useBaseGameAdjustmentMode,
             isValveController,
             isVRModeOculus,
             leftSaberTranslation,
@@ -250,7 +216,6 @@ internal static class ConfigConversions {
         );
 
         OneHandInverseConversion(
-            useBaseGameAdjustmentMode,
             isValveController,
             isVRModeOculus,
             rightSaberTranslation,
