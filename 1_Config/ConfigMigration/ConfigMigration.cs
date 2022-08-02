@@ -98,6 +98,8 @@ namespace EasyOffset {
                 out var leftSaberRotation,
                 out var rightSaberRotation
             );
+            
+            PluginConfig.CreateUndoStep("Import From Settings");
 
             PluginConfig.LeftSaberZOffset = ZOffset;
             PluginConfig.LeftSaberPivotPosition = leftPivotPosition;
@@ -127,6 +129,8 @@ namespace EasyOffset {
             if (!ImportFromVRController(menuPlayerController.rightController, out var rightPivotPosition, out var rightSaberRotation)) {
                 return ConfigImportResult.InternalError;
             }
+            
+            PluginConfig.CreateUndoStep("Universal Import");
 
             PluginConfig.LeftSaberZOffset = ZOffset;
             PluginConfig.LeftSaberPivotPosition = leftPivotPosition;
@@ -198,6 +202,21 @@ namespace EasyOffset {
                 rotation,
                 out var position,
                 out var rotationEuler
+            );
+
+            var beforePosition = PluginConfig.MainSettingsModel.controllerPosition.value;
+            var beforeRotation = PluginConfig.MainSettingsModel.controllerRotation.value;
+
+            PluginConfig.CreateUndoStep(
+                $"Export To Settings",
+                () => {
+                    PluginConfig.MainSettingsModel.controllerPosition.value = beforePosition;
+                    PluginConfig.MainSettingsModel.controllerRotation.value = beforeRotation;
+                },
+                () => {
+                    PluginConfig.MainSettingsModel.controllerPosition.value = position;
+                    PluginConfig.MainSettingsModel.controllerRotation.value = rotationEuler;
+                }
             );
 
             PluginConfig.MainSettingsModel.controllerPosition.value = position;

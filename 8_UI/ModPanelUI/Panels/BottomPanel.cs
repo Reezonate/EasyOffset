@@ -9,63 +9,41 @@ using UnityEngine;
 namespace EasyOffset;
 
 internal class BottomPanel : ReeUIComponentV2 {
+    #region Components
+
+    [UIValue("undo-redo-buttons"), UsedImplicitly] private UndoRedoButtons _undoRedoButtons;
+
+    private void Awake() {
+        _undoRedoButtons = Instantiate<UndoRedoButtons>(transform, false);
+    }
+
+    #endregion
+    
     #region Initialize & Dispose
 
     protected override void OnInitialize() {
-        PluginConfig.AdjustmentModeChangedEvent += OnAdjustmentModeChanged;
-        InitializeUndoRedo();
-        InitializeScale();
-        InitializeWarnings();
+        PluginConfig.IsModPanelVisibleChangedEvent += BottomPanelOnVisibleChanged;
+        ApplyBottomPanelScale();
+
+        PluginConfig.MinimalWarningLevelChangedEvent += UpdateWarning;
+        PluginConfig.IsModPanelVisibleChangedEvent += OnModPanelVisibleChanged;
+        UpdateWarning(PluginConfig.MinimalWarningLevel);
     }
 
-    #endregion
-
-    #region OnAdjustmentModeChanged
-
-    private void OnAdjustmentModeChanged(AdjustmentMode adjustmentMode) {
-        UndoRedoButtonsActive = adjustmentMode switch {
-            AdjustmentMode.None => false,
-            AdjustmentMode.Basic => true,
-            AdjustmentMode.Position => true,
-            AdjustmentMode.Rotation => true,
-            AdjustmentMode.SwingBenchmark => true,
-            AdjustmentMode.Direct => true,
-            AdjustmentMode.PositionAuto => true,
-            AdjustmentMode.RotationAuto => true,
-            AdjustmentMode.RoomOffset => false,
-            _ => throw new ArgumentOutOfRangeException(nameof(adjustmentMode), adjustmentMode, null)
-        };
-    }
-
-    #endregion
-
-    #region Undo & Redo
-
-    private void InitializeUndoRedo() {
-        PluginConfig.UndoAvailableChangedEvent += OnUndoAvailableChanged;
-        PluginConfig.RedoAvailableChangedEvent += OnRedoAvailableChanged;
-    }
-
-    private void OnUndoAvailableChanged(bool isAvailable, string description) {
-        UndoButtonInteractable = isAvailable;
-        UndoButtonHoverHint = isAvailable ? $"Undo '{description}'" : "Undo";
-    }
-
-    private void OnRedoAvailableChanged(bool isAvailable, string description) {
-        RedoButtonInteractable = isAvailable;
-        RedoButtonHoverHint = isAvailable ? $"Redo '{description}'" : "Redo";
+    protected override void OnDispose() {
+        PluginConfig.IsModPanelVisibleChangedEvent -= BottomPanelOnVisibleChanged;
+        PluginConfig.MinimalWarningLevelChangedEvent -= UpdateWarning;
+        PluginConfig.IsModPanelVisibleChangedEvent -= OnModPanelVisibleChanged;
     }
 
     #endregion
 
     #region Scale
 
-    private static readonly Vector3 BottomElementsScale = Vector3.one * 0.85f;
+    [UIComponent("undo-redo-buttons-container"), UsedImplicitly]  private RectTransform _undoRedoButtonsContainer;
+    [UIComponent("ui-lock-container"), UsedImplicitly]  private RectTransform _uiLockContainer;
 
-    private void InitializeScale() {
-        PluginConfig.IsModPanelVisibleChangedEvent += BottomPanelOnVisibleChanged;
-        ApplyBottomPanelScale();
-    }
+    private static readonly Vector3 BottomElementsScale = Vector3.one * 0.85f;
 
     private void ApplyBottomPanelScale() {
         _undoRedoButtonsContainer.localScale = BottomElementsScale;
@@ -206,110 +184,9 @@ internal class BottomPanel : ReeUIComponentV2 {
 
     #endregion
 
-    #region Undo / Redo buttons
-
-    #region Active
-
-    private bool _undoRedoButtonsActive;
-
-    [UIValue("undo-redo-buttons-active")]
-    [UsedImplicitly]
-    private bool UndoRedoButtonsActive {
-        get => _undoRedoButtonsActive;
-        set {
-            if (_undoRedoButtonsActive.Equals(value)) return;
-            _undoRedoButtonsActive = value;
-            NotifyPropertyChanged();
-        }
-    }
-
-    #endregion
-
-    #region Container
-
-    [UIComponent("undo-redo-buttons-container")] [UsedImplicitly]
-    private RectTransform _undoRedoButtonsContainer;
-
-    #endregion
-
-    #region Undo button
-
-    private bool _undoButtonInteractable;
-
-    [UIValue("undo-button-interactable")]
-    [UsedImplicitly]
-    private bool UndoButtonInteractable {
-        get => _undoButtonInteractable;
-        set {
-            if (_undoButtonInteractable.Equals(value)) return;
-            _undoButtonInteractable = value;
-            NotifyPropertyChanged();
-        }
-    }
-
-    private string _undoButtonHoverHint = "Undo";
-
-    [UIValue("undo-button-hover-hint")]
-    [UsedImplicitly]
-    private string UndoButtonHoverHint {
-        get => _undoButtonHoverHint;
-        set {
-            _undoButtonHoverHint = value;
-            NotifyPropertyChanged();
-        }
-    }
-
-    [UIAction("undo-button-on-click")]
-    [UsedImplicitly]
-    private void UndoButtonOnClick() {
-        PluginConfig.UndoLastChange();
-    }
-
-    #endregion
-
-    #region Redo button
-
-    private bool _redoButtonInteractable;
-
-    [UIValue("redo-button-interactable")]
-    [UsedImplicitly]
-    private bool RedoButtonInteractable {
-        get => _redoButtonInteractable;
-        set {
-            if (_redoButtonInteractable.Equals(value)) return;
-            _redoButtonInteractable = value;
-            NotifyPropertyChanged();
-        }
-    }
-
-    private string _redoButtonHoverHint = "Redo";
-
-    [UIValue("redo-button-hover-hint")]
-    [UsedImplicitly]
-    private string RedoButtonHoverHint {
-        get => _redoButtonHoverHint;
-        set {
-            _redoButtonHoverHint = value;
-            NotifyPropertyChanged();
-        }
-    }
-
-    [UIAction("redo-button-on-click")]
-    [UsedImplicitly]
-    private void RedoButtonOnClick() {
-        PluginConfig.RedoLastChange();
-    }
-
-    #endregion
-
-    #endregion
-
     #region UI Lock
 
     private AdjustmentMode _previousAdjustmentMode;
-
-    [UIComponent("ui-lock-container")] [UsedImplicitly]
-    private RectTransform _uiLockContainer;
 
     [UIValue("interactable"), UsedImplicitly]
     private bool Interactable {
@@ -329,8 +206,7 @@ internal class BottomPanel : ReeUIComponentV2 {
         }
     }
 
-    [UIValue("lock-value"), UsedImplicitly]
-    private bool _lockValue = PluginConfig.UILock;
+    [UIValue("lock-value"), UsedImplicitly] private bool _lockValue = PluginConfig.UILock;
 
     [UIAction("lock-on-change"), UsedImplicitly]
     private void LockOnChange(bool value) {

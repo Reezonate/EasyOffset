@@ -69,7 +69,16 @@ namespace EasyOffset {
             Hand adjustmentHand,
             ReeTransform adjustmentHandTransform,
             ReeTransform freeHandTransform
-        ) { }
+        ) {
+            var beforeChange = _grabRoomCenter;
+            var afterChange = PluginConfig.MainSettingsModel.roomCenter.value;
+            
+            PluginConfig.CreateUndoStep(
+                "Room Offset",
+                () => PluginConfig.MainSettingsModel.roomCenter.value = beforeChange,
+                () => PluginConfig.MainSettingsModel.roomCenter.value = afterChange
+            );
+        }
 
         #endregion
     }

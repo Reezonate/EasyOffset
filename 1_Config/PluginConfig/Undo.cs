@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using ModestTree;
 using UnityEngine;
 
@@ -17,8 +18,12 @@ internal partial class PluginConfig {
     private static readonly List<ConfigSnapshot> UndoSteps = new();
     private static readonly List<ConfigSnapshot> RedoSteps = new();
 
-    public static void CreateUndoStep(string description) {
-        var snapshot = GenerateSnapshot(description);
+    public static void CreateUndoStep(
+        string description,
+        [CanBeNull] Action onUndoAction = null,
+        [CanBeNull] Action onRedoAction = null
+    ) {
+        var snapshot = GenerateSnapshot(description, onUndoAction, onRedoAction);
         UndoSteps.Add(snapshot);
         RedoSteps.Clear();
         if (UndoSteps.Count > MaxUndoStepsCount) UndoSteps.RemoveAt(0);
@@ -33,10 +38,12 @@ internal partial class PluginConfig {
         var undoSnapshot = UndoSteps[lastUndoIndex];
         UndoSteps.RemoveAt(lastUndoIndex);
 
-        var redoSnapshot = GenerateSnapshot(undoSnapshot.Description);
+        var redoSnapshot = GenerateSnapshot(undoSnapshot.Description, undoSnapshot.OnUndoAction, undoSnapshot.OnRedoAction);
         RedoSteps.Add(redoSnapshot);
 
         ApplySnapshot(undoSnapshot);
+        undoSnapshot.OnUndoAction?.Invoke();
+
         NotifyUndoListChanged();
         NotifyRedoListChanged();
     }
@@ -48,10 +55,12 @@ internal partial class PluginConfig {
         var redoSnapshot = RedoSteps[lastRedoIndex];
         RedoSteps.RemoveAt(lastRedoIndex);
 
-        var undoSnapshot = GenerateSnapshot(redoSnapshot.Description);
+        var undoSnapshot = GenerateSnapshot(redoSnapshot.Description, redoSnapshot.OnUndoAction, redoSnapshot.OnRedoAction);
         UndoSteps.Add(undoSnapshot);
 
         ApplySnapshot(redoSnapshot);
+        redoSnapshot.OnRedoAction?.Invoke();
+
         NotifyUndoListChanged();
         NotifyRedoListChanged();
     }
@@ -76,9 +85,16 @@ internal partial class PluginConfig {
 
     #region GenerateSnapshot
 
-    private static ConfigSnapshot GenerateSnapshot(string description) {
+    private static ConfigSnapshot GenerateSnapshot(
+        string description,
+        [CanBeNull] Action onUndoAction,
+        [CanBeNull] Action onRedoAction
+    ) {
         return new ConfigSnapshot {
             Description = description,
+
+            OnUndoAction = onUndoAction,
+            OnRedoAction = onRedoAction,
 
             LeftPivotPosition = LeftSaberPivotPosition,
             LeftRotation = LeftSaberRotation,
@@ -123,6 +139,9 @@ internal partial class PluginConfig {
 
     private struct ConfigSnapshot {
         public string Description;
+
+        [CanBeNull] public Action OnUndoAction;
+        [CanBeNull] public Action OnRedoAction;
 
         public Vector3 LeftPivotPosition;
         public Quaternion LeftRotation;

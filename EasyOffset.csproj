@@ -236,6 +236,7 @@
     <Compile Include="8_UI\Components\SliderAnnotations.cs" />
     <Compile Include="8_UI\Components\SlidersRowAnnotations.cs" />
     <Compile Include="8_UI\Components\SmoothSlider.cs" />
+    <Compile Include="8_UI\Components\UndoRedoButtons.cs" />
     <Compile Include="8_UI\Components\VisibilityTracker.cs" />
     <Compile Include="8_UI\Modals\AdjustmentModeSelectorModal.cs" />
     <Compile Include="8_UI\ModPanelUI\ModPanelUI.cs" />
@@ -284,6 +285,7 @@
     <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\Panels\RoomOffsetPanel.bsml" />
     <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\Panels\SwingBenchmarkPanel.bsml" />
     <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\Panels\TopPanel.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\Panels\UndoRedoButtons.bsml" />
     <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\SlidersPanel\DirectConfigSliders.bsml" />
     <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\SlidersPanel\ReferenceControls.bsml" />
     <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\SlidersPanel\ResetAndMirrorControls.bsml" />

@@ -8,6 +8,16 @@ using UnityEngine;
 
 namespace EasyOffset {
     public class SettingsUI : NotifiableSingleton<SettingsUI> {
+        #region Components
+
+        [UIValue("undo-redo-buttons"), UsedImplicitly] private UndoRedoButtons _undoRedoButtons;
+
+        private void Awake() {
+            _undoRedoButtons = ReeUIComponentV2.Instantiate<UndoRedoButtons>(transform, false);
+        }
+        
+        #endregion
+        
         #region Initialize
 
         private void Start() {

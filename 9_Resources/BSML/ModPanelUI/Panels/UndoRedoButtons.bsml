@@ -1,0 +1,9 @@
+<horizontal horizontal-fit="PreferredSize">
+    <macro.define name="l-arrow" value="&lt;pos=-0.4em&gt;◄"/>
+    <macro.define name="r-arrow" value="►"/>
+    
+    <button preferred-width="10" text="~l-arrow" interactable="~undo-button-interactable"
+            on-click="undo-button-on-click" hover-hint="~undo-button-hover-hint"/>
+    <button preferred-width="10" text="~r-arrow" interactable="~redo-button-interactable"
+            on-click="redo-button-on-click" hover-hint="~redo-button-hover-hint"/>
+</horizontal>

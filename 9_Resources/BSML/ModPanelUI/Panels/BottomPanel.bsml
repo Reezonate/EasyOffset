@@ -1,7 +1,4 @@
-<horizontal spacing="1">
-    <macro.define name="l-arrow" value="&lt;pos=-0.4em&gt;◄"/>
-    <macro.define name="r-arrow" value="►"/>
-    
+<horizontal spacing="1" horizontal-fit="PreferredSize">
     <vertical preferred-width="40">
         <horizontal>
             <button preferred-width="20" text="Save" interactable="~interactable" on-click="bp-save-on-click" hover-hint="Save current preset"/>
@@ -15,15 +12,14 @@
     </vertical>
 
     <vertical preferred-width="30" pad-left="10">
-        <horizontal id="undo-redo-buttons-container" active="~undo-redo-buttons-active">
-            <button preferred-width="10" text="~l-arrow" interactable="~undo-button-interactable"
-                    on-click="undo-button-on-click" hover-hint="~undo-button-hover-hint"/>
-            <button preferred-width="10" text="~r-arrow" interactable="~redo-button-interactable"
-                    on-click="redo-button-on-click" hover-hint="~redo-button-hover-hint"/>
+        <horizontal id="undo-redo-buttons-container" active="~interactable">
+            <macro.as-host host="undo-redo-buttons">
+                <macro.reparent transform="ui-component"/>
+            </macro.as-host>
         </horizontal>
     </vertical>
 
-    <vertical preferred-width="30">
+    <vertical pad-left="-4" preferred-width="30">
         <horizontal id="ui-lock-container">
             <toggle-setting text="UI Lock" value="lock-value" on-change="lock-on-change" apply-on-change="true"
                             hover-hint="Disable UI interaction to prevent accidental changes"/>
