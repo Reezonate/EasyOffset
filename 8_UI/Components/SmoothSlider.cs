@@ -12,11 +12,7 @@ using UnityEngine.UI;
 namespace EasyOffset;
 
 internal class SmoothSlider : ReeUIComponentV2 {
-    #region Initialize
-
-    private Material _leftArrowMaterial;
-    private Material _rightArrowMaterial;
-    private Transform _textTransform;
+    #region Initialize / Dispose
 
     protected override void OnInitialize() {
         InitializeSlider();
@@ -27,6 +23,12 @@ internal class SmoothSlider : ReeUIComponentV2 {
         UnsetValue();
     }
 
+    #endregion
+
+    #region InitializeSlider
+
+    private Transform _textTransform;
+
     private void InitializeSlider() {
         var pointerEventsHandler = _sliderComponent.slider.gameObject.AddComponent<PointerEventsHandler>();
         pointerEventsHandler.smoothSlider = this;
@@ -36,11 +38,18 @@ internal class SmoothSlider : ReeUIComponentV2 {
         _textTransform = textComponent.transform;
     }
 
+    #endregion
+
+    #region InitializeButtons
+
+    private Material _leftArrowMaterial;
+    private Material _rightArrowMaterial;
+
     private void InitializeButtons() {
-        var incButton = _sliderComponent.slider.GetField<Button, RangeValuesTextSlider>("_incButton");
-        var decButton = _sliderComponent.slider.GetField<Button, RangeValuesTextSlider>("_decButton");
-        InitializeButton(incButton, out _rightArrowMaterial);
-        InitializeButton(decButton, out _leftArrowMaterial);
+        var incrementButton = _sliderComponent.slider.GetField<Button, RangeValuesTextSlider>("_incButton");
+        var decrementButton = _sliderComponent.slider.GetField<Button, RangeValuesTextSlider>("_decButton");
+        InitializeButton(incrementButton, out _rightArrowMaterial);
+        InitializeButton(decrementButton, out _leftArrowMaterial);
     }
 
     private void InitializeButton(Button button, out Material arrowMaterial) {
@@ -136,14 +145,15 @@ internal class SmoothSlider : ReeUIComponentV2 {
         _value?.SetValueFromUI(_targetValue);
     }
 
-    private void OnPointerDown() {
+    private void OnPointerDown(PointerEventData eventData) {
+        if (!_sliderComponent.slider.MayDrag(eventData)) return;
         _currentValue = _targetValue = SliderValue;
         _pressed = true;
         _pressedTime = Time.time;
         _value?.NotifyChangeStarted();
     }
 
-    private void OnPointerUp() {
+    private void OnPointerUp(PointerEventData eventData) {
         _currentValue = _targetValue = SliderValue;
         _pressed = false;
         _value?.NotifyChangeFinished();
@@ -153,8 +163,7 @@ internal class SmoothSlider : ReeUIComponentV2 {
 
     #region SliderComponent
 
-    [UIComponent("slider-component"), UsedImplicitly]
-    private SliderSetting _sliderComponent;
+    [UIComponent("slider-component"), UsedImplicitly] private SliderSetting _sliderComponent;
 
     [UIAction("slider-formatter"), UsedImplicitly]
     private string SliderFormatter(float value) {
@@ -186,9 +195,9 @@ internal class SmoothSlider : ReeUIComponentV2 {
     private class PointerEventsHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
         public SmoothSlider smoothSlider;
 
-        public void OnPointerDown(PointerEventData eventData) => smoothSlider.OnPointerDown();
+        public void OnPointerDown(PointerEventData eventData) => smoothSlider.OnPointerDown(eventData);
 
-        public void OnPointerUp(PointerEventData eventData) => smoothSlider.OnPointerUp();
+        public void OnPointerUp(PointerEventData eventData) => smoothSlider.OnPointerUp(eventData);
     }
 
     #endregion

@@ -18,6 +18,12 @@ internal partial class PluginConfig {
     private static readonly List<ConfigSnapshot> UndoSteps = new();
     private static readonly List<ConfigSnapshot> RedoSteps = new();
 
+    public static bool UndoAvailable => !UndoSteps.IsEmpty();
+    public static string UndoDescription => UndoAvailable ? UndoSteps.Last().Description : "";
+    
+    public static bool RedoAvailable => !RedoSteps.IsEmpty();
+    public static string RedoDescription => RedoAvailable ? RedoSteps.Last().Description : "";
+
     public static void CreateUndoStep(
         string description,
         [CanBeNull] Action onUndoAction = null,

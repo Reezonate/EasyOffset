@@ -95,16 +95,21 @@ namespace EasyOffset {
                 case SliderValueType.RotationX:
                 case SliderValueType.RotationY:
                 case SliderValueType.RotationZ:
+                    _skipControllerSpaceRecalculation = true;
                     RecalculateReferenceSpaceRotations();
                     break;
                 case SliderValueType.Curve:
                 case SliderValueType.Balance:
+                    _skipReferenceSpaceRecalculation = true;
                     RecalculateControllerSpaceRotations();
                     break;
                 default: throw new ArgumentOutOfRangeException(nameof(valueType), valueType, null);
             }
 
             ApplyDirectConfig();
+            
+            _skipControllerSpaceRecalculation = false;
+            _skipReferenceSpaceRecalculation = false;
         }
 
         private static void OnMainConfigWasChanged() {
@@ -142,7 +147,11 @@ namespace EasyOffset {
 
         #region RecalculateControllerSpaceRotations
 
+        private static bool _skipControllerSpaceRecalculation;
+
         private static void RecalculateControllerSpaceRotations() {
+            if (_skipControllerSpaceRecalculation) return;
+            
             if (PluginConfig.LeftSaberHasReference) {
                 LeftRotationEuler = TransformUtils.FromReferenceSpace(
                     LeftRotation,
@@ -165,8 +174,12 @@ namespace EasyOffset {
         #endregion
 
         #region RecalculateReferenceSpaceRotations
+        
+        private static bool _skipReferenceSpaceRecalculation;
 
         private static void RecalculateReferenceSpaceRotations() {
+            if (_skipReferenceSpaceRecalculation) return;
+            
             if (PluginConfig.LeftSaberHasReference) {
                 TransformUtils.ToReferenceSpace(
                     LeftRotation,

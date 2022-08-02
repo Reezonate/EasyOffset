@@ -9,6 +9,8 @@ internal class UndoRedoButtons : ReeUIComponentV2 {
     protected override void OnInitialize() {
         PluginConfig.UndoAvailableChangedEvent += OnUndoAvailableChanged;
         PluginConfig.RedoAvailableChangedEvent += OnRedoAvailableChanged;
+        OnUndoAvailableChanged(PluginConfig.UndoAvailable, PluginConfig.UndoDescription);
+        OnRedoAvailableChanged(PluginConfig.RedoAvailable, PluginConfig.RedoDescription);
     }
 
     protected override void OnDispose() {

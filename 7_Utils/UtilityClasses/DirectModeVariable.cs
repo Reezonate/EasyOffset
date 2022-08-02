@@ -61,8 +61,12 @@ internal class DirectModeVariable {
         if (_value.Equals(value)) return;
         _value = value;
         _changed = true;
+
+        if (!_pressed) {
+            SmoothChangeStartedEvent?.Invoke(_sliderValueType, _hand);
+            SmoothChangeFinishedEvent?.Invoke(_sliderValueType, _hand);
+        }
         
-        if (!_pressed) SmoothChangeStartedEvent?.Invoke(_sliderValueType, _hand);
         if (_applyOnChange) ChangedFromUIEvent?.Invoke(_sliderValueType, _value);
     }
 
