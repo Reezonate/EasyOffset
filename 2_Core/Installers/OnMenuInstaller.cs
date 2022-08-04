@@ -14,6 +14,8 @@ namespace EasyOffset.Installers {
 
             Container.BindInstance(vrControllers).AsSingle();
             Container.BindInterfacesAndSelfTo<AbominationTransformManager>().AsSingle();
+            
+            Container.BindInterfacesAndSelfTo<HoverHintsManager>().AsSingle();
         }
     }
 }
