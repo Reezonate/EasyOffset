@@ -34,6 +34,11 @@ internal class ReferenceControls : ReeUIComponentV2 {
         IsActive = adjustmentMode is AdjustmentMode.Rotation or AdjustmentMode.RotationAuto;
     }
 
+    [UIAction("help-on-click"), UsedImplicitly]
+    private void HelpOnClick() {
+        PluginConfig.AdjustmentMode = AdjustmentMode.SwingBenchmark;
+    }
+
     #endregion
 
     #region IsActive

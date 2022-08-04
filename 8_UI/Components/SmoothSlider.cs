@@ -42,20 +42,30 @@ internal class SmoothSlider : ReeUIComponentV2 {
 
     #region InitializeButtons
 
+    private bool _buttonEventsReady;
+    private Button _incrementButton;
+    private Button _decrementButton;
     private Material _leftArrowMaterial;
     private Material _rightArrowMaterial;
 
     private void InitializeButtons() {
-        var incrementButton = _sliderComponent.slider.GetField<Button, RangeValuesTextSlider>("_incButton");
-        var decrementButton = _sliderComponent.slider.GetField<Button, RangeValuesTextSlider>("_decButton");
-        InitializeButton(incrementButton, out _rightArrowMaterial);
-        InitializeButton(decrementButton, out _leftArrowMaterial);
+        _incrementButton = _sliderComponent.slider.GetField<Button, RangeValuesTextSlider>("_incButton");
+        _decrementButton = _sliderComponent.slider.GetField<Button, RangeValuesTextSlider>("_decButton");
+        _rightArrowMaterial = InstantiateButtonMaterial(_incrementButton);
+        _leftArrowMaterial = InstantiateButtonMaterial(_decrementButton);
+        _buttonEventsReady = false;
     }
 
-    private void InitializeButton(Button button, out Material arrowMaterial) {
-        button.onClick.AddListener(OnButtonClick);
+    private static Material InstantiateButtonMaterial(Button button) {
         var arrowImage = button.GetComponentsInChildren<ImageView>()[1];
-        arrowMaterial = arrowImage.material = Instantiate(arrowImage.material);
+        return arrowImage.material = Instantiate(arrowImage.material);
+    }
+
+    private void LazyInitButtonEvents() {
+        if (_buttonEventsReady) return;
+        _incrementButton.onClick.AddListener(OnButtonClick);
+        _decrementButton.onClick.AddListener(OnButtonClick);
+        _buttonEventsReady = true;
     }
 
     #endregion
@@ -120,7 +130,7 @@ internal class SmoothSlider : ReeUIComponentV2 {
 
     #endregion
 
-    #region Smoothing
+    #region LateUpdate
 
     private static readonly Range MultiplierTimeRange = new(0.0f, 2.0f);
 
@@ -130,6 +140,8 @@ internal class SmoothSlider : ReeUIComponentV2 {
     private float _currentValue;
 
     private void LateUpdate() {
+        LazyInitButtonEvents();
+
         if (!_pressed) return;
         var t = _smoothFactor * Time.deltaTime * MultiplierTimeRange.GetRatioClamped(Time.time - _pressedTime);
         _currentValue = Mathf.Lerp(_currentValue, _targetValue, t);
@@ -153,7 +165,7 @@ internal class SmoothSlider : ReeUIComponentV2 {
         _value?.NotifyChangeStarted();
     }
 
-    private void OnPointerUp(PointerEventData eventData) {
+    private void OnPointerUp() {
         _currentValue = _targetValue = SliderValue;
         _pressed = false;
         _value?.NotifyChangeFinished();
@@ -197,7 +209,7 @@ internal class SmoothSlider : ReeUIComponentV2 {
 
         public void OnPointerDown(PointerEventData eventData) => smoothSlider.OnPointerDown(eventData);
 
-        public void OnPointerUp(PointerEventData eventData) => smoothSlider.OnPointerUp(eventData);
+        public void OnPointerUp(PointerEventData eventData) => smoothSlider.OnPointerUp();
     }
 
     #endregion

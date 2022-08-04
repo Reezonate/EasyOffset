@@ -1,8 +1,10 @@
 <horizontal active="~is-active" preferred-height="6">
     <vertical preferred-width="52" pad-left="10">
         <!--    LEFT HELP    -->
-        <button text="?" preferred-width="10" active="~direct-left-help-active"
-                hover-hint="Create reference in the 'Swing Benchmark' mode to use sliders"/>
+        <vertical pref-width="10" active="~direct-left-help-active" bg="panel-top-gradient">
+            <clickable-text text="?" color="#AAAAAA" align="Center" on-click="help-on-click"
+                            hover-hint="Set reference in the 'Swing Benchmark' mode to use sliders"/>
+        </vertical>
 
         <horizontal active="~direct-left-buttons-active" spacing="2">
             <!--    LEFT CLEAR    -->
@@ -20,8 +22,10 @@
     </vertical>
     <vertical preferred-width="52" pad-right="10">
         <!--    RIGHT HELP    -->
-        <button text="?" preferred-width="10" active="~direct-right-help-active"
-                hover-hint="Set reference in the 'Swing Benchmark' mode to use sliders"/>
+        <vertical pref-width="10" active="~direct-right-help-active" bg="panel-top-gradient">
+            <clickable-text text="?" color="#AAAAAA" align="Center" on-click="help-on-click"
+                            hover-hint="Set reference in the 'Swing Benchmark' mode to use sliders"/>
+        </vertical>
 
         <horizontal active="~direct-right-buttons-active" spacing="2">
             <!--    RIGHT UPDATE    -->
