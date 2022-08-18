@@ -1,10 +1,21 @@
 using System;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.XR;
 
 namespace EasyOffset {
     [UsedImplicitly]
     public class RotationAutoAdjustmentModeManager : AbstractAdjustmentModeManager {
+        #region Constants
+
+        private const int MinimalCapacity = 60;
+        private const int MaximalCapacity = 300;
+        private const float ProbeTime = 2.0f;
+        private const float MinimalAngularVelocity = 45.0f;
+        private const float MaximalAngularVelocity = 360.0f;
+
+        #endregion
+
         #region Constructor
 
         private readonly GizmosManager _gizmosManager;
@@ -17,19 +28,18 @@ namespace EasyOffset {
             0f
         ) {
             _gizmosManager = gizmosManager;
+
+            var capacity = (int)Mathf.Clamp(XRDevice.refreshRate * ProbeTime, MinimalCapacity, MaximalCapacity);
+            _measurements = new WeightedList<Vector3>(capacity);
         }
 
         #endregion
 
         #region Measurement logic
 
-        private const int MaxMeasurementsCount = 60;
-        private const float MinimalAngularVelocity = 45.0f;
-        private const float MaximalAngularVelocity = 360.0f;
-
         private readonly RelativeRotationTracker _rotationTracker = new();
         private readonly Range _angularVelocityRange = new(MinimalAngularVelocity, MaximalAngularVelocity);
-        private readonly WeightedList<Vector3> _measurements = new(MaxMeasurementsCount);
+        private readonly WeightedList<Vector3> _measurements;
 
         private void Reset(ReeTransform controllerTransform) {
             _rotationTracker.Initialize(controllerTransform.Rotation);
@@ -40,11 +50,12 @@ namespace EasyOffset {
             var mainCamera = Camera.main;
             var positiveDirection = mainCamera == null ? Vector3.forward : mainCamera.transform.forward;
 
-            var updated = _rotationTracker.Update(controllerTransform.Rotation, positiveDirection, out var angle, out var axis);
-            if (!updated) return false;
+            var updated = _rotationTracker.Update(
+                controllerTransform.Rotation, positiveDirection, Time.deltaTime,
+                out var angularVelocity, out var axis
+            );
 
-            var angularVelocity = angle / Time.deltaTime;
-            if (angularVelocity <= MinimalAngularVelocity) return false;
+            if (!updated || angularVelocity <= MinimalAngularVelocity) return false;
 
             var axisLocal = controllerTransform.WorldToLocalDirection(axis);
             var weight = _angularVelocityRange.GetRatio(angularVelocity);
