@@ -1,0 +1,5 @@
+<horizontal id="slider-background" ignore-layout="true" anchor-pos-y="-13" bg="round-rect-panel" pref-height="5" horizontal-fit="PreferredSize">
+    <vertical pad-left="2" pad-right="0" pref-width="54">
+        <slider-setting id="slider-component" text="~slider-text" formatter="slider-formatter"/>
+    </vertical>
+</horizontal>

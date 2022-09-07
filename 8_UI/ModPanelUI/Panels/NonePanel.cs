@@ -58,11 +58,6 @@ internal class NonePanel : ReeUIComponentV2 {
 
     #region Links
 
-    [UIAction("none-panel-more-info-on-click"), UsedImplicitly]
-    private void MoreInfoOnClick() {
-        Process.Start("explorer.exe", "https://github.com/Reezonate/EasyOffset#how-to-use");
-    }
-
     [UIAction("none-panel-donate-on-click"), UsedImplicitly]
     private void DonateOnClick() {
         Process.Start("explorer.exe", "https://ko-fi.com/reezonate");

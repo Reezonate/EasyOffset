@@ -1,0 +1,5 @@
+<horizontal id="container-component" ignore-layout="true" pref-height="10">
+    <vertical pref-width="10">
+        <clickable-image id="image-component" src="#EO_PauseIcon"/>
+    </vertical>
+</horizontal>

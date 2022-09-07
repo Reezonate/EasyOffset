@@ -6,12 +6,16 @@
         </horizontal>
     </vertical>
 
-    <vertical preferred-width="10" pad="2">
-        <image source="EasyOffset._9_Resources.Icons.Warning.png" preserve-aspect="true"
-               active="~warning-active" image-color="~warning-color" hover-hint="~warning-hint"/>
+    <macro.as-host host="warning-icon">
+        <macro.reparent transform="ui-component"/>
+    </macro.as-host>
+    
+    <vertical preferred-width="5">
+        <clickable-image active="~interactable" src="#TutorialIcon" pref-height="5" preserve-aspect="true"
+                         on-click="user-guide-on-click" hover-hint="User Guide"/>
     </vertical>
 
-    <vertical preferred-width="30" pad-left="10">
+    <vertical preferred-width="25" pad-left="5">
         <horizontal id="undo-redo-buttons-container" active="~interactable">
             <macro.as-host host="undo-redo-buttons">
                 <macro.reparent transform="ui-component"/>
@@ -19,7 +23,7 @@
         </horizontal>
     </vertical>
 
-    <vertical pad-left="-4" preferred-width="30">
+    <vertical preferred-width="30">
         <horizontal id="ui-lock-container">
             <toggle-setting text="UI Lock" value="lock-value" on-change="lock-on-change" apply-on-change="true"
                             hover-hint="Disable UI interaction to prevent accidental changes"/>

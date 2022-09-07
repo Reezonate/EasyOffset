@@ -2,7 +2,7 @@
     <vertical preferred-width="52" pad-left="10">
         <!--    LEFT HELP    -->
         <vertical pref-width="10" active="~direct-left-help-active" bg="panel-top-gradient">
-            <clickable-text text="?" color="#AAAAAA" align="Center" on-click="help-on-click"
+            <clickable-text text="?" align="Center" on-click="help-on-click"
                             hover-hint="Set reference in the 'Swing Benchmark' mode to use sliders"/>
         </vertical>
 
@@ -23,7 +23,7 @@
     <vertical preferred-width="52" pad-right="10">
         <!--    RIGHT HELP    -->
         <vertical pref-width="10" active="~direct-right-help-active" bg="panel-top-gradient">
-            <clickable-text text="?" color="#AAAAAA" align="Center" on-click="help-on-click"
+            <clickable-text text="?" align="Center" on-click="help-on-click"
                             hover-hint="Set reference in the 'Swing Benchmark' mode to use sliders"/>
         </vertical>
 

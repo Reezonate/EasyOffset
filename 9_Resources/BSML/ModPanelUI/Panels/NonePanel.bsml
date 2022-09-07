@@ -1,25 +1,15 @@
-<horizontal active="~none-panel-active">
-    <vertical preferred-width="74" spacing="1">
+<horizontal pad-bottom="5" active="~none-panel-active">
+    <vertical preferred-width="74" spacing="1" vertical-fit="PreferredSize">
         <!--    GUIDE    -->
-        <horizontal preferred-height="27" pad-bottom="5">
+        <horizontal>
             <text text="~none-panel-guide-text" font-size="3.4" align="Center"/>
-        </horizontal>
-
-        <!--    USER GUIDE LINK    -->
-        <horizontal preferred-height="5">
-            <vertical preferred-width="20">
-                <clickable-text font-size="3" face-color="#6666AA" align="Center"
-                                text="User Guide" hover-hint="The manual page will open in your browser"
-                                on-click="none-panel-more-info-on-click"/>
-            </vertical>
         </horizontal>
 
         <!--    DONATE LINK    -->
         <horizontal preferred-height="5">
             <vertical preferred-width="20">
-                <clickable-text font-size="3" face-color="#FF84D0" align="Center"
-                                text="Donate" hover-hint="The Ko-fi page will open in your browser"
-                                on-click="none-panel-donate-on-click"/>
+                <clickable-text text="Donate ♥" font-size="4" align="Center" face-color="#FF84D0" 
+                                on-click="none-panel-donate-on-click" hover-hint="The Ko-fi page will open in your browser"/>
             </vertical>
         </horizontal>
     </vertical>
