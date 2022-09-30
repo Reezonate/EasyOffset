@@ -57,10 +57,16 @@ namespace EasyOffset {
 
         public static Sprite PlayIcon;
         public static Sprite PauseIcon;
+        public static Sprite KappaIcon;
+        public static Sprite KuuramaIcon;
+        public static Sprite ChromiaIcon;
 
         private static void LoadSprites(AssetBundle assetBundle) {
             PlayIcon = assetBundle.LoadAsset<Sprite>("EO_PlayIcon");
             PauseIcon = assetBundle.LoadAsset<Sprite>("EO_PauseIcon");
+            KappaIcon = assetBundle.LoadAsset<Sprite>("EO_KappaIcon");
+            KuuramaIcon = assetBundle.LoadAsset<Sprite>("EO_Kuurama");
+            ChromiaIcon = assetBundle.LoadAsset<Sprite>("EO_Chromia");
         }
 
         #endregion

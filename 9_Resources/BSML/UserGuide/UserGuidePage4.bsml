@@ -1,0 +1,4 @@
+<vertical id="root-object" pref-width="50" vertical-fit="PreferredSize">
+    <clickable-text text="• Select manual Rotation mode" font-size="4" align="Center" on-click="rotation-on-click"/>
+    <text text="• Rotate&#10;..." align="Center"/>
+</vertical>

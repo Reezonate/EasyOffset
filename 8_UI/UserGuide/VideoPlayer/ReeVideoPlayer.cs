@@ -24,10 +24,14 @@ internal class ReeVideoPlayer : ReeUIComponentV2, IWebRequestHandler<string> {
     [UIValue("rewind-slider"), UsedImplicitly]
     private RewindSlider _rewindSlider;
 
+    [UIValue("funny"), UsedImplicitly]
+    private Funny _funny;
+
     private void Awake() {
         _downloadProgress = Instantiate<DownloadProgress>(transform);
         _playButton = Instantiate<PlayButton>(transform);
         _rewindSlider = Instantiate<RewindSlider>(transform);
+        _funny = Instantiate<Funny>(transform);
     }
 
     #endregion
@@ -60,7 +64,10 @@ internal class ReeVideoPlayer : ReeUIComponentV2, IWebRequestHandler<string> {
 
     #region Interaction
 
-    public void SetVideo(string key, string url) {
+    private bool _isFunny;
+
+    public void SetVideo(string key, string url, bool isFunny) {
+        _isFunny = isFunny;
         _videoRenderer.Stop();
         StopAllCoroutines();
         SetState(State.Uninitialized);
@@ -169,31 +176,36 @@ internal class ReeVideoPlayer : ReeUIComponentV2, IWebRequestHandler<string> {
                 _downloadProgress.SetActive(false);
                 _playButton.SetActive(false);
                 _rewindSlider.SetActive(false);
+                _funny.SetActive(false);
                 break;
             case State.Downloading:
                 _downloadProgress.Label = "Loading";
                 _downloadProgress.SetActive(true);
                 _playButton.SetActive(false);
                 _rewindSlider.SetActive(false);
+                _funny.SetActive(false);
                 break;
             case State.Playing:
                 _downloadProgress.SetActive(false);
                 _playButton.SetState(PlayButton.State.Pause);
-                _playButton.SetActive(_isHovered);
-                _rewindSlider.SetActive(_isHovered);
+                _playButton.SetActive(!_isFunny && _isHovered);
+                _rewindSlider.SetActive(!_isFunny && _isHovered);
+                _funny.SetActive(_isFunny && _isHovered);
                 break;
             case State.Paused:
             case State.Finished:
                 _downloadProgress.SetActive(false);
                 _playButton.SetState(PlayButton.State.Play);
-                _playButton.SetActive(_isHovered);
-                _rewindSlider.SetActive(_isHovered);
+                _playButton.SetActive(!_isFunny && _isHovered);
+                _rewindSlider.SetActive(!_isFunny && _isHovered);
+                _funny.SetActive(_isFunny && _isHovered);
                 break;
             case State.Failed:
                 _downloadProgress.Label = "Download failed";
                 _downloadProgress.SetActive(true);
                 _playButton.SetActive(false);
                 _rewindSlider.SetActive(false);
+                _funny.SetActive(false);
                 break;
             default: return;
         }

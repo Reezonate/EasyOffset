@@ -1,0 +1,5 @@
+<horizontal id="container-component" ignore-layout="true" pref-height="20">
+    <vertical pref-width="20">
+        <image id="image-component" src="#EO_KappaIcon"/>
+    </vertical>
+</horizontal>

@@ -1,0 +1,4 @@
+<vertical id="root-object" pref-width="50" vertical-fit="PreferredSize">
+    <clickable-text text="• Select Position Auto mode" font-size="4" align="Center" on-click="position-auto-on-click"/>
+    <text text="• bla bla bla&#10;..." font-size="4" align="Center"/>
+</vertical>
