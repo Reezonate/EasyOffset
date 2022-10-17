@@ -10,6 +10,9 @@ internal abstract class UserGuidePage: ReeUIComponentV2 {
     public virtual string VideoKey { get; } = "";
     public virtual string VideoUrl { get; } = "";
     public virtual bool IsFunny { get; } = false;
+    
+    public virtual string WatchButtonText { get; } = "Watch video";
+    public virtual string CloseButtonText { get; } = "Back";
 
     [UIObject("root-object"), UsedImplicitly]
     private protected GameObject _rootObject;

@@ -1,4 +1,6 @@
-<vertical id="root-object" pref-width="50" vertical-fit="PreferredSize">
-    <clickable-text text="• Select Swing Benchmark mode" font-size="4" align="Center" on-click="swing-benchmark-on-click"/>
-    <text text="• Swing&#10;..." align="Center"/>
+<vertical id="root-object" pad="2" spacing="1" pref-width="60" vertical-fit="PreferredSize">
+    <clickable-text text="Mode: Swing Benchmark" underlined="true" font-size="4" face-color="#FFFF88" align="Center" on-click="swing-benchmark-on-click"/>
+    <horizontal pref-height="2"/>
+    <text text="In this step you will set a Reference for your grip" font-size="3.4" align="Center"/>
+    <text text="Setting a Reference will tell the mod how exactly you're holding your controllers" font-size="3.4" align="Center"/>
 </vertical>

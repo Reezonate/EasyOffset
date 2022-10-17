@@ -14,16 +14,22 @@ internal class HoverHintsManager : IInitializable, IDisposable {
         UIEvents.HoverHintUpdatedEvent += _hoverHintController.HideHintInstant;
         UIEvents.AdjustmentModeButtonWasPressedEvent += _hoverHintController.HideHintInstant;
         UIEvents.UserGuideButtonWasPressedEvent += OnUserGuideWasOpened;
+        UIEvents.UserGuideVideoStartedEvent += MuteSongPreview;
     }
 
     public void Dispose() {
         UIEvents.HoverHintUpdatedEvent -= _hoverHintController.HideHintInstant;
         UIEvents.AdjustmentModeButtonWasPressedEvent -= _hoverHintController.HideHintInstant;
         UIEvents.UserGuideButtonWasPressedEvent -= OnUserGuideWasOpened;
+        UIEvents.UserGuideVideoStartedEvent -= MuteSongPreview;
     }
 
     private void OnUserGuideWasOpened() {
         _hoverHintController.HideHintInstant();
+        MuteSongPreview();
+    }
+
+    private void MuteSongPreview() {
         _songPreviewPlayer.FadeOut(0.6f);
     }
 }

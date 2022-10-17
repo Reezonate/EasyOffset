@@ -1,4 +1,6 @@
-<vertical id="root-object" pref-width="50" vertical-fit="PreferredSize">
-    <clickable-text text="• Select Position Auto mode" font-size="4" align="Center" on-click="position-auto-on-click"/>
-    <text text="• bla bla bla&#10;..." font-size="4" align="Center"/>
+<vertical id="root-object" pad="2" spacing="1" pref-width="55" vertical-fit="PreferredSize">
+    <clickable-text text="Mode: Position Auto" underlined="true" font-size="4" face-color="#FFFF88" align="Center" on-click="position-auto-on-click"/>
+    <horizontal pref-height="2"/>
+    <text text="In this step you will set the Pivot point" font-size="3.4" align="Center"/>
+    <text text="In a good config, you want it to be aligned with the pivot point of your wrist" font-size="3.4" align="Center"/>
 </vertical>

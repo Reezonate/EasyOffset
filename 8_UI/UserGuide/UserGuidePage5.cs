@@ -12,6 +12,7 @@ internal class UserGuidePage5 : UserGuidePage {
     public override string VideoKey => "MoreInfo";
     public override string VideoUrl => "https://github.com/Reezonate/EasyOffset/raw/experimental/media/MoreInfo.mp4";
     public override bool IsFunny => true;
+    public override string WatchButtonText => "Get pro player configs";
 
     #endregion
 

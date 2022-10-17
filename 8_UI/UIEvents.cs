@@ -32,4 +32,14 @@ internal static class UIEvents {
     }
 
     #endregion
+    
+    #region UserGuideVideoStarted
+
+    public static event Action UserGuideVideoStartedEvent;
+
+    public static void NotifyUserGuideVideoStarted() {
+        UserGuideVideoStartedEvent?.Invoke();
+    }
+
+    #endregion
 }

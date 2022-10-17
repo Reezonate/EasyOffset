@@ -102,7 +102,7 @@ internal class UserGuideModal : ReeUIComponentV2 {
             ShowVideo = false;
 
             Title = PageData.Title;
-            WatchVideoButtonActive = PageData.ShowVideoPlayer && (!PageData.IsFunny || _anyVideoWasOpened);
+            WatchVideoButtonActive = PageData.ShowVideoPlayer && (!PageData.IsFunny || !_anyVideoWasOpened);
 
             for (var i = 0; i < TotalPages; i++) {
                 _pages[i].SetActive(i == _currentPageIndex);
@@ -140,8 +140,9 @@ internal class UserGuideModal : ReeUIComponentV2 {
             _playerPanel.gameObject.SetActive(value);
             UpdateButtonText();
             if (value) {
-                _anyVideoWasOpened = true;
+                if (!PageData.IsFunny) _anyVideoWasOpened = true;
                 _videoPlayer.SetVideo(PageData.VideoKey, PageData.VideoUrl, PageData.IsFunny);
+                UIEvents.NotifyUserGuideVideoStarted();
             }
         }
     }
@@ -150,15 +151,11 @@ internal class UserGuideModal : ReeUIComponentV2 {
 
     #region WatchVideo button
 
-    private const string WatchVideoText = "Watch video";
-    private const string CloseVideoText = "Back";
-    private const string FunnyText = "Get pro player configs";
-
     private void UpdateButtonText() {
-        WatchVideoButtonText = ShowVideo ? CloseVideoText : PageData.IsFunny ? FunnyText : WatchVideoText;
+        WatchVideoButtonText = ShowVideo ? PageData.CloseButtonText : PageData.WatchButtonText;
     }
 
-    private string _watchVideoButtonText = WatchVideoText;
+    private string _watchVideoButtonText = "";
 
     [UIValue("watch-video-button-text"), UsedImplicitly]
     private string WatchVideoButtonText {

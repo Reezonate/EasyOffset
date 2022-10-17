@@ -1,4 +1,6 @@
-<vertical id="root-object" pref-width="50" vertical-fit="PreferredSize">
-    <clickable-text text="• Select Rotation Auto mode" font-size="4" align="Center" on-click="rotation-auto-on-click"/>
-    <text text="• Do a back flip&#10;..." align="Center"/>
+<vertical id="root-object" pad="2" spacing="1" pref-width="55" vertical-fit="PreferredSize">
+    <clickable-text text="Mode: Rotation Auto" underlined="true" font-size="4" face-color="#FFFF88" align="Center" on-click="rotation-auto-on-click"/>
+    <horizontal pref-height="2"/>
+    <text text="In this step you'll get a rough rotation values" font-size="3.4" align="Center"/>
+    <text text="In a good config, saber acts like an extension of your hand, not like a real sword" font-size="3.4" align="Center"/>
 </vertical>

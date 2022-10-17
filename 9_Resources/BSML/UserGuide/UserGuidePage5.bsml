@@ -6,10 +6,10 @@
     <vertical pad-top="5">
         <text text="Huge thanks for making this guide:" align="Center"/>
         <horizontal pref-height="5" horizontal-fit="PreferredSize">
-            <image src="#EO_Chromia" preserve-aspect="true"/>
+            <image src="#EO_Chromia" pref-width="7" preserve-aspect="true"/>
             <text text="Chromia&lt;color=#666666&gt;#2629" align="Center"/>
             <vertical pref-width="2"/>
-            <image src="#EO_Kuurama" preserve-aspect="true"/>
+            <image src="#EO_Kuurama" pref-width="7" preserve-aspect="true"/>
             <text text="Kuurama&lt;color=#666666&gt;#3423" align="Center"/>
         </horizontal>
     </vertical>
