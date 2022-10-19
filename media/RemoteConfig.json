@@ -1,0 +1,10 @@
+{
+  "UserGuideConfig": {
+    "GettingStarted": "https://github.com/Reezonate/EasyOffset/raw/experimental/media/GettingStarted.mp4",
+    "PositionAuto": "https://github.com/Reezonate/EasyOffset/raw/experimental/media/PositionAuto.mp4",
+    "RotationAuto": "https://github.com/Reezonate/EasyOffset/raw/experimental/media/RotationAuto.mp4",
+    "Rotation": "https://github.com/Reezonate/EasyOffset/raw/experimental/media/Rotation.mp4",
+    "MoreInfo": "https://github.com/Reezonate/EasyOffset/raw/experimental/media/MoreInfo.mp4",
+    "Funny": true
+  }
+}
