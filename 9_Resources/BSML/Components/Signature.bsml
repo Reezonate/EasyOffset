@@ -1,0 +1,6 @@
+<horizontal pref-height="4">
+    <vertical>
+        <clickable-text id="text-component" text="mod by Reezonate" align="Center" font-size="3" 
+                        hover-hint="Join my Discord server"/>
+    </vertical>
+</horizontal>

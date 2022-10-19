@@ -5,6 +5,17 @@ using JetBrains.Annotations;
 namespace EasyOffset;
 
 internal class NonePanel : ReeUIComponentV2 {
+    #region Components
+
+    [UIValue("signature"), UsedImplicitly]
+    private Signature _signature;
+
+    private void Awake() {
+        _signature = Instantiate<Signature>(transform, false);
+    }
+
+    #endregion
+
     #region Initialize
 
     protected override void OnInitialize() {

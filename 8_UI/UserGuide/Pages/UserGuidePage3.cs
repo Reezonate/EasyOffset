@@ -16,7 +16,10 @@ internal class UserGuidePage3 : UserGuidePage {
     #region Events
 
     [UIAction("swing-benchmark-on-click"), UsedImplicitly]
-    private void SwingBenchmarkOnClick() => PluginConfig.AdjustmentMode = AdjustmentMode.SwingBenchmark;
+    private void SwingBenchmarkOnClick() {
+        if (!PluginConfig.IsModPanelVisible) return;
+        PluginConfig.AdjustmentMode = AdjustmentMode.SwingBenchmark;
+    }
 
     #endregion
 }

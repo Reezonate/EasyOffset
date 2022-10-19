@@ -137,8 +137,15 @@ internal class RoomOffsetPanel : ReeUIComponentV2 {
     [UIAction("room-x-reset-on-click")]
     [UsedImplicitly]
     private void RoomXResetOnClick() {
-        var tmp = PluginConfig.MainSettingsModel.roomCenter.value;
-        PluginConfig.MainSettingsModel.roomCenter.value = new Vector3(0, tmp.y, tmp.z);
+        var beforeChange = PluginConfig.MainSettingsModel.roomCenter.value;
+        PluginConfig.MainSettingsModel.roomCenter.value = new Vector3(0, beforeChange.y, beforeChange.z);
+        var afterChange = PluginConfig.MainSettingsModel.roomCenter.value;
+            
+        PluginConfig.CreateUndoStep(
+            "Room Offset",
+            () => PluginConfig.MainSettingsModel.roomCenter.value = beforeChange,
+            () => PluginConfig.MainSettingsModel.roomCenter.value = afterChange
+        );
     }
 
     #endregion
@@ -169,8 +176,15 @@ internal class RoomOffsetPanel : ReeUIComponentV2 {
     [UIAction("room-y-reset-on-click")]
     [UsedImplicitly]
     private void RoomYResetOnClick() {
-        var tmp = PluginConfig.MainSettingsModel.roomCenter.value;
-        PluginConfig.MainSettingsModel.roomCenter.value = new Vector3(tmp.x, 0, tmp.z);
+        var beforeChange = PluginConfig.MainSettingsModel.roomCenter.value;
+        PluginConfig.MainSettingsModel.roomCenter.value = new Vector3(beforeChange.x, 0, beforeChange.z);
+        var afterChange = PluginConfig.MainSettingsModel.roomCenter.value;
+            
+        PluginConfig.CreateUndoStep(
+            "Room Offset",
+            () => PluginConfig.MainSettingsModel.roomCenter.value = beforeChange,
+            () => PluginConfig.MainSettingsModel.roomCenter.value = afterChange
+        );
     }
 
     #endregion
@@ -201,8 +215,15 @@ internal class RoomOffsetPanel : ReeUIComponentV2 {
     [UIAction("room-z-reset-on-click")]
     [UsedImplicitly]
     private void RoomZResetOnClick() {
-        var tmp = PluginConfig.MainSettingsModel.roomCenter.value;
-        PluginConfig.MainSettingsModel.roomCenter.value = new Vector3(tmp.x, tmp.y, 0);
+        var beforeChange = PluginConfig.MainSettingsModel.roomCenter.value;
+        PluginConfig.MainSettingsModel.roomCenter.value = new Vector3(beforeChange.x, beforeChange.y, 0);
+        var afterChange = PluginConfig.MainSettingsModel.roomCenter.value;
+            
+        PluginConfig.CreateUndoStep(
+            "Room Offset",
+            () => PluginConfig.MainSettingsModel.roomCenter.value = beforeChange,
+            () => PluginConfig.MainSettingsModel.roomCenter.value = afterChange
+        );
     }
 
     #endregion

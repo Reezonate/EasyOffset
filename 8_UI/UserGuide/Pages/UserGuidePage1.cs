@@ -16,7 +16,10 @@ internal class UserGuidePage1 : UserGuidePage {
     #region Events
 
     [UIAction("position-auto-on-click"), UsedImplicitly]
-    private void PositionAutoOnClick() => PluginConfig.AdjustmentMode = AdjustmentMode.PositionAuto;
+    private void PositionAutoOnClick() {
+        if (!PluginConfig.IsModPanelVisible) return;
+        PluginConfig.AdjustmentMode = AdjustmentMode.PositionAuto;
+    }
 
     #endregion
 }

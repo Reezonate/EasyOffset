@@ -25,7 +25,7 @@ internal class RemoteConfig : PersistentSingleton<RemoteConfig>, IWebRequestHand
 
     private class RequestDescriptor : IWebRequestDescriptor<RemoteConfigData> {
         public UnityWebRequest CreateWebRequest() {
-            return UnityWebRequest.Get("https://github.com/Reezonate/EasyOffset/raw/experimental/media/RemoteConfig.json");
+            return UnityWebRequest.Get("https://github.com/Reezonate/EasyOffset/raw/master/media/RemoteConfig.json");
         }
 
         public RemoteConfigData ParseResponse(UnityWebRequest request) {

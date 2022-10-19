@@ -1,6 +1,3 @@
-using BeatSaberMarkupLanguage.Attributes;
-using JetBrains.Annotations;
-
 namespace EasyOffset;
 
 internal class UserGuidePage0 : UserGuidePage {
@@ -11,6 +8,6 @@ internal class UserGuidePage0 : UserGuidePage {
     public override string VideoKey => "GettingStarted";
     public override string VideoUrl => RemoteConfig.UserGuideConfig.GettingStartedVideoURL;
     public override string WatchButtonText => "Start watching";
-    
+
     #endregion
 }

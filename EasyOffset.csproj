@@ -259,6 +259,7 @@
     <Compile Include="8_UI\Behaviours\SmoothHoverController.cs" />
     <Compile Include="8_UI\Behaviours\VisibilityTracker.cs" />
     <Compile Include="8_UI\Components\LabeledSlidersRow.cs" />
+    <Compile Include="8_UI\Components\Signature.cs" />
     <Compile Include="8_UI\Components\SliderAnnotations.cs" />
     <Compile Include="8_UI\Components\SlidersRowAnnotations.cs" />
     <Compile Include="8_UI\Components\SmoothSlider.cs" />
@@ -360,6 +361,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="9_Resources\BSML\Components\Signature.bsml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

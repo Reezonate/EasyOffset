@@ -16,7 +16,10 @@ internal class UserGuidePage2 : UserGuidePage {
     #region Events
 
     [UIAction("rotation-auto-on-click"), UsedImplicitly]
-    private void RotationAutoOnClick() => PluginConfig.AdjustmentMode = AdjustmentMode.RotationAuto;
+    private void RotationAutoOnClick() {
+        if (!PluginConfig.IsModPanelVisible) return;
+        PluginConfig.AdjustmentMode = AdjustmentMode.RotationAuto;
+    }
 
     #endregion
 }

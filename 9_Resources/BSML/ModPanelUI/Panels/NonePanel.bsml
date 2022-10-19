@@ -12,5 +12,10 @@
                                 on-click="none-panel-donate-on-click" hover-hint="The Ko-fi page will open in your browser"/>
             </vertical>
         </horizontal>
+
+        <!--    SIGNATURE    -->
+        <macro.as-host host="signature">
+            <macro.reparent transform="ui-component"/>
+        </macro.as-host>
     </vertical>
 </horizontal>
