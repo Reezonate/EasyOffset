@@ -1,5 +1,5 @@
 <vertical id="root-object" pad="2" spacing="1" pref-width="54" vertical-fit="PreferredSize">
-    <clickable-text text="Mode: Rotation" underlined="true" font-size="4" face-color="#FFFF88" align="Center" on-click="rotation-on-click"/>
+    <clickable-text text="Mode: Rotation (manual)" underlined="true" font-size="4" face-color="#FFFF88" align="Center" on-click="rotation-on-click"/>
     <horizontal pref-height="2"/>
     <text text="Final step, that may take several weeks" font-size="3.4" align="Center"/>
     <text text="Analyze your gameplay, make tiny changes, play more, repeat" font-size="3.4" align="Center"/>

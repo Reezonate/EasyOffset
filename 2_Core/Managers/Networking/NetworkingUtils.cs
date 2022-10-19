@@ -11,13 +11,13 @@ namespace EasyOffset {
             IWebRequestDescriptor<T> requestDescriptor,
             IWebRequestHandler<T> requestHandler,
             int retries = 1,
-            int timeoutSeconds = 30
+            int timeoutSeconds = 0
         ) {
             for (var i = 1; i <= retries; i++) {
                 requestHandler.OnRequestStarted();
 
                 var request = requestDescriptor.CreateWebRequest();
-                request.timeout = timeoutSeconds;
+                if (timeoutSeconds > 0) request.timeout = timeoutSeconds;
 
                 Plugin.Log.Debug($"Request[{request.GetHashCode()}]: {request.url}");
                 yield return AwaitRequestWithProgress(request, requestHandler);

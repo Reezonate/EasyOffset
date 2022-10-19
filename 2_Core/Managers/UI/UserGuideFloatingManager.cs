@@ -48,10 +48,10 @@ public class UserGuideFloatingManager : IInitializable, IDisposable {
 
     #region ResetPosition
 
-    private static readonly Vector3 DefaultPosition = new Vector3(0, 1, 1);
+    private static readonly Vector3 DefaultPosition = new(0, 1, 1);
     private static readonly Quaternion DefaultRotation = Quaternion.identity;
-    private const float SpawnDistance = 2.0f;
-    private const float SpawnHeight = 1.0f;
+    private const float SpawnDistance = 1.1f;
+    private const float SpawnHeight = 0.7f;
 
     private void ResetPosition() {
         var mainCamera = Camera.main;
