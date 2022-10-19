@@ -1,0 +1,3 @@
+<horizontal id="container-component" ignore-layout="true" anchor-pos-y="12">
+    <text id="text-component" font-size="5" align="Center"/>
+</horizontal>

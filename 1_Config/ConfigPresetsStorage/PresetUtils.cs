@@ -20,7 +20,7 @@ namespace EasyOffset {
         }
 
         private static IConfigPreset ParsePresetFromJson(JObject jObject) {
-            var presetVersion = jObject.GetValue("version", StringComparison.OrdinalIgnoreCase)?.Value<string>();
+            var presetVersion = jObject.GetValueUnsafe<string>("version");
             return presetVersion switch {
                 ConfigPresetV2.Version => ConfigPresetV2.Deserialize(jObject),
                 ConfigPresetV1.Version => ConfigPresetV1.Deserialize(jObject),

@@ -27,23 +27,41 @@ internal static partial class PluginConfig {
 
     #region Mirror
 
-    public static void Mirror(Hand mirrorSource) {
+    public static void Mirror(Hand mirrorSource, bool mirrorPosition, bool mirrorRotation, bool mirrorReference) {
         DisableConfigChangeEvent();
 
         switch (mirrorSource) {
             case Hand.Left:
-                RightSaberPivotPosition = TransformUtils.MirrorVector(LeftSaberPivotPosition);
-                RightSaberZOffset = LeftSaberZOffset;
-                RightSaberRotation = TransformUtils.MirrorRotation(LeftSaberRotation);
-                RightSaberHasReference = LeftSaberHasReference;
-                RightSaberReferenceRotation = TransformUtils.MirrorRotation(LeftSaberReferenceRotation);
+                if (mirrorPosition) {
+                    RightSaberPivotPosition = TransformUtils.MirrorVector(LeftSaberPivotPosition);
+                    RightSaberZOffset = LeftSaberZOffset;
+                }
+
+                if (mirrorRotation) {
+                    RightSaberRotation = TransformUtils.MirrorRotation(LeftSaberRotation);
+                }
+
+                if (mirrorReference) {
+                    RightSaberHasReference = LeftSaberHasReference;
+                    RightSaberReferenceRotation = TransformUtils.MirrorRotation(LeftSaberReferenceRotation);
+                }
+
                 break;
             case Hand.Right:
-                LeftSaberPivotPosition = TransformUtils.MirrorVector(RightSaberPivotPosition);
-                LeftSaberZOffset = RightSaberZOffset;
-                LeftSaberRotation = TransformUtils.MirrorRotation(RightSaberRotation);
-                LeftSaberHasReference = RightSaberHasReference;
-                LeftSaberReferenceRotation = TransformUtils.MirrorRotation(RightSaberReferenceRotation);
+                if (mirrorPosition) {
+                    LeftSaberPivotPosition = TransformUtils.MirrorVector(RightSaberPivotPosition);
+                    LeftSaberZOffset = RightSaberZOffset;
+                }
+
+                if (mirrorRotation) {
+                    LeftSaberRotation = TransformUtils.MirrorRotation(RightSaberRotation);
+                }
+
+                if (mirrorReference) {
+                    LeftSaberHasReference = RightSaberHasReference;
+                    LeftSaberReferenceRotation = TransformUtils.MirrorRotation(RightSaberReferenceRotation);
+                }
+
                 break;
             default: throw new ArgumentOutOfRangeException(nameof(mirrorSource), mirrorSource, null);
         }

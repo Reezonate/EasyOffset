@@ -1,30 +1,11 @@
 using System;
 using JetBrains.Annotations;
-using UnityEngine.EventSystems;
 using UnityEngine.XR;
 using Zenject;
 
 namespace EasyOffset {
     [UsedImplicitly]
-    public class ReeInputManager : IInitializable, IDisposable, ITickable {
-        #region Pointer Events Static
-
-        public static event Action<ReeTriggerState> PointerDownAction;
-        public static event Action<ReeTriggerState> PointerUpAction;
-
-        private static event Action<PointerEventData> PointerDownActionPrivate;
-        private static event Action<PointerEventData> PointerUpActionPrivate;
-
-        public static void NotifyPointerDown(PointerEventData eventData) {
-            PointerDownActionPrivate?.Invoke(eventData);
-        }
-
-        public static void NotifyPointerUp(PointerEventData eventData) {
-            PointerUpActionPrivate?.Invoke(eventData);
-        }
-
-        #endregion
-
+    public class ReeInputManager : ITickable {
         #region Constructor
 
         private readonly VRControllersInputManager _vrControllersInputManager;
@@ -42,6 +23,7 @@ namespace EasyOffset {
         #region Tick
 
         public void Tick() {
+            if (!PluginConfig.IsModPanelVisible) return;
             _leftReeInputDevice.Update();
             _rightReeInputDevice.Update();
             UpdateTriggerState();
@@ -51,35 +33,38 @@ namespace EasyOffset {
 
         #region Trigger State
 
-        private ReeTriggerState _triggerState = ReeTriggerState.Released;
+        public static ReeTriggerState TriggerState { get; private set; } = ReeTriggerState.Released;
 
         private void UpdateTriggerState() {
             UpdateTriggers(out var leftWasPressed, out var leftWasReleased, out var rightWasPressed, out var rightWasReleased);
 
-            switch (_triggerState) {
-                case ReeTriggerState.Released: {
+            switch (TriggerState) {
+                case ReeTriggerState.Released:
+                {
                     if (rightWasPressed) {
-                        _triggerState = ReeTriggerState.RightPressed;
+                        TriggerState = ReeTriggerState.RightPressed;
                     } else if (leftWasPressed) {
-                        _triggerState = ReeTriggerState.LeftPressed;
+                        TriggerState = ReeTriggerState.LeftPressed;
                     }
 
                     break;
                 }
-                case ReeTriggerState.LeftPressed: {
+                case ReeTriggerState.LeftPressed:
+                {
                     if (rightWasPressed) {
-                        _triggerState = ReeTriggerState.RightPressed;
+                        TriggerState = ReeTriggerState.RightPressed;
                     } else if (leftWasReleased) {
-                        _triggerState = ReeTriggerState.Released;
+                        TriggerState = ReeTriggerState.Released;
                     }
 
                     break;
                 }
-                case ReeTriggerState.RightPressed: {
+                case ReeTriggerState.RightPressed:
+                {
                     if (leftWasPressed) {
-                        _triggerState = ReeTriggerState.LeftPressed;
+                        TriggerState = ReeTriggerState.LeftPressed;
                     } else if (rightWasReleased) {
-                        _triggerState = ReeTriggerState.Released;
+                        TriggerState = ReeTriggerState.Released;
                     }
 
                     break;
@@ -109,28 +94,6 @@ namespace EasyOffset {
 
             _leftPressed = isLeftTriggerDown;
             _rightPressed = isRightTriggerDown;
-        }
-
-        #endregion
-
-        #region Pointer Events Instance
-
-        public void Initialize() {
-            PointerDownActionPrivate += OnPointerDown;
-            PointerUpActionPrivate += OnPointerUp;
-        }
-
-        public void Dispose() {
-            PointerDownActionPrivate -= OnPointerDown;
-            PointerUpActionPrivate -= OnPointerUp;
-        }
-
-        private void OnPointerDown(PointerEventData eventData) {
-            PointerDownAction?.Invoke(_triggerState);
-        }
-
-        private void OnPointerUp(PointerEventData eventData) {
-            PointerUpAction?.Invoke(_triggerState);
         }
 
         #endregion

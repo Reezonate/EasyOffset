@@ -1,0 +1,5 @@
+<vertical id="root-object" pad="2" spacing="1" pref-width="54" vertical-fit="PreferredSize">
+    <text text="Welcome to Easy Offset!" font-size="4.5" align="Center"/>
+    <horizontal pref-height="2"/>
+    <text text="In this step-by-step video guide you will learn how to make your own controller settings" font-size="3.4" align="Center"/>
+</vertical>

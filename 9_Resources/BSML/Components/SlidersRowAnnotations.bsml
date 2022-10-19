@@ -1,0 +1,8 @@
+<horizontal pref-height="3.0" spacing="12" horizontal-fit="PreferredSize">
+    <macro.as-host host="left-slider-annotations">
+        <macro.reparent transform="ui-component"/>
+    </macro.as-host>
+    <macro.as-host host="right-slider-annotations">
+        <macro.reparent transform="ui-component"/>
+    </macro.as-host>
+</horizontal>

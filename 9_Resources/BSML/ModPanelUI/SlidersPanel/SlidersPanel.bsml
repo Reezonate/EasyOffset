@@ -1,0 +1,11 @@
+<vertical id="container" ignore-layout="true" active="~is-active" spacing="2" vertical-fit="PreferredSize">
+    <macro.as-host host="reset-and-mirror-controls">
+        <macro.reparent transform="ui-component"/>
+    </macro.as-host>
+    <macro.as-host host="direct-config-sliders">
+        <macro.reparent transform="ui-component"/>
+    </macro.as-host>
+    <macro.as-host host="reference-controls">
+        <macro.reparent transform="ui-component"/>
+    </macro.as-host>
+</vertical>

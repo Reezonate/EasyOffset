@@ -6,6 +6,7 @@ namespace EasyOffset {
         Rotation,
         SwingBenchmark,
         Direct,
+        PositionAuto,
         RotationAuto,
         RoomOffset
     }

@@ -1,0 +1,32 @@
+<horizontal spacing="1" horizontal-fit="PreferredSize">
+    <vertical preferred-width="40">
+        <horizontal>
+            <button preferred-width="20" text="Save" interactable="~interactable" on-click="bp-save-on-click" hover-hint="Save current preset"/>
+            <button preferred-width="20" text="Load" interactable="~interactable" on-click="bp-load-on-click" hover-hint="Load config preset"/>
+        </horizontal>
+    </vertical>
+
+    <macro.as-host host="warning-icon">
+        <macro.reparent transform="ui-component"/>
+    </macro.as-host>
+    
+    <vertical preferred-width="5">
+        <clickable-image active="~interactable" src="#TutorialIcon" pref-height="5" preserve-aspect="true"
+                         on-click="user-guide-on-click" hover-hint="User Guide"/>
+    </vertical>
+
+    <vertical preferred-width="25" pad-left="5">
+        <horizontal id="undo-redo-buttons-container" active="~interactable">
+            <macro.as-host host="undo-redo-buttons">
+                <macro.reparent transform="ui-component"/>
+            </macro.as-host>
+        </horizontal>
+    </vertical>
+
+    <vertical preferred-width="30">
+        <horizontal id="ui-lock-container">
+            <toggle-setting text="UI Lock" value="lock-value" on-change="lock-on-change" apply-on-change="true"
+                            hover-hint="Disable UI interaction to prevent accidental changes"/>
+        </horizontal>
+    </vertical>
+</horizontal>

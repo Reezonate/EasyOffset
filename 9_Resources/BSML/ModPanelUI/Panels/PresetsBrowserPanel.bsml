@@ -1,0 +1,49 @@
+<vertical active="~pb-active" preferred-height="70">
+    <!--    FILE NAME TEXT FIELD    -->
+    <horizontal pad-top="2" pad-right="5" preferred-height="10">
+        <string-setting text="Beat Saber\UserData\EasyOffset\Presets\" value="pb-name-value"
+                        bind-value="true" apply-on-change="true" on-change="pb-name-on-change"/>
+    </horizontal>
+
+    <!--    PRESETS LIST    -->
+    <horizontal preferred-height="42">
+        <vertical preferred-width="90">
+            <horizontal>
+                <vertical preferred-width="70">
+                    <horizontal preferred-height="6" bg="round-rect-panel">
+                        <vertical preferred-width="20">
+                            <text text="Time" align="Center"/>
+                        </vertical>
+                        <vertical preferred-width="20">
+                            <text text="Name" align="Center"/>
+                        </vertical>
+                        <vertical preferred-width="30"/>
+                    </horizontal>
+                    <horizontal preferred-height="36" bg="round-rect-panel">
+                        <list id="pb-list" cell-size="5" list-style="Simple" select-cell="pb-list-select-cell"/>
+                    </horizontal>
+                </vertical>
+                <vertical preferred-width="20" bg="round-rect-panel">
+                    <horizontal preferred-height="6">
+                        <button text="Refresh" on-click="pb-refresh-on-click"/>
+                    </horizontal>
+                    <horizontal preferred-height="2"/>
+                    <page-button event-click='pb-list#PageUp' direction='Up'/>
+                    <horizontal preferred-height="20"/>
+                    <page-button event-click='pb-list#PageDown' direction='Down'/>
+                    <horizontal preferred-height="2"/>
+                </vertical>
+            </horizontal>
+        </vertical>
+    </horizontal>
+
+    <!--    BUTTONS    -->
+    <horizontal preferred-height="10">
+        <button text="Cancel" preferred-width="33" on-click="pb-cancel-on-click" hover-hint="Back to adjustment menu"/>
+        <button text="Save" preferred-width="33" active="~pb-save-active" on-click="pb-save-on-click" hover-hint="~pb-save-hint"/>
+        <button text="Load" preferred-width="33" active="~pb-load-active" on-click="pb-load-on-click" hover-hint="~pb-load-hint"/>
+    </horizontal>
+
+    <!--    SPACER    -->
+    <horizontal preferred-height="6"/>
+</vertical>

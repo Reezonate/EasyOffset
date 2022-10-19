@@ -44,16 +44,15 @@ internal static partial class PluginConfig {
     #endregion
 
     #region UI Lock
-
-    private static readonly CachedVariable<bool> CachedUILock = new(
-        () => ConfigFileData.Instance.UILock
-    );
+    
+    public static event Action<bool> UILockChangedEvent;
 
     public static bool UILock {
-        get => CachedUILock.Value;
+        get => ConfigFileData.Instance.UILock;
         set {
-            CachedUILock.Value = value;
+            if (ConfigFileData.Instance.UILock.Equals(value)) return;
             ConfigFileData.Instance.UILock = value;
+            UILockChangedEvent?.Invoke(value);
         }
     }
 

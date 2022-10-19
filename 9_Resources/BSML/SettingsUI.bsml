@@ -4,7 +4,14 @@
     <macro.define name="bottom-spacer-height" value="10"/>
     <macro.define name="right-spacer-width" value="10"/>
     
-    <vertical preferred-width="100" pad-bottom="~bottom-spacer-height">
+    <!--    UNDO / REDO    -->
+    <horizontal ignore-layout="true" anchor-pos-x="34" anchor-pos-y="-35">
+        <macro.as-host host="undo-redo-buttons">
+            <macro.reparent transform="ui-component"/>
+        </macro.as-host>
+    </horizontal>
+    
+    <vertical preferred-width="100" pad-bottom="~bottom-spacer-height" spacing="1">
         <!--    WHERE CONFIG?    -->
         <horizontal preferred-height="6">
             <vertical pad-right="~settings-pad-right">
@@ -26,32 +33,37 @@
         </horizontal>
 
         <!--    CONFIG MIGRATION    -->
-        <horizontal preferred-height="32">
+        <horizontal preferred-height="36">
             <vertical pad-right="~settings-pad-right">
                 <text text="Config Migration" font-size="4" font-color="#aaaaaa" align="Center"/>
                 <slider-setting text="Import Z Offset" min="~zo-min" max="~zo-max" increment="~zo-increment" value="zo-value"
                                 apply-on-change="true" hover-hint="~zo-hint"/>
 
                 <!--    IMPORT / EXPORT   -->
-                <horizontal preferred-height="14" spacing="5">
+                <horizontal preferred-height="20" spacing="5" pad-top="2">
+                    <macro.define name="button-width" value="44"/>
+                    
                     <!--    IMPORT    -->
                     <vertical>
-                        <button text="Import from settings" on-click="import-from-settings-on-click"
+                        <button text="Universal Import" pref-width="~button-width" on-click="universal-import-on-click" 
+                                hover-hint="Import offsets from any source&#13;&#10;(EasyOffset has to be disabled)"
+                                interactable="~universal-import-interactable"/>
+                        <button text="Import from settings" pref-width="~button-width" on-click="import-from-settings-on-click"
                                 hover-hint="Import offsets from the base game controller settings"/>
-                        <button text="Import from SaberTailor" on-click="import-from-tailor-on-click"
-                                hover-hint="Import offsets from the UserData/SaberTailor.json file"/>
                     </vertical>
                     <!--    EXPORT    -->
                     <vertical>
-                        <button text="Export to settings" on-click="export-to-settings-on-click"
+                        <button text="Export to settings (right)" pref-width="~button-width" on-click="export-to-settings-right-on-click"
                                 hover-hint="Export right hand offsets to the base game controller settings"/>
-                        <button text="Export to SaberTailor" on-click="export-to-tailor-on-click"
+                        <button text="Export to settings (left)" pref-width="~button-width" on-click="export-to-settings-left-on-click"
+                                hover-hint="Export left hand offsets to the base game controller settings"/>
+                        <button text="Export to SaberTailor" pref-width="~button-width" on-click="export-to-tailor-on-click"
                                 hover-hint="Create SaberTailor config profile from current offsets"/>
                     </vertical>
                 </horizontal>
 
                 <!--    STATUS    -->
-                <horizontal preferred-height="6">
+                <horizontal preferred-height="8" pad-top="2">
                     <vertical>
                         <text text="~status-text" align="Center"/>
                     </vertical>

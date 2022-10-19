@@ -1,0 +1,16 @@
+<horizontal pad-bottom="5" active="~none-panel-active">
+    <vertical preferred-width="74" spacing="1" vertical-fit="PreferredSize">
+        <!--    GUIDE    -->
+        <horizontal>
+            <text text="~none-panel-guide-text" font-size="3.4" align="Center"/>
+        </horizontal>
+
+        <!--    DONATE LINK    -->
+        <horizontal preferred-height="5">
+            <vertical preferred-width="20">
+                <clickable-text text="Donate ♥" font-size="4" align="Center" face-color="#FF84D0" 
+                                on-click="none-panel-donate-on-click" hover-hint="The Ko-fi page will open in your browser"/>
+            </vertical>
+        </horizontal>
+    </vertical>
+</horizontal>

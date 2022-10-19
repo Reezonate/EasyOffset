@@ -23,9 +23,11 @@ namespace EasyOffset {
             BindingFlags.Instance | BindingFlags.NonPublic
         );
 
-        [CanBeNull] private static readonly Type GameplaySetupMenuType = BsmlUtils.GetType("GameplaySetupMenu");
+        [CanBeNull]
+        private static readonly Type GameplaySetupMenuType = BsmlUtils.GetType("GameplaySetupMenu");
 
-        [CanBeNull] private static readonly FieldInfo NameFieldInfo = GameplaySetupMenuType?.GetField(
+        [CanBeNull]
+        private static readonly FieldInfo NameFieldInfo = GameplaySetupMenuType?.GetField(
             "name",
             BindingFlags.Instance | BindingFlags.Public
         );

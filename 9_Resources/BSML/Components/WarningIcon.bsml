@@ -1,0 +1,4 @@
+<vertical preferred-width="10" pad="2">
+    <image source="EasyOffset._9_Resources.Icons.Warning.png" preserve-aspect="true"
+           active="~warning-active" image-color="~warning-color" hover-hint="~warning-hint"/>
+</vertical>

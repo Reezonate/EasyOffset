@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EasyOffset</RootNamespace>
     <AssemblyName>EasyOffset</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>portable</DebugType>
@@ -47,6 +47,9 @@
     <OutputPath>bin\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SiraUtil">
+      <HintPath>$(BeatSaberDir)\Plugins\SiraUtil.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -108,6 +111,9 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\UnityEngine.UI.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
@@ -123,13 +129,23 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestModule">
+      <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\UnityEngine.UnityWebRequestModule.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.VideoModule">
+      <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\UnityEngine.VideoModule.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="UnityEngine.VRModule">
       <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\UnityEngine.VRModule.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.XRModule">
-      <HintPath>$(BeatSaberDir)\Managed\UnityEngine.XRModule.dll</HintPath>
+      <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\UnityEngine.XRModule.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
@@ -145,9 +161,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="0_Harmony\PermanentPatches\MenuInstallerPermanentPatch.cs" />
     <Compile Include="0_Harmony\SceneTransitionPatch.cs" />
     <Compile Include="0_Harmony\UIPatches\ModMenuOrderPatch.cs" />
-    <Compile Include="0_Harmony\UIPatches\SelectablePatches.cs" />
     <Compile Include="1_Config\ConfigPresets\ConfigPresetV2.cs" />
     <Compile Include="1_Config\ConfigUpgrade\ConfigUpgrade.cs" />
     <Compile Include="1_Config\PluginConfig\LeftHandConfig.cs" />
@@ -156,6 +172,7 @@
     <Compile Include="1_Config\PluginConfig\Utilities.cs" />
     <Compile Include="1_Config\PluginConfig\HandConfigActions.cs" />
     <Compile Include="1_Config\PluginConfig\UserPreferences.cs" />
+    <Compile Include="1_Config\RemoteConfig\RemoteConfig.cs" />
     <Compile Include="1_Config\Utils\CachedVariable.cs" />
     <Compile Include="1_Config\Utils\ConfigFileQuaternion.cs" />
     <Compile Include="2_Core\Installers\OnAppInstaller.cs" />
@@ -163,10 +180,12 @@
     <Compile Include="2_Core\Managers\Abomination\Abomination.cs" />
     <Compile Include="2_Core\Managers\Abomination\AbominationTransformManager.cs" />
     <Compile Include="2_Core\Managers\Adjustments\AbstractAdjustmentModeManager.cs" />
+    <Compile Include="2_Core\Managers\Adjustments\Auto\PositionAutoAdjustmentModeManager.cs" />
     <Compile Include="2_Core\Managers\Adjustments\Auto\RotationAutoAdjustmentModeManager.cs" />
     <Compile Include="2_Core\Managers\Adjustments\Auto\SwingBenchmarkAdjustmentModeManager.cs" />
     <Compile Include="2_Core\Managers\Adjustments\AdjustmentBlockManager.cs" />
     <Compile Include="2_Core\Managers\Adjustments\Manual\BasicAdjustmentModeManager.cs" />
+    <Compile Include="2_Core\Managers\Adjustments\Manual\DirectAdjustmentModeManager.cs" />
     <Compile Include="2_Core\Managers\Adjustments\Manual\RotationAdjustmentModeManager.cs" />
     <Compile Include="2_Core\Managers\Adjustments\Manual\PositionAdjustmentModeManager.cs" />
     <Compile Include="2_Core\Managers\Adjustments\Manual\RoomOffsetAdjustmentModeManager.cs" />
@@ -176,12 +195,19 @@
     <Compile Include="2_Core\Managers\Gizmos\GizmosManager.cs" />
     <Compile Include="2_Core\Managers\Input\ReeInputDevice.cs" />
     <Compile Include="2_Core\Managers\Input\ReeInputManager.cs" />
+    <Compile Include="2_Core\Managers\Networking\IWebRequestDescriptor.cs" />
+    <Compile Include="2_Core\Managers\Networking\IWebRequestHandler.cs" />
+    <Compile Include="2_Core\Managers\Networking\NetworkingUtils.cs" />
+    <Compile Include="2_Core\Managers\UI\UserGuideFloatingManager.cs" />
+    <Compile Include="2_Core\Managers\UI\UIManager.cs" />
+    <Compile Include="2_Core\Managers\UI\VideoCache.cs" />
     <Compile Include="2_Core\StructsAndEnums\ControllerButton.cs" />
     <Compile Include="2_Core\StructsAndEnums\ControllerType.cs" />
     <Compile Include="2_Core\StructsAndEnums\AdjustmentMode.cs" />
     <Compile Include="2_Core\StructsAndEnums\Hand.cs" />
     <Compile Include="2_Core\StructsAndEnums\HandMenuAction.cs" />
     <Compile Include="2_Core\StructsAndEnums\ReeTriggerState.cs" />
+    <Compile Include="2_Core\StructsAndEnums\SliderValueType.cs" />
     <Compile Include="2_Core\StructsAndEnums\VRControllers.cs" />
     <Compile Include="0_Harmony\HarmonyHelper.cs" />
     <Compile Include="0_Harmony\InstallersPatches\MenuInstallerPatch.cs" />
@@ -216,34 +242,59 @@
     <Compile Include="3_AssetBundle\Indicators\DistanceIndicator.cs" />
     <Compile Include="3_AssetBundle\Indicators\IndicatorText.cs" />
     <Compile Include="3_AssetBundle\Indicators\VelocityIndicator.cs" />
-    <Compile Include="3_AssetBundle\SwingBenchmark\BenchmarkTrails.cs" />
     <Compile Include="3_AssetBundle\SwingBenchmark\SwingBenchmarkController.cs" />
     <Compile Include="3_AssetBundle\SwingBenchmark\SwingIndicators.cs" />
-    <Compile Include="3_AssetBundle\Trails\Core\TrailCurvedSegment.cs" />
-    <Compile Include="3_AssetBundle\Trails\Core\TrailLinearSegment.cs" />
-    <Compile Include="3_AssetBundle\Trails\Core\TrailMesh.cs" />
-    <Compile Include="3_AssetBundle\Trails\Core\TrailNode.cs" />
-    <Compile Include="3_AssetBundle\Trails\Core\TrailSpline.cs" />
-    <Compile Include="3_AssetBundle\Trails\SimpleTrail.cs" />
+    <Compile Include="3_AssetBundle\Trails\ComputeTrailCore\AbstractComputeTrail.cs" />
+    <Compile Include="3_AssetBundle\Trails\ComputeTrailCore\ComputeTrailMesh.cs" />
+    <Compile Include="3_AssetBundle\Trails\ComputeTrailCore\ComputeTrailNode.cs" />
+    <Compile Include="3_AssetBundle\Trails\ReeTrail.cs" />
     <Compile Include="7_Utils\EnumUtils\WarningLevelUtils.cs" />
     <Compile Include="7_Utils\StaticUtils\AsyncUtils.cs" />
     <Compile Include="7_Utils\StaticUtils\CompatibilityUtils.cs" />
-    <Compile Include="8_UI\ModPanelUI\BenchmarkPanel.cs" />
-    <Compile Include="8_UI\ModPanelUI\General.cs" />
-    <Compile Include="8_UI\ModPanelUI\MainPage.cs" />
+    <Compile Include="7_Utils\StaticUtils\JsonUtils.cs" />
+    <Compile Include="7_Utils\StaticUtils\VFXUtils.cs" />
+    <Compile Include="7_Utils\UtilityClasses\DirectModeVariable.cs" />
+    <Compile Include="7_Utils\UtilityClasses\RotationPointTracker.cs" />
+    <Compile Include="8_UI\Behaviours\HoverController.cs" />
+    <Compile Include="8_UI\Behaviours\SmoothHoverController.cs" />
+    <Compile Include="8_UI\Behaviours\VisibilityTracker.cs" />
+    <Compile Include="8_UI\Components\LabeledSlidersRow.cs" />
+    <Compile Include="8_UI\Components\SliderAnnotations.cs" />
+    <Compile Include="8_UI\Components\SlidersRowAnnotations.cs" />
+    <Compile Include="8_UI\Components\SmoothSlider.cs" />
+    <Compile Include="8_UI\Components\UndoRedoButtons.cs" />
+    <Compile Include="8_UI\Components\WarningIcon.cs" />
+    <Compile Include="8_UI\Modals\AdjustmentModeSelectorModal.cs" />
+    <Compile Include="8_UI\ModPanelUI\ModPanelUI.cs" />
     <Compile Include="8_UI\ModPanelUI\ModPanelUIHelper.cs" />
-    <Compile Include="8_UI\ModPanelUI\NonePanel.cs" />
-    <Compile Include="8_UI\ModPanelUI\SlidersPanel\DirectConfigActions.cs" />
-    <Compile Include="8_UI\ModPanelUI\SlidersPanel\Constants.cs" />
-    <Compile Include="8_UI\ModPanelUI\SlidersPanel\LeftHandPanel.cs" />
-    <Compile Include="8_UI\ModPanelUI\SlidersPanel\DirectPanelState.cs" />
-    <Compile Include="8_UI\ModPanelUI\SlidersPanel\RightHandPanel.cs" />
-    <Compile Include="8_UI\ModPanelUI\SlidersPanel\Smoothing.cs" />
-    <Compile Include="8_UI\ModPanelUI\SlidersPanel\Utils.cs" />
-    <Compile Include="8_UI\ModPanelUI\PresetsBrowser.cs" />
-    <Compile Include="8_UI\ModPanelUI\RoomOffsetPanel.cs" />
+    <Compile Include="8_UI\ModPanelUI\Panels\BottomPanel.cs" />
+    <Compile Include="8_UI\ModPanelUI\Panels\NonePanel.cs" />
+    <Compile Include="8_UI\ModPanelUI\Panels\PresetsBrowserPanel.cs" />
+    <Compile Include="8_UI\ModPanelUI\Panels\RoomOffsetPanel.cs" />
+    <Compile Include="8_UI\ModPanelUI\Panels\SwingBenchmarkPanel.cs" />
+    <Compile Include="8_UI\ModPanelUI\Panels\TopPanel.cs" />
+    <Compile Include="8_UI\ModPanelUI\SlidersPanel\DirectConfigSliders.cs" />
+    <Compile Include="8_UI\ModPanelUI\SlidersPanel\ReferenceControls.cs" />
+    <Compile Include="8_UI\ModPanelUI\SlidersPanel\ResetAndMirrorControls.cs" />
+    <Compile Include="8_UI\ModPanelUI\SlidersPanel\SlidersPanel.cs" />
+    <Compile Include="8_UI\ReeUIComponentV2.cs" />
     <Compile Include="8_UI\SettingsUI\SettingsUI.cs" />
     <Compile Include="8_UI\SettingsUI\SettingsUIHelper.cs" />
+    <Compile Include="8_UI\UIEvents.cs" />
+    <Compile Include="8_UI\UserGuide\Pages\UserGuidePage.cs" />
+    <Compile Include="8_UI\UserGuide\Pages\UserGuidePage0.cs" />
+    <Compile Include="8_UI\UserGuide\Pages\UserGuidePage1.cs" />
+    <Compile Include="8_UI\UserGuide\Pages\UserGuidePage2.cs" />
+    <Compile Include="8_UI\UserGuide\Pages\UserGuidePage3.cs" />
+    <Compile Include="8_UI\UserGuide\Pages\UserGuidePage4.cs" />
+    <Compile Include="8_UI\UserGuide\Pages\UserGuidePage5.cs" />
+    <Compile Include="8_UI\UserGuide\UserGuideViewController.cs" />
+    <Compile Include="8_UI\UserGuide\VideoPlayer\DownloadProgress.cs" />
+    <Compile Include="8_UI\UserGuide\VideoPlayer\Funny.cs" />
+    <Compile Include="8_UI\UserGuide\VideoPlayer\PlayButton.cs" />
+    <Compile Include="8_UI\UserGuide\VideoPlayer\ReeVideoPlayer.cs" />
+    <Compile Include="8_UI\UserGuide\VideoPlayer\RewindSlider.cs" />
+    <Compile Include="8_UI\UserGuide\VideoPlayer\VideoRenderer.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="7_Utils\EnumUtils\AdjustmentModeUtils.cs" />
@@ -260,10 +311,38 @@
     <Compile Include="7_Utils\UtilityClasses\Range.cs" />
     <Compile Include="7_Utils\UtilityClasses\ReeTransform.cs" />
     <Compile Include="7_Utils\UtilityClasses\RelativeRotationTracker.cs" />
-    <Compile Include="7_Utils\UtilityClasses\RotationPlaneTracker.cs" />
     <Compile Include="7_Utils\UtilityClasses\WeightedList.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="9_Resources\BSML\Components\LabeledSlidersRow.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\Components\SliderAnnotations.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\Components\SlidersRowAnnotations.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\Components\SmoothSlider.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\Components\UndoRedoButtons.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\Components\WarningIcon.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\Modals\AdjustmentModeSelectorModal.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\Panels\BottomPanel.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\Panels\NonePanel.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\Panels\PresetsBrowserPanel.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\Panels\RoomOffsetPanel.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\Panels\SwingBenchmarkPanel.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\Panels\TopPanel.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\SlidersPanel\DirectConfigSliders.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\SlidersPanel\ReferenceControls.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\SlidersPanel\ResetAndMirrorControls.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\SlidersPanel\SlidersPanel.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\UserGuide\Pages\UserGuidePage0.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\UserGuide\Pages\UserGuidePage1.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\UserGuide\Pages\UserGuidePage2.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\UserGuide\Pages\UserGuidePage3.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\UserGuide\Pages\UserGuidePage4.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\UserGuide\Pages\UserGuidePage5.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\UserGuide\UserGuideViewController.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\UserGuide\VideoPlayer\DownloadProgress.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\UserGuide\VideoPlayer\Funny.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\UserGuide\VideoPlayer\PlayButton.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\UserGuide\VideoPlayer\ReeVideoPlayer.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\UserGuide\VideoPlayer\RewindSlider.bsml" />
     <EmbeddedResource Include="manifest.json" />
     <EmbeddedResource Include="9_Resources\BSML\ModPanelUI.bsml" />
     <EmbeddedResource Include="9_Resources\BSML\SettingsUI.bsml" />

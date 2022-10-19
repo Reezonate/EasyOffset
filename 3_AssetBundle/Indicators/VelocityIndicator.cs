@@ -6,7 +6,6 @@ namespace EasyOffset {
 
         [SerializeField] private Material pointMaterial;
         [SerializeField] private MeshRenderer pointMeshRenderer;
-        [SerializeField] private SimpleTrail trail;
 
         [SerializeField] private Color minimalVelocityColor;
         [SerializeField] private Color maximalVelocityColor;
@@ -54,14 +53,6 @@ namespace EasyOffset {
 
             _previousPosition = currentPosition;
             _hasPreviousPosition = true;
-        }
-
-        #endregion
-
-        #region Interaction
-
-        public void SetLookAt(Vector3 lookAt) {
-            trail.SetLookAt(lookAt);
         }
 
         #endregion

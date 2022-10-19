@@ -1,0 +1,16 @@
+<horizontal id="hover-area" pref-height="34" horizontal-fit="PreferredSize">
+    <vertical id="screen" pref-width="60.4" bg="round-rect-panel">
+        <macro.as-host host="download-progress">
+            <macro.reparent transform="ui-component"/>
+        </macro.as-host>
+        <macro.as-host host="play-button">
+            <macro.reparent transform="ui-component"/>
+        </macro.as-host>
+        <macro.as-host host="rewind-slider">
+            <macro.reparent transform="ui-component"/>
+        </macro.as-host>
+        <macro.as-host host="funny">
+            <macro.reparent transform="ui-component"/>
+        </macro.as-host>
+    </vertical>
+</horizontal>

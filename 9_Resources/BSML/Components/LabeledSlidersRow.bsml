@@ -1,0 +1,11 @@
+<horizontal pref-height="6.0" horizontal-fit="PreferredSize">
+    <macro.as-host host="left-slider">
+        <macro.reparent transform="ui-component"/>
+    </macro.as-host>
+    <vertical pref-width="12">
+        <text id="label-component" text="" word-wrapping="false" align="Center"/>
+    </vertical>
+    <macro.as-host host="right-slider">
+        <macro.reparent transform="ui-component"/>
+    </macro.as-host>
+</horizontal>

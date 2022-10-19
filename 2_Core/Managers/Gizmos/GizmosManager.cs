@@ -25,8 +25,8 @@ namespace EasyOffset {
             PluginConfig.ControllerTypeChangedEvent += OnControllerTypeChanged;
             Abomination.TransformsUpdatedEvent += OnControllerTransformsChanged;
             PluginConfig.ConfigWasChangedEvent += OnConfigWasChanged;
-            ModPanelUI.DirectChangeStartedEvent += OnDirectChangeStarted;
-            ModPanelUI.DirectChangeFinishedEvent += OnDirectChangeFinished;
+            DirectAdjustmentModeManager.DirectChangeStartedEvent += OnDirectChangeStarted;
+            DirectAdjustmentModeManager.DirectChangeFinishedEvent += OnDirectChangeFinished;
 
             OnControllerTypeChanged(PluginConfig.SelectedControllerType);
             OnConfigWasChanged();
@@ -40,8 +40,8 @@ namespace EasyOffset {
             PluginConfig.ConfigWasChangedEvent -= OnConfigWasChanged;
             PluginConfig.IsModPanelVisibleChangedEvent -= OnModPanelVisibleChanged;
 
-            ModPanelUI.DirectChangeStartedEvent -= OnDirectChangeStarted;
-            ModPanelUI.DirectChangeFinishedEvent -= OnDirectChangeFinished;
+            DirectAdjustmentModeManager.DirectChangeStartedEvent -= OnDirectChangeStarted;
+            DirectAdjustmentModeManager.DirectChangeFinishedEvent -= OnDirectChangeFinished;
 
             Abomination.TransformsUpdatedEvent -= OnControllerTransformsChanged;
         }
@@ -252,6 +252,15 @@ namespace EasyOffset {
                     isSwingPreviewVisible = false;
                     isLegacyGimbalVisible = false;
                     isReferenceRotationVisible = true;
+                    break;
+                case AdjustmentMode.PositionAuto:
+                    isPivotVisible = true;
+                    isOrthonormalBasisVisible = true;
+                    isOrthonormalBasisPointerVisible = true;
+                    isSphericalBasisVisible = false;
+                    isSwingPreviewVisible = false;
+                    isLegacyGimbalVisible = false;
+                    isReferenceRotationVisible = false;
                     break;
                 case AdjustmentMode.RotationAuto:
                     isPivotVisible = true;

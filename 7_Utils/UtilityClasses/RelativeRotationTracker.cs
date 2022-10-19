@@ -26,17 +26,19 @@ namespace EasyOffset {
         public bool Update(
             Quaternion rotation,
             Vector3 positiveDirection,
-            out float angleDegrees,
+            float deltaTime,
+            out float angularVelocity,
             out Vector3 axis
         ) {
             if (!_initialized || rotation == _previousRotation) {
-                angleDegrees = 0f;
+                angularVelocity = 0f;
                 axis = Vector3.zero;
                 return false;
             }
 
+            angularVelocity = Quaternion.Angle(_previousRotation, rotation) / deltaTime;
             var relativeRotation = rotation * Quaternion.Inverse(_previousRotation);
-            relativeRotation.ToAngleAxis(out angleDegrees, out axis);
+            relativeRotation.ToAngleAxis(out _, out axis);
             _previousRotation = rotation;
 
             if (Vector3.Dot(positiveDirection, axis) < 0) axis = -axis;

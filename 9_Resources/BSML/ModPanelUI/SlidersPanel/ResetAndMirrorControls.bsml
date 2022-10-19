@@ -1,0 +1,27 @@
+<horizontal preferred-height="6" horizontal-fit="PreferredSize">
+    <!--    STYLE    -->
+    <macro.define name="direct-reset-width" value="10"/>
+    <macro.define name="direct-hand-width" value="16"/>
+    <macro.define name="direct-mirror-width" value="26"/>
+    <macro.define name="gap-width" value="12"/>
+    <macro.define name="font-size" value="3.5"/>
+    
+    <macro.define name="direct-hand-color" value="#aaaaaa"/>
+    
+    <!--    LEFT CONTROLS    -->
+    <button preferred-width="~direct-reset-width" text="~direct-left-reset-text" font-size="~font-size" on-click="direct-left-reset-on-click"/>
+    <vertical preferred-width="~direct-hand-width">
+        <text text="Left Hand" font-size="~font-size" font-color="~direct-hand-color" align="Midline"/>
+    </vertical>
+    <button preferred-width="~direct-mirror-width" text="~direct-left-mirror-text" font-size="~font-size" on-click="direct-left-mirror-on-click"/>
+
+    <!--    EMPTY LABEL    -->
+    <vertical preferred-width="~gap-width"/>
+
+    <!--    RIGHT CONTROLS    -->
+    <button preferred-width="~direct-mirror-width" text="~direct-right-mirror-text" font-size="~font-size" on-click="direct-right-mirror-on-click"/>
+    <vertical preferred-width="~direct-hand-width">
+        <text text="Right Hand" font-size="~font-size" font-color="~direct-hand-color" align="Midline"/>
+    </vertical>
+    <button preferred-width="~direct-reset-width" text="~direct-right-reset-text" font-size="~font-size" on-click="direct-right-reset-on-click"/>
+</horizontal>

@@ -3,12 +3,13 @@
   "id": "EasyOffset",
   "name": "EasyOffset",
   "author": "Reezonate",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Easy controller offset adjustment tool",
-  "gameVersion": "1.20.0",
+  "gameVersion": "1.21.0",
   "dependsOn": {
     "BSIPA": "^4.0.5",
-    "BeatSaberMarkupLanguage": "^1.5.11"
+    "BeatSaberMarkupLanguage": "^1.5.11",
+    "SiraUtil": "^3.0.0"
   },
   "links": {
     "project-home": "https://github.com/Reezonate/EasyOffset"

@@ -5,13 +5,6 @@ namespace EasyOffset {
     public static class BundleLoader {
         private const string BundleName = "EasyOffset._9_Resources.AssetBundles.asset_bundle";
 
-        #region Assets
-
-        public static GameObject GizmosController;
-        public static GameObject SwingBenchmarkController;
-
-        #endregion
-
         #region Initialize
 
         private static bool _ready;
@@ -27,6 +20,8 @@ namespace EasyOffset {
             }
 
             LoadAssets(localAssetBundle);
+            LoadMaterials(localAssetBundle);
+            LoadSprites(localAssetBundle);
 
             localAssetBundle.Unload(false);
             _ready = true;
@@ -34,11 +29,48 @@ namespace EasyOffset {
 
         #endregion
 
-        #region LoadAssets
+        #region Assets
+
+        public static GameObject GizmosController;
+        public static GameObject SwingBenchmarkController;
+        public static GameObject UserGuideHandle;
 
         private static void LoadAssets(AssetBundle assetBundle) {
             GizmosController = assetBundle.LoadAsset<GameObject>("GizmosController");
             SwingBenchmarkController = assetBundle.LoadAsset<GameObject>("SwingBenchmarkController");
+            UserGuideHandle = assetBundle.LoadAsset<GameObject>("UserGuideHandle");
+        }
+
+        #endregion
+
+        #region Materials
+
+        public static Material UndoRedoButtonsMaterial;
+        public static Material UIVideoPlayerMaterial;
+
+        private static void LoadMaterials(AssetBundle assetBundle) {
+            UndoRedoButtonsMaterial = assetBundle.LoadAsset<Material>("UndoRedoButtonsMaterial");
+            UIVideoPlayerMaterial = assetBundle.LoadAsset<Material>("UIVideoPlayerMaterial");
+        }
+
+        #endregion
+
+        #region Sprites
+
+        public static Sprite PlayIcon;
+        public static Sprite PauseIcon;
+        public static Sprite KappaIcon;
+        public static Sprite KuuramaIcon;
+        public static Sprite ChromiaIcon;
+        public static Sprite CloseIcon;
+
+        private static void LoadSprites(AssetBundle assetBundle) {
+            PlayIcon = assetBundle.LoadAsset<Sprite>("EO_PlayIcon");
+            PauseIcon = assetBundle.LoadAsset<Sprite>("EO_PauseIcon");
+            KappaIcon = assetBundle.LoadAsset<Sprite>("EO_KappaIcon");
+            KuuramaIcon = assetBundle.LoadAsset<Sprite>("EO_Kuurama");
+            ChromiaIcon = assetBundle.LoadAsset<Sprite>("EO_Chromia");
+            CloseIcon = assetBundle.LoadAsset<Sprite>("EO_CloseIcon");
         }
 
         #endregion
