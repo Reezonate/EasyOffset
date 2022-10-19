@@ -32,24 +32,21 @@ Beat Saber mod for intuitive controller offset adjustments. Suitable for both be
 - Use `Z Offset` slider to change the `Pivot Point` position (0 - top of the hilt, 17 - bottom of the hilt)
 - Press the `Import from settings` button
 
-### From SaberTailor mod
-
-```diff
-- SaberTailor.json file is required in the UserData directory
-- World offset is not supported!
-```
+### From any source
 
 - Go to `Settings` > `Mod Settings` > `Easy Offset`
+- Disable EasyOffset and click OK
+- Make sure that your previous settings mod is enabled and return to the `Easy Offset` settings
 - Use `Z Offset` slider to change the `Pivot Point` position (0 - top of the hilt, 17 - bottom of the hilt)
-- Press the `Import from SaberTailor` button
-- Make sure to disable SaberTailor to avoid interference
+- Press the `Universal Import` button
+- Enable `Easy Offset`, disable any other controller settings mod and click OK
 
 ## Export
 
 ### To the base game settings
 
 ```diff
-- Per hand offset is not supported in the base game settings. Right hand offset will be used
+- Per hand offset is not supported in the base game settings. You can only export settings from one hand
 ```
 
 - Go to `Settings` > `Mod Settings` > `Easy Offset`
@@ -104,7 +101,7 @@ To help you achieve these goals, there are five main adjustment modes:
 ```
 Simple drag and drop adjustment mode
 
-- Select `Basic` in the `Adjustment Mode` list
+- Select `Basic` in the `Adjustment Mode` menu
 - Press the selected button, move your hand to a new position, release the button
 - You can move the saber along its axis using the `ZOffset` slider
 
@@ -118,7 +115,7 @@ Position only adjustment mode. Displays `Pivot point` coordinates in centimeters
 
 Allows you to change the `Pivot point` without changing `Saber Rotation`
 
-- Select `Position` in the `Adjustment Mode` list
+- Select `Position` in the `Adjustment Mode` menu
 - Align the `Pivot point` with your wrist pivot point. You can see where it is relative to the controller IRL
 - You can move the saber along its axis using the `ZOffset` slider 
 
@@ -134,7 +131,7 @@ Rotation only adjustment mode. Displays `Saber Rotation` on a spherical grid. Be
 
 Allows you to change the `Saber Rotation` without changing the `Pivot point`
 
-- Select `Rotation` in the `Adjustment Mode` list
+- Select `Rotation` in the `Adjustment Mode` menu
 - Change your controller orientation while holding the button 
 - You can raise your free hand to zoom in for greater precision
 
@@ -159,7 +156,7 @@ Gives you objective measurements of your swing. Use for config and grip analysis
 
 Results will gradually change from vertical to horizontal swing. Optimize your config for a diagonal swing, unless you know what you're looking for
 
-- Select `Swing Benchmark` in the `Adjustment Mode` list
+- Select `Swing Benchmark` in the `Adjustment Mode` menu
 - Repeat one exact swing several times while holding the button
 - Stand still, look forward, and swing exactly as you do in-game
 - Do **NOT** swing in front of you, put your hand to the side as you do in-game
@@ -230,7 +227,7 @@ Mode for changing raw config values directly
 Values are different from the base game settings, SaberTailor, etc.
 Use the [Config Migration](#config-migration) settings to plug these values in
 
-- Select `Direct` in the `Adjustment Mode` list
+- Select `Direct` in the `Adjustment Mode` menu
 - Click on slider and hold the trigger to change its value (The longer you hold it, the faster the value changes)
 - Use the opposite hand to see the changes in real time, otherwise the change will only be applied when the trigger is released
 - Use increment/decrement buttons for the tiny adjustments
@@ -241,19 +238,31 @@ Use the [Config Migration](#config-migration) settings to plug these values in
 
 ## `Rotation Auto` adjustment mode:
 ``` diff
-- Expert: An understanding of what a good config looks like is required. The result may not be optimal
-- Config-breaking: Drastically changes your config. Save the preset to have a backup
+- Rough: The result may not be optimal, manual adjustment is required
+- Your previous rotations will be replaced. Save the preset to have a backup
 ```
 
 Automatic calculation of the `Saber Rotation` based on your movement. Great for getting initial values for a new grip, requires manual tweaking in `Rotation` mode afterward.
 Affects only rotation, doesn't change the position values
 
-- Select `Rotation Auto` in the `Adjustment Mode` list
+- Select `Rotation Auto` in the `Adjustment Mode` menu
 - Point forward, press the button, and start rotating your wrist as you do when turning a doorknob
 - Hold the button until trail movement is minimized. 2-3 seconds usually enough
 - Fine-tune using `Swing Benchmark` and `Rotation` modes
 
 The result depends only on your motion while a button is pressed. Make sure to choose the most comfortable rotation axis
+
+## `Position Auto` adjustment mode:
+``` diff
+- Your previous positions will be replaced. Save the preset to have a backup
+```
+
+Automatic calculation of the `Pivot Point` position based on your movement
+
+- Select `Position Auto` in the `Adjustment Mode` menu
+- Press the button, and repeat series of wrist rotations without using your arm
+- Note that motion **shouldn't** be in a 2D plane. Draw an 8-shape, cone, or series of swings and twisting motions 
+- Hold the button until white `Pivot Point` movement is minimized
 
 ## `Room Offset` adjustment mode:
 ``` diff
@@ -261,7 +270,7 @@ The result depends only on your motion while a button is pressed. Make sure to c
 ```
 World pulling locomotion in Beat Saber! This mode uses base game room offset settings to move you around
 
-- Select `Room offset` in the `Adjustment Mode` list
+- Select `Room offset` in the `Adjustment Mode` menu
 - Hold the button and pull or push the world around you
 - To move only vertically, disable X and Z axles
 - To move only horizontally, disable Y axis
