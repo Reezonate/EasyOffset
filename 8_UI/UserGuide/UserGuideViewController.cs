@@ -1,11 +1,13 @@
 using BeatSaberMarkupLanguage.Attributes;
+using BeatSaberMarkupLanguage.ViewControllers;
 using HMUI;
 using JetBrains.Annotations;
 using UnityEngine;
 
 namespace EasyOffset;
 
-internal class UserGuideModal : ReeUIComponentV2 {
+[ViewDefinition("EasyOffset._9_Resources.BSML.UserGuide.UserGuideViewController.bsml")]
+public class UserGuideViewController : BSMLAutomaticViewController {
     #region Components
 
     [UIValue("page-0"), UsedImplicitly]
@@ -33,44 +35,39 @@ internal class UserGuideModal : ReeUIComponentV2 {
 
     private void Awake() {
         _pages = new UserGuidePage[] {
-            _page0 = Instantiate<UserGuidePage0>(transform),
-            _page1 = Instantiate<UserGuidePage1>(transform),
-            _page2 = Instantiate<UserGuidePage2>(transform),
-            _page3 = Instantiate<UserGuidePage3>(transform),
-            _page4 = Instantiate<UserGuidePage4>(transform),
-            _page5 = Instantiate<UserGuidePage5>(transform),
+            _page0 = ReeUIComponentV2.Instantiate<UserGuidePage0>(transform),
+            _page1 = ReeUIComponentV2.Instantiate<UserGuidePage1>(transform),
+            _page2 = ReeUIComponentV2.Instantiate<UserGuidePage2>(transform),
+            _page3 = ReeUIComponentV2.Instantiate<UserGuidePage3>(transform),
+            _page4 = ReeUIComponentV2.Instantiate<UserGuidePage4>(transform),
+            _page5 = ReeUIComponentV2.Instantiate<UserGuidePage5>(transform),
         };
 
-        _videoPlayer = Instantiate<ReeVideoPlayer>(transform, false);
+        _videoPlayer = ReeUIComponentV2.Instantiate<ReeVideoPlayer>(transform, false);
     }
 
     #endregion
 
-    #region Init / Dispose
+    #region Start / OnDestroy
 
-    protected override void OnInitialize() {
-        InitializeModal();
+    private void Start() {
         InitializePanels();
-
-        UIEvents.UserGuideButtonWasPressedEvent += ShowModal;
-        PluginConfig.IsModPanelVisibleChangedEvent += OnIsModPanelVisibleChanged;
         _videoPlayer.AddStateListener(OnPlayerStateChanged);
-
         CurrentPage = FirstPage;
     }
 
-    protected override void OnDispose() {
-        UIEvents.UserGuideButtonWasPressedEvent -= ShowModal;
-        PluginConfig.IsModPanelVisibleChangedEvent -= OnIsModPanelVisibleChanged;
+    protected override void OnDestroy() {
         _videoPlayer.RemoveStateListener(OnPlayerStateChanged);
+        base.OnDestroy();
     }
 
     #endregion
 
     #region Events
 
-    private void OnIsModPanelVisibleChanged(bool isVisible) {
-        if (!isVisible) HideModal(false);
+    [UIAction("close-on-click"), UsedImplicitly]
+    private void CloseOnClick() {
+        UIEvents.NotifyUserGuideButtonWasPressed();
     }
 
     private void OnPlayerStateChanged(ReeVideoPlayer.State state) {
@@ -182,31 +179,6 @@ internal class UserGuideModal : ReeUIComponentV2 {
     [UIAction("watch-video-button-on-click"), UsedImplicitly]
     private void WatchVideoButtonOnClick() {
         ShowVideo = !ShowVideo;
-    }
-
-    #endregion
-
-    #region Modal
-
-    [UIComponent("modal"), UsedImplicitly]
-    private ModalView _modal;
-
-    private void InitializeModal() {
-        var background = _modal.GetComponentInChildren<ImageView>();
-        if (background != null) background.enabled = false;
-        var touchable = _modal.GetComponentInChildren<Touchable>();
-        if (touchable != null) touchable.enabled = false;
-    }
-
-    private void ShowModal() {
-        ShowVideo = false;
-        if (_modal == null) return;
-        _modal.Show(true, true);
-    }
-
-    private void HideModal(bool animated) {
-        if (_modal == null) return;
-        _modal.Hide(animated);
     }
 
     #endregion

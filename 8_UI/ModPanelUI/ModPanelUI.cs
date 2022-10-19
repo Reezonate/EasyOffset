@@ -38,9 +38,6 @@ internal class ModPanelUI : NotifiableSingleton<ModPanelUI> {
     [UIValue("adjustment-mode-selector-modal"), UsedImplicitly]
     private AdjustmentModeSelectorModal _adjustmentModeSelector;
 
-    [UIValue("user-guide-modal"), UsedImplicitly]
-    private UserGuideModal _userGuideModal;
-
     [UIValue("top-panel"), UsedImplicitly]
     private TopPanel _topPanel = ReeUIComponentV2.InstantiateOnSceneRoot<TopPanel>(false);
 
@@ -64,7 +61,6 @@ internal class ModPanelUI : NotifiableSingleton<ModPanelUI> {
 
     private void Awake() {
         _adjustmentModeSelector = ReeUIComponentV2.Instantiate<AdjustmentModeSelectorModal>(transform, false);
-        _userGuideModal = ReeUIComponentV2.Instantiate<UserGuideModal>(transform, false);
         
         _topPanel.SetParent(transform);
         _nonePanel.SetParent(transform);

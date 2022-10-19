@@ -3,9 +3,6 @@
     <macro.as-host host="adjustment-mode-selector-modal">
         <macro.reparent transform="ui-component"/>
     </macro.as-host>
-    <macro.as-host host="user-guide-modal">
-        <macro.reparent transform="ui-component"/>
-    </macro.as-host>
     
     <!--    MAIN PAGE    -->
     <vertical active="~main-page-active" preferred-width="100">

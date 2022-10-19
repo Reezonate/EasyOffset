@@ -27,6 +27,7 @@ internal class VideoRenderer : MonoBehaviour {
         _videoPlayer.aspectRatio = VideoAspectRatio.Stretch;
         _videoPlayer.source = VideoSource.Url;
         _videoPlayer.playOnAwake = false;
+        _videoPlayer.SetDirectAudioVolume(0, PluginConfig.MainSettingsModel.volume);
 
         _videoPlayer.loopPointReached += _ => OnVideoEnded?.Invoke();
 

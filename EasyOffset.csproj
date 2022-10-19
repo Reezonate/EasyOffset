@@ -47,6 +47,9 @@
     <OutputPath>bin\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SiraUtil">
+      <HintPath>$(BeatSaberDir)\Plugins\SiraUtil.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -107,6 +110,9 @@
       <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\UnityEngine.UI.dll</HintPath>
@@ -191,7 +197,8 @@
     <Compile Include="2_Core\Managers\Networking\IWebRequestDescriptor.cs" />
     <Compile Include="2_Core\Managers\Networking\IWebRequestHandler.cs" />
     <Compile Include="2_Core\Managers\Networking\NetworkingUtils.cs" />
-    <Compile Include="2_Core\Managers\UI\HoverHintsManager.cs" />
+    <Compile Include="2_Core\Managers\UI\UserGuideFloatingManager.cs" />
+    <Compile Include="2_Core\Managers\UI\UIManager.cs" />
     <Compile Include="2_Core\Managers\UI\VideoCache.cs" />
     <Compile Include="2_Core\StructsAndEnums\ControllerButton.cs" />
     <Compile Include="2_Core\StructsAndEnums\ControllerType.cs" />
@@ -273,14 +280,14 @@
     <Compile Include="8_UI\SettingsUI\SettingsUI.cs" />
     <Compile Include="8_UI\SettingsUI\SettingsUIHelper.cs" />
     <Compile Include="8_UI\UIEvents.cs" />
-    <Compile Include="8_UI\UserGuide\UserGuideModal.cs" />
-    <Compile Include="8_UI\UserGuide\UserGuidePage.cs" />
-    <Compile Include="8_UI\UserGuide\UserGuidePage0.cs" />
-    <Compile Include="8_UI\UserGuide\UserGuidePage1.cs" />
-    <Compile Include="8_UI\UserGuide\UserGuidePage2.cs" />
-    <Compile Include="8_UI\UserGuide\UserGuidePage3.cs" />
-    <Compile Include="8_UI\UserGuide\UserGuidePage4.cs" />
-    <Compile Include="8_UI\UserGuide\UserGuidePage5.cs" />
+    <Compile Include="8_UI\UserGuide\Pages\UserGuidePage.cs" />
+    <Compile Include="8_UI\UserGuide\Pages\UserGuidePage0.cs" />
+    <Compile Include="8_UI\UserGuide\Pages\UserGuidePage1.cs" />
+    <Compile Include="8_UI\UserGuide\Pages\UserGuidePage2.cs" />
+    <Compile Include="8_UI\UserGuide\Pages\UserGuidePage3.cs" />
+    <Compile Include="8_UI\UserGuide\Pages\UserGuidePage4.cs" />
+    <Compile Include="8_UI\UserGuide\Pages\UserGuidePage5.cs" />
+    <Compile Include="8_UI\UserGuide\UserGuideViewController.cs" />
     <Compile Include="8_UI\UserGuide\VideoPlayer\DownloadProgress.cs" />
     <Compile Include="8_UI\UserGuide\VideoPlayer\Funny.cs" />
     <Compile Include="8_UI\UserGuide\VideoPlayer\PlayButton.cs" />
@@ -323,13 +330,13 @@
     <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\SlidersPanel\ReferenceControls.bsml" />
     <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\SlidersPanel\ResetAndMirrorControls.bsml" />
     <EmbeddedResource Include="9_Resources\BSML\ModPanelUI\SlidersPanel\SlidersPanel.bsml" />
-    <EmbeddedResource Include="9_Resources\BSML\UserGuide\UserGuideModal.bsml" />
-    <EmbeddedResource Include="9_Resources\BSML\UserGuide\UserGuidePage0.bsml" />
-    <EmbeddedResource Include="9_Resources\BSML\UserGuide\UserGuidePage1.bsml" />
-    <EmbeddedResource Include="9_Resources\BSML\UserGuide\UserGuidePage2.bsml" />
-    <EmbeddedResource Include="9_Resources\BSML\UserGuide\UserGuidePage3.bsml" />
-    <EmbeddedResource Include="9_Resources\BSML\UserGuide\UserGuidePage4.bsml" />
-    <EmbeddedResource Include="9_Resources\BSML\UserGuide\UserGuidePage5.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\UserGuide\Pages\UserGuidePage0.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\UserGuide\Pages\UserGuidePage1.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\UserGuide\Pages\UserGuidePage2.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\UserGuide\Pages\UserGuidePage3.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\UserGuide\Pages\UserGuidePage4.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\UserGuide\Pages\UserGuidePage5.bsml" />
+    <EmbeddedResource Include="9_Resources\BSML\UserGuide\UserGuideViewController.bsml" />
     <EmbeddedResource Include="9_Resources\BSML\UserGuide\VideoPlayer\DownloadProgress.bsml" />
     <EmbeddedResource Include="9_Resources\BSML\UserGuide\VideoPlayer\Funny.bsml" />
     <EmbeddedResource Include="9_Resources\BSML\UserGuide\VideoPlayer\PlayButton.bsml" />

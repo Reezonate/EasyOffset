@@ -33,10 +33,12 @@ namespace EasyOffset {
 
         public static GameObject GizmosController;
         public static GameObject SwingBenchmarkController;
+        public static GameObject UserGuideHandle;
 
         private static void LoadAssets(AssetBundle assetBundle) {
             GizmosController = assetBundle.LoadAsset<GameObject>("GizmosController");
             SwingBenchmarkController = assetBundle.LoadAsset<GameObject>("SwingBenchmarkController");
+            UserGuideHandle = assetBundle.LoadAsset<GameObject>("UserGuideHandle");
         }
 
         #endregion
@@ -60,6 +62,7 @@ namespace EasyOffset {
         public static Sprite KappaIcon;
         public static Sprite KuuramaIcon;
         public static Sprite ChromiaIcon;
+        public static Sprite CloseIcon;
 
         private static void LoadSprites(AssetBundle assetBundle) {
             PlayIcon = assetBundle.LoadAsset<Sprite>("EO_PlayIcon");
@@ -67,6 +70,7 @@ namespace EasyOffset {
             KappaIcon = assetBundle.LoadAsset<Sprite>("EO_KappaIcon");
             KuuramaIcon = assetBundle.LoadAsset<Sprite>("EO_Kuurama");
             ChromiaIcon = assetBundle.LoadAsset<Sprite>("EO_Chromia");
+            CloseIcon = assetBundle.LoadAsset<Sprite>("EO_CloseIcon");
         }
 
         #endregion
