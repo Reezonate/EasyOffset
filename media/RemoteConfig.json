@@ -1,10 +1,11 @@
 {
   "UserGuideConfig": {
-    "GettingStarted": "https://github.com/Reezonate/EasyOffset/raw/experimental/media/GettingStarted.mp4",
-    "PositionAuto": "https://github.com/Reezonate/EasyOffset/raw/experimental/media/PositionAuto.mp4",
-    "RotationAuto": "https://github.com/Reezonate/EasyOffset/raw/experimental/media/RotationAuto.mp4",
-    "Rotation": "https://github.com/Reezonate/EasyOffset/raw/experimental/media/Rotation.mp4",
-    "MoreInfo": "https://github.com/Reezonate/EasyOffset/raw/experimental/media/MoreInfo.mp4",
-    "Funny": true
+    "GettingStartedVideoURL": "https://github.com/Reezonate/EasyOffset/raw/experimental/media/GettingStarted.mp4",
+    "PositionAutoVideoURL": "https://github.com/Reezonate/EasyOffset/raw/experimental/media/PositionAuto.mp4",
+    "RotationAutoVideoURL": "https://github.com/Reezonate/EasyOffset/raw/experimental/media/RotationAuto.mp4",
+    "SwingBenchmarkVideoURL": "https://github.com/Reezonate/EasyOffset/raw/experimental/media/SwingBenchmark.mp4",
+    "RotationVideoURL": "https://github.com/Reezonate/EasyOffset/raw/experimental/media/Rotation.mp4",
+    "MoreInfoVideoURL": "https://github.com/Reezonate/EasyOffset/raw/experimental/media/MoreInfo.mp4",
+    "FunnyEnabled": true
   }
 }
