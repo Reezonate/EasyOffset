@@ -10,8 +10,8 @@ internal class UserGuidePage5 : UserGuidePage {
     public override string Title => "More info";
     public override bool ShowVideoPlayer => true;
     public override string VideoKey => "MoreInfo";
-    public override string VideoUrl => "https://github.com/Reezonate/EasyOffset/raw/experimental/media/MoreInfo.mp4";
-    public override bool IsFunny => true;
+    public override string VideoUrl => RemoteConfig.UserGuideConfig.MoreInfoVideoURL;
+    public override bool IsFunny => RemoteConfig.UserGuideConfig.FunnyEnabled;
     public override string WatchButtonText => "Get pro player configs";
 
     #endregion

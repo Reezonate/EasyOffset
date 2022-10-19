@@ -9,7 +9,7 @@ internal class UserGuidePage2 : UserGuidePage {
     public override string Title => "Step 2 ‒ Rotations";
     public override bool ShowVideoPlayer => true;
     public override string VideoKey => "RotationAuto";
-    public override string VideoUrl => "https://github.com/Reezonate/EasyOffset/raw/experimental/media/RotationAuto.mp4";
+    public override string VideoUrl => RemoteConfig.UserGuideConfig.RotationAutoVideoURL;
 
     #endregion
     

@@ -172,6 +172,7 @@
     <Compile Include="1_Config\PluginConfig\Utilities.cs" />
     <Compile Include="1_Config\PluginConfig\HandConfigActions.cs" />
     <Compile Include="1_Config\PluginConfig\UserPreferences.cs" />
+    <Compile Include="1_Config\RemoteConfig\RemoteConfig.cs" />
     <Compile Include="1_Config\Utils\CachedVariable.cs" />
     <Compile Include="1_Config\Utils\ConfigFileQuaternion.cs" />
     <Compile Include="2_Core\Installers\OnAppInstaller.cs" />

@@ -9,7 +9,7 @@ internal class UserGuidePage4 : UserGuidePage {
     public override string Title => "Step 4 ‒ Fine-tuning";
     public override bool ShowVideoPlayer => true;
     public override string VideoKey => "Rotation";
-    public override string VideoUrl => "https://github.com/Reezonate/EasyOffset/raw/experimental/media/Rotation.mp4";
+    public override string VideoUrl => RemoteConfig.UserGuideConfig.RotationVideoURL;
 
     #endregion
     

@@ -83,7 +83,7 @@ internal class RewindSlider : ReeUIComponentV2 {
         }
     }
 
-    private static Color BarHighlightColor => new Color(1.0f, 1.0f, 1.0f, 1.0f);
+    private static Color BarHighlightColor => new Color(0.2f, 0.2f, 0.2f, 1.0f);
     private static Color BarPressedColor => new Color(0.6f, 0.6f, 0.6f, 1.0f);
     private static Color BarNormalColor => new Color(0.6f, 0.6f, 0.6f, 0.5f);
 
