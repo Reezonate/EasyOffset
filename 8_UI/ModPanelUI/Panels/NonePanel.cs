@@ -1,6 +1,6 @@
-using System.Diagnostics;
 using BeatSaberMarkupLanguage.Attributes;
 using JetBrains.Annotations;
+using UnityEngine;
 
 namespace EasyOffset;
 
@@ -71,7 +71,7 @@ internal class NonePanel : ReeUIComponentV2 {
 
     [UIAction("none-panel-donate-on-click"), UsedImplicitly]
     private void DonateOnClick() {
-        Process.Start("explorer.exe", "https://ko-fi.com/reezonate");
+        Application.OpenURL(RemoteConfig.DonationsURL);
     }
 
     #endregion

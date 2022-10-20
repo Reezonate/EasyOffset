@@ -18,7 +18,7 @@ internal class Signature : ReeUIComponentV2 {
     #region Events
 
     private static void OnClick(PointerEventData _) {
-        Application.OpenURL("https://discord.gg/HRdvMD2R8r");
+        Application.OpenURL(RemoteConfig.DiscordInvite);
     }
 
     private void OnHoverStateChanged(bool hovered, float hoverProgress) {

@@ -9,6 +9,9 @@ internal class RemoteConfig : PersistentSingleton<RemoteConfig>, IWebRequestHand
     public static bool IsReady;
 
     public static UserGuideConfigData UserGuideConfig;
+    
+    public static string DiscordInvite = "https://discord.gg/HRdvMD2R8r";
+    public static string DonationsURL = "https://ko-fi.com/reezonate";
 
     #endregion
 
@@ -41,6 +44,8 @@ internal class RemoteConfig : PersistentSingleton<RemoteConfig>, IWebRequestHand
 
     public void OnRequestFinished(RemoteConfigData result) {
         UserGuideConfig = result.UserGuideConfig;
+        DiscordInvite = result.DiscordInvite;
+        DonationsURL = result.DonationsURL;
         IsReady = true;
     }
 
@@ -56,6 +61,8 @@ internal class RemoteConfig : PersistentSingleton<RemoteConfig>, IWebRequestHand
 
     public struct RemoteConfigData {
         public UserGuideConfigData UserGuideConfig;
+        public string DiscordInvite;
+        public string DonationsURL;
     }
 
     public struct UserGuideConfigData {
