@@ -220,8 +220,7 @@ How to improve:
 
 ## `Direct` adjustment mode:
 ``` diff
-- Expert: Deep understanding of each config value is required
-- It is not recommended to use someone else's settings
+- DO NOT USE TO FIND/TWEAK YOUR SETTINGS! Use Position and Rotation modes instead
 ```
 Mode for changing raw config values directly
 
@@ -266,10 +265,7 @@ Automatic calculation of the `Pivot Point` position based on your movement
 - Hold the button until `Pivot Point` movement is minimized
 
 ## `Room Offset` adjustment mode:
-``` diff
-+ Easy: suitable for any skill level
-```
-World pulling locomotion in Beat Saber! This mode uses base game room offset settings to move you around
+World pulling locomotion. This mode uses base game room offset settings to move you around
 
 - Select `Room offset` in the `Adjustment Mode` menu
 - Hold the button and pull or push the world around you
