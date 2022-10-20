@@ -66,6 +66,7 @@ internal class RemoteConfig : PersistentSingleton<RemoteConfig>, IWebRequestHand
         public string RotationVideoURL;
         public string MoreInfoVideoURL;
         public bool FunnyEnabled;
+        public int FunnyType;
     }
 
     #endregion

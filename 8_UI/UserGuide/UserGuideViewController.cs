@@ -1,3 +1,4 @@
+using System;
 using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.ViewControllers;
 using HMUI;
@@ -99,7 +100,15 @@ public class UserGuideViewController : BSMLAutomaticViewController {
             ShowVideo = false;
 
             Title = PageData.Title;
-            WatchVideoButtonActive = PageData.ShowVideoPlayer && (!PageData.IsFunny || !_anyVideoWasOpened);
+
+            var commitFunny = RemoteConfig.UserGuideConfig.FunnyType switch {
+                0 => !_anyVideoWasOpened,
+                1 => _anyVideoWasOpened,
+                2 => true,
+                _ => false
+            };
+            
+            WatchVideoButtonActive = PageData.ShowVideoPlayer && (!PageData.IsFunny || commitFunny);
 
             for (var i = 0; i < TotalPages; i++) {
                 _pages[i].SetActive(i == _currentPageIndex);
