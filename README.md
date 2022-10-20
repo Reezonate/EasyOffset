@@ -15,7 +15,7 @@ Beat Saber mod for intuitive controller offset adjustments. Suitable for both be
 - Best used with [CustomMenuPointers](https://github.com/dawnvt/CustomMenuPointers)
 
 # How to install
-- Install **BSIPA** and **BeatSaberMarkupLanguage** dependencies using
+- Install **BSIPA**, **SiraUtil**, and **BeatSaberMarkupLanguage** dependencies using
   [ModAssistant](https://github.com/Assistant/ModAssistant)
 
 - Download the latest .dll for your game version from the
@@ -262,7 +262,7 @@ Automatic calculation of the `Pivot Point` position based on your movement
 - Select `Position Auto` in the `Adjustment Mode` menu
 - Press the button, and repeat series of wrist rotations without using your arm
 - Note that motion **shouldn't** be in a 2D plane. Draw an 8-shape, cone, or series of swings and twisting motions 
-- Hold the button until white `Pivot Point` movement is minimized
+- Hold the button until `Pivot Point` movement is minimized
 
 ## `Room Offset` adjustment mode:
 ``` diff
