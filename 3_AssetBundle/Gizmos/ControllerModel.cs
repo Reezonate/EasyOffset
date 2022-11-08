@@ -1,40 +1,117 @@
 using System;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace EasyOffset {
     public class ControllerModel : MonoBehaviour {
         #region Serialized
 
-        [SerializeField] private GameObject oculusCV1Left;
-        [SerializeField] private GameObject oculusCV1Right;
+        [SerializeField]
+        private GameObject oculusCV1Left;
 
-        [SerializeField] private GameObject oculusQuest2Left;
-        [SerializeField] private GameObject oculusQuest2Right;
+        [SerializeField]
+        private GameObject oculusCV1Right;
 
-        [SerializeField] private GameObject riftSLeft;
-        [SerializeField] private GameObject riftSRight;
+        [SerializeField]
+        private GameObject oculusQuest2Left;
 
-        [SerializeField] private GameObject valveIndexLeft;
-        [SerializeField] private GameObject valveIndexRight;
+        [SerializeField]
+        private GameObject oculusQuest2Right;
 
-        [SerializeField] private GameObject piMaxSwordLeft;
-        [SerializeField] private GameObject piMaxSwordRight;
+        [SerializeField]
+        private GameObject riftSLeft;
 
-        [SerializeField] private GameObject viveTracker2;
-        [SerializeField] private GameObject viveTracker3;
-        [SerializeField] private GameObject vive;
+        [SerializeField]
+        private GameObject riftSRight;
+
+        [SerializeField]
+        private GameObject valveIndexLeft;
+
+        [SerializeField]
+        private GameObject valveIndexRight;
+
+        [SerializeField]
+        private GameObject pico4Left;
+
+        [SerializeField]
+        private GameObject pico4Right;
+
+        [SerializeField]
+        private GameObject picoNeo3Left;
+
+        [SerializeField]
+        private GameObject picoNeo3Right;
+
+        [SerializeField]
+        private GameObject piMaxSwordLeft;
+
+        [SerializeField]
+        private GameObject piMaxSwordRight;
+
+        [SerializeField]
+        private GameObject viveTracker2;
+
+        [SerializeField]
+        private GameObject viveTracker3;
+
+        [SerializeField]
+        private GameObject tundraTracker;
+
+        [SerializeField]
+        private GameObject vive;
+
+        #endregion
+
+        #region Properties
+        
+        private ControllerType _controllerType = ControllerType.None;
+
+        public ControllerType ControllerType {
+            get => _controllerType;
+            set {
+                if (_controllerType == value) return;
+                _controllerType = value;
+                UpdateModel();
+            }
+        }
+
+        private Hand _hand;
+
+        public Hand Hand {
+            get => _hand;
+            set {
+                if (_hand == value) return;
+                _hand = value;
+                UpdateModel();
+            }
+        }
+
+        private void UpdateModel() {
+            var prefab = GetPrefab(_controllerType, _hand is Hand.Left);
+
+            if (prefab != null) {
+                SetPrefab(prefab);
+            } else {
+                DestroyInstance();
+            }
+        }
+
+        #endregion
+
+        #region SetVisible
+
+        public void SetVisible(bool value) {
+            gameObject.SetActive(value);
+        }
 
         #endregion
 
         #region Instance
 
-        private ControllerType _currentType = ControllerType.None;
         private GameObject _instance;
         private bool _spawned;
 
-        private void SetPrefab(
-            GameObject prefab
-        ) {
+        private void SetPrefab(GameObject prefab) {
             DestroyInstance();
             _instance = Instantiate(prefab, transform, false);
             _spawned = true;
@@ -47,119 +124,26 @@ namespace EasyOffset {
         }
 
         #endregion
-        
-        #region SetHand
-
-        private Hand _hand;
-
-        public void SetHand(Hand hand) {
-            _hand = hand;
-        }
-
-        #endregion
-
-        #region Interaction
-
-        public void SetControllerType(ControllerType controllerType) {
-            if (controllerType == _currentType) return;
-            _currentType = controllerType;
-
-            bool notNull;
-            GameObject prefab;
-
-            switch (_hand) {
-                case Hand.Left:
-                    notNull = GetLeftPrefab(controllerType, out prefab);
-                    break;
-                case Hand.Right:
-                    notNull = GetRightPrefab(controllerType, out prefab);
-                    break;
-                default: throw new ArgumentOutOfRangeException(nameof(_hand), _hand, null);
-            }
-
-            if (notNull) {
-                SetPrefab(prefab);
-            } else {
-                DestroyInstance();
-            }
-        }
-
-        public void SetVisible(bool value) {
-            gameObject.SetActive(value);
-        }
-
-        #endregion
 
         #region Utils
 
-        private bool GetLeftPrefab(ControllerType controllerType, out GameObject prefab) {
+        [CanBeNull]
+        private GameObject GetPrefab(ControllerType controllerType, bool isLeft) {
             switch (controllerType) {
-                case ControllerType.None:
-                    prefab = vive;
-                    return false;
-                case ControllerType.ValveIndex:
-                    prefab = valveIndexLeft;
-                    break;
-                case ControllerType.OculusQuest2:
-                    prefab = oculusQuest2Left;
-                    break;
-                case ControllerType.OculusRiftS:
-                    prefab = riftSLeft;
-                    break;
-                case ControllerType.OculusCV1:
-                    prefab = oculusCV1Left;
-                    break;
-                case ControllerType.HtcVive:
-                    prefab = vive;
-                    break;
-                case ControllerType.PiMaxSword:
-                    prefab = piMaxSwordLeft;
-                    break;
-                case ControllerType.ViveTracker2:
-                    prefab = viveTracker2;
-                    break;
-                case ControllerType.ViveTracker3:
-                    prefab = viveTracker3;
-                    break;
+                case ControllerType.None: return null;
+                case ControllerType.ValveIndex: return isLeft ? valveIndexLeft : valveIndexRight;
+                case ControllerType.OculusQuest2: return isLeft ? oculusQuest2Left : oculusQuest2Right;
+                case ControllerType.OculusRiftS: return isLeft ? riftSLeft : riftSRight;
+                case ControllerType.OculusCV1: return isLeft ? oculusCV1Left : oculusCV1Right;
+                case ControllerType.HtcVive: return vive;
+                case ControllerType.Pico4: return isLeft ? pico4Left : pico4Right;
+                case ControllerType.PicoNeo3: return isLeft ? picoNeo3Left : picoNeo3Right;
+                case ControllerType.PiMaxSword: return isLeft ? piMaxSwordLeft : piMaxSwordRight;
+                case ControllerType.ViveTracker2: return viveTracker2;
+                case ControllerType.ViveTracker3: return viveTracker3;
+                case ControllerType.TundraTracker: return tundraTracker;
                 default: throw new ArgumentOutOfRangeException(nameof(controllerType), controllerType, null);
             }
-
-            return true;
-        }
-
-        private bool GetRightPrefab(ControllerType controllerType, out GameObject prefab) {
-            switch (controllerType) {
-                case ControllerType.None:
-                    prefab = vive;
-                    return false;
-                case ControllerType.ValveIndex:
-                    prefab = valveIndexRight;
-                    break;
-                case ControllerType.OculusQuest2:
-                    prefab = oculusQuest2Right;
-                    break;
-                case ControllerType.OculusRiftS:
-                    prefab = riftSRight;
-                    break;
-                case ControllerType.OculusCV1:
-                    prefab = oculusCV1Right;
-                    break;
-                case ControllerType.HtcVive:
-                    prefab = vive;
-                    break;
-                case ControllerType.PiMaxSword:
-                    prefab = piMaxSwordRight;
-                    break;
-                case ControllerType.ViveTracker2:
-                    prefab = viveTracker2;
-                    break;
-                case ControllerType.ViveTracker3:
-                    prefab = viveTracker3;
-                    break;
-                default: throw new ArgumentOutOfRangeException(nameof(controllerType), controllerType, null);
-            }
-
-            return true;
         }
 
         #endregion

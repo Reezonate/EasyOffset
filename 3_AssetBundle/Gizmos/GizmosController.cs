@@ -23,7 +23,7 @@ namespace EasyOffset {
 
         public void SetHand(Hand hand) {
             sphericalBasis.SetHand(hand);
-            controllerModel.SetHand(hand);
+            controllerModel.Hand = hand;
         }
 
         #endregion
@@ -144,7 +144,7 @@ namespace EasyOffset {
         #region SetControllerType
 
         public void SetControllerType(ControllerType controllerType) {
-            controllerModel.SetControllerType(controllerType);
+            controllerModel.ControllerType = controllerType;
         }
 
         #endregion

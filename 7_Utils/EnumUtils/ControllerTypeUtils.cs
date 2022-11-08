@@ -45,9 +45,12 @@ namespace EasyOffset {
                 ControllerType.OculusRiftS => "RiftS/Quest",
                 ControllerType.OculusCV1 => "CV1",
                 ControllerType.HtcVive => "HTC Vive",
+                ControllerType.Pico4 => "Pico 4",
+                ControllerType.PicoNeo3 => "Pico Neo 3",
                 ControllerType.PiMaxSword => "PiMax Sword",
                 ControllerType.ViveTracker2 => "Vive Tracker 2.0",
                 ControllerType.ViveTracker3 => "Vive Tracker 3.0",
+                ControllerType.TundraTracker => "Tundra Tracker",
                 _ => throw new ArgumentOutOfRangeException()
             };
         }

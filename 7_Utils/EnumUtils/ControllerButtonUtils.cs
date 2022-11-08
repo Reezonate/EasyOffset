@@ -59,10 +59,12 @@ namespace EasyOffset {
             switch (controllerType) {
                 case ControllerType.ValveIndex:
                     return ControllerButton.PrimaryButton;
-                
+
                 case ControllerType.OculusQuest2:
                 case ControllerType.OculusRiftS:
                 case ControllerType.OculusCV1:
+                case ControllerType.Pico4:
+                case ControllerType.PicoNeo3:
                     return ControllerButton.SecondaryButton;
 
                 case ControllerType.None:
@@ -70,6 +72,7 @@ namespace EasyOffset {
                 case ControllerType.PiMaxSword:
                 case ControllerType.ViveTracker2:
                 case ControllerType.ViveTracker3:
+                case ControllerType.TundraTracker:
                     return ControllerButton.GripButton;
 
                 default: throw new ArgumentOutOfRangeException(nameof(controllerType), controllerType, null);
@@ -82,17 +85,25 @@ namespace EasyOffset {
 
         public static Dictionary<ControllerButton, string> GetAvailableOptions(ControllerType controllerType) {
             switch (controllerType) {
-                case ControllerType.None: return DefaultButtons;
-                case ControllerType.ValveIndex: return ValveIndexButtons;
+                case ControllerType.None:
+                case ControllerType.Pico4:
+                case ControllerType.PicoNeo3:
+                    return DefaultButtons;
+
+                case ControllerType.ValveIndex:
+                    return ValveIndexButtons;
 
                 case ControllerType.OculusQuest2:
                 case ControllerType.OculusRiftS:
-                case ControllerType.OculusCV1: return ConfigMigration.IsVRModeOculus ? OculusButtonsVrmode : OculusButtonsSteam;
+                case ControllerType.OculusCV1:
+                    return ConfigMigration.IsVRModeOculus ? OculusButtonsVrmode : OculusButtonsSteam;
 
                 case ControllerType.PiMaxSword:
                 case ControllerType.HtcVive:
                 case ControllerType.ViveTracker2:
-                case ControllerType.ViveTracker3: return ViveButtons;
+                case ControllerType.ViveTracker3:
+                case ControllerType.TundraTracker:
+                    return ViveButtons;
 
                 default: throw new ArgumentOutOfRangeException(nameof(controllerType), controllerType, null);
             }
