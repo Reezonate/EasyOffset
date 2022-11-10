@@ -37,7 +37,7 @@ internal class DirectConfigSliders : ReeUIComponentV2 {
     );
 
     private static readonly SmoothSlider.RangeDescriptor ZPositionRangeDescriptor = new(
-        -0.30f, 0.15f, 0.001f, 3f
+        -0.20f, 0.15f, 0.001f, 3f
     );
 
     private static readonly SmoothSlider.RangeDescriptor Rotation90RangeDescriptor = new(

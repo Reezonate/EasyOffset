@@ -33,6 +33,13 @@ namespace EasyOffset {
             [ControllerButton.SecondaryButton] = "Y/B button",
             [ControllerButton.Primary2DAxisClick] = "Joystick click"
         };
+        
+        private static readonly Dictionary<ControllerButton, string> PicoButtonsSteam = new() {
+            [ControllerButton.GripButton] = "Grip button",
+            [ControllerButton.PrimaryButton] = "Y/B button",
+            [ControllerButton.SecondaryButton] = "X/A button",
+            [ControllerButton.Primary2DAxisClick] = "Joystick click"
+        };
 
         private static readonly Dictionary<ControllerButton, string> ValveIndexButtons = new() {
             [ControllerButton.PrimaryButton] = "B button"
@@ -85,11 +92,13 @@ namespace EasyOffset {
         public static Dictionary<ControllerButton, string> GetAvailableOptions(ControllerType controllerType) {
             switch (controllerType) {
                 case ControllerType.None:
-                case ControllerType.Pico4:
                     return DefaultButtons;
 
                 case ControllerType.ValveIndex:
                     return ValveIndexButtons;
+
+                case ControllerType.Pico4:
+                    return PicoButtonsSteam;
 
                 case ControllerType.OculusQuest2:
                 case ControllerType.OculusRiftS:
