@@ -7,7 +7,6 @@ namespace EasyOffset {
         OculusCV1,
         HtcVive,
         Pico4,
-        PicoNeo3,
         PiMaxSword,
         ViveTracker2,
         ViveTracker3,

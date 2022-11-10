@@ -64,7 +64,6 @@ namespace EasyOffset {
                 case ControllerType.OculusRiftS:
                 case ControllerType.OculusCV1:
                 case ControllerType.Pico4:
-                case ControllerType.PicoNeo3:
                     return ControllerButton.SecondaryButton;
 
                 case ControllerType.None:
@@ -87,7 +86,6 @@ namespace EasyOffset {
             switch (controllerType) {
                 case ControllerType.None:
                 case ControllerType.Pico4:
-                case ControllerType.PicoNeo3:
                     return DefaultButtons;
 
                 case ControllerType.ValveIndex:

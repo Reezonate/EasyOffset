@@ -32,8 +32,12 @@ internal class DirectConfigSliders : ReeUIComponentV2 {
         -0.2f, 0.25f, 0.001f, 3f
     );
 
-    private static readonly SmoothSlider.RangeDescriptor PositionRangeDescriptor = new(
+    private static readonly SmoothSlider.RangeDescriptor XYPositionRangeDescriptor = new(
         -0.15f, 0.15f, 0.001f, 3f
+    );
+
+    private static readonly SmoothSlider.RangeDescriptor ZPositionRangeDescriptor = new(
+        -0.30f, 0.15f, 0.001f, 3f
     );
 
     private static readonly SmoothSlider.RangeDescriptor Rotation90RangeDescriptor = new(
@@ -216,7 +220,7 @@ internal class DirectConfigSliders : ReeUIComponentV2 {
 
         _posXSlidersRow.Setup(
             PosXLabel,
-            PositionRangeDescriptor,
+            XYPositionRangeDescriptor,
             PosXAppearanceDescriptor,
             DirectAdjustmentModeManager.LeftPosX,
             DirectAdjustmentModeManager.RightPosX
@@ -224,7 +228,7 @@ internal class DirectConfigSliders : ReeUIComponentV2 {
 
         _posYSlidersRow.Setup(
             PosYLabel,
-            PositionRangeDescriptor,
+            XYPositionRangeDescriptor,
             PosYAppearanceDescriptor,
             DirectAdjustmentModeManager.LeftPosY,
             DirectAdjustmentModeManager.RightPosY
@@ -232,7 +236,7 @@ internal class DirectConfigSliders : ReeUIComponentV2 {
 
         _posZSlidersRow.Setup(
             PosZLabel,
-            PositionRangeDescriptor,
+            ZPositionRangeDescriptor,
             PosZAppearanceDescriptor,
             DirectAdjustmentModeManager.LeftPosZ,
             DirectAdjustmentModeManager.RightPosZ

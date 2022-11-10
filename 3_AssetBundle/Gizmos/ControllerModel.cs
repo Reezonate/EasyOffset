@@ -37,12 +37,6 @@ namespace EasyOffset {
         private GameObject pico4Right;
 
         [SerializeField]
-        private GameObject picoNeo3Left;
-
-        [SerializeField]
-        private GameObject picoNeo3Right;
-
-        [SerializeField]
         private GameObject piMaxSwordLeft;
 
         [SerializeField]
@@ -63,7 +57,7 @@ namespace EasyOffset {
         #endregion
 
         #region Properties
-        
+
         private ControllerType _controllerType = ControllerType.None;
 
         public ControllerType ControllerType {
@@ -137,7 +131,6 @@ namespace EasyOffset {
                 case ControllerType.OculusCV1: return isLeft ? oculusCV1Left : oculusCV1Right;
                 case ControllerType.HtcVive: return vive;
                 case ControllerType.Pico4: return isLeft ? pico4Left : pico4Right;
-                case ControllerType.PicoNeo3: return isLeft ? picoNeo3Left : picoNeo3Right;
                 case ControllerType.PiMaxSword: return isLeft ? piMaxSwordLeft : piMaxSwordRight;
                 case ControllerType.ViveTracker2: return viveTracker2;
                 case ControllerType.ViveTracker3: return viveTracker3;
