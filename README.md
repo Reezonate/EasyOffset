@@ -4,7 +4,7 @@ Beat Saber mod for intuitive controller offset adjustments. Suitable for both be
 
 - [How to use](#how-to-use)
 - [Config migration](#config-migration)
-- [Support the project](https://ko-fi.com/reezonate)
+- [Support the project](https://fantalks.io/r/reezonate)
 - [Discord Server](https://discord.gg/HRdvMD2R8r)
 
 # Compatibility
