@@ -10,7 +10,8 @@ namespace EasyOffset {
 
         static BsmlUtils() {
             foreach (var type in BsmlAssembly.GetTypes()) {
-                AllTypes.TryAdd(type.Name, type);
+                if (AllTypes.ContainsKey(type.Name)) continue;
+                AllTypes[type.Name] = type;
             }
         }
 
