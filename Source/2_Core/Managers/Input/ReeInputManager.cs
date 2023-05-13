@@ -8,12 +8,14 @@ namespace EasyOffset {
     public class ReeInputManager : ITickable {
         #region Constructor
 
-        private readonly VRControllersInputManager _vrControllersInputManager;
+        private readonly IVRPlatformHelper _vrPlatformHelper;
         private readonly ReeInputDevice _leftReeInputDevice;
         private readonly ReeInputDevice _rightReeInputDevice;
 
-        public ReeInputManager(VRControllersInputManager vrControllersInputManager) {
-            _vrControllersInputManager = vrControllersInputManager;
+        public ReeInputManager(
+            IVRPlatformHelper vrPlatformHelper
+        ) {
+            _vrPlatformHelper = vrPlatformHelper;
             _leftReeInputDevice = new ReeInputDevice(Hand.Left);
             _rightReeInputDevice = new ReeInputDevice(Hand.Right);
         }
@@ -39,8 +41,7 @@ namespace EasyOffset {
             UpdateTriggers(out var leftWasPressed, out var leftWasReleased, out var rightWasPressed, out var rightWasReleased);
 
             switch (TriggerState) {
-                case ReeTriggerState.Released:
-                {
+                case ReeTriggerState.Released: {
                     if (rightWasPressed) {
                         TriggerState = ReeTriggerState.RightPressed;
                     } else if (leftWasPressed) {
@@ -49,8 +50,7 @@ namespace EasyOffset {
 
                     break;
                 }
-                case ReeTriggerState.LeftPressed:
-                {
+                case ReeTriggerState.LeftPressed: {
                     if (rightWasPressed) {
                         TriggerState = ReeTriggerState.RightPressed;
                     } else if (leftWasReleased) {
@@ -59,8 +59,7 @@ namespace EasyOffset {
 
                     break;
                 }
-                case ReeTriggerState.RightPressed:
-                {
+                case ReeTriggerState.RightPressed: {
                     if (leftWasPressed) {
                         TriggerState = ReeTriggerState.LeftPressed;
                     } else if (rightWasReleased) {
@@ -83,8 +82,8 @@ namespace EasyOffset {
         private bool _rightPressed;
 
         private void UpdateTriggers(out bool leftWasPressed, out bool leftWasReleased, out bool rightWasPressed, out bool rightWasReleased) {
-            var isLeftTriggerDown = _vrControllersInputManager.TriggerValue(XRNode.LeftHand) > TriggerThreshold;
-            var isRightTriggerDown = _vrControllersInputManager.TriggerValue(XRNode.RightHand) > TriggerThreshold;
+            var isLeftTriggerDown = _vrPlatformHelper.GetTriggerValue(XRNode.LeftHand) > TriggerThreshold;
+            var isRightTriggerDown = _vrPlatformHelper.GetTriggerValue(XRNode.RightHand) > TriggerThreshold;
 
             leftWasPressed = !_leftPressed && isLeftTriggerDown;
             leftWasReleased = _leftPressed && !isLeftTriggerDown;

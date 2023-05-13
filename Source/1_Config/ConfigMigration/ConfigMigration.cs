@@ -29,14 +29,14 @@ namespace EasyOffset {
 
         #region OnVRPlatformHelperChanged
 
-        private static readonly PropertyInfo OpenVRHelperVRControllerManufacturerNamePropertyInfo = typeof(OpenVRHelper).GetProperty(
+        private static readonly PropertyInfo OpenVRHelperVRControllerManufacturerNamePropertyInfo = typeof(UnityXRHelper).GetProperty(
             "vrControllerManufacturerName",
             BindingFlags.Instance | BindingFlags.NonPublic
         );
 
         private static void OnVRPlatformHelperChanged(IVRPlatformHelper vrPlatformHelper) {
             switch (vrPlatformHelper) {
-                case OpenVRHelper openVRHelper:
+                case UnityXRHelper openVRHelper:
                     UseOpenVRHelper(openVRHelper);
                     break;
                 case OculusVRHelper oculusVRHelper:
@@ -52,7 +52,7 @@ namespace EasyOffset {
             }
         }
 
-        private static void UseOpenVRHelper(OpenVRHelper vrPlatformHelper) {
+        private static void UseOpenVRHelper(UnityXRHelper vrPlatformHelper) {
             var manufacturerName = OpenVRHelperVRControllerManufacturerNamePropertyInfo?.GetValue(vrPlatformHelper);
 
             if (manufacturerName == null) {
@@ -61,7 +61,7 @@ namespace EasyOffset {
                 IsVRModeOculus = false;
             } else {
                 IsMigrationPossible = true;
-                IsValveController = (OpenVRHelper.VRControllerManufacturerName)manufacturerName == OpenVRHelper.VRControllerManufacturerName.Valve;
+                IsValveController = (UnityXRHelper.VRControllerManufacturerName)manufacturerName == UnityXRHelper.VRControllerManufacturerName.Valve;
             }
         }
 
