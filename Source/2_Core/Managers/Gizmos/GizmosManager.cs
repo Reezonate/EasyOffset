@@ -282,6 +282,8 @@ namespace EasyOffset {
                     break;
                 default: throw new ArgumentOutOfRangeException();
             }
+
+            isOrthonormalBasisVisible |= isControllerModelVisible;
         }
 
         #endregion

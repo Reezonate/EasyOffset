@@ -158,7 +158,9 @@ internal class SmoothSlider : ReeUIComponentV2 {
     }
 
     private void OnPointerDown(PointerEventData eventData) {
-        if (!_sliderComponent.slider.MayDrag(eventData)) return;
+        var slider = _sliderComponent.slider;
+        if (!slider.IsActive() || !slider.IsInteractable() || eventData.button != PointerEventData.InputButton.Left) return;
+        
         _currentValue = _targetValue = SliderValue;
         _pressed = true;
         _pressedTime = Time.time;

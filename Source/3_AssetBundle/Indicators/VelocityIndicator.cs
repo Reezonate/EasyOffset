@@ -45,6 +45,8 @@ namespace EasyOffset {
 
             if (_hasPreviousPosition) {
                 var velocity = (currentPosition - _previousPosition).magnitude / Time.deltaTime;
+                if (float.IsInfinity(velocity) || float.IsNaN(velocity)) return;
+                
                 _smoothedVelocity = Mathf.Lerp(_smoothedVelocity, velocity, Time.deltaTime * smoothFactor);
                 var t = Mathf.InverseLerp(minimalVelocity, maximalVelocity, _smoothedVelocity);
                 var color = Color.Lerp(minimalVelocityColor, maximalVelocityColor, t);

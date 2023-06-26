@@ -5,7 +5,7 @@ using UnityEngine.XR;
 
 namespace EasyOffset;
 
-[HarmonyPatch(typeof(VRController), nameof(VRController.Update))]
+[HarmonyPatch(typeof(VRController), "Update")]
 internal class VRControllerUpdatePatch {
     private static readonly Vector3 DefaultLeftPosition = new Vector3(-0.2f, 0.05f, 0.0f);
     private static readonly Vector3 DefaultRightPosition = new Vector3(0.2f, 0.05f, 0.0f);
