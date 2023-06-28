@@ -4,7 +4,7 @@ namespace EasyOffset {
     internal static class ConfigDefaults {
         #region Enabled
 
-        public const bool Enabled = false;
+        public const bool Enabled = true;
 
         #endregion
 

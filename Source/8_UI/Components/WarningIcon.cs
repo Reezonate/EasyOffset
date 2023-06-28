@@ -32,23 +32,24 @@ internal class WarningIcon : ReeUIComponentV2 {
     private void OnMinimalWaringLevelChanged(WarningLevel minimalWarningLevel) {
         CompatibilityUtils.GetCompatibilityIssues(out var issues, out var mostCriticalLevel);
 
-        if (issues.Count == 0 || mostCriticalLevel < minimalWarningLevel) {
-            WarningActive = false;
-            WarningHint = "";
-            return;
-        }
+        // if (issues.Count == 0 || mostCriticalLevel < minimalWarningLevel) {
+        //     WarningActive = false;
+        //     WarningHint = "";
+        //     return;
+        // }
+        //
+        // switch (mostCriticalLevel) {
+        //     case WarningLevel.NonCritical:
+        //         WarningColor = NonCriticalImageColor;
+        //         break;
+        //     case WarningLevel.Critical:
+        //         WarningColor = CriticalImageColor;
+        //         break;
+        //     case WarningLevel.Disable:
+        //     default: return;
+        // }
 
-        switch (mostCriticalLevel) {
-            case WarningLevel.NonCritical:
-                WarningColor = NonCriticalImageColor;
-                break;
-            case WarningLevel.Critical:
-                WarningColor = CriticalImageColor;
-                break;
-            case WarningLevel.Disable:
-            default: return;
-        }
-
+        WarningColor = CriticalImageColor;
         WarningHint = BuildWarningMessage(issues, minimalWarningLevel);
         WarningActive = true;
     }
@@ -59,6 +60,10 @@ internal class WarningIcon : ReeUIComponentV2 {
 
     private static string BuildWarningMessage(IEnumerable<CompatibilityUtils.CompatibilityIssue> issues, WarningLevel minimalWarningLevel) {
         var stringBuilder = new StringBuilder();
+        
+        stringBuilder.AppendLine($"<color={CriticalTextColor}>!IMPORTANT! OpenXR update (1.29+)</color>");
+        stringBuilder.AppendLine("<size=80%>Due to breaking changes in the base game\r\nall offsets are different and migration is not possible\r\nYou have to redo your settings</size>");
+        stringBuilder.AppendLine($"<color={CriticalTextColor}><size=80%>\r\nThis may be changed again in the future updates if game devs decide to revert this changes!</size></color>");
 
         foreach (var issue in issues.Where(issue => issue.WarningLevel >= minimalWarningLevel)) {
             switch (issue.WarningLevel) {
@@ -83,6 +88,7 @@ internal class WarningIcon : ReeUIComponentV2 {
             stringBuilder.AppendLine();
         }
 
+        stringBuilder.AppendLine();
         stringBuilder.Append("<size=80%>You can disable warnings in the mod settings</size>");
         return stringBuilder.ToString();
     }

@@ -123,6 +123,7 @@ namespace EasyOffset {
 
         [CanBeNull]
         private GameObject GetPrefab(ControllerType controllerType, bool isLeft) {
+            return null;
             switch (controllerType) {
                 case ControllerType.None: return null;
                 case ControllerType.ValveIndex: return isLeft ? valveIndexLeft : valveIndexRight;
