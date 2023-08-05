@@ -1,3 +1,5 @@
+using BeatSaberMarkupLanguage.Util;
+
 namespace EasyOffset {
     public static class ModPanelUIHelper {
         #region Initialize
@@ -29,7 +31,7 @@ namespace EasyOffset {
             PersistentSingleton<BeatSaberMarkupLanguage.GameplaySetup.GameplaySetup>.instance.AddTab(
                 TabName,
                 ResourcePath,
-                PersistentSingleton<ModPanelUI>.instance
+                PepegaSingletonFix<ModPanelUI>.instance
             );
             _tabActive = true;
         }

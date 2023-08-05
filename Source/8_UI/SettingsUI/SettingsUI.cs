@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using BeatSaberMarkupLanguage.Attributes;
-using BeatSaberMarkupLanguage.Components;
 using JetBrains.Annotations;
 using UnityEngine;
 
 namespace EasyOffset {
-    public class SettingsUI : NotifiableSingleton<SettingsUI> {
+    public class SettingsUI : PepegaSingletonFix<SettingsUI> {
         #region Components
 
         [UIValue("undo-redo-buttons"), UsedImplicitly] private UndoRedoButtons _undoRedoButtons;

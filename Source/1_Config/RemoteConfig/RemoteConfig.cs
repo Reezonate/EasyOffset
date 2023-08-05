@@ -1,9 +1,10 @@
 using Newtonsoft.Json;
+using UnityEngine;
 using UnityEngine.Networking;
 
 namespace EasyOffset;
 
-internal class RemoteConfig : PersistentSingleton<RemoteConfig>, IWebRequestHandler<RemoteConfig.RemoteConfigData> {
+internal class RemoteConfig : MonoBehaviour, IWebRequestHandler<RemoteConfig.RemoteConfigData> {
     #region Values
 
     public static bool IsReady;
@@ -17,7 +18,7 @@ internal class RemoteConfig : PersistentSingleton<RemoteConfig>, IWebRequestHand
 
     #region Initialize
 
-    public void Initialize() {
+    public void Awake() {
         if (IsReady) return;
         StartCoroutine(NetworkingUtils.ProcessRequestCoroutine(new RequestDescriptor(), this));
     }

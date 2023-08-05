@@ -1,12 +1,11 @@
 using System;
 using BeatSaberMarkupLanguage.Attributes;
-using BeatSaberMarkupLanguage.Components;
 using JetBrains.Annotations;
 using UnityEngine;
 
 namespace EasyOffset;
 
-internal class ModPanelUI : NotifiableSingleton<ModPanelUI> {
+internal class ModPanelUI : PepegaSingletonFix<ModPanelUI> {
     #region static
 
     private static event Action GoToMainPageEvent;
@@ -61,7 +60,7 @@ internal class ModPanelUI : NotifiableSingleton<ModPanelUI> {
 
     private void Awake() {
         _adjustmentModeSelector = ReeUIComponentV2.Instantiate<AdjustmentModeSelectorModal>(transform, false);
-        
+
         _topPanel.SetParent(transform);
         _nonePanel.SetParent(transform);
         _slidersPanel.SetParent(transform);

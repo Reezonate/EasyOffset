@@ -4,7 +4,7 @@ using UnityEngine.XR;
 
 namespace EasyOffset;
 
-[HarmonyPatch(typeof(VRController), "UpdateAnchorPosition")]
+[HarmonyPatch(typeof(VRController), "GetControllerOffset")]
 internal class VRControllerUpdateAnchorPatch {
     [UsedImplicitly]
     private static bool Prefix(XRNode ____node) {

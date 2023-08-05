@@ -22,7 +22,6 @@ namespace EasyOffset {
         private static void InitializeConfig(Config config) {
             ConfigUpgrade.TryUpgrade();
             ConfigFileData.Instance = config.Generated<ConfigFileData>();
-            RemoteConfig.instance.Initialize();
         }
 
         #endregion

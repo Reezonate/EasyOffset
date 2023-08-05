@@ -1,4 +1,5 @@
 using BeatSaberMarkupLanguage.Settings;
+using BeatSaberMarkupLanguage.Util;
 
 namespace EasyOffset {
     internal static class SettingsUIHelper {
@@ -22,7 +23,7 @@ namespace EasyOffset {
             PersistentSingleton<BSMLSettings>.instance.AddSettingsMenu(
                 TabName,
                 ResourcePath,
-                PersistentSingleton<SettingsUI>.instance
+                PepegaSingletonFix<SettingsUI>.instance
             );
             _tabActive = true;
         }
