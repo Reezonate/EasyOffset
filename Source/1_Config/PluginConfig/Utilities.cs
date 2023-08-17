@@ -2,17 +2,24 @@ using System;
 
 namespace EasyOffset;
 
-internal static partial class PluginConfig {
+public static partial class PluginConfig {
     #region VRPlatformHelper
 
     public static event Action<IVRPlatformHelper> VRPlatformHelperChangedEvent;
 
     private static IVRPlatformHelper _vrPlatformHelper;
 
+    public static bool IsDeviceless { get; private set; } = false;
+
     public static IVRPlatformHelper VRPlatformHelper {
         get => _vrPlatformHelper;
         set {
             _vrPlatformHelper = value;
+            IsDeviceless = value.vrPlatformSDK switch {
+                VRPlatformSDK.OpenXR => false,
+                VRPlatformSDK.Oculus => false,
+                _ => true
+            };
             VRPlatformHelperChangedEvent?.Invoke(value);
         }
     }

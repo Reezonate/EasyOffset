@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace EasyOffset;
 
-internal partial class PluginConfig {
+public partial class PluginConfig {
     #region Logic
 
     private const int MaxUndoStepsCount = 30;

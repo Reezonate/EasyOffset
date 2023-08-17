@@ -2,7 +2,7 @@ using System;
 
 namespace EasyOffset;
 
-internal static partial class PluginConfig {
+public static partial class PluginConfig {
     #region MinimalWarningLevel
 
     public static event Action<WarningLevel> MinimalWarningLevelChangedEvent;
@@ -43,8 +43,17 @@ internal static partial class PluginConfig {
 
     #endregion
 
+    #region EnabledForDeviceless
+
+    public static bool EnabledForDeviceless {
+        get => ConfigFileData.Instance.EnabledForDeviceless;
+        set => ConfigFileData.Instance.EnabledForDeviceless = value;
+    }
+
+    #endregion
+
     #region UI Lock
-    
+
     public static event Action<bool> UILockChangedEvent;
 
     public static bool UILock {
@@ -137,7 +146,7 @@ internal static partial class PluginConfig {
     #endregion
 
     #region AssignedButton
-    
+
     public static event Action<ControllerButton> AssignedButtonChangedEvent;
 
     private static ControllerButton _assignedButton = GetInitialButtonValue();

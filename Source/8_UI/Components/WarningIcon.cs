@@ -61,7 +61,7 @@ internal class WarningIcon : ReeUIComponentV2 {
     private static string BuildWarningMessage(IEnumerable<CompatibilityUtils.CompatibilityIssue> issues, WarningLevel minimalWarningLevel) {
         var stringBuilder = new StringBuilder();
         
-        stringBuilder.AppendLine($"<color={CriticalTextColor}>!IMPORTANT! OpenXR update (1.29+)</color>");
+        stringBuilder.AppendLine($"<color={CriticalTextColor}>!IMPORTANT! OpenXR update (1.29.4+)</color>");
         stringBuilder.AppendLine("<size=80%>Due to breaking changes in the base game\r\nall offsets are different and migration is not possible\r\nYou have to redo your settings</size>");
         stringBuilder.AppendLine($"<color={CriticalTextColor}><size=80%>\r\nThis may be changed again in the future updates if game devs decide to revert this changes!</size></color>");
 

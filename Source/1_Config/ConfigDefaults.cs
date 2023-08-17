@@ -7,6 +7,12 @@ namespace EasyOffset {
         public const bool Enabled = true;
 
         #endregion
+        
+        #region EnabledForDeviceless
+
+        public const bool EnabledForDeviceless = false;
+
+        #endregion
 
         #region HideControllers
 

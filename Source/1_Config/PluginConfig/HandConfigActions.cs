@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace EasyOffset;
 
-internal static partial class PluginConfig {
+public static partial class PluginConfig {
     #region ConfigWasChangedEvent
 
     public static event Action ConfigWasChangedEvent;

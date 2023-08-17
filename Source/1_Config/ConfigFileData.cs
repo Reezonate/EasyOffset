@@ -24,6 +24,12 @@ namespace EasyOffset {
 
         #endregion
 
+        #region EnabledForDeviceless
+
+        public bool EnabledForDeviceless = ConfigDefaults.EnabledForDeviceless;
+
+        #endregion
+
         #region HideControllers
 
         public bool HideControllers = ConfigDefaults.HideControllers;

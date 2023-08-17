@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace EasyOffset;
 
-internal partial class PluginConfig {
+public partial class PluginConfig {
     #region SaberTranslation
 
     private static readonly CachedVariable<Vector3> CachedRightSaberTranslation = new(GetRightSaberTranslationValue);
