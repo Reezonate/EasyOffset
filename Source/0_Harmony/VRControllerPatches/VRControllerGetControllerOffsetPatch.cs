@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace EasyOffset;
 
-[HarmonyPatch(typeof(VRController), nameof(VRController.GetControllerOffset))]
+[HarmonyPatch(typeof(VRController), nameof(VRController.TryGetControllerOffset))]
 internal static class VRControllerGetControllerOffsetPatch {
     [UsedImplicitly]
-    private static bool Prefix(ref Pose __result) {
+    private static bool Prefix(ref Pose poseOffset) {
         if (PluginConfig.IsDeviceless && !PluginConfig.EnabledForDeviceless) return true;
-        __result = Pose.identity;
+        poseOffset = Pose.identity;
         return false;
     }
 }
