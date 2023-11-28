@@ -20,21 +20,14 @@ namespace EasyOffset {
 
         #region Button-Alias Dictionaries
 
-        private static readonly Dictionary<ControllerButton, string> OculusButtonsSteam = new() {
-            [ControllerButton.GripButton] = "Grip button",
-            [ControllerButton.PrimaryButton] = "Y/B button",
-            [ControllerButton.SecondaryButton] = "X/A button",
-            [ControllerButton.Primary2DAxisClick] = "Joystick click"
-        };
-
-        private static readonly Dictionary<ControllerButton, string> OculusButtonsVrmode = new() {
+        private static readonly Dictionary<ControllerButton, string> OculusButtons = new() {
             [ControllerButton.GripButton] = "Grip button",
             [ControllerButton.PrimaryButton] = "X/A button",
             [ControllerButton.SecondaryButton] = "Y/B button",
             [ControllerButton.Primary2DAxisClick] = "Joystick click"
         };
         
-        private static readonly Dictionary<ControllerButton, string> PicoButtonsSteam = new() {
+        private static readonly Dictionary<ControllerButton, string> PicoButtons = new() {
             [ControllerButton.GripButton] = "Grip button",
             [ControllerButton.PrimaryButton] = "Y/B button",
             [ControllerButton.SecondaryButton] = "X/A button",
@@ -98,12 +91,12 @@ namespace EasyOffset {
                     return ValveIndexButtons;
 
                 case ControllerType.Pico4:
-                    return PicoButtonsSteam;
+                    return PicoButtons;
 
                 case ControllerType.OculusQuest2:
                 case ControllerType.OculusRiftS:
                 case ControllerType.OculusCV1:
-                    return ConfigMigration.IsVRModeOculus ? OculusButtonsVrmode : OculusButtonsSteam;
+                    return OculusButtons;
 
                 case ControllerType.PiMaxSword:
                 case ControllerType.HtcVive:
