@@ -12,9 +12,7 @@ namespace EasyOffset {
         private readonly ReeInputDevice _leftReeInputDevice;
         private readonly ReeInputDevice _rightReeInputDevice;
 
-        public ReeInputManager(
-            IVRPlatformHelper vrPlatformHelper
-        ) {
+        public ReeInputManager(IVRPlatformHelper vrPlatformHelper) {
             _vrPlatformHelper = vrPlatformHelper;
             _leftReeInputDevice = new ReeInputDevice(Hand.Left);
             _rightReeInputDevice = new ReeInputDevice(Hand.Right);
@@ -28,7 +26,32 @@ namespace EasyOffset {
             if (!PluginConfig.IsModPanelVisible) return;
             _leftReeInputDevice.Update();
             _rightReeInputDevice.Update();
-            UpdateTriggerState();
+            UpdateTriggers();
+        }
+
+        #endregion
+
+        #region UpdateTriggers
+
+        private const float TriggerThreshold = 0.1f;
+
+        private bool _leftTriggerPressed;
+        private bool _rightTriggerPressed;
+
+        private void UpdateTriggers() {
+            var isLeftTriggerDown = _vrPlatformHelper.GetTriggerValue(XRNode.LeftHand) > TriggerThreshold;
+            var isRightTriggerDown = _vrPlatformHelper.GetTriggerValue(XRNode.RightHand) > TriggerThreshold;
+
+            var leftWasPressed = !_leftTriggerPressed && isLeftTriggerDown;
+            var leftWasReleased = _leftTriggerPressed && !isLeftTriggerDown;
+
+            var rightWasPressed = !_rightTriggerPressed && isRightTriggerDown;
+            var rightWasReleased = _rightTriggerPressed && !isRightTriggerDown;
+
+            _leftTriggerPressed = isLeftTriggerDown;
+            _rightTriggerPressed = isRightTriggerDown;
+
+            UpdateTriggerState(leftWasPressed, leftWasReleased, rightWasPressed, rightWasReleased);
         }
 
         #endregion
@@ -37,9 +60,7 @@ namespace EasyOffset {
 
         public static ReeTriggerState TriggerState { get; private set; } = ReeTriggerState.Released;
 
-        private void UpdateTriggerState() {
-            UpdateTriggers(out var leftWasPressed, out var leftWasReleased, out var rightWasPressed, out var rightWasReleased);
-
+        private static void UpdateTriggerState(bool leftWasPressed, bool leftWasReleased, bool rightWasPressed, bool rightWasReleased) {
             switch (TriggerState) {
                 case ReeTriggerState.Released: {
                     if (rightWasPressed) {
@@ -70,29 +91,6 @@ namespace EasyOffset {
                 }
                 default: throw new ArgumentOutOfRangeException();
             }
-        }
-
-        #endregion
-
-        #region UpdateTriggers
-
-        private const float TriggerThreshold = 0.1f;
-
-        private bool _leftPressed;
-        private bool _rightPressed;
-
-        private void UpdateTriggers(out bool leftWasPressed, out bool leftWasReleased, out bool rightWasPressed, out bool rightWasReleased) {
-            var isLeftTriggerDown = _vrPlatformHelper.GetTriggerValue(XRNode.LeftHand) > TriggerThreshold;
-            var isRightTriggerDown = _vrPlatformHelper.GetTriggerValue(XRNode.RightHand) > TriggerThreshold;
-
-            leftWasPressed = !_leftPressed && isLeftTriggerDown;
-            leftWasReleased = _leftPressed && !isLeftTriggerDown;
-
-            rightWasPressed = !_rightPressed && isRightTriggerDown;
-            rightWasReleased = _rightPressed && !isRightTriggerDown;
-
-            _leftPressed = isLeftTriggerDown;
-            _rightPressed = isRightTriggerDown;
         }
 
         #endregion

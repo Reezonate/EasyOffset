@@ -48,6 +48,7 @@ namespace EasyOffset {
         private static void ApplyRemovablePatches() {
             LazyInit();
             _removableHarmony.PatchAll(Assembly.GetExecutingAssembly());
+            VRControllerGetControllerOffsetPatch.ApplyPatch(_removableHarmony);
         }
 
         private static void RemoveRemovablePatches() {

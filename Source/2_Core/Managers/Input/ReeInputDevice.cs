@@ -4,6 +4,8 @@ using UnityEngine.XR;
 
 namespace EasyOffset {
     public class ReeInputDevice {
+        #region Constructor
+
         private readonly XRNode _xrNode;
         private readonly Hand _hand;
 
@@ -16,30 +18,14 @@ namespace EasyOffset {
             };
         }
 
-        #region Update
-
-        private bool _triggerButtonFlag;
-        private bool _gripButtonFlag;
-        private bool _primaryButtonFlag;
-        private bool _secondaryButtonFlag;
-        private bool _primary2dAxisFlag;
-
-        public void Update() {
-            PollDevice();
-            UpdateButtonState(CommonUsages.triggerButton, ref _triggerButtonFlag, ControllerButton.TriggerButton);
-            UpdateButtonState(CommonUsages.primaryButton, ref _primaryButtonFlag, ControllerButton.PrimaryButton);
-            UpdateButtonState(CommonUsages.secondaryButton, ref _secondaryButtonFlag, ControllerButton.SecondaryButton);
-            UpdateButtonState(CommonUsages.gripButton, ref _gripButtonFlag, ControllerButton.GripButton);
-            UpdateButtonState(CommonUsages.primary2DAxisClick, ref _primary2dAxisFlag, ControllerButton.Primary2DAxisClick);
-        }
-
         #endregion
 
         #region Poll
 
-        private const int PollRate = 50;
+        private const int PollRate = 500;
 
         private InputDevice _inputDevice;
+        private readonly List<FeatureTracker> _buttonFeatures = new();
         private bool _initialized;
         private int _timer;
 
@@ -52,6 +38,47 @@ namespace EasyOffset {
 
             if (devices.Count > 0) {
                 _inputDevice = devices[0];
+                _buttonFeatures.Clear();
+
+                var features = new List<InputFeatureUsage>();
+                _inputDevice.TryGetFeatureUsages(features);
+
+                foreach (var feature in features) {
+                    switch (feature.name) {
+                        case "TriggerButton ": {
+                            if (feature.type != typeof(bool)) continue;
+                            _buttonFeatures.Add(new FeatureTracker(feature.As<bool>(), ControllerButton.TriggerButton));
+                            break;
+                        }
+                        case "GripButton": {
+                            if (feature.type != typeof(bool)) continue;
+                            _buttonFeatures.Add(new FeatureTracker(feature.As<bool>(), ControllerButton.GripButton));
+                            break;
+                        }
+                        case "PrimaryButton":
+                        case "MenuButton": {
+                            if (feature.type != typeof(bool)) continue;
+                            _buttonFeatures.Add(new FeatureTracker(feature.As<bool>(), ControllerButton.PrimaryButton));
+                            break;
+                        }
+                        case "SecondaryButton": {
+                            if (feature.type != typeof(bool)) continue;
+                            _buttonFeatures.Add(new FeatureTracker(feature.As<bool>(), ControllerButton.SecondaryButton));
+                            break;
+                        }
+                        case "Primary2DAxisClick": {
+                            if (feature.type != typeof(bool)) continue;
+                            _buttonFeatures.Add(new FeatureTracker(feature.As<bool>(), ControllerButton.Primary2DAxisClick));
+                            break;
+                        }
+                        default: {
+                            if (feature.type != typeof(bool)) continue;
+                            Plugin.Log.Notice($"Unknown input button feature: - {feature.name}");
+                            break;
+                        }
+                    }
+                }
+
                 _initialized = true;
             }
 
@@ -60,24 +87,47 @@ namespace EasyOffset {
 
         #endregion
 
-        #region UpdateButtonState
+        #region Update
 
-        private void UpdateButtonState(InputFeatureUsage<bool> inputFeature, ref bool flag, ControllerButton controllerButton) {
-            if (!_initialized) return;
+        public void Update() {
+            PollDevice();
 
-            if (!_inputDevice.TryGetFeatureValue(inputFeature, out var value)) {
-                if (!_inputDevice.isValid) _initialized = false;
-                return;
+            foreach (var tracker in _buttonFeatures) {
+                if (!_initialized) break;
+                if (tracker.UpdateButtonState(_inputDevice, _hand)) continue;
+                _initialized = _inputDevice.isValid;
+            }
+        }
+
+        #endregion
+
+        #region FeatureTracker
+
+        private class FeatureTracker {
+            private readonly InputFeatureUsage<bool> _inputFeatureUsage;
+            private readonly ControllerButton _controllerButton;
+            private bool _flag;
+
+            public FeatureTracker(InputFeatureUsage<bool> inputFeatureUsage, ControllerButton controllerButton) {
+                _inputFeatureUsage = inputFeatureUsage;
+                _controllerButton = controllerButton;
+                _flag = false;
             }
 
-            if (value) {
-                if (flag) return;
-                Abomination.OnButtonPressed(_hand, controllerButton);
-                flag = true;
-            } else {
-                if (!flag) return;
-                Abomination.OnButtonReleased(_hand, controllerButton);
-                flag = false;
+            public bool UpdateButtonState(InputDevice inputDevice, Hand hand) {
+                if (!inputDevice.TryGetFeatureValue(_inputFeatureUsage, out var value)) return false;
+
+                if (value) {
+                    if (_flag) return true;
+                    Abomination.OnButtonPressed(hand, _controllerButton);
+                    _flag = true;
+                } else {
+                    if (!_flag) return true;
+                    Abomination.OnButtonReleased(hand, _controllerButton);
+                    _flag = false;
+                }
+
+                return true;
             }
         }
 
