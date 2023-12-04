@@ -9,5 +9,6 @@ internal class VisibilityTracker : MonoBehaviour {
 
     private void OnDisable() {
         PluginConfig.IsModPanelVisible = false;
+        ConfigFileData.Instance.Changed();
     }
 }

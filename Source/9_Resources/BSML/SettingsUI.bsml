@@ -49,16 +49,17 @@
                                 hover-hint="Import offsets from any source&#13;&#10;(EasyOffset has to be disabled)"
                                 interactable="~universal-import-interactable"/>
                         <button text="Import from settings" pref-width="~button-width" on-click="import-from-settings-on-click"
-                                hover-hint="Import offsets from the base game controller settings"/>
+                                hover-hint="Import offsets from the base game controller settings&#13;&#10;&lt;color=#AA4444&gt;Not supported in 1.29.4+ yet"
+                                interactable="false"/>
                     </vertical>
                     <!--    EXPORT    -->
                     <vertical>
                         <button text="Export to settings (right)" pref-width="~button-width" on-click="export-to-settings-right-on-click"
-                                hover-hint="Export right hand offsets to the base game controller settings"/>
+                                hover-hint="Export right hand offsets to the base game controller settings&#13;&#10;&lt;color=#AA4444&gt;Not supported in 1.29.4+ yet"
+                                interactable="false"/>
                         <button text="Export to settings (left)" pref-width="~button-width" on-click="export-to-settings-left-on-click"
-                                hover-hint="Export left hand offsets to the base game controller settings"/>
-                        <button text="Export to SaberTailor" pref-width="~button-width" on-click="export-to-tailor-on-click"
-                                hover-hint="Create SaberTailor config profile from current offsets"/>
+                                hover-hint="Export left hand offsets to the base game controller settings&#13;&#10;&lt;color=#AA4444&gt;Not supported in 1.29.4+ yet"
+                                interactable="false"/>
                     </vertical>
                 </horizontal>
 

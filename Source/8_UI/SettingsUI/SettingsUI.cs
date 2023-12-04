@@ -159,17 +159,6 @@ namespace EasyOffset {
 
         #endregion
 
-        #region Export to tailor
-
-        [UIAction("export-to-tailor-on-click")]
-        [UsedImplicitly]
-        private void ExportToTailorOnClick() {
-            var result = ConfigMigration.ExportToSaberTailor();
-            SetExportStatus(result);
-        }
-
-        #endregion
-
         #region Export status
 
         private const string SuccessfulExportText = "<color=green>Exported</color>";
