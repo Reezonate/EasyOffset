@@ -96,8 +96,11 @@ namespace EasyOffset {
             out Vector3 pivotPosition,
             out Quaternion saberRotation
         ) {
-            var saberWorldPosition = vrController.position;
-            var saberWorldRotation = vrController.rotation;
+            var target = vrController.transform.Find("MenuHandle");
+            if (target == null) target = vrController.transform;
+            
+            var saberWorldPosition = target.position;
+            var saberWorldRotation = target.rotation;
 
             if (!PluginConfig.VRPlatformHelper.GetNodePose(vrController.node, vrController.nodeIdx, out var controllerWorldPosition, out var controllerWorldRotation)) {
                 pivotPosition = Vector3.zero;
