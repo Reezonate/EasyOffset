@@ -8,8 +8,7 @@ namespace EasyOffset {
         [UsedImplicitly]
         // ReSharper disable once InconsistentNaming
         private static void Postfix(MainSettingsMenuViewControllersInstaller __instance) {
-            var container = __instance.GetContainer();
-            OnMenuInstaller.Install(container);
+            OnMenuInstaller.Install(__instance.Container);
         }
     }
 }

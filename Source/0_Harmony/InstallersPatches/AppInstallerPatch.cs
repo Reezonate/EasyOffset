@@ -8,8 +8,7 @@ namespace EasyOffset {
         [UsedImplicitly]
         // ReSharper disable once InconsistentNaming
         private static void Postfix(PCAppInit __instance) {
-            var container = __instance.GetContainer();
-            OnAppInstaller.Install(container);
+            OnAppInstaller.Install(__instance.Container);
         }
     }
 }

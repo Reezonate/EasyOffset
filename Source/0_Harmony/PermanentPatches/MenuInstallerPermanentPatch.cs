@@ -4,24 +4,15 @@ using JetBrains.Annotations;
 
 namespace EasyOffset {
     public static class MenuInstallerPermanentPatch {
-        #region ApplyPatch
-
-        private static MethodInfo OriginalMethodInfo => typeof(MainSettingsMenuViewControllersInstaller).GetMethod("InstallBindings");
-        private static MethodInfo PostfixMethodInfo => typeof(MenuInstallerPermanentPatch).GetMethod("Postfix", BindingFlags.Static | BindingFlags.NonPublic);
-
         public static void ApplyPatch(Harmony harmony) {
-            harmony.Patch(OriginalMethodInfo, null, new HarmonyMethod(PostfixMethodInfo));
+            var originalMethodInfo = typeof(MainSettingsMenuViewControllersInstaller).GetMethod("InstallBindings");
+            var postfixMethodInfo = typeof(MenuInstallerPermanentPatch).GetMethod(nameof(Postfix), BindingFlags.Static | BindingFlags.NonPublic);
+            harmony.Patch(originalMethodInfo, null, new HarmonyMethod(postfixMethodInfo));
         }
-
-        #endregion
-
-        #region Postfix
 
         [UsedImplicitly]
         private static void Postfix() {
             Plugin.InitializeUI();
         }
-
-        #endregion
     }
 }
