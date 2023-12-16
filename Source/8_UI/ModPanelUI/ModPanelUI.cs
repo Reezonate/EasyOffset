@@ -21,53 +21,46 @@ internal class ModPanelUI : PepegaSingletonFix<ModPanelUI> {
 
     #endregion
 
-    #region Constructor
-
-    public ModPanelUI() {
-        GoToMainPage();
-
-        GoToMainPageEvent += GoToMainPage;
-        GoToBrowserPageEvent += GoToBrowserPage;
-    }
-
-    #endregion
-
     #region Components
 
     [UIValue("adjustment-mode-selector-modal"), UsedImplicitly]
     private AdjustmentModeSelectorModal _adjustmentModeSelector;
 
     [UIValue("top-panel"), UsedImplicitly]
-    private TopPanel _topPanel = ReeUIComponentV2.InstantiateOnSceneRoot<TopPanel>(false);
+    private TopPanel _topPanel;
 
     [UIValue("none-panel"), UsedImplicitly]
-    private NonePanel _nonePanel = ReeUIComponentV2.InstantiateOnSceneRoot<NonePanel>(false);
+    private NonePanel _nonePanel;
 
     [UIValue("sliders-panel"), UsedImplicitly]
-    private SlidersPanel _slidersPanel = ReeUIComponentV2.InstantiateOnSceneRoot<SlidersPanel>(false);
+    private SlidersPanel _slidersPanel;
 
     [UIValue("swing-benchmark-panel"), UsedImplicitly]
-    private SwingBenchmarkPanel _swingBenchmarkPanel = ReeUIComponentV2.InstantiateOnSceneRoot<SwingBenchmarkPanel>(false);
+    private SwingBenchmarkPanel _swingBenchmarkPanel;
 
     [UIValue("room-offset-panel"), UsedImplicitly]
-    private RoomOffsetPanel _roomOffsetPanel = ReeUIComponentV2.InstantiateOnSceneRoot<RoomOffsetPanel>(false);
+    private RoomOffsetPanel _roomOffsetPanel;
 
     [UIValue("bottom-panel"), UsedImplicitly]
-    private BottomPanel _bottomPanel = ReeUIComponentV2.InstantiateOnSceneRoot<BottomPanel>(false);
+    private BottomPanel _bottomPanel;
 
     [UIValue("presets-browser-panel"), UsedImplicitly]
-    private PresetsBrowserPanel _presetsBrowserPanel = ReeUIComponentV2.InstantiateOnSceneRoot<PresetsBrowserPanel>(false);
+    private PresetsBrowserPanel _presetsBrowserPanel;
 
     private void Awake() {
         _adjustmentModeSelector = ReeUIComponentV2.Instantiate<AdjustmentModeSelectorModal>(transform, false);
 
-        _topPanel.SetParent(transform);
-        _nonePanel.SetParent(transform);
-        _slidersPanel.SetParent(transform);
-        _swingBenchmarkPanel.SetParent(transform);
-        _roomOffsetPanel.SetParent(transform);
-        _bottomPanel.SetParent(transform);
-        _presetsBrowserPanel.SetParent(transform);
+        _topPanel = ReeUIComponentV2.Instantiate<TopPanel>(transform,false);
+        _nonePanel = ReeUIComponentV2.Instantiate<NonePanel>(transform, false);
+        _slidersPanel = ReeUIComponentV2.Instantiate<SlidersPanel>(transform, false);
+        _swingBenchmarkPanel = ReeUIComponentV2.Instantiate<SwingBenchmarkPanel>(transform, false);
+        _roomOffsetPanel = ReeUIComponentV2.Instantiate<RoomOffsetPanel>(transform, false);
+        _bottomPanel = ReeUIComponentV2.Instantiate<BottomPanel>(transform, false);
+        _presetsBrowserPanel = ReeUIComponentV2.Instantiate<PresetsBrowserPanel>(transform, false);
+        
+        GoToMainPage();
+        GoToMainPageEvent += GoToMainPage;
+        GoToBrowserPageEvent += GoToBrowserPage;
     }
 
     #endregion
