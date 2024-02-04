@@ -53,8 +53,8 @@ namespace EasyOffset {
             return _inverseRotation * worldDirection;
         }
 
-        public Quaternion WorldToLocalRotation(Quaternion localRotation) {
-            return _inverseRotation * localRotation;
+        public Quaternion WorldToLocalRotation(Quaternion worldRotation) {
+            return _inverseRotation * worldRotation;
         }
 
         #endregion
