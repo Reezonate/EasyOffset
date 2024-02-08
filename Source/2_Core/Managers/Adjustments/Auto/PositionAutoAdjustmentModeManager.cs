@@ -52,13 +52,18 @@ namespace EasyOffset {
             ReeTransform freeHandTransform
         ) {
             _tracker.Update(adjustmentHandTransform.Position, adjustmentHandTransform.Rotation, Time.deltaTime);
+            var origin =  _tracker.GetLocalOrigin();
+            
+            if (float.IsNaN(origin.x) || float.IsInfinity(origin.x)) return;
+            if (float.IsNaN(origin.y) || float.IsInfinity(origin.y)) return;
+            if (float.IsNaN(origin.z) || float.IsInfinity(origin.z)) return;
 
             switch (adjustmentHand) {
                 case Hand.Left:
-                    PluginConfig.LeftSaberPivotPosition = _tracker.GetLocalOrigin();
+                    PluginConfig.LeftSaberPivotPosition = origin;
                     break;
                 case Hand.Right:
-                    PluginConfig.RightSaberPivotPosition = _tracker.GetLocalOrigin();
+                    PluginConfig.RightSaberPivotPosition = origin;
                     break;
                 default: throw new ArgumentOutOfRangeException(nameof(adjustmentHand), adjustmentHand, null);
             }
