@@ -190,18 +190,18 @@ public static class TransformUtils {
     #region ApplyRoomOffsets
 
     public static void ApplyRoomOffset(ref Vector3 position, ref Quaternion rotation) {
-        var roomRotation = Quaternion.Euler(0, PluginConfig.MainSettingsModel.roomRotation, 0);
-        position = PluginConfig.MainSettingsModel.roomCenter + roomRotation * position;
+        var roomRotation = Quaternion.Euler(0, PluginConfig.MainSettingsHandler.instance.roomRotation, 0);
+        position = PluginConfig.MainSettingsHandler.instance.roomCenter + roomRotation * position;
         rotation = roomRotation * rotation;
     }
 
     public static void ApplyRoomOffsetToVector(ref Vector3 position) {
-        var roomRotation = Quaternion.Euler(0, PluginConfig.MainSettingsModel.roomRotation, 0);
-        position = PluginConfig.MainSettingsModel.roomCenter + roomRotation * position;
+        var roomRotation = Quaternion.Euler(0, PluginConfig.MainSettingsHandler.instance.roomRotation, 0);
+        position = PluginConfig.MainSettingsHandler.instance.roomCenter + roomRotation * position;
     }
 
     public static void ApplyRoomOffsetToDirection(ref Vector3 direction) {
-        var roomRotation = Quaternion.Euler(0, PluginConfig.MainSettingsModel.roomRotation, 0);
+        var roomRotation = Quaternion.Euler(0, PluginConfig.MainSettingsHandler.instance.roomRotation, 0);
         direction = roomRotation * direction;
     }
 
@@ -210,12 +210,12 @@ public static class TransformUtils {
     #region RemoveRoomOffset
 
     public static void RemoveRoomOffsetFromVector(ref Vector3 position) {
-        var roomRotation = Quaternion.Euler(0, PluginConfig.MainSettingsModel.roomRotation, 0);
-        position = Quaternion.Inverse(roomRotation) * (position - PluginConfig.MainSettingsModel.roomCenter);
+        var roomRotation = Quaternion.Euler(0, PluginConfig.MainSettingsHandler.instance.roomRotation, 0);
+        position = Quaternion.Inverse(roomRotation) * (position - PluginConfig.MainSettingsHandler.instance.roomCenter);
     }
 
     public static void RemoveRoomOffsetFromDirection(ref Vector3 direction) {
-        var roomRotation = Quaternion.Euler(0, PluginConfig.MainSettingsModel.roomRotation, 0);
+        var roomRotation = Quaternion.Euler(0, PluginConfig.MainSettingsHandler.instance.roomRotation, 0);
         direction = Quaternion.Inverse(roomRotation) * direction;
     }
 

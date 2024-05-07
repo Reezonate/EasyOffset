@@ -1,4 +1,5 @@
 using System;
+using BeatSaber.GameSettings;
 
 namespace EasyOffset;
 
@@ -28,15 +29,15 @@ public static partial class PluginConfig {
 
     #region MainSettingsModel
 
-    public static event Action<MainSettingsModelSO> MainSettingsModelChangedEvent;
+    public static event Action<MainSettingsHandler> MainSettingsHandlerChangedEvent;
 
-    private static MainSettingsModelSO _mainSettingsModel;
+    private static MainSettingsHandler _mainSettingsHandler;
 
-    public static MainSettingsModelSO MainSettingsModel {
-        get => _mainSettingsModel;
+    public static MainSettingsHandler MainSettingsHandler {
+        get => _mainSettingsHandler;
         set {
-            _mainSettingsModel = value;
-            MainSettingsModelChangedEvent?.Invoke(value);
+            _mainSettingsHandler = value;
+            MainSettingsHandlerChangedEvent?.Invoke(value);
         }
     }
 

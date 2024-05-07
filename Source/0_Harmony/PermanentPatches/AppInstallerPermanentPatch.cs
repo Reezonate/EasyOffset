@@ -14,7 +14,6 @@ namespace EasyOffset {
         // ReSharper disable once InconsistentNaming
         private static void Postfix(PCAppInit __instance) {
             PluginConfig.VRPlatformHelper = __instance.Container.TryResolve<IVRPlatformHelper>();
-            PluginConfig.MainSettingsModel = __instance._mainSystemInit._mainSettingsModel;
         }
     }
 }

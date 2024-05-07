@@ -43,6 +43,7 @@ namespace EasyOffset {
             LazyInit();
             AppInstallerPermanentPatch.ApplyPatch(_permanentHarmony);
             MenuInstallerPermanentPatch.ApplyPatch(_permanentHarmony);
+            MainSettingsModelPermanentPatch.ApplyPatch(_permanentHarmony);
         }
 
         private static void ApplyRemovablePatches() {

@@ -33,8 +33,8 @@ namespace EasyOffset {
         public static ConfigImportResult ImportFromSettings() {
             if (!IsMigrationPossible) return ConfigImportResult.DevicelessFail;
 
-            var position = PluginConfig.MainSettingsModel.controllerPosition.value;
-            var rotationEuler = PluginConfig.MainSettingsModel.controllerRotation.value;
+            var position = PluginConfig.MainSettingsHandler.instance.controllerSettings.positionOffset;
+            var rotationEuler = PluginConfig.MainSettingsHandler.instance.controllerSettings.rotationOffset;
 
             ConfigConversions.FromBaseGame(
                 _vrPlatformHelper,
@@ -98,7 +98,7 @@ namespace EasyOffset {
         ) {
             var target = vrController.transform.Find("MenuHandle");
             if (target == null) target = vrController.transform;
-            
+
             var saberWorldPosition = target.position;
             var saberWorldRotation = target.rotation;
 
@@ -157,23 +157,23 @@ namespace EasyOffset {
                 out var rotationEuler
             );
 
-            var beforePosition = PluginConfig.MainSettingsModel.controllerPosition.value;
-            var beforeRotation = PluginConfig.MainSettingsModel.controllerRotation.value;
+            var beforePosition = PluginConfig.MainSettingsHandler.instance.controllerSettings.positionOffset;
+            var beforeRotation = PluginConfig.MainSettingsHandler.instance.controllerSettings.rotationOffset;
 
             PluginConfig.CreateUndoStep(
                 $"Export To Settings",
                 () => {
-                    PluginConfig.MainSettingsModel.controllerPosition.value = beforePosition;
-                    PluginConfig.MainSettingsModel.controllerRotation.value = beforeRotation;
+                    PluginConfig.MainSettingsHandler.instance.controllerSettings.positionOffset = beforePosition;
+                    PluginConfig.MainSettingsHandler.instance.controllerSettings.rotationOffset = beforeRotation;
                 },
                 () => {
-                    PluginConfig.MainSettingsModel.controllerPosition.value = position;
-                    PluginConfig.MainSettingsModel.controllerRotation.value = rotationEuler;
+                    PluginConfig.MainSettingsHandler.instance.controllerSettings.positionOffset = position;
+                    PluginConfig.MainSettingsHandler.instance.controllerSettings.rotationOffset = rotationEuler;
                 }
             );
 
-            PluginConfig.MainSettingsModel.controllerPosition.value = position;
-            PluginConfig.MainSettingsModel.controllerRotation.value = rotationEuler;
+            PluginConfig.MainSettingsHandler.instance.controllerSettings.positionOffset = position;
+            PluginConfig.MainSettingsHandler.instance.controllerSettings.rotationOffset = rotationEuler;
 
             return ConfigExportResult.Success;
         }
