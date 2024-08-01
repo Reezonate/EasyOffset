@@ -3,9 +3,9 @@
   "id": "EasyOffset",
   "name": "EasyOffset",
   "author": "Reezonate",
-  "version": "2.1.9",
+  "version": "2.1.10",
   "description": "Easy controller offset adjustment tool",
-  "gameVersion": "1.36.2",
+  "gameVersion": "1.37.1",
   "dependsOn": {
     "BSIPA": "^4.3.3",
     "BeatSaberMarkupLanguage": "^1.11.0",
