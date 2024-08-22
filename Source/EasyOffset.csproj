@@ -77,6 +77,9 @@
     <Reference Include="Unity.InputSystem">
       <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\Unity.InputSystem.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.Mathematics">
+      <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\Unity.Mathematics.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <!--  HM REFERENCES  -->
@@ -96,8 +99,8 @@
     <Reference Include="BeatSaber.Init">
       <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\BeatSaber.Init.dll</HintPath>
     </Reference>
-    <Reference Include="BeatSaber.GameSettings">
-      <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\BeatSaber.GameSettings.dll</HintPath>
+    <Reference Include="BeatSaber.Settings">
+      <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\BeatSaber.Settings.dll</HintPath>
     </Reference>
     <Reference Include="DataModels">
       <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\DataModels.dll</HintPath>

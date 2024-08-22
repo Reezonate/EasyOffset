@@ -1,5 +1,5 @@
 using System;
-using BeatSaber.GameSettings;
+using UnityEngine;
 
 namespace EasyOffset;
 
@@ -27,18 +27,52 @@ public static partial class PluginConfig {
 
     #endregion
 
-    #region MainSettingsModel
+    #region GameSettings
 
-    public static event Action<MainSettingsHandler> MainSettingsHandlerChangedEvent;
+    public static SettingsManager MainSettingsManager { private get; set; } = SettingsManager.CreateUninitialized();
 
-    private static MainSettingsHandler _mainSettingsHandler;
+    public static SettingsApplicatorSO SettingsApplicator { private get; set; }
 
-    public static MainSettingsHandler MainSettingsHandler {
-        get => _mainSettingsHandler;
+    public static float BaseGameAudioVolume => MainSettingsManager.settings.audio.volume;
+
+    public static Vector3 BaseGameRoomCenter {
+        get => MainSettingsManager.settings.room.center;
         set {
-            _mainSettingsHandler = value;
-            MainSettingsHandlerChangedEvent?.Invoke(value);
+            MainSettingsManager.settings.room.center = value;
+            ApplyRoomSettings();
         }
+    }
+
+    public static float BaseGameRoomRotation {
+        get => MainSettingsManager.settings.room.rotation;
+        set {
+            MainSettingsManager.settings.room.rotation = value;
+            ApplyRoomSettings();
+        }
+    }
+
+    public static Vector3 BaseGameControllerPosition {
+        get => MainSettingsManager.settings.controller.position;
+        set {
+            MainSettingsManager.settings.controller.position = value;
+            ApplyControllerSettings();
+        }
+    }
+
+    public static Vector3 BaseGameControllerRotation {
+        get => MainSettingsManager.settings.controller.rotation;
+        set {
+            MainSettingsManager.settings.controller.rotation = value;
+            ApplyControllerSettings();
+        }
+    }
+
+    private static void ApplyRoomSettings() {
+        SettingsApplicator?.NotifyRoomTransformOffsetWasUpdated();
+    }
+
+    private static void ApplyControllerSettings() {
+        VRPlatformHelper?.RefreshControllersReference();
     }
 
     #endregion

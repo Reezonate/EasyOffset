@@ -47,7 +47,7 @@ namespace EasyOffset {
             ReeTransform freeHandTransform
         ) {
             _grabPosition = adjustmentHandTransform.Position;
-            _grabRoomCenter = PluginConfig.MainSettingsHandler.instance.roomCenter;
+            _grabRoomCenter = PluginConfig.BaseGameRoomCenter;
         }
 
         protected override void OnGrabUpdated(
@@ -58,7 +58,7 @@ namespace EasyOffset {
             var positionChange = adjustmentHandTransform.Position - _grabPosition;
             var result = _grabRoomCenter - positionChange;
 
-            PluginConfig.MainSettingsHandler.instance.roomCenter = new Vector3(
+            PluginConfig.BaseGameRoomCenter = new Vector3(
                 PluginConfig.AllowRoomXChange ? result.x : _grabRoomCenter.x,
                 PluginConfig.AllowRoomYChange ? result.y : _grabRoomCenter.y,
                 PluginConfig.AllowRoomZChange ? result.z : _grabRoomCenter.z
@@ -71,12 +71,12 @@ namespace EasyOffset {
             ReeTransform freeHandTransform
         ) {
             var beforeChange = _grabRoomCenter;
-            var afterChange = PluginConfig.MainSettingsHandler.instance.roomCenter;
-            
+            var afterChange = PluginConfig.BaseGameRoomCenter;
+
             PluginConfig.CreateUndoStep(
                 "Room Offset",
-                () => PluginConfig.MainSettingsHandler.instance.roomCenter = beforeChange,
-                () => PluginConfig.MainSettingsHandler.instance.roomCenter = afterChange
+                () => PluginConfig.BaseGameRoomCenter = beforeChange,
+                () => PluginConfig.BaseGameRoomCenter = afterChange
             );
         }
 

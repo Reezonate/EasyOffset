@@ -1,5 +1,4 @@
 using System;
-using BGLib.SaveDataCore;
 using UnityEngine;
 using UnityEngine.XR;
 
@@ -191,21 +190,18 @@ public static class TransformUtils {
     #region ApplyRoomOffsets
 
     public static void ApplyRoomOffset(ref Vector3 position, ref Quaternion rotation) {
-        if (PluginConfig.MainSettingsHandler.state < LoaderState.FileLoaded) return;
-        var roomRotation = Quaternion.Euler(0, PluginConfig.MainSettingsHandler.instance.roomRotation, 0);
-        position = PluginConfig.MainSettingsHandler.instance.roomCenter + roomRotation * position;
+        var roomRotation = Quaternion.Euler(0, PluginConfig.BaseGameRoomRotation, 0);
+        position = PluginConfig.BaseGameRoomCenter + roomRotation * position;
         rotation = roomRotation * rotation;
     }
 
     public static void ApplyRoomOffsetToVector(ref Vector3 position) {
-        if (PluginConfig.MainSettingsHandler.state < LoaderState.FileLoaded) return;
-        var roomRotation = Quaternion.Euler(0, PluginConfig.MainSettingsHandler.instance.roomRotation, 0);
-        position = PluginConfig.MainSettingsHandler.instance.roomCenter + roomRotation * position;
+        var roomRotation = Quaternion.Euler(0, PluginConfig.BaseGameRoomRotation, 0);
+        position = PluginConfig.BaseGameRoomCenter + roomRotation * position;
     }
 
     public static void ApplyRoomOffsetToDirection(ref Vector3 direction) {
-        if (PluginConfig.MainSettingsHandler.state < LoaderState.FileLoaded) return;
-        var roomRotation = Quaternion.Euler(0, PluginConfig.MainSettingsHandler.instance.roomRotation, 0);
+        var roomRotation = Quaternion.Euler(0, PluginConfig.BaseGameRoomRotation, 0);
         direction = roomRotation * direction;
     }
 
@@ -214,14 +210,12 @@ public static class TransformUtils {
     #region RemoveRoomOffset
 
     public static void RemoveRoomOffsetFromVector(ref Vector3 position) {
-        if (PluginConfig.MainSettingsHandler.state < LoaderState.FileLoaded) return;
-        var roomRotation = Quaternion.Euler(0, PluginConfig.MainSettingsHandler.instance.roomRotation, 0);
-        position = Quaternion.Inverse(roomRotation) * (position - PluginConfig.MainSettingsHandler.instance.roomCenter);
+        var roomRotation = Quaternion.Euler(0, PluginConfig.BaseGameRoomRotation, 0);
+        position = Quaternion.Inverse(roomRotation) * (position - PluginConfig.BaseGameRoomCenter);
     }
 
     public static void RemoveRoomOffsetFromDirection(ref Vector3 direction) {
-        if (PluginConfig.MainSettingsHandler.state < LoaderState.FileLoaded) return;
-        var roomRotation = Quaternion.Euler(0, PluginConfig.MainSettingsHandler.instance.roomRotation, 0);
+        var roomRotation = Quaternion.Euler(0, PluginConfig.BaseGameRoomRotation, 0);
         direction = Quaternion.Inverse(roomRotation) * direction;
     }
 

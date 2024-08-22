@@ -24,7 +24,7 @@ internal class RoomOffsetPanel : ReeUIComponentV2 {
     }
 
     private void UpdateRoomCenter() {
-        var tmp = PluginConfig.MainSettingsHandler.instance.roomCenter;
+        var tmp = PluginConfig.BaseGameRoomCenter;
         RoomXText = BuildRoomOffsetValueString("Room X", tmp.x, 40);
         RoomYText = BuildRoomOffsetValueString("Room Y", tmp.y, 40);
         RoomZText = BuildRoomOffsetValueString("Room Z", tmp.z, 40);
@@ -117,14 +117,14 @@ internal class RoomOffsetPanel : ReeUIComponentV2 {
 
     [UIAction("room-x-reset-on-click"), UsedImplicitly]
     private void RoomXResetOnClick() {
-        var beforeChange = PluginConfig.MainSettingsHandler.instance.roomCenter;
-        PluginConfig.MainSettingsHandler.instance.roomCenter = new Vector3(0, beforeChange.y, beforeChange.z);
-        var afterChange = PluginConfig.MainSettingsHandler.instance.roomCenter;
+        var beforeChange = PluginConfig.BaseGameRoomCenter;
+        PluginConfig.BaseGameRoomCenter = new Vector3(0, beforeChange.y, beforeChange.z);
+        var afterChange = PluginConfig.BaseGameRoomCenter;
 
         PluginConfig.CreateUndoStep(
             "Room Offset",
-            () => PluginConfig.MainSettingsHandler.instance.roomCenter = beforeChange,
-            () => PluginConfig.MainSettingsHandler.instance.roomCenter = afterChange
+            () => PluginConfig.BaseGameRoomCenter = beforeChange,
+            () => PluginConfig.BaseGameRoomCenter = afterChange
         );
     }
 
@@ -153,14 +153,14 @@ internal class RoomOffsetPanel : ReeUIComponentV2 {
 
     [UIAction("room-y-reset-on-click"), UsedImplicitly]
     private void RoomYResetOnClick() {
-        var beforeChange = PluginConfig.MainSettingsHandler.instance.roomCenter;
-        PluginConfig.MainSettingsHandler.instance.roomCenter = new Vector3(beforeChange.x, 0, beforeChange.z);
-        var afterChange = PluginConfig.MainSettingsHandler.instance.roomCenter;
+        var beforeChange = PluginConfig.BaseGameRoomCenter;
+        PluginConfig.BaseGameRoomCenter = new Vector3(beforeChange.x, 0, beforeChange.z);
+        var afterChange = PluginConfig.BaseGameRoomCenter;
 
         PluginConfig.CreateUndoStep(
             "Room Offset",
-            () => PluginConfig.MainSettingsHandler.instance.roomCenter = beforeChange,
-            () => PluginConfig.MainSettingsHandler.instance.roomCenter = afterChange
+            () => PluginConfig.BaseGameRoomCenter = beforeChange,
+            () => PluginConfig.BaseGameRoomCenter = afterChange
         );
     }
 
@@ -189,14 +189,14 @@ internal class RoomOffsetPanel : ReeUIComponentV2 {
 
     [UIAction("room-z-reset-on-click"), UsedImplicitly]
     private void RoomZResetOnClick() {
-        var beforeChange = PluginConfig.MainSettingsHandler.instance.roomCenter;
-        PluginConfig.MainSettingsHandler.instance.roomCenter = new Vector3(beforeChange.x, beforeChange.y, 0);
-        var afterChange = PluginConfig.MainSettingsHandler.instance.roomCenter;
+        var beforeChange = PluginConfig.BaseGameRoomCenter;
+        PluginConfig.BaseGameRoomCenter = new Vector3(beforeChange.x, beforeChange.y, 0);
+        var afterChange = PluginConfig.BaseGameRoomCenter;
 
         PluginConfig.CreateUndoStep(
             "Room Offset",
-            () => PluginConfig.MainSettingsHandler.instance.roomCenter = beforeChange,
-            () => PluginConfig.MainSettingsHandler.instance.roomCenter = afterChange
+            () => PluginConfig.BaseGameRoomCenter = beforeChange,
+            () => PluginConfig.BaseGameRoomCenter = afterChange
         );
     }
 

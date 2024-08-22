@@ -49,8 +49,7 @@ namespace EasyOffset {
 
         #region OnApplicationStart
 
-        [OnStart]
-        [UsedImplicitly]
+        [OnStart, UsedImplicitly]
         public void OnApplicationStart() {
             HarmonyHelper.Initialize();
         }
@@ -59,8 +58,7 @@ namespace EasyOffset {
 
         #region OnApplicationQuit
 
-        [OnExit]
-        [UsedImplicitly]
+        [OnExit, UsedImplicitly]
         public void OnApplicationQuit() { }
 
         #endregion
