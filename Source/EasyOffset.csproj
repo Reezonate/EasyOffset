@@ -136,9 +136,6 @@
     <Reference Include="0Harmony">
       <HintPath>$(BeatSaberDir)\Libs\0Harmony.dll</HintPath>
     </Reference>
-	<Reference Include="BS_Utils">
-	  <HintPath>$(BeatSaberDir)\Plugins\BS_Utils.dll</HintPath>
-	</Reference>
     <Reference Include="SiraUtil">
       <HintPath>$(BeatSaberDir)\Plugins\SiraUtil.dll</HintPath>
     </Reference>

@@ -40,10 +40,10 @@ namespace EasyOffset {
 
         public static void InitializeUI() {
             if (_uiInitialized) return;
-            BS_Utils.Utilities.BSEvents.lateMenuSceneLoadedFresh += LateMenuSceneLoadedFresh;
+            BeatSaberMarkupLanguage.Util.MainMenuAwaiter.MainMenuInitializing += MainMenuInit;
         }
 
-        private static void LateMenuSceneLoadedFresh(ScenesTransitionSetupDataSO scene)
+        private static void MainMenuInit()
         {
             ModPanelUIHelper.Initialize();
             SettingsUIHelper.Initialize();
