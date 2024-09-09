@@ -30,7 +30,7 @@ internal class SmoothSlider : ReeUIComponentV2 {
     private Transform _textTransform;
 
     private void InitializeSlider() {
-        var pointerEventsHandler = _sliderComponent.slider.gameObject.AddComponent<PointerEventsHandler>();
+        var pointerEventsHandler = _sliderComponent.Slider.gameObject.AddComponent<PointerEventsHandler>();
         pointerEventsHandler.smoothSlider = this;
 
         var textComponent = _sliderComponent.gameObject.GetComponentsInChildren<TextMeshProUGUI>()[1];
@@ -49,8 +49,8 @@ internal class SmoothSlider : ReeUIComponentV2 {
     private Material _rightArrowMaterial;
 
     private void InitializeButtons() {
-        _incrementButton = _sliderComponent.slider.GetField<Button, RangeValuesTextSlider>("_incButton");
-        _decrementButton = _sliderComponent.slider.GetField<Button, RangeValuesTextSlider>("_decButton");
+        _incrementButton = _sliderComponent.Slider.GetField<Button, RangeValuesTextSlider>("_incButton");
+        _decrementButton = _sliderComponent.Slider.GetField<Button, RangeValuesTextSlider>("_decButton");
         _rightArrowMaterial = InstantiateButtonMaterial(_incrementButton);
         _leftArrowMaterial = InstantiateButtonMaterial(_decrementButton);
         _buttonEventsReady = false;
@@ -85,9 +85,9 @@ internal class SmoothSlider : ReeUIComponentV2 {
         AppearanceDescriptor appearanceDescriptor,
         DirectModeVariable value
     ) {
-        _sliderComponent.slider.minValue = rangeDescriptor.MinimalValue;
-        _sliderComponent.slider.maxValue = rangeDescriptor.MaximalValue;
-        _sliderComponent.slider.numberOfSteps = rangeDescriptor.NumberOfSteps;
+        _sliderComponent.Slider.minValue = rangeDescriptor.MinimalValue;
+        _sliderComponent.Slider.maxValue = rangeDescriptor.MaximalValue;
+        _sliderComponent.Slider.numberOfSteps = rangeDescriptor.NumberOfSteps;
         _smoothFactor = rangeDescriptor.SmoothFactor;
         _formatter = appearanceDescriptor.Formatter;
         ApplyColor(appearanceDescriptor.Color);
@@ -95,12 +95,12 @@ internal class SmoothSlider : ReeUIComponentV2 {
     }
 
     private void ApplyColor(Color color) {
-        var colors = _sliderComponent.slider.colors;
+        var colors = _sliderComponent.Slider.colors;
         colors.highlightedColor = color.ColorWithAlpha(0.3f);
         colors.pressedColor = color.ColorWithAlpha(0.4f);
-        _sliderComponent.slider.colors = colors;
+        _sliderComponent.Slider.colors = colors;
 
-        _sliderComponent.slider.handleColor = color;
+        _sliderComponent.Slider.handleColor = color;
         _rightArrowMaterial.color = color;
         _leftArrowMaterial.color = color;
     }
@@ -158,7 +158,7 @@ internal class SmoothSlider : ReeUIComponentV2 {
     }
 
     private void OnPointerDown(PointerEventData eventData) {
-        var slider = _sliderComponent.slider;
+        var slider = _sliderComponent.Slider;
         if (!slider.IsActive() || !slider.IsInteractable() || eventData.button != PointerEventData.InputButton.Left) return;
         
         _currentValue = _targetValue = SliderValue;

@@ -26,7 +26,7 @@ internal class RewindSlider : ReeUIComponentV2 {
     private float _currentSeconds;
 
     public void SetTime(float currentSeconds, float totalSeconds) {
-        _sliderComponent.slider.maxValue = totalSeconds;
+        _sliderComponent.Slider.maxValue = totalSeconds;
         _sliderComponent.Value = currentSeconds;
         
         _currentSeconds = currentSeconds;
@@ -88,14 +88,14 @@ internal class RewindSlider : ReeUIComponentV2 {
     private static Color BarNormalColor => new Color(0.6f, 0.6f, 0.6f, 0.5f);
 
     private void InitializeSlider() {
-        _sliderComponent.slider.valueDidChangeEvent += OnSliderValueDidChange;
+        _sliderComponent.Slider.valueDidChangeEvent += OnSliderValueDidChange;
         TryModifySlider();
 
-        var colors = _sliderComponent.slider.colors;
+        var colors = _sliderComponent.Slider.colors;
         colors.normalColor = BarNormalColor;
         colors.pressedColor = BarPressedColor;
         colors.highlightedColor = BarHighlightColor;
-        _sliderComponent.slider.colors = colors;
+        _sliderComponent.Slider.colors = colors;
     }
 
     private void TryModifySlider() {

@@ -79,7 +79,7 @@ internal class PlayButton : ReeUIComponentV2 {
     private void InitializeButton() {
         _hoverController = _button.gameObject.AddComponent<SmoothHoverController>();
         _hoverController.HoverStateChangedEvent += OnHover;
-        _button.OnClickEvent = NotifyWasClicked;
+        _button.OnClickEvent += NotifyWasClicked;
     }
 
     private void OnHover(bool isHovered, float progress) {

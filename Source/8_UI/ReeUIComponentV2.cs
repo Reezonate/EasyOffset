@@ -126,7 +126,7 @@ namespace EasyOffset {
         private void ParseSelfIfNeeded() {
             if (_state != State.Uninitialized) return;
             _state = State.Parsing;
-            PersistentSingleton<BSMLParser>.instance.Parse(GetBsmlForType(GetType()), gameObject, this);
+            BSMLParser.Instance.Parse(GetBsmlForType(GetType()), gameObject, this);
             _state = State.Parsed;
         }
 

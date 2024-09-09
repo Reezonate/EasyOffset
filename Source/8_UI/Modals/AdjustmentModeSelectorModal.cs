@@ -61,7 +61,7 @@ internal class AdjustmentModeSelectorModal : ReeUIComponentV2 {
         if (touchable != null) touchable.enabled = false;
     }
 
-    private void ShowModal() {
+    private void ShowModal(HoverHint hoverHint) {
         if (_modal == null) return;
         _modal.Show(true, true);
     }
