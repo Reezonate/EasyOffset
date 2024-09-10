@@ -1,3 +1,4 @@
+using HMUI;
 using System;
 
 namespace EasyOffset;
@@ -5,20 +6,20 @@ namespace EasyOffset;
 internal static class UIEvents {
     #region AdjustmentModeButtonWasPressed
 
-    public static event Action HoverHintUpdatedEvent;
+    public static event Action<HoverHint> HoverHintUpdatedEvent;
 
-    public static void NotifyHoverHintUpdated() {
-        HoverHintUpdatedEvent?.Invoke();
+    public static void NotifyHoverHintUpdated(HoverHint hoverHint) {
+        HoverHintUpdatedEvent?.Invoke(hoverHint);
     }
 
     #endregion
     
     #region AdjustmentModeButtonWasPressed
 
-    public static event Action AdjustmentModeButtonWasPressedEvent;
+    public static event Action<HoverHint> AdjustmentModeButtonWasPressedEvent;
 
-    public static void NotifyAdjustmentModeButtonWasPressed() {
-        AdjustmentModeButtonWasPressedEvent?.Invoke();
+    public static void NotifyAdjustmentModeButtonWasPressed(HoverHint hoverHint) {
+        AdjustmentModeButtonWasPressedEvent?.Invoke(hoverHint);
     }
 
     #endregion

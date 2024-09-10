@@ -59,11 +59,11 @@ internal class PresetsBrowserPanel : ReeUIComponentV2 {
     private void PresetFilenameOnChange(string value) {
         for (var i = 0; i < _storedConfigPresets.Count; i++) {
             if (_storedConfigPresets[i].Name != value) continue;
-            _presetsBrowserList.tableView.SelectCellWithIdx(i);
+            _presetsBrowserList.TableView.SelectCellWithIdx(i);
             return;
         }
 
-        _presetsBrowserList.tableView.ClearSelection();
+        _presetsBrowserList.TableView.ClearSelection();
     }
 
     #endregion
@@ -88,18 +88,18 @@ internal class PresetsBrowserPanel : ReeUIComponentV2 {
     }
 
     private void UpdatePresetsBrowserList() {
-        _presetsBrowserList.data.Clear();
+        _presetsBrowserList.Data.Clear();
         _storedConfigPresets = ConfigPresetsStorage.GetAllStoredPresets();
 
         foreach (var storedConfigPreset in _storedConfigPresets) {
-            _presetsBrowserList.data.Add(new CustomListTableData.CustomCellInfo(
+            _presetsBrowserList.Data.Add(new CustomListTableData.CustomCellInfo(
                     PresetUtils.GetPresetCellString(storedConfigPreset)
                 )
             );
         }
 
-        _presetsBrowserList.tableView.ReloadData();
-        _presetsBrowserList.tableView.ClearSelection();
+        _presetsBrowserList.TableView.ReloadData();
+        _presetsBrowserList.TableView.ClearSelection();
     }
 
     #endregion

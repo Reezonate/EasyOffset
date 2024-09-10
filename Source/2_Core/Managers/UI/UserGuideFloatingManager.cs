@@ -33,7 +33,7 @@ public class UserGuideFloatingManager : IInitializable, IDisposable {
 
         _floatingScreen = FloatingScreen.CreateFloatingScreen(new Vector2(120, 90), true, new Vector3(0, 1, 1), Quaternion.identity);
         _floatingScreen.SetRootViewController(_userGuideViewController, ViewController.AnimationType.None);
-        InitializeHandle(_floatingScreen.handle);
+        InitializeHandle(_floatingScreen.Handle);
         ResetPosition();
 
         _floatingScreen.gameObject.SetActive(false);

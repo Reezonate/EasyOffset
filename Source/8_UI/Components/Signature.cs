@@ -41,7 +41,7 @@ internal class Signature : ReeUIComponentV2 {
         var hoverController = _textComponent.gameObject.AddComponent<SmoothHoverController>();
         hoverController.HoverStateChangedEvent += OnHoverStateChanged;
         SetColor(0.0f, 0.8f);
-        _textComponent.OnClickEvent = OnClick;
+        _textComponent.OnClickEvent += OnClick;
     }
 
     private void SetColor(float brightness, float alpha) {

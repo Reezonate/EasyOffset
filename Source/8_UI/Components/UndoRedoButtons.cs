@@ -127,7 +127,7 @@ internal class UndoRedoButtons : ReeUIComponentV2 {
             if (_undoButtonHoverHint.Equals(value)) return;
             _undoButtonHoverHint = value;
             NotifyPropertyChanged();
-            UIEvents.NotifyHoverHintUpdated();
+            UIEvents.NotifyHoverHintUpdated(null);
         }
     }
 
@@ -163,7 +163,7 @@ internal class UndoRedoButtons : ReeUIComponentV2 {
             if (_redoButtonHoverHint.Equals(value)) return;
             _redoButtonHoverHint = value;
             NotifyPropertyChanged();
-            UIEvents.NotifyHoverHintUpdated();
+            UIEvents.NotifyHoverHintUpdated(null);
         }
     }
 

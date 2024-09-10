@@ -81,7 +81,7 @@ internal class TopPanel : ReeUIComponentV2 {
 
     [UIAction("am-button-on-click"), UsedImplicitly]
     private void AdjustmentModeOnClick() {
-        UIEvents.NotifyAdjustmentModeButtonWasPressed();
+        UIEvents.NotifyAdjustmentModeButtonWasPressed(null);
     }
 
     #endregion
@@ -102,7 +102,7 @@ internal class TopPanel : ReeUIComponentV2 {
 
     private void OnControllerTypeChanged(ControllerType controllerType) {
         UpdateButtonOptions(controllerType);
-        _assignedButtonComponent.values = _assignedButtonChoices;
+        _assignedButtonComponent.Values = _assignedButtonChoices;
         _assignedButtonComponent.Value = PluginConfig.AssignedButton;
         _assignedButtonComponent.UpdateChoices();
     }

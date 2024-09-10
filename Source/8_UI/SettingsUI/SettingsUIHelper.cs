@@ -20,7 +20,7 @@ namespace EasyOffset {
 
         private static void AddTab() {
             if (_tabActive) return;
-            PersistentSingleton<BSMLSettings>.instance.AddSettingsMenu(
+            BSMLSettings.Instance.AddSettingsMenu(
                 TabName,
                 ResourcePath,
                 PepegaSingletonFix<SettingsUI>.instance
@@ -30,7 +30,7 @@ namespace EasyOffset {
 
         public static void RemoveTab() {
             if (!_tabActive) return;
-            PersistentSingleton<BSMLSettings>.instance.RemoveSettingsMenu(TabName);
+            BSMLSettings.Instance.RemoveSettingsMenu(TabName);
             _tabActive = false;
         }
 
