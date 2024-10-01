@@ -1,11 +1,11 @@
 using BeatSaberMarkupLanguage.Settings;
-using BeatSaberMarkupLanguage.Util;
+using Zenject;
 
 namespace EasyOffset {
-    internal static class SettingsUIHelper {
+    internal class SettingsUIHelper : IInitializable {
         #region Initialize
 
-        public static void Initialize() {
+        public void Initialize() {
             AddTab();
         }
 
@@ -16,9 +16,9 @@ namespace EasyOffset {
         private const string ResourcePath = "EasyOffset._9_Resources.BSML.SettingsUI.bsml";
         private const string TabName = "Easy Offset";
 
-        private static bool _tabActive;
+        private bool _tabActive;
 
-        private static void AddTab() {
+        private void AddTab() {
             if (_tabActive) return;
             BSMLSettings.Instance.AddSettingsMenu(
                 TabName,
@@ -28,7 +28,7 @@ namespace EasyOffset {
             _tabActive = true;
         }
 
-        public static void RemoveTab() {
+        public void RemoveTab() {
             if (!_tabActive) return;
             BSMLSettings.Instance.RemoveSettingsMenu(TabName);
             _tabActive = false;

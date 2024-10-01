@@ -14,7 +14,8 @@ namespace EasyOffset {
         private static void Postfix(MainSettingsMenuViewControllersInstaller __instance) {
             PluginConfig.MainSettingsManager = __instance.Container.TryResolve<SettingsManager>();
             PluginConfig.SettingsApplicator = __instance.Container.TryResolve<SettingsApplicatorSO>();
-            Plugin.InitializeUI();
+            __instance.Container.BindInterfacesAndSelfTo<ModPanelUIHelper>().AsSingle();
+            __instance.Container.BindInterfacesAndSelfTo<SettingsUIHelper>().AsSingle();
         }
     }
 }

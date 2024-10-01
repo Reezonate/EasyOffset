@@ -1,15 +1,15 @@
-using BeatSaberMarkupLanguage.Util;
+using Zenject;
 
 namespace EasyOffset {
-    public static class ModPanelUIHelper {
+    public class ModPanelUIHelper : IInitializable {
         #region Initialize
 
-        public static void Initialize() {
+        public void Initialize() {
             PluginConfig.OnEnabledChange += OnEnabledChanged;
             OnEnabledChanged(PluginConfig.Enabled);
         }
 
-        private static void OnEnabledChanged(bool enabled) {
+        private void OnEnabledChanged(bool enabled) {
             if (enabled) {
                 AddTab();
             } else {
@@ -18,15 +18,15 @@ namespace EasyOffset {
         }
 
         #endregion
-        
+
         #region Tab management
 
         private const string ResourcePath = "EasyOffset._9_Resources.BSML.ModPanelUI.bsml";
         public const string TabName = "Easy Offset";
 
-        private static bool _tabActive;
+        private bool _tabActive;
 
-        private static void AddTab() {
+        private void AddTab() {
             if (_tabActive) return;
             BeatSaberMarkupLanguage.GameplaySetup.GameplaySetup.Instance.AddTab(
                 TabName,
@@ -36,7 +36,7 @@ namespace EasyOffset {
             _tabActive = true;
         }
 
-        public static void RemoveTab() {
+        public void RemoveTab() {
             if (!_tabActive) return;
             BeatSaberMarkupLanguage.GameplaySetup.GameplaySetup.Instance.RemoveTab(TabName);
             _tabActive = false;
