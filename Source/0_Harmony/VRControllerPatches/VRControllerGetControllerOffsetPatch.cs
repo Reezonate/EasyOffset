@@ -1,4 +1,3 @@
-using System.Reflection;
 using HarmonyLib;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -8,8 +7,17 @@ namespace EasyOffset;
 
 internal static class VRControllerGetControllerOffsetPatch {
     public static void ApplyPatch(Harmony harmony) {
-        var targetMethod = typeof(VRController).GetMethod(nameof(VRController.TryGetControllerOffset), BindingFlags.Public | BindingFlags.Static);
-        var prefix = typeof(VRControllerGetControllerOffsetPatch).GetMethod(nameof(Prefix), BindingFlags.NonPublic | BindingFlags.Static);
+        var targetMethod = AccessTools.Method(typeof(VRController), "TryGetControllerOffset",
+            new[] {
+                typeof(IVRPlatformHelper),
+                typeof(VRControllerTransformOffset),
+                typeof(XRNode).MakeByRefType(),
+                typeof(Pose).MakeByRefType()
+            }
+        );
+
+        var prefix = AccessTools.Method(typeof(VRControllerGetControllerOffsetPatch),nameof(Prefix));
+
         harmony.Patch(targetMethod, new HarmonyMethod(prefix));
     }
 
@@ -17,7 +25,7 @@ internal static class VRControllerGetControllerOffsetPatch {
     private static bool Prefix(
         IVRPlatformHelper vrPlatformHelper,
         VRControllerTransformOffset transformOffset,
-        XRNode node,
+        ref XRNode node,
         out Pose poseOffset
     ) {
         poseOffset = Pose.identity;

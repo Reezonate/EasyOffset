@@ -5,7 +5,7 @@
   "author": "Reezonate",
   "version": "2.1.13",
   "description": "Easy controller offset adjustment tool",
-  "gameVersion": "1.37.5",
+  "gameVersion": "1.40.0",
   "dependsOn": {
     "BSIPA": "^4.3.3",
     "BeatSaberMarkupLanguage": "^1.12.0",
