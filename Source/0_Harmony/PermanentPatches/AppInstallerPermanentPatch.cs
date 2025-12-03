@@ -6,14 +6,14 @@ using System.Reflection;
 namespace EasyOffset {
     public static class AppInstallerPermanentPatch {
         public static void ApplyPatch(Harmony harmony) {
-            var originalMethodInfo = typeof(FeatureAsyncInstaller).GetMethod("InstallBindings");
+            var originalMethodInfo = typeof(BeatSaberInit).GetMethod("InstallBindings");
             var postfixMethodInfo = typeof(AppInstallerPermanentPatch).GetMethod(nameof(Postfix), BindingFlags.Static | BindingFlags.NonPublic);
             harmony.Patch(originalMethodInfo, null, new HarmonyMethod(postfixMethodInfo));
         }
 
         [UsedImplicitly]
         // ReSharper disable once InconsistentNaming
-        private static void Postfix(FeatureAsyncInstaller __instance) {
+        private static void Postfix(BeatSaberInit __instance) {
             PluginConfig.VRPlatformHelper = __instance.Container.TryResolve<IVRPlatformHelper>();
         }
     }

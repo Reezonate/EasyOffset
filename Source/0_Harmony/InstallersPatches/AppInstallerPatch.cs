@@ -4,11 +4,11 @@ using HarmonyLib;
 using JetBrains.Annotations;
 
 namespace EasyOffset {
-    [HarmonyPatch(typeof(FeatureAsyncInstaller), "InstallBindings")]
+    [HarmonyPatch(typeof(BeatSaberInit), "InstallBindings")]
     public static class AppInstallerPatch {
         [UsedImplicitly]
         // ReSharper disable once InconsistentNaming
-        private static void Postfix(FeatureAsyncInstaller __instance) {
+        private static void Postfix(BeatSaberInit __instance) {
             OnAppInstaller.Install(__instance.Container);
         }
     }
