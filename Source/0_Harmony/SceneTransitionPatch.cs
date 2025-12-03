@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using JetBrains.Annotations;
+using Zenject;
+using static GameScenesManager;
 
 namespace EasyOffset;
 
@@ -9,9 +11,16 @@ namespace EasyOffset;
 internal static class SceneTransitionPatch {
     [UsedImplicitly]
     private static void Prefix(
-        List<string> scenesToPresent,
-        List<string> scenesToDismiss,
-        ref Action afterMinDurationCallback
+        ScenesTransitionSetupDataSO newScenesTransitionSetupData,
+        IReadOnlyList<string> scenesToPresent,
+        ScenePresentType presentType,
+        IReadOnlyList<string> scenesToDismiss,
+        SceneDismissType dismissType,
+        float minDuration,
+        bool canTriggerGarbageCollector,
+        ref Action afterMinDurationCallback,
+        Action<DiContainer> extraBindingsCallback,
+        Action<DiContainer> finishCallback
     ) {
         foreach (var sceneName in scenesToPresent) {
             if (!sceneName.Equals("MainMenu")) continue;
