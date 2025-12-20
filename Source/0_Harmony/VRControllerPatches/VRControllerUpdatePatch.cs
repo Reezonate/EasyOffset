@@ -20,7 +20,7 @@ internal class VRControllerUpdatePatch {
     ) {
         if (PluginConfig.IsDeviceless && !PluginConfig.EnabledForDeviceless) return true;
 
-        if (____vrPlatformHelper.GetNodePose(__instance.node, __instance.nodeIdx, out var pos, out var rot)) {
+        if (____vrPlatformHelper.GetNodePose(__instance.node, __instance.nodeIndex, out var pos, out var rot)) {
             ____lastTrackedPosition = pos;
             ____lastTrackedRotation = rot;
         } else {

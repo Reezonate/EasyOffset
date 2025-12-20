@@ -20,7 +20,7 @@ namespace EasyOffset {
         public void Tick() {
             var leftUpdateResult = _vrPlatformHelper.GetNodePose(
                 _leftController.node,
-                _leftController.nodeIdx,
+                _leftController.nodeIndex,
                 out var leftHandPos,
                 out var leftHandRot
             );
@@ -32,7 +32,7 @@ namespace EasyOffset {
 
             var rightUpdateResult = _vrPlatformHelper.GetNodePose(
                 _rightController.node,
-                _rightController.nodeIdx,
+                _rightController.nodeIndex,
                 out var rightHandPos,
                 out var rightHandRot
             );
